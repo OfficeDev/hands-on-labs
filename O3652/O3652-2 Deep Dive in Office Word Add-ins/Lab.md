@@ -210,7 +210,7 @@ In this lab you will get hands-on experience developing an Office Word Add-in, u
 
 23. Close Microsoft Word to terminate your debugging session and return to Visual Studio.
 24. Return to the source file named **Home.js** or open it if it is not already open.
-25. Create a function named **onaddContentHellowWorld** and add the following call to **body.insertText**. This method is replacing the entire body of the document with the "Hello World!" string. Note that we added also a handler for success and error.
+25. Create a function named **onaddContentHellowWorld** and add the following call to **body.insertText**. This method is replacing the entire body of the document with the "Hello World!" string (note that instead of "replace" the method can also insert at the "start" or "end" of the body). Add also a handler for success and error.
 
 	````javascript
   function onaddContentHellowWorld() {
@@ -231,49 +231,56 @@ In this lab you will get hands-on experience developing an Office Word Add-in, u
     }
 	````
 
-27. Finally, add a line of jQuery code into the Add-in initialization logic to bind the click event of the **addContentHellowWorld** button to the **onAddContentHellowWorld** function.
+26. Finally, add a line of jQuery code into the Add-in initialization logic to bind the click event of the **addContentHellowWorld** button to the **onaddContentHellowWorld** function.
 
 	````javascript
 	Office.initialize = function (reason) {
 		$(document).ready(function () {
 			app.initialize();
 			// add this code to wire up event handler
-			$("#addContentHellowWorld").click(onAddContentHellowWorld)
+			$("#addContentHellowWorld").click(onaddContentHellowWorld)
 		});
 	};
 	````
 
-28. When you are done, the **Home.js** file should match the following listing.
+27. When you are done, the **Home.js** file should match the following listing.
 
 	````javascript
-	(function () {
-		"use strict";
+(function () {
+    "use strict";
 
-		// The initialize function must be run each time a new page is loaded
-		Office.initialize = function (reason) {
-			$(document).ready(function () {
-				app.initialize();
-				// wire up event handler
-				$("#addContentHellowWorld").click(onAddContentHellowWorld)
-			});
-		};
+    // The initialize function must be run each time a new page is loaded
+    Office.initialize = function (reason) {
+        $(document).ready(function () {
+            app.initialize();
+            // setup event handlers ala JQuery...
+            $('#addContentHellowWorld').click(onaddContentHellowWorld);
+           
+        });
+    };
 
-		// write text data to current at document selection 
-		function onAddContentHellowWorld() {
-			Office.context.document.setSelectedDataAsync("Hello World!", testForSuccess);
-		}
+    function onaddContentHellowWorld() {
+        // Hello World in the Word.js world!
+        Word.run(function (context) {
+            //this line replaces the body of the document with a friendly "Hello World!!!"
+            context.document.body.insertText("Hello World!", "replace");
+            return context.sync()
 
-		function testForSuccess(asyncResult) {
-			if (asyncResult.status === Office.AsyncResultStatus.Failed) {
-				app.showNotification('Error', asyncResult.error.message);
-			}
-		}
+        }).then(function () {
+            // if evertything was succesful, we sent an ok...
+            app.showNotification("Task Complete!");
+        })
+          .catch(function (myError) {
+              //otherwise we handle the exception here!
+              app.showNotification("Error", myError.message);
+          });
+    }
 
 	})();
 	````
 
-29. Save your changes to **Home.js**.
-30. Now test the functionality of the Add-in. Press the **{F5}** key to begin a debugging session and click the **Hello World** button. You should see that "Hello World" has been added into the cursor position of the Word document.
+28. Save your changes to **Home.js**.
+39. Now test the functionality of the Add-in. Press the **{F5}** key to begin a debugging session and click the **Hello World** button. You should see that "Hello World" has been added into the cursor position of the Word document.
 
 	![](Images/Fig08.png)
 
