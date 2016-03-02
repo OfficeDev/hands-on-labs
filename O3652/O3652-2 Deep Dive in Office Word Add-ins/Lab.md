@@ -210,22 +210,25 @@ In this lab you will get hands-on experience developing an Office Word Add-in, u
 
 23. Close Microsoft Word to terminate your debugging session and return to Visual Studio.
 24. Return to the source file named **Home.js** or open it if it is not already open.
-25. Add a new function named **testForSuccess** with the following implementation.
+25. Create a function named **onaddContentHellowWorld** and add the following call to **body.insertText**. This method is replacing the entire body of the document with the "Hello World!" string. Note that we added also a handler for success and error.
 
 	````javascript
-	function testForSuccess(asyncResult) {
-		if (asyncResult.status === Office.AsyncResultStatus.Failed) {
-			app.showNotification('Error', asyncResult.error.message);
-		}
-	}
-	````
+  function onaddContentHellowWorld() {
+        // Hello World in the Word.js world!
+        Word.run(function (context) {
+            //this line replaces the body of the document with a friendly "Hello World!!!"
+            context.document.body.insertText("Hello World!", "replace");
+            return context.sync()
 
-26. Create a function named **onAddContentHellowWorld** and add the following call to **setSelectedDataAsync**.
-
-	````javascript
-	function onAddContentHellowWorld() {
-		Office.context.document.setSelectedDataAsync("Hello World!", testForSuccess);
-	}
+        }).then(function () {
+            // if evertything was succesful, we sent an ok...
+            app.showNotification("Task Complete!");
+        })
+          .catch(function (myError) {
+              //otherwise we handle the exception here!
+              app.showNotification("Error", myError.message);
+          });
+    }
 	````
 
 27. Finally, add a line of jQuery code into the Add-in initialization logic to bind the click event of the **addContentHellowWorld** button to the **onAddContentHellowWorld** function.
