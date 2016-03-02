@@ -6,8 +6,8 @@ In this lab you will get hands-on experience developing an Office Word Add-in, u
 2. You must have Office 2016 Preview installed which you can obtain from here: https://products.office.com/en-us/office-2016-preview. Make sure you are using the January Fork release (6741).
 3. This lab requires you to use multiple starter files or an entire starter project from the GitHub location. You can either download the whole repo as a zip or clone the repo https://github.com/OfficeDev/TrainingContent.git for those familiar with git.
 
-## Exercise 1: Creating the Statement of Work Wizard Add-in Project 
-*In this exercise you will create a new Office Add-in project in Visual Studio so that you can begin to write, test and debug an Office Word Add-in. The user interface of the Office Add-in you will create in this lab will not be very complicated as it will just contain HTML buttons and JavaScript command handlers.*
+## Exercise 1: Creating the Statement of Work Wizard Add-in Project and Hello World!
+*In this exercise you will create a new Office Add-in project in Visual Studio so that you can begin to write, test and debug an Office Word Add-in. The user interface of the Office Add-in you will create in this lab will not be very complicated as it will just contain HTML buttons and JavaScript command handlers. You will also code your first  "Hello World!" sample!*
 
 1. Launch Visual Studio 2015 as an administrator.
 2. From the **File** menu select the **New Project** command. When the **New Project** dialog appears, select the **Office Add-in** project template from the **Office/SharePoint** template folder as shown below. Name the new project **StatementOfWork** and click **OK** to create the new project.
@@ -138,13 +138,13 @@ In this lab you will get hands-on experience developing an Office Word Add-in, u
 	</body>
 	````
 
-17. Replace the text message of **Welcome** inside the **h1** element with **Add Content to Document**. Also, trim down the contents of the **div** element with the **id** of **content-main** to match the HTML code shown below. 
+17. Replace the text message of **Welcome** inside the **h1** element with **Welcome to Word 1.3 APIs!!**. Also, trim down the contents of the **div** element with the **id** of **content-main** to match the HTML code shown below. 
 
 	````html
 	<body>
 		<div id="content-header">
 			<div class="padding">
-				<h1>Add Content to Document</h1>
+				<h1>Welcome to Word 1.3 APIs!!</h1>
 			</div>
 		</div>
 		<div id="content-main">
@@ -158,25 +158,38 @@ In this lab you will get hands-on experience developing an Office Word Add-in, u
 18. Update the **content-main** div to match the following HTML layout which adds a set of buttons to the Add-in's layout.
 
 	````html
-	<div id="content-main">
-		<div class="padding">
-			<div>
-				<button id="addContentHellowWorld">Hello World</button>
-			</div>
-			<div>
-				<button id="addContentHtml">HTML</button>
-			</div>
-			<div>
-				<button id="addContentMatrix">Matrix</button>
-			</div>
-			<div>
-				<button id="addContentOfficeTable">Office Table</button>
-			</div>
-			<div>
-				<button id="addContentOfficeOpenXml">Office Open XML</button>
-			</div>
-		</div>
-	</div>
+ <div id="content-main">
+        <div class="padding">
+            <div>
+                <button id="addContentHellowWorld">Hello World!</button>
+            </div>
+            <div>
+                <button id="addContentStartingSOW">Step 1: Starting SOW</button>
+            </div>
+            <div>
+                <button id="addPicture">Step 2: Fix Picture!</button>
+            </div>
+
+            <div>
+                <button id="addSearchAndTempletize">Step 3: Search and Templetize!</button>
+            </div>
+
+            <div>
+                <button id="addChangeCustomer">Step 4: Replace Customer!</button>
+            </div>
+            <div>
+                <button id="addReuseContent">Step 5: Reuse Content!</button>
+            </div>
+           
+          
+            <div>
+                <button id="addHighlights">Step 6: Highlight Word by Word!</button>
+            </div>
+            <div>
+                <button id="addOpenDoc">Step 7: Create a New Document!</button>
+            </div>
+        </div>
+    </div>
 	````
 
 19. Save and close **Home.html**.
