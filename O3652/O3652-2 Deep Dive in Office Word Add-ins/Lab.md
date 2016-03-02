@@ -1,16 +1,16 @@
 # Deep Dive into Office Word Add-ins
-In this lab you will get hands-on experience developing an Office Word Add-in.
+In this lab you will get hands-on experience developing an Office Word Add-in, using the 1.3 requirement set of the Word JavaScript API.
 
 **Prerequisites:**
 1. You must have Visual Studio 2015 & Update 1 installed.
-1. You must have Office 2016 Preview installed which you can obtain from here: https://products.office.com/en-us/office-2016-preview
-1. This lab requires you to use multiple starter files or an entire starter project from the GitHub location. You can either download the whole repo as a zip or clone the repo https://github.com/OfficeDev/TrainingContent.git for those familiar with git.
+2. You must have Office 2016 Preview installed which you can obtain from here: https://products.office.com/en-us/office-2016-preview. Make sure you are using the January Fork release (6741).
+3. This lab requires you to use multiple starter files or an entire starter project from the GitHub location. You can either download the whole repo as a zip or clone the repo https://github.com/OfficeDev/TrainingContent.git for those familiar with git.
 
-## Exercise 1: Creating the ContentWriter Add-in Office Project
+## Exercise 1: Creating the Statement of Work Wizard Add-in Project 
 *In this exercise you will create a new Office Add-in project in Visual Studio so that you can begin to write, test and debug an Office Word Add-in. The user interface of the Office Add-in you will create in this lab will not be very complicated as it will just contain HTML buttons and JavaScript command handlers.*
 
 1. Launch Visual Studio 2015 as an administrator.
-2. From the **File** menu select the **New Project** command. When the **New Project** dialog appears, select the **Office Add-in** project template from the **Office/SharePoint** template folder as shown below. Name the new project **ContentWriter** and click **OK** to create the new project.
+2. From the **File** menu select the **New Project** command. When the **New Project** dialog appears, select the **Office Add-in** project template from the **Office/SharePoint** template folder as shown below. Name the new project **StatementOfWork** and click **OK** to create the new project.
 
 	![](Images/Fig01.png)
 
@@ -22,15 +22,15 @@ In this lab you will get hands-on experience developing an Office Word Add-in.
 
 	![](Images/Fig03.png)
 
-5. Take a look at the structure of the new Visual Studio solution once it has been created. At a high-level, the new solution has been created using two Visual Studio projects named **ContentWriter** and **ContentWriterWeb**. You should also observe that the top project contains a top-level manifest for the Add-in named **ContentWriterManifest** which contains a single file named **ContentWriter.xml**.
+5. Take a look at the structure of the new Visual Studio solution once it has been created. At a high-level, the new solution has been created using two Visual Studio projects named **StatementOfWork** and **StatementOfWorkWeb**. You should also observe that the top project contains a top-level manifest for the Add-in named **StatementOfWorkManifest** which contains a single file named **StatementOfWork.xml**.
 
 	![](Images/Fig04.png)
 
-6. In the Solution Explorer, double-click on the node named **ContentWriterManifest** to open the Add-in manifest file in the Visual Studio designer. Update the **Display Name** settings in the Add-in manifest from **ContentWriter** to **Content Writer Add-in**.
+6. In the Solution Explorer, double-click on the node named **StatementOfWorkManifest** to open the Add-in manifest file in the Visual Studio designer. Update the **Display Name** settings in the Add-in manifest from **StatementOfWork** to **Statement of Work Add-In**.
 
 	![](Images/Fig05.png)
 
-7. Save and close **ContentWriterManifest**.
+7. Save and close **StatementOfWorkManifest**.
 8. Over the next few steps you will walk through the default Add-in implementation that Visual Studio generated for you when the Add-in project was created. Begin by looking at the structure of the **AddIn** folder which has two important files named **app.css** and **app.js** which contain CSS styles and JavaScript code which is to be used on an app-wide basis.
 
 	![](Images/Fig06.png)
@@ -114,7 +114,6 @@ In this lab you will get hands-on experience developing an Office Word Add-in.
 
 	})(); 
 	````
-
 15. Save your changes to **Home.js**. You will return to this source file after you have added your HTML layout to **Home.html**.
 16. Now it's time to examine the HTML that has been added to the project to create the Add-in's user interface. Double-click **Home.html** to open this file in a Visual Studio editor window. Examine the layout of HTML elements inside the body element. 
 
