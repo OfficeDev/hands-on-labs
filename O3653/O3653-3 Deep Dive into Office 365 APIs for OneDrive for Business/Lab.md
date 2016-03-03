@@ -1,64 +1,30 @@
 # Microsoft Graph for OneDrive for Business
-In this lab, you will use Microsoft Graph to integrate Office 365 OneDrive for Business with an ASP.NET MVC5 application.
+In this lab, you will use Microsoft Graph to integrate OneDrive for Business
+with an ASP.NET MVC5 application.
 
 ## Prerequisites
-1. You must have an Office 365 tenant and Microsoft Azure subscription to complete this lab. If you do not have one, the lab for **O3651-7 Setting up your Developer environment in Office 365** shows you how to obtain a trial.
-1. You must have Visual Studio 2015 with Update 1 installed.
+1. You must have an Office 365 tenant and Microsoft Azure subscription to
+   complete this lab. If you do not have one, the lab for **O3651-7 Setting up
+   your Developer environment in Office 365** shows you how to obtain a trial.
+2. You must have Visual Studio 2015 with Update 1 installed.
 
-## Exercise 1: Create an ASP.NET MVC5 Application
-In this exercise, you will create the ASP.NET MVC5 application and register it with Azure active Directory.
 
-1. Launch **Visual Studio 2015** as an administrator. 
-1. In Visual Studio select **File/New/Project**.
-1. In the **New Project** dialog, select **Templates/Visual C#/Web** and click **ASP.NET Web Application**. Name the new project **OneDriveWeb** and then click **OK**.  
-    
-    ![](Images/01.png)
-    > **Note:** Make sure you enter the exact same name for the Visual Studio Project that is specified in these lab instructions.  The Visual Studio Project name becomes part of the namespace in the code.  The code inside these instructions depends on the namespace matching the Visual Studio Project name specified in these instructions.  If you use a different project name the code will not compile unless you adjust all the namespaces to match the Visual Studio Project name you enter when you create the project.
-    
-1. In the **New ASP.NET Project** dialog, click **MVC** and then click **Change Authentication**.
-1. Select **Work And School Accounts**, check **Read directory data** and click **OK**.
+## Step 1: Use Azure Active Directory v2 end point to create an access token
 
-	![](Images/02.png)
+* For apps targeting Microsoft accounts and work or school accounts, follow
+  quick start **O3653-XXX Using Azure Active Directory v2 end point with ASP.NET MVC5**
+* For apps targeting work or school accounts only, follow quick start
+  **O3653-YYY Using Azure Active Directory Authentication Library with ASP.NET MVC5**
 
-1. Uncheck **Host in the cloud**, once the **New ASP.NET Project** dialog appears like the following screenshot, click **OK**. 
+The remainder of this quick start challenge assumes that you have followed one
+of these quick starts and can generate an OAuth **access_token** to make calls
+to the Microsoft Graph API.
 
-	![](Images/03.png)
-    
-1. At this point you can test the authentication flow for your application.
-  1. In Visual Studio, press **F5**. The browser will automatically launch taking you to the HTTPS start page for the web application.
+## Step 2: Access OneDrive for Business content from an ASP.NET MVC5 application
 
-   > **Note:** If you receive an error that indicates ASP.NET could not connect to the SQL database, please see the [SQL Server Database Connection Error Resolution document](../../SQL-DB-Connection-Error-Resolution.md) to quickly resolve the issue. 
+In this exercise, you will use the Microsoft Graph SDK to perform CRUD operations
+associated with files in OneDrive for Business.
 
-  1. To sign in, click the **Sign In** link in the upper-right corner.
-  1. Login using your **Organizational Account**.
-  1. Upon a successful login, since this will be the first time you have logged into this app, Azure AD will present you with the common consent dialog that looks similar to the following image:
-
-    ![](Images/ConsentDialog.png)
-  1. Click **Accept** to approve the app's permission request on your data in Office 365.
-  1. You will then be redirected back to your web application. However notice in the upper right corner, it now shows your email address and the **Sign Out** link.
-  1. In Visual Studio, press **Shift+F5** to stop debugging.
-
-Congratulations... at this point your app is configured with Azure AD and leverages OpenID Connect and OWIN to facilitate the authentication process!
-
-## Grant App Necessary Permissions
-1. Browse to the [Azure Management Portal](https://manage.windowsazure.com) and sign in with your **Organizational Account**.
-2. In the left-hand navigation, click **Active Directory**.
-3. Select the directory you share with your Office 365 subscription.
-4. Search for the app with the **ida:ClientId** value that was created in the web.config file in exercise 1.
-
-    ![](Images/04.png)
-5. Select the application. 
-6. Open the **Configure** tab.
-7. Scroll down to the **permissions to other applications** section. 
-8. Click the **Add Application** button.
-9. In the **Permissions to other applications** dialog, click the **PLUS** icon next to the **Microsoft Graph** option.
-10. Click the **Check mark** icon in the lower right corner.
-11. For the new **Microsoft Graph** application permission entry, select the **Delegated Permissions** dropdown on the same line and then select the following permissions:
-    * **Have full access to user files and files shared with**
-12. Click the **Save** button at the bottom of the page.
-
-## Exercise 2: Use Microsoft Graph for OneDrive for Business
-In this exercise, you will create a repository object for wrapping CRUD operations associated with files in OneDrive for Business.
 
 1. In the **Solution Explorer**, locate the **Models** folder in the **OneDriveWeb** project.
 1. First, you will use JSON serialization to simply the processing of the response coming from the Microsoft Graph.
@@ -86,11 +52,11 @@ In this exercise, you will create a repository object for wrapping CRUD operatio
   ````
 
 1. Add the following code to the `FileRepository` class, creating a private field `GraphResourceUrl`
-  
+
   ````c#
     private string GraphResourceUrl = "https://graph.microsoft.com/V1.0/";
   ````
-  
+
 1. Add a function named `GetGraphAccessTokenAsync` to the `FileRepository` class to retrieve an Access Token.
 
   ````c#
@@ -126,7 +92,7 @@ In this exercise, you will create a repository object for wrapping CRUD operatio
 
         return folderContents.FolderItems.OrderBy(item => item.Name).Skip(pageIndex * pageSize).Take(pageSize);
     }
-    
+
     public static async Task<string> GetJsonAsync(string url)
     {
         string accessToken = await GetGraphAccessTokenAsync();
@@ -144,7 +110,7 @@ In this exercise, you will create a repository object for wrapping CRUD operatio
         }
     }  
   ````
-  
+
 1. Add the following method to the `FileRepository` class to delete a single file from the user's OneDrive for Business drive:
 
   ````c#
@@ -204,7 +170,7 @@ In this exercise, you will create a repository object for wrapping CRUD operatio
                 }
             }
         }
-    } 
+    }
   ````
 
 ### Code the MVC Application
@@ -213,7 +179,7 @@ Now you will code the MVC application to allow navigating the OneDrive for Busin
 1. Locate the **Views/Shared** folder in the project.
 1. Open the **_Layout.cshtml** file found in the **Views/Shared** folder.
     1. Locate the part of the file that includes a few links at the top of the page... it should look similar to the following code:
-    
+
     ````asp
     <div class="navbar-collapse collapse">
         <ul class="nav navbar-nav">
@@ -277,9 +243,9 @@ Now you will code the MVC application to allow navigating the OneDrive for Busin
 1. Within the **Add View** dialog, set the following values:
   1. View Name: **Index**.
   1. Template: **Empty (without model)**.
-    
+
     > Leave all other fields blank & unchecked.
-  
+
   1. Click **Add**.
 1. **Replace** all of the code in the file with the following:
 
@@ -341,7 +307,7 @@ Now you will code the MVC application to allow navigating the OneDrive for Busin
 
 1. In **Visual Studio**, hit **F5** to begin debugging.
 
- > **Note:** If you receive an error that indicates ASP.NET could not connect to the SQL database, please see the [SQL Server Database Connection Error Resolution document](../../SQL-DB-Connection-Error-Resolution.md) to quickly resolve the issue. 
+ > **Note:** If you receive an error that indicates ASP.NET could not connect to the SQL database, please see the [SQL Server Database Connection Error Resolution document](../../SQL-DB-Connection-Error-Resolution.md) to quickly resolve the issue.
 
 1. When prompted, log in with your **Organizational Account**.
 1. Click the link **Files (Graph)** on the top of the home page.
@@ -432,7 +398,7 @@ Now you will code the MVC application to allow navigating the OneDrive for Busin
 
 1. Press **F5** to begin debugging.
 
- > **Note:** If you receive an error that indicates ASP.NET could not connect to the SQL database, please see the [SQL Server Database Connection Error Resolution document](../../SQL-DB-Connection-Error-Resolution.md) to quickly resolve the issue. 
+ > **Note:** If you receive an error that indicates ASP.NET could not connect to the SQL database, please see the [SQL Server Database Connection Error Resolution document](../../SQL-DB-Connection-Error-Resolution.md) to quickly resolve the issue.
 
 1. Test the paging, upload, and delete functionality in the application.
 
