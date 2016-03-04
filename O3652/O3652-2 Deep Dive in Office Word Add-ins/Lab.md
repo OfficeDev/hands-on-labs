@@ -391,52 +391,14 @@ function onaddContentStartingSOW() {
    
 	````
 
-6. Test your work by pressing F5 to start a debug session and then click the **HTML** button. When you click the button, you should see that the HTML content has been added to the Word document.
+6. Test your work by pressing F5 to start a debug session and then click the **Step 1: Starting SOW** button. When you click the button, you should see that the starting Statement of Work  has been added to the Word document.
 
 	![](Images/Fig09.png)
 
-7. Implement **onAddContentMatrix** by creating an array of arrays and then by writing the matrix to the Word document using the matrix coercion type as shown in the following code listing.
+7. You have now finished exercise 2 and it is time to move on to exercise 3.
 
-	````javascript
-	function onAddContentMatrix() {
-		// create matrix as an array of arrays
-		var matrix = [["First Name", "Last Name"],
-	                  ["Bob", "White"],
-	                  ["Anna", "Conda"],
-	                  ["Max", "Headroom"]];
-
-		// insert matrix into Word document
-		Office.context.document.setSelectedDataAsync(matrix, { coercionType: "matrix" }, testForSuccess);
-	}
-	````
-
-8. Test your work by pressing F5 to start a debug session and then click the **Matrix** button. When you click the button, you should see that the content from the matrix has been added to the Word document as a table.
-
-	![](Images/Fig10.png)
-
-9. Implement **onAddContentOfficeTable** by creating a new Office.TableData object and then by writing it to the Word document using the table coercion type as shown in the following code listing.
-
-	````javascript
-	function onAddContentOfficeTable() {
-
-		// create and populate an Office table
-		var myTable = new Office.TableData();
-		myTable.headers = [['First Name', 'Last Name']];
-		myTable.rows = [['Bob', 'White'], ['Anna', 'Conda'], ['Max', 'Headroom']];
-
-		// add table to Word document
-		Office.context.document.setSelectedDataAsync(myTable, { coercionType: "table" }, testForSuccess)
-	}
-	````
-
-10. Test your work by pressing F5 to start a debug session and then click the **Office Table** button. When you click the button, you should see that the content from the Office Table object has been added to the Word document as a table.
-
-	![](Images/Fig10.png)
-
-11. You have now finished exercise 2 and it is time to move on to exercise 3.
-
-## Exercise 3: Writing Content to a Word Document using Office Open XML
-*In this exercise you will continue working on the Visual Studio solution for the ContentWriter Add-in you worked on in the previous exercise. You will extend the Add-in's capabilities by adding JavaScript code to insert content into the active Word document using Open Office XML.*
+## Exercise 3: Learning how to handle inline Pictures in Word by replacing an existing image in the document.
+*In this exercise you will continue working on the Visual Studio solution for the StatementOfWork Add-in you created on in the previous exercise. You will extend the Add-in's capabilities by adding JavaScript code to replace an image in the  active Word document the inlinePicture object members.*
 
 1. Look inside the folder for this lab and locate **Starter Files** folder within this lab located at [\\\O3652\O3652-2 Deep Dive in Office Word Add-ins](.). You should see that this folder contains four XML files as shown in the following screenshot.
 
