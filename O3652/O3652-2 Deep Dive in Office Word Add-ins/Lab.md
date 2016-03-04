@@ -395,20 +395,58 @@ function onaddContentStartingSOW() {
 
 	![](Images/Fig09.png)
 
-7. You have now finished exercise 2 and it is time to move on to exercise 3.
+7. You have now finished exercise 2 and it is time to move on to exercise 3. Don't feel overhelmed with the OOXML file you inserted, if you want to master how to handle OOXML we recommend you to read [this](https://msdn.microsoft.com/en-us/library/office/dn423225.aspx) article.
 
 ## Exercise 3: Learning how to handle inline Pictures in Word by replacing an existing image in the document.
-*In this exercise you will continue working on the Visual Studio solution for the StatementOfWork Add-in you created on in the previous exercise. You will extend the Add-in's capabilities by adding JavaScript code to replace an image in the  active Word document the inlinePicture object members.*
+*In this exercise you will continue working on the Visual Studio solution for the StatementOfWork Add-in you created on in the previous exercise. You will extend the Add-in's capabilities by adding JavaScript code to replace an image in the  active Word document the inlinePicture object members. This excercise is cummulative and assumes you completed  Excercise 2.*
 
-1. Look inside the folder for this lab and locate **Starter Files** folder within this lab located at [\\\O3652\O3652-2 Deep Dive in Office Word Add-ins](.). You should see that this folder contains four XML files as shown in the following screenshot.
+1. Notices how the inserted SOW has a badly formatted picture. This is intentional and you will fix this image on this excercise.
 
 	![](Images/Fig11.png)
 
-2. Add the four XML files into the Visual Studio project into the same folder as the HTML start page named **Home.html**.
+2. Go back to Visual Studio, make sure you are using the StatementOfWord project 
 
 	![](Images/Fig12.png)
 
-3. Quickly open and review the XML content inside each of these four XML files. This will give you better idea of what Open Office XML looks like when targeting Microsoft Word. 
+3. In the solution Explorer, double click on **Home.js** to open this JavaScript file.
+4. Add the following code to the **onFixPicture** function
+
+		````javascript
+		
+ function onFixPicture() {
+        // my strategy to change the pic here is the following
+        //a. will get the collection of images within the body.
+        //b. will grab the first image within the collection and replace it with a new image.
+
+        //this example is using methods shipped on the 1.2 requirement set. specificlaly the insertInlinePicture method supported on the inlinePicture object to replace the image.....
+        if (Office.context.requirements.isSetSupported("WordApi", "1.2")) {
+            Word.run(function (context) {
+                // gets the inlinePictures collection for the document.
+                var pics = context.document.body.inlinePictures;
+                context.load(pics);
+                return context.sync()
+                    .then(function () {
+                        var mybase64 = getImageAsBase64();
+                        pics.items[0].insertInlinePictureFromBase64(mybase64, "replace");
+                        return context.sync()
+                            .then(function () {
+                                app.showNotification("Task Complete!");
+                            })
+                    })
+            })
+            .catch(function (myError) {
+                //otherwise we handle the exception here!
+                app.showNotification("Error", myError.message);
+            })
+        }
+        else {
+            app.showNotification("Error. This functionality requires Word with at least January update!! (check  builds 6741+)");
+        }
+    }
+    
+	````
+
+
 4. Open **Home.html** and locate the button element with the id of **addContentOfficeOpenXml**. Directly under this button, add a new HTML **select** element as shown in the following code listing.
 
 	````html
