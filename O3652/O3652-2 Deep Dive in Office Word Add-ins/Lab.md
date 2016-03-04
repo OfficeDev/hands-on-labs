@@ -407,8 +407,8 @@ function onaddContentStartingSOW() {
 3. In the solution Explorer, double click on **Home.js** to open this JavaScript file.
 4. Add the following code to the **onFixPicture** function:
 
-		````javascript
- function onFixPicture() {
+	````javascript
+	 function onFixPicture() {
         // my strategy to change the pic here is the following
         //a. will get the collection of images within the body.
         //b. will grab the first image within the collection and replace it with a new image.
@@ -438,9 +438,8 @@ function onaddContentStartingSOW() {
             app.showNotification("Error. This functionality requires Word with at least January update!! (check  builds 6741+)");
         }
     }
-    
 	````
-
+	
 
 4. Open **Home.html** and locate the button element with the id of **addContentOfficeOpenXml**. Directly under this button, add a new HTML **select** element as shown in the following code listing.
 
