@@ -403,6 +403,10 @@ function onaddContentStartingSOW() {
 
 1. Please note how the inserted SOW has a badly formatted picture **highlighted in red below**. This is intentional and you will fix this image on this excercise.
 
+	![](Images/Fig12.png)
+
+
+
 2. Go back to Visual Studio, make sure you are using the StatementOfWord project.
 
 3. In the solution Explorer, double click on **Home.js** to open this JavaScript file.
