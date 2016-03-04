@@ -441,56 +441,13 @@ function onaddContentStartingSOW() {
 	````
 	
 
-4. Open **Home.html** and locate the button element with the id of **addContentOfficeOpenXml**. Directly under this button, add a new HTML **select** element as shown in the following code listing.
+4. Note that the code is checking the client actually supports the 1.2 requirements set, this is important to do as an image needs to be replaces and the **inlinePicture.insertInlinePictureFromBase64** method was shipped on that requirement set. Then the code is traversing the **inlinePictures collection**, and we are replacing the first image in that collection.
+5. Test your work by pressing F5 to start a debug session and then click the **Step 1: Starting SOW** button. After the document gets inserted click on the  **Step 2: Fix Picture!** button to try your code. The image should be replaced and the document should look like this:
 
-	````html
-	<div>
-	  <button id="addContentOfficeOpenXml">Office Open XML</button>
-	  <select id="listOpenXmlContent">
-	    <option value="OpenXmlParagraph.xml">Paragraph</option>
-	    <option value="OpenXmlPicture.xml">Picture</option>
-	    <option value="OpenXmlChart.xml">Chart</option>
-	    <option value="OpenXmlTable.xml">Table</option>
-	  </select>
-	</div>
-	````
+	![](Images/Fig10.png) 
 
-5. Save and close **Home.html**.
-6. Return to the code editor window with **Home.js**. 
-7. Implement the **onAddContentOfficeOpenXml** function to obtain the currently selected file name from the select element and then to execute an HTTP GET request using the jQuery **$.ajax** function to retrieve the associated XML file. In the success callback function, call **setSelectedDataAsync** to write the XML content to the current Word document using the **ooxml** coercion type as shown in the following code listing.
 
-	````javascript
-	function onAddContentOfficeOpenXml() {
-		var fileName = $("#listOpenXmlContent").val();
-
-		$.ajax({
-			url: fileName,
-			type: "GET",
-			dataType: "text",
-			success: function (xml) {
-				Office.context.document.setSelectedDataAsync(xml, { coercionType: "ooxml" }, testForSuccess)
-			}
-		});
-	}
-	````
-
-8. Test your work by starting a debug session and clicking the **Office Open XML** button when the select element has the default selected value of **Paragraph**. You should see that the Open Office XML content has been used to created a formatted paragraph.
-
-	![](Images/Fig13.png)
-
-9. Change the value of the select element to **Picture** and click the **Office Open XML** button. You should see that the Open Office XML content has been used to insert a image into the document.
-
-	![](Images/Fig14.png)
-
-10. Change the value of the select element to **Chart** and click the **Office Open XML** button. You should see that the Open Office XML content has been used to created a simple bar chart.
-	
-	![](Images/Fig15.png)
-
-11. Change the value of the select element to **Table** and click the **Office Open XML** button. You should see that the Open Office XML content has been used to created a formatted table.
-
-	![](Images/Fig16.png)
-
-Congratulations! In this exercise you extended the Add-in's capabilities by adding JavaScript code to insert content into the active Word document using Open Office XML.
+5. Congratulations! In this exercise you learned how to navigate through the inline pictures on a document and learned how to replace images!, lets continue with Excercise 4!
 
 ## Exercise 4: Leverage the Word v2 JavaScript API in Word 2016
 In this exercise you will create a Word Add-in that uses the v2 JavaScript API included in Word 2016. 
