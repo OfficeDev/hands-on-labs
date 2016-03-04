@@ -398,21 +398,16 @@ function onaddContentStartingSOW() {
 7. You have now finished exercise 2 and it is time to move on to exercise 3. Don't feel overhelmed with the OOXML file you inserted, if you want to master how to handle OOXML we recommend you to read [this](https://msdn.microsoft.com/en-us/library/office/dn423225.aspx) article.
 
 ## Exercise 3: Learning how to handle inline Pictures in Word by replacing an existing image in the document.
-*In this exercise you will continue working on the Visual Studio solution for the StatementOfWork Add-in you created on in the previous exercise. You will extend the Add-in's capabilities by adding JavaScript code to replace an image in the  active Word document the inlinePicture object members. This excercise is cummulative and assumes you completed  Excercise 2.*
+*In this exercise you will continue working on the Visual Studio solution for the StatementOfWork Add-in you created on in the previous exercise. You will extend the Add-in's capabilities by adding JavaScript code to replace an image in the  active Word document by using the inlinePicture object members. This excercise is cummulative and assumes you completed  Excercise 2.*
 
-1. Notices how the inserted SOW has a badly formatted picture. This is intentional and you will fix this image on this excercise.
+1. Please note how the inserted SOW has a badly formatted picture **highlighted in red below**. This is intentional and you will fix this image on this excercise.
 
-	![](Images/Fig11.png)
-
-2. Go back to Visual Studio, make sure you are using the StatementOfWord project 
-
-	![](Images/Fig12.png)
+2. Go back to Visual Studio, make sure you are using the StatementOfWord project.
 
 3. In the solution Explorer, double click on **Home.js** to open this JavaScript file.
-4. Add the following code to the **onFixPicture** function
+4. Add the following code to the **onFixPicture** function:
 
 		````javascript
-		
  function onFixPicture() {
         // my strategy to change the pic here is the following
         //a. will get the collection of images within the body.
