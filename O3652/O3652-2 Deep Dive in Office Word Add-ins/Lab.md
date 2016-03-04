@@ -446,7 +446,7 @@ function onaddContentStartingSOW() {
 	````
 	
 
-4. Note that the code is checking the client actually supports the 1.2 requirements set, this is important to do as an image needs to be replaces and the **inlinePicture.insertInlinePictureFromBase64** method was shipped on that requirement set. Then the code is traversing the **inlinePictures collection**, and we are replacing the first image in that collection.
+4. Note that the code is checking the if the host (Word) actually supports the 1.2 requirements set, this is important to check because in order to replave an image the  **inlinePicture.insertInlinePictureFromBase64** method is needed and this was shipped as part of the 1.2 requirement set. Note that by traversing the **inlinePictures collection**, we get the first image and then we are replacing it with the correct one.
 5. Test your work by pressing F5 to start a debug session and then click the **Step 1: Starting SOW** button. After the document gets inserted click on the  **Step 2: Fix Picture!** button to try your code. The image should be replaced and the document should look like this:
 
 	![](Images/Fig10.png) 
@@ -454,187 +454,60 @@ function onaddContentStartingSOW() {
 
 5. Congratulations! In this exercise you learned how to navigate through the inline pictures on a document and learned how to replace images!, lets continue with Excercise 4!
 
-## Exercise 4: Leverage the Word v2 JavaScript API in Word 2016
-In this exercise you will create a Word Add-in that uses the v2 JavaScript API included in Word 2016. 
+## Exercise 4: Using Search and inserting Content Controls
+*In this exercise you will continue working on the Visual Studio solution for the StatementOfWork Add-in you created on in the previous steps. You will extend the Add-in's capabilities by adding JavaScript code to search for content in the document and add content controls. Content controls are a key building block in Word development and enables developers to insert 'placeholders' in the document that can be later identified and replaced with different content. This excercise is cummulative and assumes you completed  Excercise 2.*
 
-> **Note**: For this exercise you must have Word 2016 Preview, or a later version, installed. Refer to the prerequisites at the beginning of this lab for links on where to obtain Office 2016 Preview.
+1. A common scenario in Word development is reusing documents to create new ones. A "Statement of Work" (SOW) is a very common example of this, by replacing a few fields an existing SOW may be completly reusable. To illustrate that point, we will implement a simple example on how a template can be created. 
 
-1. Launch Visual Studio 2015 as administrator.
-2. From the **File** menu select the **New Project** command. When the **New Project** dialog appears, select the **Office Add-ins** project template from the **Office/SharePoint** template folder as shown below. Name the new project **Word16Api** and click **OK** to create the new project.
+2. Go back to Visual Studio, make sure you are using the StatementOfWord project.
 
-3. When you create a new Office Add-in project, Visual Studio prompts you with the **Choose the Add-in type** page of the **Create Office Add-in** dialog. This is the point where you select the type of Office Add-in you want to create. Leave the default setting with the radio button titled **Task pane** and select **Next** to continue.
+3. In the solution Explorer, double click on **Home.js** to open this JavaScript file.
+4. Add the following code to the **onSearchAndTempletize** function:
 
-	![](Images/Fig02.png)
+	````javascript
+function onSearchAndTempletize() {
+        // on this method i actually want to create kind of a template. will start by searching "Contoso". then i will wrap each instance with a content control
+        // i will also change the format of each search instance...
 
-4. On the **Choose the host applications** page of the **Create Office Add-in** dialog, uncheck all the Office application except for **Word** and then click **Finish** to create the new Visual Studio solution. 
+        Word.run(function (ctx) {
+            var results = ctx.document.body.search("Contoso");
+            ctx.load(results);
+            // we need to sync to get the search results/
+            return ctx.sync()
+            .then(function () {
+                //once we have the results we navigate thorugh each occurence an change a few thinks, as well as wrapping with a content control.
+                for (var i = 0; i < results.items.length; i++) {
+                    results.items[i].font.color = "#FF0000"    // Change color to Red
+                    results.items[i].font.highlightColor = "#FFFF00";
+                    results.items[i].font.bold = true;
+                    var cc = results.items[i].insertContentControl();
+                    cc.tag = "customer";  // this is an important piece of code, later on the excercise i will retrieve all the content controls with this tag and replace the content.
+                    cc.title = "Customer Name";
+                }
+                return ctx.sync()  // OK ready! lets send it to the host for processing :)
+            })
+            .then(function () {
+                app.showNotification("Task Complete!");
+            })
+            .catch(function (myError) {
+                app.showNotification("Error", myError.message);
+            })
+        });
 
-	![](Images/Fig03.png)
 
-5. Now update the user interface for the Add-in:
-	1. Locate the `<body>` section of the page within the `home.html` file.
-	1. Replace the entire contents of the `<body>` with the following markup:
-
-		````html
-		<body>
-		  <div id="content-header">
-		    <div class="padding">
-		      <h1>Welcome</h1>
-		    </div>
-		  </div>
-		  <div id="content-main">
-		    <div class="padding">
-		      <button id="addBibliography">Add Bibliography</button>
-		      <button id="highlightInstances">Highlight Instances of "Word"</button>
-		    </div>
-		  </div>
-		</body>
-		````
-
-6. The next step is to code the business logic for the Add-in.
-	1. Locate the **AddIn \ Home \ Home.js** file.
-	2. Remove all the sample code except the Add-in initialization code so all that is left is the following:
-
-		````javascript
-		(function () {
-		  "use strict";
-
-		  // The initialize function must be run each time a new page is loaded
-		  Office.initialize = function (reason) {
-		    $(document).ready(function () {
-		        app.initialize();
-	            // Use this to check whether the API is supported in the Word client.
-	            if (Office.context.requirements.isSetSupported('WordApi', 1.1)) {
-			      // attach click handlers to the word document
-			      // TODO-1
-			      // TODO-2
-	            }
-	            else {
-	                // Just letting you know that this code will not work with your version of Word.
-	                console.log('This code requires Word 2016 or greater.');
-	            }
-		    });
-		  };
-
-		  // TODO-error
-		})();
-		````
-
-	3. Add a universal error handler function that will be used when there are errors. This should replace the comment `// TODO-error`:
-
-		````javascript
-	  function errorHandler (error) {
-	    console.log("Failed: ErrorCode=" + error.errorCode + ", ErrorMessage=" + error.errorMessage);
-	    console.log(error.traceMessages);
-	  }
-		````
-
-	4. Now add a function that will add a bibliography to the end of the current Word document:
-		1. Replace the comment `// TODO-1` with the following jQuery code that creates a click event handler on one of the buttons in the `home.html` page you added previously:
-
-			````javascript
-			$('#addBibliography').click(addBibliography);
-			````
-
-		2. Next, add the following function before the error handler function you added previously.
-
-			Notice how the code in this function is very different from the code in the previous exercises. The Word v2 JavaScript API uses a context (`Word.RequestContext()`) to allow you to batch multiple operations (such as `context.document.body.insertParagraph()`) that will be sent to the hosting Word client application for processing at one time using the `context.sync()` method:
-
-			````javascript
-			function addBibliography() {
-		        // get reference to hosting Word application
-		        var context = new Word.RequestContext();
-		        // Run a batch operation against the Word object model.
-		        Word.run(function (context) {
-		                // insert a H1 for the new paragraph to the end of the document
-		                var bibliographyParagraph = context.document.body.insertParagraph("Bibliography", "end");
-		                bibliographyParagraph.style = "Heading 1";
-		
-		                // create one book entry
-		                var bookOneTitle = context.document.body.insertParagraph("Design Patters, Elements of Reusable Object-Oriented Software", "end");
-		                bookOneTitle.style = "Book Title";
-		                var bookOneAuthors = context.document.body.insertParagraph("by Erich Gamma, Richard Helm, Ralph Johnson and John Vlissides", "end");
-		                bookOneAuthors.style = "Subtle Emphasis";
-		
-		                // create another book entry
-		                var bookTwoTitle = context.document.body.insertParagraph("Refactoring: Improving the Design of Existing Code", "end");
-		                bookTwoTitle.style = "Book Title";
-		                var bookTwoAuthors = context.document.body.insertParagraph("by Martin Fowler", "end");
-		                bookTwoAuthors.style = "Subtle Emphasis";
-		
-		                // Synchronize the document state by executing the queued commands, 
-		                // and return a promise to indicate task completion.
-		                return context.sync().then(function () { }, errorHandler);
-		        }).catch(function (error) {
-		            console.log('Error: ' + JSON.stringify(error));
-		            if (error instanceof OfficeExtension.Error) {
-		                console.log('Debug info: ' + JSON.stringify(error.debugInfo));
-		            }
-		        });
-	    	};
-			````
-
-	5. Finally, add another function that will search and highlight a string within the current Word document. In this case we will search for the text **Word**.
-		1. Replace the comment `// TODO-2` with the following jQuery code that creates a click event handler on one of the buttons in the `home.html` page you added previously:
-
-			````javascript
-			$('#highlightInstances').click(highlightInstances);
-			````
-
-		2. Next, add the following function before the error handler you added previously.
-
-			Notice how this code gets a Word context, creates a search options object and executes a search query against Word.
-
-			````javascript
-		    function highlightInstances() {
-		        // get reference to hosting Word application
-		        var context = new Word.RequestContext();
-		        // Run a batch operation against the Word object model.
-		        Word.run(function (context) {
-		            // create search options
-		            var options = Word.SearchOptions.newObject(context);
-		            options.matchWildCards = true;
-		
-		            // get all instances of the word 'Word' in the document
-		            var searchResults = context.document.body.search("Word", options);
-		            context.load(searchResults, 'font');
-		
-		            // Synchronize the document state by executing the queued commands, 
-		            // and return a promise to indicate task completion.
-		            return context.sync().then(function () {
-		                console.log('Found count: ' + searchResults.items.length);
-		
-		                // Queue a set of commands to change the font for each found item.
-		                for (var i = 0; i < searchResults.items.length; i++) {
-		                    searchResults.items[i].font.color = 'purple';
-		                    searchResults.items[i].font.highlightColor = 'pink';
-		                    searchResults.items[i].font.bold = true;
-		                }
-		                // Synchronize the document state by executing the queued commands, 
-		                // and return a promise to indicate task completion.
-		                return context.sync();
-		            }, errorHandler);
-		        }).catch(function (error) {
-		            console.log('Error: ' + JSON.stringify(error));
-		            if (error instanceof OfficeExtension.Error) {
-		                console.log('Debug info: ' + JSON.stringify(error.debugInfo));
-		            }
-		        });
-		    };
-			````
-
-###Test the Add-in
-1. Now deploy the Word Add-in to the local Word client:
-  1. Select the **Word16Api** project within the **Solution Explorer** tool window.
-  2. Within the **Properties** window set the **Start Action** selector to **Office Desktop Client** and press **F5** to start the project.
-  3. Visual Studio will launch the Word desktop client & create a new Word document.
-2. Type the following into the Word document and press **ENTER** to add some random text:
-
+    } 
 	````
-	=rand()
-	````
+	
 
-3. First test the insertion of content by pressing the button **Add Bibliography**. You should see a heading followed by two classic programming books added to the document.
-4. Now test the search & highlight function you wrote by pressing the button **Highlight Instances of "Word"**. You should see all instances of the whole word **Word** get highlighted in purple.
+4. Note that the code is searching for "Contoso", the search method returns a collection of ranges matching the search criteria, the code iterates through that collection and wraps each instance with a content control. Note that each added content control its tagged with a "Customer Name" title, this is important as we will use this information in the next excercise to replace the content of all the content controls with this tag with a new customer. For visibility purposes we are also adding a red font color and yellow highlight to each search result instance. The image should be replaced and the document should look like this:
+
+5. Test your work by pressing F5 to start a debug session and then click the **Step 1: Starting SOW** button. After the document gets inserted click on the  **Step 3: Search and Templetize!** button to try your code. Each "Contoso" instance should be wrapped with a content control and with a different format like the following image:
+
+	![](Images/Fig13.png) 
+	
+
+5. Congratulations! In this exercise you learned how to navigate through the inline pictures on a document and learned how to replace images!, lets continue with Excercise 4!
+
 
 Congratulations! You've now written a Word Add-in that uses the new Word v2 JavaScript API.
 
