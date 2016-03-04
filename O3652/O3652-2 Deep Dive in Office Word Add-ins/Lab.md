@@ -393,7 +393,7 @@ function onaddContentStartingSOW() {
 
 6. Test your work by pressing F5 to start a debug session and then click the **Step 1: Starting SOW** button. When you click the button, you should see that the starting Statement of Work  has been added to the Word document.
 
-	![](Images/Fig11.png)
+	![](Images/Fig12.png)
 	
 
 7. You have now finished exercise 2 and it is time to move on to exercise 3. Don't feel overhelmed with the OOXML file you inserted, if you want to master how to handle OOXML we recommend you to read [this](https://msdn.microsoft.com/en-us/library/office/dn423225.aspx) article.
@@ -403,7 +403,7 @@ function onaddContentStartingSOW() {
 
 1. Please note how the inserted SOW has a badly formatted picture **highlighted in red below**. This is intentional and you will fix this image on this excercise.
 
-	![](Images/Fig12.png)
+	![](Images/Fig11.png)
 
 
 
