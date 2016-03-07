@@ -1,24 +1,24 @@
-# Deep Dive into Apps for Office with PowerPoint
+# Deep Dive into PowerPoint Add-ins
 
-In this lab you will get hands-on experience developing an App for Office which targets Microsoft PowerPoint.
+In this lab you will get hands-on experience developing an Office Add-in which targets Microsoft PowerPoint.
 
 **Prerequisites:** 
-1. Before you can start this lab, you must have installed Office 2013 with Service Pack 1 and Visual Studio 2013 with Update 4 on your development workstation.
-1. You must have the Office 365 API Tools version 1.4.50428.2 installed in Visual Studio 2013 & Update 4 installed.
+1. Before you can start, you must have installed Office 2016 and Visual Studio 2015.
+1. You must have the Office Developer Tools installed in Visual Studio 2015.
 
-## Exercise 1: Creating the PowerPointTV App for Office Project
-*In this exercise you will create a new App for Office project in Visual Studio so that you can begin to write, test and debug an App for Office which targets Microsoft PowerPoint.*
+## Exercise 1: Creating the PowerPointTV Office Add-in Project
+*In this exercise you will create a new Office Add-in project in Visual Studio so that you can begin to write, test and debug an Office Add-in which targets Microsoft PowerPoint.*
 
-1. Launch Visual Studio 2013 as administrator.
-1. From the **File** menu select the **New Project** command. When the **New Project** dialog appears, select the **App for Office** project template from the **Office/SharePoint** template folder as shown below. Name the new project **PowerPointTV** and click **OK** to create the new project.  
+1. Launch Visual Studio 2015 as administrator.
+1. From the **File** menu select the **New Project** command. When the **New Project** dialog appears, select the **Office Add-in** project template from the **Office/SharePoint** template folder as shown below. Name the new project **PowerPointTV** and click **OK** to create the new project.  
 
 	![](Images/Fig01.png)
 
-1. When you create a new App for Office project, Visual Studio prompts you with the **Choose the app type** page of the **Create app for Office** dialog. This is the point where you select the type of App for Office you want to create. Select the setting with the radio button titled **Content** and select **Next** to continue.  
+1. When you create a new Office Add-in project, Visual Studio prompts you with the **Choose the app type** page of the **Create Office Add-in** dialog. This is the point where you select the type of Office Add-in you want to create. Select the setting with the radio button titled **Content** and select **Next** to continue.  
 	
 	![](Images/Fig02.png)
 
-1. On the **Choose the host applications** page of the **Create app for Office** dialog, uncheck all the Office application except for **PowerPoint** and then click **Finish** to create the new Visual Studio solution.  
+1. On the **Choose the host applications** page of the **Create Office Add-in** dialog, uncheck all the Office application except for **PowerPoint** and then click **Finish** to create the new Visual Studio solution.  
 
 	![](Images/Fig03.png)
 
