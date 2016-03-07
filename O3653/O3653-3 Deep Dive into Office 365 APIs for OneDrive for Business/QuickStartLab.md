@@ -1,38 +1,78 @@
 # Microsoft Graph for OneDrive for Business
 In this lab, you will use Microsoft Graph to integrate OneDrive for Business
-with an ASP.NET MVC5 application.
+with an ASP.NET MVC application.
 
 ## Prerequisites
 1. You must have an Office 365 tenant and Microsoft Azure subscription to
    complete this lab. If you do not have one, the lab for **O3651-7 Setting up
    your Developer environment in Office 365** shows you how to obtain a trial.
 2. You must have Visual Studio 2015 with Update 1 installed.
+3. You must have ASP.NET MVC4 installed.
+4. You must have the Graph AAD Auth v2 Started Project template installed.
+
+## Exercise 1: Create a new project using Azure Active Directory v2 authentication
+
+In this first step, you will create a new ASP.NET MVC project using the
+**Graph AAD Auth v2 Start Project** template, register a new application
+in the developer portal, and log in to your app and generate access tokens
+for calling the Graph API.
+
+1. Launch Visual Studio 2015 and select **New**, **Project**.
+   1. Search the installed templates for **Graph** and select the
+      **Graph AAD Auth v2 Starter Project** template.
+   2. Name the new project **GraphFilesWeb** and click **OK**.
+   3. Open the **Web.config** file and find the **appSettings** element. This is where you will need to add your appId and app secret you will generate in the next step.
+2. Launch the [Application Registration Portal](https://apps.dev.microsoft.com)
+   to register a new application.
+      1. Sign into the portal using your Office 365 username and password.
+      2. Click **Add an App** and type **Graph Files Quick Start** for the application name.
+      3. Copy the **Application Id** and paste it into the value for **ida:AppId** in your project's **web.config** file.
+      3. Under **Application Secrets** click **Generate New Password** to create a new client secret for your app.
+      4. Copy the displayed app password and paste it into the value for **ida:AppSecret** in your project's **web.config** file.
+      5. Modify the **ida:AppScopes** value to include the required **https://graph.microsoft.com/files.readwrite** scope.
+
+```xml
+<configuration>
+  <appSettings>
+    <!-- ... -->
+    <add key="ida:AppId" value="paste application id here" />
+    <add key="ida:AppSecret" value="paste application password here" />
+    <!-- ... -->
+    <!-- Specify scopes in this value. Multiple values should be comma separated. -->
+    <add key="ida:AppScopes" value="https://graph.microsoft.com/user.read,https://graph.microsoft.com/files.readwrite" />
+  </appSettings>
+  <!-- ... -->
+</configuration>
+```
+3. Add a redirect URL to enable testing on your localhost.
+   1. Right click on **GraphFilesWeb** and click on **Properties** to open the project properties.
+   2. Click on **Web** in the left navigation.
+   3. Copy the **Project Url** value.
+   4. Back on the Application Registration Portal page, click **Add Platform** and then **Web**.
+   5. Paste the value of **Project Url** into the **Redirect URIs** field.
+   6. Scroll to the bottom of the page and click **Save**.
+
+4. Press F5 to compile and launch your new application in the default browser.
+   1. Once the Graph and AAD v2 Auth Endpoint Starter page appears, click **Sign in** and login to your Office 365 account.
+   2. Review the permissions the application is requesting, and click **Accept**.
+   3. Now that you are signed into your application, exercise 1 is complete!
+
+## Exercise 2: Access OneDrive for Business files through Microsoft Graph SDK
+
+In this exercise, you will build on exercise 1 to connect to the Microsoft Graph
+SDK can perform CRUD operations associated with the files in OneDrive for Business
+or OneDrive.
+
+1. Add a reference to the Microsoft Graph SDK to your project
+  1. In the **Solution Explorer** right click on the **GraphFilesWeb** project and select **Manage NuGet Packages...**.
+  2. Click **Browse** and search for **Microsoft.Graph**.
+  3. Select the Microsoft Graph SDK and click **Install**.
+
+2. Create a new controller to process the requests for files and send them to Graph API.
+  1. Find the **Controllers** folder under **GraphFilesWeb**, right click on it and select **Add** then **Controller**.
+  2. Select MVC Controller 4 and change the filename to **FilesController.cs** and then click **OK**.
 
 
-## Step 1: Use Azure Active Directory v2 end point to create an access token
-
-* For apps targeting Microsoft accounts and work or school accounts, follow
-  quick start **O3653-XXX Using Azure Active Directory v2 end point with ASP.NET MVC5**
-* For apps targeting work or school accounts only, follow quick start
-  **O3653-YYY Using Azure Active Directory Authentication Library with ASP.NET MVC5**
-
-The remainder of this quick start challenge assumes that you have followed one
-of these quick starts and can generate an OAuth **access_token** to make calls
-to the Microsoft Graph API.
-
-## Step 2: Access OneDrive for Business content from an ASP.NET MVC5 application
-
-In this exercise, you will use the Microsoft Graph SDK to perform CRUD operations
-associated with files in OneDrive for Business.
-
-1. In the **Solution Explorer**, locate the **project.json** file under
-   **GraphFilesWeb** and open it.
-   1. Find the **dependencies** section and add a reference to the Microsoft
-      Graph SDK package: `"Microsoft.Graph": "1.0.0"`
-   2. Find **frameworks** and remove **dnxcore50** from the list. The Microsoft
-      Graph SDK is not compatible with DNX Core 5.0.
-   3. After saving the file, Visual Studio will automatically restore the package
-      and make it available in the project.
 2. Right-click the **GraphFilesWeb** project and select **Add/Class**.
 3. In the **Add New Item** dialog, name the new class **FileRepository.cs**.
 4. Click **Add**.
