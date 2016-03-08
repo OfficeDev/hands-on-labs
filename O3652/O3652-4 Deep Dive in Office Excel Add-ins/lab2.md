@@ -879,14 +879,14 @@ In this exercise you will create a Excel Add-in that uses the v2 JavaScript API 
         });
 
     }
-		````
+````
+
 1. Next we add functionality to use Excel formulas and charting to generate a report then protect the report from editing. Here we first create a new sheet named "Summary", then create a summary table with total spendings based on Category. We then add a chart to visualize the data. Finally we protect the sheet from further changes.
 	1. Go back to the `Office.initialize` statement and replace the comment `// TODO-4` with the following jQuery code that creates a click handler for the button that will add a range of unformatted data to the current worksheet:
 
 	````javascript
 	  $('#filter').click(filter);
 	````
-
 	1. Next, add the following function.
 
 		Notice how the code works with ranges in a similar way to the last function, but this one assigns some formats to the range's `numberFormats` property:
