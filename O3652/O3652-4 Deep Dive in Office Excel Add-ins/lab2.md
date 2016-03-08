@@ -810,7 +810,6 @@ In this exercise you will create a Excel Add-in that uses the v2 JavaScript API 
                 console.log("Debug info: " + JSON.stringify(error.debugInfo));
             }
         });
-
     }
 
 			````
@@ -848,7 +847,7 @@ In this exercise you will create a Excel Add-in that uses the v2 JavaScript API 
             }
         });
     }
-		````
+````
 
 1. Then we add functionality to filter data. We only want to focus on the transaction in the sub-category of Fuel and Education.
 	1. Go back to the `Office.initialize` statement and replace the comment `// TODO-3` with the following jQuery code that creates a click handler for the button that will add a range of unformatted data to the current worksheet:
