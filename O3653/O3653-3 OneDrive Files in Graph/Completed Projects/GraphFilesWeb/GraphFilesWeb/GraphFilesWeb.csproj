@@ -54,7 +54,7 @@
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Graph">
-      <HintPath>..\..\Users\Ryan\Source\github\graph-sdk-csharp\src\OneDriveSdk\bin\Debug\Microsoft.Graph.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\graph-sdk-csharp\src\OneDriveSdk\bin\Debug\Microsoft.Graph.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.IdentityModel.Clients.ActiveDirectory">
       <HintPath>..\packages\Microsoft.IdentityModel.Clients.ActiveDirectory.2.23.302261847\lib\net45\Microsoft.IdentityModel.Clients.ActiveDirectory.dll</HintPath>
