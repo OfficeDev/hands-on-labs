@@ -260,7 +260,7 @@ In this exercise you will create a Excel Add-in that uses the v2 JavaScript API 
 	1. Go back to the `Office.initialize` statement and replace the comment `// TODO-4` with the following jQuery code that creates a click handler for the button that will add a range of unformatted data to the current worksheet:
 
 	````javascript
-	  $('#filter').click(filter);
+	  $('#report').click(report);
 	````
 	1. Next, add the following function.
 
