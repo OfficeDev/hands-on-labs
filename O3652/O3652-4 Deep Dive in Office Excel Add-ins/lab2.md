@@ -307,8 +307,7 @@ In this exercise you will create a Excel Add-in that uses the v2 JavaScript API 
             }
         });
     }
-
-		````
+	````
 
 
 ###Test the Add-in
