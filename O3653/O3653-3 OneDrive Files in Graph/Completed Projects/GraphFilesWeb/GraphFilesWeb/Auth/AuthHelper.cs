@@ -90,6 +90,14 @@ namespace GraphFilesWeb.Auth
             }
         }
 
+        public bool HasTokens
+        {
+            get
+            {
+                return null != TokenCache && null != TokenCache.Tokens;
+            }
+        }
+
         public async Task<string> GetUserAccessToken(string redirectUri)
         {
             if (null == TokenCache || null == TokenCache.Tokens)

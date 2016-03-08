@@ -38,17 +38,27 @@ namespace GraphFilesWeb.Controllers
         }
         
         [Authorize]
-        public async Task<ActionResult> Index(int? pageSize)
+        public async Task<ActionResult> Index(int? pageSize, string nextLink)
         {
             var client = GetGraphServiceClient();
 
-            // Define and store the current page size
-            pageSize = pageSize ?? 10;
-            ViewBag.PageSize = pageSize.Value;
+            pageSize = pageSize ?? 25;
 
-            var request = client.Me.Drive.Root.Children.Request().Top(pageSize.Value);
+            IChildrenCollectionRequest request = client.Me.Drive.Root.Children.Request().Top(pageSize.Value);
+            if (nextLink != null)
+            {
+                request = new ChildrenCollectionRequest(nextLink, client, null);
+            }
 
             var results = await request.GetAsync();
+            if (null != results.NextPageRequest)
+            {
+                ViewBag.NextLink = results.NextPageRequest.GetHttpRequestMessage().RequestUri;
+            }
+            else
+            {
+                ViewBag.NextLink = null;
+            }
 
             return View(results);
         }
@@ -79,7 +89,7 @@ namespace GraphFilesWeb.Controllers
                 {
                     var filename = System.IO.Path.GetFileName(fileInRequest.FileName);
                     var request = client.Me.Drive.Root.Children[filename].Content.Request();
-                    var uploadedFile = await request.PutAsync<DriveItem>(fileInRequest.InputStream);
+                    var createdFile = await request.PutAsync<DriveItem>(fileInRequest.InputStream);
                 }
             }
 
