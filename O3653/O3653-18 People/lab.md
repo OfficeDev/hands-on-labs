@@ -44,7 +44,7 @@ Using her account, you will explore Katie's interactions and learn who are the m
     3. Finally, enter the following query:
     
       ```
-      From:("Sales Team") OR To:("Sales Team")
+      From:(Engineering) OR To:(Engineering)
       ```
     
        Notice their are fewer results in this case.
