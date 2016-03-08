@@ -236,7 +236,7 @@ In this exercise you will create a Excel Add-in that uses the v2 JavaScript API 
 
 		Notice how the code works with ranges in a similar way to the last function, but this one assigns some formats to the range's `numberFormats` property:
 
-		````javascript
+````javascript
     function filter() {
         Excel.run(function (ctx) {
             var sheet = ctx.workbook.worksheets.getActiveWorksheet();
@@ -253,7 +253,6 @@ In this exercise you will create a Excel Add-in that uses the v2 JavaScript API 
                 console.log("Debug info: " + JSON.stringify(error.debugInfo));
             }
         });
-
     }
 ````
 
