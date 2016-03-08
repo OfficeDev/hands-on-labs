@@ -663,23 +663,17 @@ In this exercise you will create a Excel Add-in that uses the v2 JavaScript API 
 		  </div>
 		  <div id="content-main">
 		    <div class="padding">
-		      <p>
-		        Worksheet Name: <input type="text" id="worksheetName" /><br />
-		        <button id="addWorksheet">Add a New Worksheet</button>
-		      </p>
-		      <p>
-		        <button id="addRange">Add Range of Data</button>
-		      </p>
-		      <p>
-		        <button id="addFormattedData"> Add Formatted Data Range</button>
-		      </p>
+           <button id="insertData">Inseart Data, add a table and adjust layout</button>
+            <button id="sort">Sort my data based on transaction date</button>
+            <button id="filter">Only show my transtions in fuel and education</button>
+            <button id="report">Create a report on my spending and Protect the report </button>
 		    </div>
-				  </div>
+		 </div>
 		</body>
 		````
 
 1. The next step is to code the business logic for the add-in.
-	1. Locate the **App \ Home \ Home.html** file.
+	1. Locate the **App \ Home \ Home.js** file.
 	1. Remove all the sample code except the add-in initialization code so all that is left is the following:
 
 		````javascript
@@ -695,133 +689,256 @@ In this exercise you will create a Excel Add-in that uses the v2 JavaScript API 
 		      // TODO-1
 		      // TODO-2
 		      // TODO-3
+		      // TODO-4
+
 		    });
 		  };
 
-		  // TODO-error
+	
 		})();
 		````
 
-	1. Add a universal error handler function that will be used when there are errors. This should replace the comment `// TODO-error`:
 
-		````javascript
-	  function errorHandler (error) {
-	    console.log(JSON.stringify(error));
-	  };
-		````
-
-	1. Now add a function that will add a a new worksheet to the workbook:
+	1. Now add a function that will add a data:
 		1. Replace the comment `// TODO-1` with the following jQuery code that creates a click event handler on one of the buttons in the `home.html` page you added previously:
 
 			````javascript
-			$('#addWorksheet').click(addWorksheet);
+			 $('#insertData').click(insertData);
 			````
 
-		1. Next, add the following function before the error handler function you added previously.
+		1. Next, add the following function.
 
-			Notice how the code in this function is very different from the code in the previous exercises. The Excel v2 JavaScript API uses a context (`Excel.RequestContext()`) to allow you to batch multiple operations (such as `context.workbook.worksheets.add()`) that will be sent to the hosting Excel client application for processing at one time using the `context.executeAsync()` method:
+			Notice how the code in this function is very different from the code in the previous exercises. The Excel v2 JavaScript API uses a context (`Excel.run()`) to allow you to batch multiple operations (such as `context.workbook.worksheets.add()`) that will be sent to the hosting Excel client application for processing at one time using the `context.sync()` method:
 
 			````javascript
-		  function addWorksheet() {
-		    // get reference to hosting Word application
-		    var context = new Excel.RequestContext();
+		  function insertData() {
+        Excel.run(function (ctx) {
 
-		    // create a new worksheet
-		    var worksheetName = $('#worksheetName').val();
-		    var newWorksheet = context.workbook.worksheets.add(worksheetName);
+        	// Get the current worksheet
+            var sheet = ctx.workbook.worksheets.getActiveWorksheet();
 
-		    // create the worksheet and set as active worksheet
-		    context.load(newWorksheet);
-		    newWorksheet.activate();
+            //Rename the current Worsheet to Data
+            sheet.name = "Data";
 
-		    context.executeAsync().then(function () { }, errorHandler);
-		  };
+            //Insert Data
+            var range = sheet.getRange("A1:E11");
+            range.values = [[
+            "Date",
+            "Merchant",
+            "Category",
+            "Sub-Category",
+            "Amount"],
+			  [
+			    "01/12/2014",
+			    "WHOLE FOODS MARKET",
+			    "Merchandise & Supplies",
+			    "Groceries",
+			   "84.99"
+			  ],
+			  [
+			    "01/13/2014",
+			    "COSTCO GAS",
+			    "Transportation",
+			    "Fuel",
+			   "52.20"
+			  ],
+			  [
+			    "01/13/2014",
+			    "COSTCO WHOLESALE",
+			    "Merchandise & Supplies",
+			    "Wholesale Stores",
+			   "163.67"
+			  ],
+			  [
+			    "01/13/2014",
+			    "ITUNES",
+			    "Merchandise & Supplies",
+			    "Internet Purchase",
+			   "9.83"
+			  ],
+			  [
+			    "01/13/2014",
+			    "SMITH BROTHERS FARMS INC",
+			    "Merchandise & Supplies",
+			    "Groceries",
+			   "21.45"
+			  ],
+			  [
+			    "01/14/2014",
+			    "SHELL",
+			    "Transportation",
+			    "Fuel",
+			    "44.00"
+			  ],
+			  [
+			    "01/14/2014",
+			    "WHOLE FOODS MARKET",
+			    "Merchandise & Supplies",
+			    "Groceries",
+			   "17.98"
+			  ],
+			  [
+			    "01/15/2014",
+			    "BRIGHT EDUCATION SERVICES",
+			    "Other",
+			    "Education",
+			   "59.92"
+			  ],
+			  [
+			    "01/15/2014",
+			    "BRIGHT EDUCATION SERVICES",
+			    "Other",
+			    "Education",
+			   "59.92"
+			  ],
+			  [
+			    "01/17/2014",
+			    "SMITH BROTHERS FARMS INC-HQ",
+			    "Merchandise & Supplies",
+			    "Groceries",
+			   "21.45"
+			  ]];
+
+			//Autofit row height and column width
+            range.getEntireColumn().format.autofitColumns();
+            range.getEntireRow().format.autofitRows();
+
+            // Add a table
+            var table = ctx.workbook.tables.add("Data!A1:E11", true);
+            return ctx.sync().then(function () {
+           });
+        }).catch(function (error) {
+            console.log("Error: " + error);
+            if (error instanceof OfficeExtension.Error) {
+                console.log("Debug info: " + JSON.stringify(error.debugInfo));
+            }
+        });
+
+    }
+
 			````
 
-1. Now add functionality to add unformatted data to a new range in the current worksheet:
+1. Now add functionality to sort data based on transaction date:
 	1. Go back to the `Office.initialize` statement and replace the comment `// TODO-2` with the following jQuery code that creates a click handler for the button that will add a range of unformatted data to the current worksheet:
 
 	````javascript
-	$('#addRange').click(addRange);
+            $('#sort').click(sort);
 	````
 
-	1. Next, add the following function before the error handler function you previously added.
-
-		Notice how the code first gets a collection of all the worksheets in the workbook, then it creates an array of data that is assigned to a range that's created on the spreadsheet starting at cell A1:
+	1. Next, add the following function.
 
 		````javascript
-	  function addRange() {
-	    // get reference to hosting Word application
-	    var context = new Excel.RequestContext();
+	     function sort() {
+        Excel.run(function (ctx) {
 
-	    // get reference to current worksheet
-	    var currentWorksheet = context.workbook.worksheets.getActiveWorksheet();
+            var sheet = ctx.workbook.worksheets.getActiveWorksheet();
 
-	    // get a list of all worksheets in the current workbook
-	    var worksheets = context.workbook.worksheets.load();
-
-	    context.executeAsync().then(function () {
-	      // create a one-dimensional array of all worksheets in the workbook
-	      var worksheetList = [];
-	      worksheetList.push(['Worksheets in the Workbook']);
-	      for (var i = 0; i < worksheets.items.length; i++) {
-	        worksheetList.push([worksheets.items[i].name]);
-	      };
-
-	      // get a range to write to
-	      var rangeSpec = "A1:A" + worksheetList.length;
-	      var range = currentWorksheet.getRange(rangeSpec);
-	      range.values = worksheetList;
-
-	      // execute the change
-	      context.executeAsync().then(function () { }, errorHandler);
-	    }, errorHandler);
-	  };
+            // Only Sort the range that has data
+            var sortRange = sheet.getRange("A1:E1").getEntireColumn().getUsedRange();
+            // Apply sorting on the first column and in descending order
+            sortRange.sort.apply([
+            {
+                key: 0,
+                ascending: false,
+            },
+            ]);
+            return ctx.sync().then(function () {
+            })
+        }).catch(function (error) {
+            console.log("Error: " + error);
+            if (error instanceof OfficeExtension.Error) {
+                console.log("Debug info: " + JSON.stringify(error.debugInfo));
+            }
+        });
+    }
 		````
 
-1. Finally, add functionality to add *formatted* data to a new range in the current worksheet:
-	1. Go back to the `Office.initialize` statement and replace the comment `// TODO-2` with the following jQuery code that creates a click handler for the button that will add a range of unformatted data to the current worksheet:
+1. Then we add functionality to filter data. We only want to focus on the transaction in the sub-category of Fuel and Education.
+	1. Go back to the `Office.initialize` statement and replace the comment `// TODO-3` with the following jQuery code that creates a click handler for the button that will add a range of unformatted data to the current worksheet:
 
 	````javascript
-	$('#addFormattedData').click(addFormattedData);
+	  $('#filter').click(filter);
 	````
 
-	1. Next, add the following function before the error handler function you previously added.
+	1. Next, add the following function.
 
 		Notice how the code works with ranges in a similar way to the last function, but this one assigns some formats to the range's `numberFormats` property:
 
 		````javascript
-	  function addFormattedData() {
-	    // get reference to hosting Word application
-	    var context = new Excel.RequestContext();
+    function filter() {
+        Excel.run(function (ctx) {
+            var sheet = ctx.workbook.worksheets.getActiveWorksheet();
+            var table = sheet.tables.getItemAt(0);
 
-	    // define a range
-	    var rangeAddress = "C3:E5";
+            //Apply a value filter on the 4th column, which is sub-category. We want to focus on transactions in the category of Fuel and Education
+            var filter = table.columns.getItemAt(3).filter;
+            filter.applyValuesFilter(["Fuel","Education"]);
+            return ctx.sync().then(function () {
+            })
+        }).catch(function (error) {
+            console.log("Error: " + error);
+            if (error instanceof OfficeExtension.Error) {
+                console.log("Debug info: " + JSON.stringify(error.debugInfo));
+            }
+        });
 
-	    // define values in the range
-	    var values = [
-	      ['Expense', 'Date', 'Amount'],
-	      ['Lunch', '7/15/2015', 45.98],
-	      ['Taxi', '7/15/2015', 18.22]
-	    ];
-
-	    // define the formats
-	    var formats = [
-	      [null, null, null],
-	      [null, 'mmmm dd, yyyy', '$#,##0.00'],
-	      [null, 'mmmm dd, yyyy', '$#,##0.00']
-	    ];
-
-	    // get the range in the worksheet
-	    var range = context.workbook.worksheets.getActiveWorksheet().getRange(rangeAddress);
-	    range.numberFormat = formats;
-	    range.values = values;
-	    range.load();
-
-	    // execute the changes
-	    context.executeAsync().then(function () { }, errorHandler);
-	  };
+    }
 		````
+1. Next we add functionality to use Excel formulas and charting to generate a report then protect the report from editing. Here we first create a new sheet named "Summary", then create a summary table with total spendings based on Category. We then add a chart to visualize the data. Finally we protect the sheet from further changes.
+	1. Go back to the `Office.initialize` statement and replace the comment `// TODO-4` with the following jQuery code that creates a click handler for the button that will add a range of unformatted data to the current worksheet:
+
+	````javascript
+	  $('#filter').click(filter);
+	````
+
+	1. Next, add the following function.
+
+		Notice how the code works with ranges in a similar way to the last function, but this one assigns some formats to the range's `numberFormats` property:
+
+		````javascript
+ function report() {
+        Excel.run(function (ctx) {
+            //Add a new worksheet
+            var sheet = ctx.workbook.worksheets.add("Summary");
+            //Activate the worksheet
+            sheet.activate();
+
+            // Use Excel formulas to calculate the total spending based on categories
+            var sumRange = sheet.getRange("A1:B6");
+            sumRange.values = [['Category', 'Total'],
+            ['Groceries', '=SUMIF( Data!D2:D100, "Groceries", Data!E2:E100 )'],
+            ['Fuel', '=SUMIF( Data!D2:D100, "Fuel", Data!E2:E100 )'],
+            ['Wholesale Store', '=SUMIF( Data!D2:D100, "Wholesale Stores", Data!E2:E100 )'],
+            ['Internet Purchase', '=SUMIF( Data!D2:D100, "Internet Purchase", Data!E2:E100 )'],
+            ['Education', '=SUMIF( Data!D2:D100, "Education", Data!E2:E100 )']];
+
+            //Add a Table
+            ctx.workbook.tables.add("Summary!A1:B6", true);
+
+            // Add a pie chart
+            var chartRange = sheet.getRange("A1:B6");
+            var chart = ctx.workbook.worksheets.getItem("Summary").charts.add("Pie", chartRange);
+
+            //Update the chart title
+            chart.title.text = "Spending based on catagory";
+
+            // Protect the report from editing
+            sheet.protection.protect();
+
+            return ctx.sync().then(function () {
+
+            })
+            .then(ctx.sync);
+        }).catch(function (error) {
+            console.log("Error: " + error);
+            if (error instanceof OfficeExtension.Error) {
+                console.log("Debug info: " + JSON.stringify(error.debugInfo));
+            }
+        });
+    }
+
+		````
+
 
 ###Test the Add-in
 1. Now deploy the Excel Add-in to the local Excel client:
@@ -841,3 +958,4 @@ In this exercise you will create a Excel Add-in that uses the v2 JavaScript API 
 	Notice how Excel creates a new table of data in the middle of the worksheet, but the dates and currency values are formatted accordingly.
 
 Congratulations! You've now written an Excel Add-in that uses the new Excel v2 JavaScript API.
+
