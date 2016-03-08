@@ -626,8 +626,8 @@ In this exercise you will create a Excel Add-in that uses the v2 JavaScript API 
 
 > **Note**: For this exercise you must have Excel 2016 Preview, or a later version, installed. Refer to the prerequisites at the beginning of this lab for links on where to obtain Office 2016 Preview.
 
-1. Launch Visual Studio 2013 as administrator.
-1. From the **File** menu select the **New Project** command. When the **New Project** dialog appears, select the **App for Office** project template from the **Office/SharePoint** template folder as shown below. Name the new project **Excel16Api** and click **OK** to create the new project.
+1. Launch Visual Studio 2015 as administrator.
+1. From the **File** menu select the **New Project** command. When the **New Project** dialog appears, select the **App for Office** project template from the **Office/SharePoint** template folder as shown below. Name the new project **ExpenseReport** and click **OK** to create the new project.
 
 1. When you create a new App for Office project, Visual Studio prompts you with the **Choose the app type** page of the **Create app for Office** dialog. This is the point where you select the type of App for Office you want to create. Leave the default setting with the radio button titled **Task pane** and select **OK** to continue.
 
@@ -637,15 +637,12 @@ In this exercise you will create a Excel Add-in that uses the v2 JavaScript API 
 
 	![](Images/Fig03.png)
 
-1. Reference the Word 2016 v2 JavaScript API in the add-in:
+1. Reference the Excel 2016 v2 JavaScript API in the add-in:
 	1. Locate and open the homepage for the add-in: **App \ Home \ Home.html**.
-	1. Immediately after the reference to `Office.js` in the `<head>` portion of the page, add the following two script references to the Word v2 JavaScript API:
+	1. Immediately after the reference to `Office.js` in the `<head>` portion of the page, add the following two script references to the Excel v2 JavaScript API beta CDN:
 
 		````html
-		<script src="https://oep.azurewebsites.net/preview/4229.1002/office.runtime.js" 
-		        type="text/javascript"></script>
-		<script src="https://oep.azurewebsites.net/preview/4229.1002/excel.js" 
-		        type="text/javascript"></script>
+    <script src="https://appsforoffice.microsoft.com/lib/beta/hosted/office.js"></script>
 		````
 
 	> **Note:** Eventually the Excel v2 JavaScript API will be merged into the single `Office.js` file so this step will not be necessary, but in the preview timeframe it is required as an extra step.
