@@ -178,3 +178,260 @@ In this exercise you will implement the functions to call the [Yandex Translate 
   1. Go to https://translate.yandex.com/developers in your browser.
   1. Under **Getting Started**, click the **Get a free API key** link.
   1. Register and get your API key. Copy this key, you will need it later.
+
+1. Add the code to call the Yandex API and do the translation. 
+  1. Expand the **TranslatorWeb** project in Visual Studio. Right-click the **Scripts** folder and choose **Add**, then **JavaScript** file. Name the file `translate` and click **OK**. Add the following code:
+
+    ```javascript
+    // Helper function to generate an API request
+    // URL to the Yandex translator service
+    function generateRequestUrl(sourcelang, targetlang, text) {
+      // Split the selected data into individual lines
+      var tempLines = text.split(/\r\n|\r|\n/g);
+      var lines = [];
+
+      // Add non-empty lines to the data to translate
+      for (var i = 0; i < tempLines.length; i++)
+        if (tempLines[i] != '')
+          lines.push(tempLines[i]);
+
+      // Add each line as a 'text' query parameter
+      var encodedText = '';
+      for (var i = 0; i < (lines.length) ; i++) {
+        encodedText += '&text=' + encodeURI(lines[i].replace(/ /g, '+'));
+      }
+
+      // API Key for the yandex service
+      // Get one at https://translate.yandex.com/developers
+      var apiKey = 'PASTE YOUR YANDEX API KEY HERE';
+
+      return 'https://translate.yandex.net/api/v1.5/tr.json/translate?key='
+        + apiKey + '&lang=' + sourcelang + '-' + targetlang + encodedText;
+    }
+
+    function translate(sourcelang, targetlang, callback) {
+      Office.context.mailbox.item.getSelectedDataAsync('text', function (ar) {
+        // Make sure there is a selection
+        if (ar === undefined || ar === null ||
+            ar.value === undefined || ar.value === null ||
+            ar.value.data === undefined || ar.value.data === null) {
+          // Display an error message
+          callback('No text selected! Please select text to translate and try again.');
+          return;
+        }
+
+        try {
+          // Generate the API call URL
+          var requestUrl = generateRequestUrl(sourcelang, targetlang, ar.value.data);
+
+          $.ajax({
+            url: requestUrl,
+            jsonp: 'callback',
+            dataType: 'jsonp',
+            success: function (response) {
+              var translatedText = response.text;
+              var textToWrite = '';
+
+              // The response is an array of one or more translated lines.
+              // Append them together with <br/> tags.
+              for (var i = 0; i < translatedText.length; i++)
+                textToWrite += translatedText[i] + '<br/>';
+
+              // Replace the selected text with the translated version
+              Office.context.mailbox.item.setSelectedDataAsync(textToWrite, { coercionType: 'html' }, function (asyncResult) {
+                // Signal that we are done.
+                callback();
+              });
+            }
+          });
+        }
+        catch (err) {
+          // Signal that we are done.
+          callback(err.message);
+        }
+      });
+    }
+    ```
+    
+  1. Replace the `PASTE YOUR YANDEX API KEY HERE` text with the Yandex API key you obtained earlier.
+
+1. Add a UI-less function for the **English to Spanish** button.
+  1. Open the **TranslateWeb/Functions/FunctionFile.html** file and add a `<script>` tag for the `translate.js` file you just created. Be sure to add this **before** the tag for `FunctionFile.js`.
+
+    ```html
+    <script src="../Scripts/translate.js" type="text/javascript"></script>
+    <script src="FunctionFile.js" type="text/javascript"></script>
+    ```
+
+  1. Open the **TranslateWeb/Functions/FunctionFile.js** file and add the following function.
+
+    ```javascript
+    function translateEnglish2Spanish(event) {
+      translate('en', 'es', function(error) {
+        if (error) {
+          Office.context.mailbox.item.notificationMessages.addAsync('translateError', {
+            type: 'errorMessage',
+            message: error
+          });
+        }
+        else {
+          Office.context.mailbox.item.notificationMessages.addAsync('success', {
+            type: 'informationalMessage',
+            icon: 'icon16',
+            message: 'Translated successfully',
+            persistent: false
+          });
+        }
+      });
+      
+      event.completed();
+    }
+    ```
+1. Add a task pane for the **More Options** button.
+  1. Right-click the **TranslatorWeb** project and select **Add**, then **HTML Page**. Name the page `TranslatePane` and click **OK**. Replace the contents of that file with the following.
+  
+    ```html
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+        <title></title>
+        <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.9.1.min.js" type="text/javascript"></script>
+        
+        <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js" type="text/javascript"></script>
+        
+        <link rel="stylesheet" href="https://appsforoffice.microsoft.com/fabric/2.1.0/fabric.min.css" />
+        <link rel="stylesheet" href="https://appsforoffice.microsoft.com/fabric/2.1.0/fabric.components.min.css" />
+        <link href="TranslatePane.css" rel="stylesheet" type="text/css" />
+      
+        <script src="Scripts/FabricUI/JQuery.Dropdown.js" type="text/javascript"></script>
+         
+        <script src="Scripts/translate.js" type="text/javascript"></script>
+        <script src="TranslatePane.js" type="text/javascript"></script>
+      </head>
+      <body>
+        <div id="content-header">
+          <div class="padding">
+            <h1 class="ms-font-xl ms-fontWeight-light ms-fontColor-white">Translate Text</h1>
+          </div>
+        </div>
+        <div id="content-main">
+          <div id="pending" class="ms-Overlay ms-Overlay--dark" style="text-align:center">
+            <div class="ms-font-xxl" id="pending-message"></div>
+          </div>
+          <div id="translate-form" class="ms-Grid">
+            <div class="ms-Grid-row">
+              <div class="ms-Grid-col ms-u-sm12">
+                <h2 class="ms-font-l ms-fontWeight-light">Select the text to translate in the body, choose starting and ending languages, then click <strong>Translate</strong>.</h2>
+              </div>
+            </div>
+            <div class="ms-Grid-row">
+              <div class="ms-Grid-col ms-u-sm12">
+                <div class="ms-Dropdown" id="start-lang">
+                  <label class="ms-Label">Starting language</label>
+                  <i class="ms-Dropdown-caretDown ms-Icon ms-Icon--caretDown"></i>
+                  <select class="ms-Dropdown-select">
+                    <option value="none">Choose a language...</option>
+                    <option id="start-English" value="en">English</option>
+                    <option id="start-Spanish" value="es">Spanish</option>
+                    <option id="start-French" value="fr">French</option>
+                  </select>
+                </div>
+              </div>
+              <div class="ms-Grid-col ms-u-sm12">
+                <div class="ms-Dropdown" id="end-lang">
+                  <label class="ms-Label">Ending language</label>
+                  <i class="ms-Dropdown-caretDown ms-Icon ms-Icon--caretDown"></i>
+                  <select class="ms-Dropdown-select">
+                    <option>Choose a language...</option>
+                    <option id="end-English" value="en">English</option>
+                    <option id="end-Spanish" value="es">Spanish</option>
+                    <option id="end-French" value="fr">French</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="ms-Grid-row">
+              <div class="ms-Grid-col ms-u-sm12">
+                <button id="translateText" class="ms-Button">
+                  <span class="ms-Button-label">Translate</span>
+                  <span class="ms-Button-description">Sends the selected text to Yandex for translation</span>
+                </button>
+              </div>
+            </div>
+            <div class="ms-Grid-row">
+              <div class="ms-Grid-col ms-u-sm12">
+                <div id="error-box" class="ms-bgColor-error">
+                  <div id="error-msg" class="ms-font-l ms-fontColor-error"></div>
+                </div>
+              </div>
+            </div>
+            <div class="ms-Grid-row">
+              <div class="ms-Grid-col ms-u-sm12">
+                <pre id="debug"></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </body>
+    </html>
+    ```
+  
+  1. Right-click the **TranslatorWeb** project and select **Add**, then **JavaScript file**. Name the file `TranslatePane` and click **OK**. Replace the contents of that file with the following.
+  
+    ```javascript
+    (function () {
+      'use strict';
+      // The initialize function must be run each time a new page is loaded
+      Office.initialize = function (reason) {
+        $(document).ready(function () {
+          $('#error-box').hide();
+          $('#pending').hide();
+          $('.ms-Dropdown').Dropdown();
+          $('#translateText').click(doTranslate);
+        });
+      };
+
+      function doTranslate() {
+        $("#error-box").hide('fast');
+        var startlang = $('#start-lang').children('.ms-Dropdown-title').text();
+        var endlang = $('#end-lang').children('.ms-Dropdown-title').text();
+
+        var startlangcode = $('#start-lang').find('#start-' + startlang.replace(/\s|\./g, ''));
+        var endlangcode = $('#end-lang').find('#end-' + endlang.replace(/\s|\./g, ''));
+
+        if (startlangcode.length > 0 && endlangcode.length > 0) {
+          $('#pending-message').html('Working on your ' + startlang +
+          ' to ' + endlang + ' translation request');
+          $('#translate-form').hide('fast');
+          $('#pending').show('fast');
+
+          translate(startlangcode.val(), endlangcode.val(), function (error) {
+            $('#pending').hide('fast');
+            $('#translate-form').show('fast');
+            if (error) {
+              $('#error-msg').html('ERROR: ' + error);
+              $('#error-box').show('fast');
+            }
+          });
+        }
+        else {
+          $('#error-msg').html('Select languages!');
+          $('#error-box').show('fast');
+        }
+      }
+    })();
+    ```
+    
+  1. Right-click the **TranslatorWeb** project and select **Add**, then **Style Sheet**. Name the file `TranslatePane` and click **OK**. Replace the contents of that file with the following.
+  
+    ```css
+    ```
+    
+  1. Add the Fabric UI Dropdown plugin
+    1. Download the [Jquery.Dropdown.js file](https://github.com/OfficeDev/Office-UI-Fabric/blob/master/src/components/Dropdown/Jquery.Dropdown.js) from GitHub.
+    1. Move the file into the **TranslatorWeb/Scripts/FabricUI** folder in the project.
+    1. Right-click the **TranslatorWeb/Scripts/FabricUI**, choose **Add**, then **Existing item**. Browse to the **Jquery.Dropdown.js** file in the **FabricUI** folder and click **Add**.
+    
+  
