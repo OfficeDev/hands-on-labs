@@ -21,12 +21,16 @@ Supported Office application — Excel (and/or others as desired). The Yeoman ge
 6. You will need to add the self-signed security certificate that gulp-webserver creates as a trusted root certificate or your add-in will not display. To verify that the add-in is running, open your browser and go to the main page at https://localhost:8443/app/home/home.html. 
 
 ## Exercise 2: Side load add-in into Excel for Mac
-Load the add-in into Office. The easiest way to do this is by sideloading the add-in in Office Online:
+*In this exercise, we'll go through the process of sideloading an add-in on Excel for Mac.
 
-- Go to Excel Online and create a blank workbook.
-- Go to Insert > Office Add-ins.
-- Choose Manage My Add-ins in the upper-right corner of the dialog box, and select Upload My Add-in.
-- Select the manifest-myHelloWorldAddin.xml file from the root of the sample project folder, and choose OK. Your add-in will load in Excel Online.
+1. Open Terminal [shortcut on the desktop] and type **cd ~/Library/Containers/com.microsoft.Excel/Data/Documents/wef**
+2. You may have to create the wef folder if it doesnt already exist.
+3. Type **open .** to open Finder
+4. Copy the manifest-myHelloWorldAddin.xml file from the root of the sample project folder to this folder.
+5. Launch Excel [shortcut on the desktop]
+6. Go to Insert tab & click on the My Add-ins drop-down. Click on the HelloWorld Add-in to open it Excel.
+
+## Exercise 3: Debug HelloWorld add-in using VorlonJS
 
 
 
