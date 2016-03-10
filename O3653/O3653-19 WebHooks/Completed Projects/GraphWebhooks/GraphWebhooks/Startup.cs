@@ -56,9 +56,7 @@ namespace GraphWebhooks
               }
             );
 
-          // I don't know what to do here.
-          // I believe this is needed for SignalR to work, but it is documented to disable session state, thus breaking the session token cache.
-          // app.MapSignalR();
+          app.MapSignalR();
         }
 
         private Task OnAuthenticationFailed(AuthenticationFailedNotification<OpenIdConnectMessage,
@@ -76,8 +74,8 @@ namespace GraphWebhooks
               .FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
 
             // Create a token cache
-            HttpContextBase httpContext = notification.OwinContext.Get<HttpContextBase>(typeof(HttpContextBase).FullName);
-            SessionTokenCache tokenCache = new SessionTokenCache(userObjId, httpContext);
+            // HttpContextBase httpContext = notification.OwinContext.Get<HttpContextBase>(typeof(HttpContextBase).FullName);
+            // SessionTokenCache tokenCache = new SessionTokenCache(userObjId, httpContext);
 
             // Exchange the auth code for a token
             ADAL.ClientCredential clientCred = new ADAL.ClientCredential(appId, appSecret);
@@ -85,7 +83,7 @@ namespace GraphWebhooks
             // Create the auth context
             ADAL.AuthenticationContext authContext = new ADAL.AuthenticationContext(
               string.Format(CultureInfo.InvariantCulture, aadInstance, "common", ""),
-              false, tokenCache);
+              false);// , tokenCache);
 
             ADAL.AuthenticationResult authResult = await authContext.AcquireTokenByAuthorizationCodeAsync(
               notification.Code, notification.Request.Uri, clientCred, "https://graph.microsoft.com");

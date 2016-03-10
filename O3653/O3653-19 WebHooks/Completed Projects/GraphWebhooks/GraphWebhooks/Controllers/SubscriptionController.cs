@@ -33,13 +33,11 @@ namespace GraphWebhooks.Controllers
             try
             {
                 string userObjId = System.Security.Claims.ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
-                SessionTokenCache tokenCache = new SessionTokenCache(userObjId, HttpContext);
                 string tenantId = System.Security.Claims.ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/tenantid").Value;
                 string authority = string.Format(ConfigurationManager.AppSettings["ida:AADInstance"], tenantId, "");
-
-                AuthHelper authHelper = new AuthHelper(authority, ConfigurationManager.AppSettings["ida:AppId"], ConfigurationManager.AppSettings["ida:AppSecret"], tokenCache);
-                authResult = await authHelper.GetUserTokens(Url.Action("Index", "Home", null, Request.Url.Scheme));
-
+                AuthenticationContext authContext = new AuthenticationContext(authority, false);
+                ClientCredential credential = new ClientCredential(ConfigurationManager.AppSettings["ida:AppId"], ConfigurationManager.AppSettings["ida:AppSecret"]);
+                authResult = await authContext.AcquireTokenSilentAsync("https://graph.microsoft.com", credential, new UserIdentifier(userObjId, UserIdentifierType.UniqueId));
             }
             catch (Exception ex)
             {
@@ -55,13 +53,14 @@ namespace GraphWebhooks.Controllers
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, subscriptionsEndpoint);
             var subscription = new Subscription
             {
-                Resource =  "me/messages",
+                Resource = "me/mailFolders('Inbox')/messages",
                 ChangeType = "Created",
                 NotificationUrl = ConfigurationManager.AppSettings["ida:NotificationUrl"],
-                ClientState = Guid.NewGuid().ToString()
-            }; 
-   
-            request.Content = new StringContent(JsonConvert.SerializeObject(subscription), System.Text.Encoding.UTF8, "application/json");
+                ClientState = Guid.NewGuid().ToString(),
+            };
+
+            string contentString = JsonConvert.SerializeObject(subscription, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+            request.Content = new StringContent(contentString, System.Text.Encoding.UTF8, "application/json");
 
             // Send the request and parse the response.
             HttpResponseMessage response = await client.SendAsync(request);
@@ -108,11 +107,13 @@ namespace GraphWebhooks.Controllers
                 {
                     string userObjId = System.Security.Claims.ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
                     string tenantId = System.Security.Claims.ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/tenantid").Value;
-                    SessionTokenCache tokenCache = new SessionTokenCache(userObjId, HttpContext);
                     string authority = string.Format(ConfigurationManager.AppSettings["ida:AADInstance"], tenantId, "");
+                    AuthenticationContext authContext = new AuthenticationContext(authority, false);
+                    ClientCredential credential = new ClientCredential(ConfigurationManager.AppSettings["ida:AppId"], ConfigurationManager.AppSettings["ida:AppSecret"]);
+                    AuthenticationResult authResult = await authContext.AcquireTokenSilentAsync("https://graph.microsoft.com", credential, new UserIdentifier(userObjId, UserIdentifierType.UniqueId));
 
-                    AuthHelper authHelper = new AuthHelper(authority, ConfigurationManager.AppSettings["ida:AppId"], ConfigurationManager.AppSettings["ida:AppSecret"], tokenCache);
-                    accessToken = await authHelper.GetUserAccessToken(Url.Action("Index", "Home", null, Request.Url.Scheme));
+                    accessToken = authResult?.AccessToken;
+
                 }
                 catch (Exception ex)
                 {
