@@ -1151,3 +1151,12 @@ to an MVC view that will display the organization's groups.
       </div>
   </div>
   ```
+  
+### Run the app
+
+1. Press **F5** to begin debugging.
+1. When prompted, login with your Office 365 administrator account.
+1. Click the **Groups** link in the navigation bar at the top of the page.
+1. Try out the app!
+
+Congratulations! In this exercise you have created an MVC application that uses Microsoft Graph to view and manage groups in Office 365!
