@@ -1,8 +1,8 @@
 # Get notified when data changes through Microsoft Graph Webhooks
 
-## TODO
--changes from beta -> v1.0 path
--changes for subscriptionExpirationDateTime -> expirationDateTime and subscriptionId -> id
+## TODO  
+- changes from beta -> v1.0 path  
+- changes for subscriptionExpirationDateTime -> expirationDateTime and subscriptionId -> id
 
 ## What You'll Learn
 In this lab, you'll create an ASP.NET MVC application that subscribes for Microsoft Graph webhooks and receives change notifications. You'll use the Microsoft Graph API to create a subscription, and you'll create a public endpoint that receives change notifications. 
