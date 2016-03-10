@@ -4,6 +4,7 @@
 - changes from beta -> v1.0 path  
 - changes for subscriptionExpirationDateTime -> expirationDateTime and subscriptionId -> id
 - change subscriptionExpirationDateTime to DateTimeOffset
+- change back to "me/messages" so we get new sent messages too? If not, need to change related verbiage
 
 ## What You'll Learn
 In this lab, you'll create an ASP.NET MVC application that subscribes for Microsoft Graph webhooks and receives change notifications. You'll use the Microsoft Graph API to create a subscription, and you'll create a public endpoint that receives change notifications. 
@@ -19,7 +20,7 @@ A webhooks subscription allows a client app to receive notifications about mail,
 ## Step 1: Create an ASP.NET MVC application
 1. Open Visual Studio and select **File/New/Project**. 
 
-1. In the **New Project** dialog, select **Templates/Visual C#/Graph AAD Auth v1 Starter Project**. If you don't see the template, try searching for *Graph*. The [starter project template] scaffolds some auth infrastructure for you.
+1. In the **New Project** dialog, select **Templates/Visual C#/Graph AAD Auth v1 Starter Project**. If you don't see the template, try searching for *Graph*. The starter project template scaffolds some auth infrastructure for you.
 
 1. Name the new project **GraphWebhooks**, and then click **OK**.  
     
