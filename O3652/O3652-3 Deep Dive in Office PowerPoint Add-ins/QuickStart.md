@@ -8,13 +8,18 @@ To start, you will need Visual Studio
 
 
 ## Excersize 1: Create a simple hello world add-in 
-1. Open Visual Studio 2015
-2. File > New > Project > Office > Office Add-in
-3. Choose Taskpane add-in and choose PowerPoint only as the add-in (this will make it easy for Visual Studio to detect that it should launch PowerPoint when pressing F5).
-4. The template will create a Manifest file that declares
-5. In addition it will
 
-Go ahead and press F5. When PowerPoint opens, click the Insert tab and select the image.
+1. Launch Visual Studio 2015 as administrator.
+1. From the **File** menu select the **New Project** command. When the **New Project** dialog appears, select the **Office Add-in** project template from the **Office/SharePoint** template folder as shown below. Name the new project **HelloWorld** and click **OK** to create the new project.
+
+1. When you create a new Office Add-in project, Visual Studio prompts you with the **Choose the app type** page of the **Create Office Add-in** dialog. This is the point where you select the type of add-in you want to create. Leave the default setting with the radio button titled **Task pane** and select **OK** to continue.
+
+	![](Images/Fig02.png)
+
+1. On the **Choose the host applications** page of the **Create Office Add-in** dialog, uncheck all the Office application except for **PowerPoint** and then click **Finish** to create the new Visual Studio solution. 
+
+
+2. Visual Studio will create the project. Next, go ahead and press F5. When PowerPoint opens, click the Insert tab and select the image.
 
 ## Excersize 2: Create the Excel Chart picker add-in for PowerPoint
 
