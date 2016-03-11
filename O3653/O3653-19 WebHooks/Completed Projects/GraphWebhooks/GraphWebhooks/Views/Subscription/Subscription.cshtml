@@ -33,18 +33,18 @@
         </tr>
         <tr>
             <td>
-                @Html.LabelFor(m => m.Subscription.SubscriptionId, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.LabelFor(m => m.Subscription.Id, htmlAttributes: new { @class = "control-label col-md-2" })
             </td>
             <td>
-                @Model.Subscription.SubscriptionId
+                @Model.Subscription.Id
             </td>
         </tr>
         <tr>
             <td>
-                @Html.LabelFor(m => m.Subscription.SubscriptionExpirationDateTime, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.LabelFor(m => m.Subscription.ExpirationDateTime, htmlAttributes: new { @class = "control-label col-md-2" })
             </td>
             <td>
-                @Model.Subscription.SubscriptionExpirationDateTime
+                @Model.Subscription.ExpirationDateTime
             </td>
         </tr>
     </table>

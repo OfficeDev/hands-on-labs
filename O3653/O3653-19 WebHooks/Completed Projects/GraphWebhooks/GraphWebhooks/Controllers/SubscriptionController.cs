@@ -57,6 +57,7 @@ namespace GraphWebhooks.Controllers
                 ChangeType = "Created",
                 NotificationUrl = ConfigurationManager.AppSettings["ida:NotificationUrl"],
                 ClientState = Guid.NewGuid().ToString(),
+                ExpirationDateTime = DateTime.UtcNow + new TimeSpan(3, 0, 0, 0)
             };
 
             string contentString = JsonConvert.SerializeObject(subscription, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
@@ -77,17 +78,17 @@ namespace GraphWebhooks.Controllers
                 // This app temporarily stores the current subscription ID, refreshToken and client state. 
                 // These are required so the NotificationController, which is not authenticated can retrieve an access token keyed from subscription id
                 // Production apps typically use some method of persistent storage.
-                HttpRuntime.Cache.Insert("subscriptionId_" + viewModel.Subscription.SubscriptionId, 
+                HttpRuntime.Cache.Insert("subscriptionId_" + viewModel.Subscription.Id, 
                     Tuple.Create(viewModel.Subscription.ClientState, authResult.RefreshToken), null, DateTime.MaxValue, new TimeSpan(24, 0, 0), System.Web.Caching.CacheItemPriority.NotRemovable, null);
 
                 // Save the latest subscription ID, so we can delete it later and filter teh view on it.
-                Session["SubscriptionId"] = viewModel.Subscription.SubscriptionId;
+                Session["SubscriptionId"] = viewModel.Subscription.Id;
                 return View("Subscription", viewModel);
 
             }
             else
             {
-                return RedirectToAction("Index", "Error", new { message = response.StatusCode, debug = response.Content });
+                return RedirectToAction("Index", "Error", new { message = response.StatusCode, debug = await response.Content.ReadAsStringAsync() });
             }
         }
 

@@ -2,9 +2,9 @@
 
 ## TODO  
 - changes from beta -> v1.0 path  
-- changes for subscriptionExpirationDateTime -> expirationDateTime and subscriptionId -> id
+- changes to JSON Attributes on model for subscriptionExpirationDateTime -> expirationDateTime and subscriptionId -> id
 - change subscriptionExpirationDateTime to DateTimeOffset
-- change back to "me/messages" so we get new sent messages too? If not, need to change related verbiage
+- change back to "me/messages" so we get new sent messages too? If not, need to change related verbiage  - think it's less confusing and better guidance to go with inbox and suggest you send a message to yourself. No 404s that way.
 
 ## What You'll Learn
 In this lab, you'll create an ASP.NET MVC application that subscribes for Microsoft Graph webhooks and receives change notifications. You'll use the Microsoft Graph API to create a subscription, and you'll create a public endpoint that receives change notifications. 
@@ -169,11 +169,11 @@ using Newtonsoft.Json;
         // The date and time when the webhooks subscription expires.
         // The time is in UTC, and can be up to three days from the time of subscription creation.
         [JsonProperty(PropertyName = "subscriptionExpirationDateTime")]
-        public DateTimeOffset? SubscriptionExpirationDateTime { get; set; }
+        public DateTimeOffset? ExpirationDateTime { get; set; }
 
         // The unique identifier for the webhooks subscription.
         [JsonProperty(PropertyName = "subscriptionId")]
-        public string SubscriptionId { get; set; }
+        public string Id { get; set; }
     }
 
     // The data that displays in the Subscription view.
@@ -258,6 +258,7 @@ using System.Threading.Tasks;
         ChangeType = "Created",
         NotificationUrl = ConfigurationManager.AppSettings["ida:NotificationUrl"],
         ClientState = Guid.NewGuid().ToString(),
+        ExpirationDateTime = DateTime.UtcNow + new TimeSpan(3, 0, 0, 0)
     };
 
     string contentString = JsonConvert.SerializeObject(subscription, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
@@ -285,16 +286,16 @@ This sample creates a subscription for the *me/messages* resource for *Created* 
             // This app temporarily stores the current subscription ID, refreshToken and client state. 
             // These are required so the NotificationController, which is not authenticated can retrieve an access token keyed from subscription id
             // Production applications typically use some method of persistent storage.
-            HttpRuntime.Cache.Insert("subscriptionId_" + viewModel.Subscription.SubscriptionId, 
+            HttpRuntime.Cache.Insert("subscriptionId_" + viewModel.Subscription.Id, 
                 Tuple.Create(viewModel.Subscription.ClientState, authResult.RefreshToken), null, DateTime.MaxValue, new TimeSpan(24, 0, 0), System.Web.Caching.CacheItemPriority.NotRemovable, null);
 
             // Save the latest subscription ID, so we can delete it later and filter teh view on it.
-            Session["SubscriptionId"] = viewModel.Subscription.SubscriptionId;
+            Session["SubscriptionId"] = viewModel.Subscription.Id;
             return View("Subscription", viewModel);
         }
         else
         {
-            return RedirectToAction("Index", "Error", new { message = response.StatusCode, debug = response.Content });
+            return RedirectToAction("Index", "Error", new { message = response.StatusCode, debug = await response.Content.ReadAsStringAsync() });
         }
    ```
 
@@ -426,18 +427,18 @@ In this step you'll create a view for the app start page and a view that display
             </tr>
             <tr>
                 <td>
-                    @Html.LabelFor(m => m.Subscription.SubscriptionId, htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.LabelFor(m => m.Subscription.Id, htmlAttributes: new { @class = "control-label col-md-2" })
                 </td>
                 <td>
-                    @Model.Subscription.SubscriptionId
+                    @Model.Subscription.Id
                 </td>
             </tr>
             <tr>
                 <td>
-                    @Html.LabelFor(m => m.Subscription.SubscriptionExpirationDateTime, htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.LabelFor(m => m.Subscription.ExpirationDateTime, htmlAttributes: new { @class = "control-label col-md-2" })
                 </td>
                 <td>
-                    @Model.Subscription.SubscriptionExpirationDateTime
+                    @Model.Subscription.ExpirationDateTime
                 </td>
             </tr>
         </table>
