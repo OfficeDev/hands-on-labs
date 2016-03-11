@@ -73,17 +73,13 @@ namespace GraphWebhooks
             string userObjId = notification.AuthenticationTicket.Identity
               .FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
 
-            // Create a token cache
-            // HttpContextBase httpContext = notification.OwinContext.Get<HttpContextBase>(typeof(HttpContextBase).FullName);
-            // SessionTokenCache tokenCache = new SessionTokenCache(userObjId, httpContext);
-
             // Exchange the auth code for a token
             ADAL.ClientCredential clientCred = new ADAL.ClientCredential(appId, appSecret);
 
             // Create the auth context
             ADAL.AuthenticationContext authContext = new ADAL.AuthenticationContext(
               string.Format(CultureInfo.InvariantCulture, aadInstance, "common", ""),
-              false);// , tokenCache);
+              false);
 
             ADAL.AuthenticationResult authResult = await authContext.AcquireTokenByAuthorizationCodeAsync(
               notification.Code, notification.Request.Uri, clientCred, "https://graph.microsoft.com");
