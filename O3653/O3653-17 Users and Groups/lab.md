@@ -28,6 +28,7 @@ In this first step, you will create a new ASP.NET MVC project using the
 1. Create a new controller: Right click on the **Controller** folder and select **Add**, **Controller**. Select **MVC 5 Controller - Empty**, click **Add** and then name the new controller **UserSearchController**.
 2. Create an associated view by right clicking the function **Index()**, **Add View**, and click **Add**. The view is created at **Views\UserSearch\Index.cshtml**.
 3. In **UserSearchController.cs**, replace the auto-generated **using** directives with
+4. 
     ```csharp
     using System;
     using System.IO;
@@ -42,7 +43,7 @@ In this first step, you will create a new ASP.NET MVC project using the
     ```
 4. In **UserSearchController.cs**, insert code into the **UserSearchController** class to intialize a **GraphServiceClient**, later used to make our calls to Microsoft Graph. The **GraphServiceClient** is initialized by obtaining an access token through the `GetUserAccessToken` helper function.
 
-    ```c#
+    ```csharp
     public class UserSearchController : Controller
     {
         public static string appId = ConfigurationManager.AppSettings["ida:AppId"];
