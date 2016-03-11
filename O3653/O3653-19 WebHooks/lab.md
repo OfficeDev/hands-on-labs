@@ -64,6 +64,28 @@ This application uses SignalR, which doesn't support ASP.NET session state. So y
     }
    ```
 
+1. Open **AccountController.cs** in the Controllers folder
+ 
+1. Replace the **SignOut** method with the following code:
+
+
+``` C#
+        public void SignOut()
+        {
+            if (Request.IsAuthenticated)
+            {
+                // Get the user's token cache and clear it
+                string userObjId = System.Security.Claims.ClaimsPrincipal.Current
+                  .FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
+
+            }
+            // Send an OpenID Connect sign-out request. 
+            HttpContext.GetOwinContext().Authentication.SignOut(
+              CookieAuthenticationDefaults.AuthenticationType);
+            Response.Redirect("/");
+        }
+```
+
 ## Step 2: Set up the ngrok proxy and notification URL data
 You must expose a public HTTPS endpoint to create a subscription and receive notifications from Microsoft Graph. While testing, you can use ngrok to temporarily allow messages from Microsoft Graph to tunnel to a port on your local computer. This makes it easier to test and debug webhooks. To learn more about using ngrok, see the [ngrok website](https://ngrok.com/).  
 
