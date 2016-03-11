@@ -3,8 +3,7 @@
 ## TODO  
 - changes from beta -> v1.0 path  
 - changes to JSON Attributes on model for subscriptionExpirationDateTime -> expirationDateTime and subscriptionId -> id
-- change subscriptionExpirationDateTime to DateTimeOffset
-- change back to "me/messages" so we get new sent messages too? If not, need to change related verbiage  - think it's less confusing and better guidance to go with inbox and suggest you send a message to yourself. No 404s that way.
+- change subscriptionExpirationDateTime to DateTimeOffset - GAJ ???
 
 ## What You'll Learn
 In this lab, you'll create an ASP.NET MVC application that subscribes for Microsoft Graph webhooks and receives change notifications. You'll use the Microsoft Graph API to create a subscription, and you'll create a public endpoint that receives change notifications. 
@@ -265,7 +264,7 @@ using System.Threading.Tasks;
     request.Content = new StringContent(contentString, System.Text.Encoding.UTF8, "application/json");
    ```
 
-This sample creates a subscription for the *me/messages* resource for *Created* change type. See the [docs](http://graph.microsoft.io/en-us/docs/api-reference/beta/resources/subscription) for other supported resources and change types. 
+This sample creates a subscription for the *me/mailFolders('Inbox')/messages* resource for *Created* change type. See the [docs](http://graph.microsoft.io/en-us/docs/api-reference/beta/resources/subscription) for other supported resources and change types. 
 
 ### Send the request and parse the response
 
@@ -368,13 +367,14 @@ In this step you'll create a view for the app start page and a view that display
 
 <div>
     <p>You can subscribe to webhooks for specific resources (such as Outlook messages or events) to get notifications about changes to the resource.</p>
-    <p>This sample creates a subscription for the <i>me/messages</i> resource and the <i>Created</i> change type. The request body looks like this:</p>
+    <p>This sample creates a subscription for the <i>me/mailFolders('Inbox')/messages</i> resource and the <i>Created</i> change type. The request body looks like this:</p>
     <code>
         {<br />
-        &nbsp;&nbsp;"resource": "me/messages",<br />
+        &nbsp;&nbsp;"resource": "me/mailFolders('Inbox')/messages",<br />
         &nbsp;&nbsp;"changeType": "Created",<br />
         &nbsp;&nbsp;"notificationUrl": "https://your-notification-endpoint",<br />
-        &nbsp;&nbsp;"clientState": "your-client-state"<br />
+        &nbsp;&nbsp;"clientState": "your-client-state",<br />
+        &nbsp;&nbsp;"expirationDateTime": "2016-03-14T03:13:29.4232606+00:00"<br />
         }
     </code>
     <p>See the <a href="http://graph.microsoft.io/en-us/docs/api-reference/beta/resources/subscription">docs</a> for other supported resources and change types.</p>
@@ -824,7 +824,7 @@ Congratulations! In this exercise you created an MVC application that subscribes
 
 1. Click the **Watch for notifications** button.
 
-1. Send an email to your administrator account, or send an email from the administrator account. The **Notification** page displays information about the message.
+1. Send an email to your administrator account. The **Notification** page displays information about the message.
 
 1. Click the **Delete subscription and sign out** button. 
 
