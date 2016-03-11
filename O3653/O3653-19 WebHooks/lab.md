@@ -198,6 +198,8 @@ In this step you'll create a controller that will send a **POST /subscriptions**
    ```c#
 using GraphWebhooks.Models;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
+using Microsoft.Owin.Security;
+using Microsoft.Owin.Security.OpenIdConnect;
 using Newtonsoft.Json;
 using System.Configuration;
 using System.Net.Http;
@@ -207,7 +209,7 @@ using System.Threading.Tasks;
 
 ### Create a webhooks subscription
 
-1. Add the **CreateSubscription** method. This gets an access token by calling a helper method, and then adds the token to the HTTP client that sends the **POST /subscriptions** request.
+1. Add the **CreateSubscription** method. This gets an access token, and then adds it to the HTTP client that sends the **POST /subscriptions** request.
 
    ```c#
     // Create webhooks subscriptions.
