@@ -46,7 +46,23 @@ namespace GroupsWebApp
           PostLogoutRedirectUri = "/",
           TokenValidationParameters = new TokenValidationParameters
           {
-            ValidateIssuer = false,
+            // For demo purposes only, see below
+            ValidateIssuer = false
+
+            // In a real multitenant app, you would add logic to determine whether the
+            // issuer was from an authorized tenant
+            //ValidateIssuer = true,
+            //IssuerValidator = (issuer, token, tvp) =>
+            //{
+            //  if (MyCustomTenantValidation(issuer))
+            //  {
+            //    return issuer;
+            //  }
+            //  else
+            //  {
+            //    throw new SecurityTokenInvalidIssuerException("Invalid issuer");
+            //  }
+            //}
           },
           Notifications = new OpenIdConnectAuthenticationNotifications
           {
