@@ -20,7 +20,7 @@ In this first step, you will create a new ASP.NET MVC project using the
       **Graph AAD Auth v1 Starter Project** template. This starter project template scaffolds some auth infrastructure for you, so that you can focus on calling the Microsoft Graph.
 3. Name the new project **PeoplePicker** and click **OK**.
 > NOTE: Make sure you use the exact same name that is specified in these instructions for your Visual Studio project. Otherwise, your namespace name will differ from the one in these instructions and your code will not compile.
-    ![](images/VSProject.jpg)
+    ![](images/VSProject.JPG)
 4. Your new application is ready to go! *Required*: hit F5 to to restore the NuGet packages required by the project. This will compile and launch your new application in the default browser.  You can sign in to the app using the O365 tenant administrator account provided to you.
 
 ## Step 2: Implement user search bar using the Microsoft Graph SDK
