@@ -1,4 +1,4 @@
-## Exercise 3: Leverage the Excel v2 JavaScript API in Excel 2016
+## Exercise 1: Build an Expense Report with new JavaScript APIs for Excel Add-ins 2016
 In this exercise you will create a Excel Add-in that uses the v2 JavaScript API included in Excel 2016. 
 
 > **Note**: For this exercise you must have Excel 2016 Preview, or a later version, installed. Refer to the prerequisites at the beginning of this lab for links on where to obtain Office 2016 Preview.
