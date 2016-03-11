@@ -30,11 +30,11 @@ namespace GraphWebhooks.Models
         // The date and time when the webhooks subscription expires.
         // The time is in UTC, and can be up to three days from the time of subscription creation.
         [JsonProperty(PropertyName = "subscriptionExpirationDateTime")]
-        public DateTimeOffset? SubscriptionExpirationDateTime { get; set; }
+        public DateTimeOffset? ExpirationDateTime { get; set; }
 
         // The unique identifier for the webhooks subscription.
         [JsonProperty(PropertyName = "subscriptionId")]
-        public string SubscriptionId { get; set; }
+        public string Id { get; set; }
     }
 
     // The data that displays in the Subscription view.

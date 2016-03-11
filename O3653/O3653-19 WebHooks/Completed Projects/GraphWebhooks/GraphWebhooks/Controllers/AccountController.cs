@@ -28,8 +28,6 @@ namespace GraphWebhooks.Controllers
                 string userObjId = System.Security.Claims.ClaimsPrincipal.Current
                   .FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
 
-                // SessionTokenCache tokenCache = new SessionTokenCache(userObjId, HttpContext);
-                // tokenCache.Clear();
             }
             // Send an OpenID Connect sign-out request. 
             HttpContext.GetOwinContext().Authentication.SignOut(

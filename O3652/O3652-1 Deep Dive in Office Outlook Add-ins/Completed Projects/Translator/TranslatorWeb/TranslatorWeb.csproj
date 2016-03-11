@@ -68,6 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+    <Content Include="Scripts\FabricUI\JQuery.Dropdown.js" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -366,7 +367,11 @@
     <Content Include="Scripts\Office\metadata\endpoints.xml" />
     <Content Include="Scripts\Office\metadata\features.xml" />
     <Content Include="Scripts\Office\MicrosoftAjax.js" />
+    <Content Include="Scripts\translate.js" />
     <Content Include="Scripts\_officeintellisense.js" />
+    <Content Include="TranslatePane.css" />
+    <Content Include="TranslatePane.html" />
+    <Content Include="TranslatePane.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>

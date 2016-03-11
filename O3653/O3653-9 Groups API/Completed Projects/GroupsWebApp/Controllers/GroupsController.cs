@@ -42,6 +42,7 @@ namespace GroupsWebApp.Controllers
       }
       catch (ServiceException ex)
       {
+        if (ex.Error.Code == "InvalidAuthenticationToken") { return new EmptyResult(); }
         return RedirectToAction("Index", "Error", new { message = ex.Error.Message });
       }
     }
@@ -62,6 +63,7 @@ namespace GroupsWebApp.Controllers
       }
       catch (ServiceException ex)
       {
+        if (ex.Error.Code == "InvalidAuthenticationToken") { return new EmptyResult(); }
         return RedirectToAction("Index", "Error", new { message = ex.Error.Message });
       }
     }
@@ -85,6 +87,7 @@ namespace GroupsWebApp.Controllers
       }
       catch (ServiceException ex)
       {
+        if (ex.Error.Code == "InvalidAuthenticationToken") { return new EmptyResult(); }
         return RedirectToAction("Index", "Error", new { message = ex.Error.Message });
       }
     }
@@ -122,6 +125,7 @@ namespace GroupsWebApp.Controllers
         }
         catch (ServiceException ex)
         {
+          if (ex.Error.Code == "InvalidAuthenticationToken") { return new EmptyResult(); }
           TempData["error"] = ex.Error.Message;
         }
       }
@@ -159,6 +163,7 @@ namespace GroupsWebApp.Controllers
       }
       catch (ServiceException ex)
       {
+        if (ex.Error.Code == "InvalidAuthenticationToken") { return new EmptyResult(); }
         return RedirectToAction("Index", "Error", new { message = ex.Error.Message });
       }
     }
@@ -192,6 +197,7 @@ namespace GroupsWebApp.Controllers
         }
         catch (ServiceException ex)
         {
+          if (ex.Error.Code == "InvalidAuthenticationToken") { return new EmptyResult(); }
           TempData["error"] = ex.Error.Message;
         }
       }
@@ -229,6 +235,7 @@ namespace GroupsWebApp.Controllers
       }
       catch (ServiceException ex)
       {
+        if (ex.Error.Code == "InvalidAuthenticationToken") { return new EmptyResult(); }
         return RedirectToAction("Index", "Error", new { message = ex.Error.Message });
       }
     }
@@ -272,6 +279,7 @@ namespace GroupsWebApp.Controllers
         }
         catch (ServiceException ex)
         {
+          if (ex.Error.Code == "InvalidAuthenticationToken") { return new EmptyResult(); }
           TempData["error"] = ex.Error.Message;
         }
       }
@@ -324,6 +332,7 @@ namespace GroupsWebApp.Controllers
       }
       catch (ServiceException ex)
       {
+        if (ex.Error.Code == "InvalidAuthenticationToken") { return new EmptyResult(); }
         return RedirectToAction("Index", "Error", new { message = ex.Error.Message });
       }
     }
@@ -358,6 +367,7 @@ namespace GroupsWebApp.Controllers
         }
         catch (ServiceException ex)
         {
+          if (ex.Error.Code == "InvalidAuthenticationToken") { return new EmptyResult(); }
           TempData["error"] = ex.Error.Message;
         }
       }
@@ -395,6 +405,7 @@ namespace GroupsWebApp.Controllers
       }
       catch (ServiceException ex)
       {
+        if (ex.Error.Code == "InvalidAuthenticationToken") { return new EmptyResult(); }
         return RedirectToAction("Index", "Error", new { message = ex.Error.Message });
       }
     }
@@ -431,6 +442,7 @@ namespace GroupsWebApp.Controllers
           // TEMP WORKAROUND
           if (!ex.Error.Message.Equals("An unexpected error occurred during deserialization."))
           {
+            if (ex.Error.Code == "InvalidAuthenticationToken") { return new EmptyResult(); }
             TempData["error"] = ex.Error.Message;
           }
         }
