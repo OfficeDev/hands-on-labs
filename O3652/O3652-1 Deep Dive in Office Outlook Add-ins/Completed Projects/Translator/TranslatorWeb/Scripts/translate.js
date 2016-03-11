@@ -20,8 +20,10 @@ function generateRequestUrl(sourcelang, targetlang, text) {
   // Get one at https://translate.yandex.com/developers
   var apiKey = 'trnsl.1.1.20160307T181216Z.d196743e80fa7729.bc288268c83777a2db2ea778d3a73647a752a634';
 
+  var langspec = sourcelang.length > 0 ? sourcelang + '-' + targetlang : targetlang;
+
   return 'https://translate.yandex.net/api/v1.5/tr.json/translate?key='
-    + apiKey + '&lang=' + sourcelang + '-' + targetlang + encodedText;
+    + apiKey + '&lang=' + langspec + encodedText;
 }
 
 function translate(sourcelang, targetlang, callback) {

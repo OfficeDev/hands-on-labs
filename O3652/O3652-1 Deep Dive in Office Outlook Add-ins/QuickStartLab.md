@@ -34,7 +34,7 @@ Now that you've verified that the add-in is working, Exercise 1 is complete!
 
 ## Exercise 2: Add buttons to the new message ribbon
 
-In this exercise you will add a button to do English-to-Spanish translation and a button to open a task pane, allowing the user to select start and end languages. 
+In this exercise you will add a button to do translate text to Latin and a button to open a task pane, allowing the user to select start and end languages.
   
 1. Add the **Translator** button group to the new message ribbon.
   1. Open the **Translator/TranslatorManifest/Translator.xml** file.
@@ -52,22 +52,22 @@ In this exercise you will add a button to do English-to-Spanish translation and 
       <OfficeTab id="TabDefault">
         <Group id="msgComposeGroup">
           <Label resid="groupLabel"/>
-          <!-- Add English to Spanish button here -->
+          <!-- Add Latin translation button here -->
           <!-- Add More Options button here -->
         </Group>
       </OfficeTab>
     </ExtensionPoint>
     ```
     
-1. Add the **English to Spanish** button.
-  1. Replace the `<!-- Add English to Spanish button here -->` line with the following:
+1. Add the **Translate to Latin** button.
+  1. Replace the `<!-- Add Latin translation button here -->` line with the following:
     
     ```xml
-    <Control xsi:type="Button" id="msgComposeEn-Es">
-      <Label resid="englishSpanishLabel"/>
+    <Control xsi:type="Button" id="msgComposeToLatin">
+      <Label resid="toLatinLabel"/>
       <Supertip>
-        <Title resid="englishSpanishTitle"/>
-        <Description resid="englishSpanishDesc"/>
+        <Title resid="toLatinTitle"/>
+        <Description resid="toLatinDesc"/>
       </Supertip>
       <Icon>
         <bt:Image size="16" resid="icon16"/>
@@ -75,7 +75,7 @@ In this exercise you will add a button to do English-to-Spanish translation and 
         <bt:Image size="80" resid="icon80"/>
       </Icon>
       <Action xsi:type="ExecuteFunction">
-        <FunctionName>translateEnglish2Spanish</FunctionName>
+        <FunctionName>translateToLatin</FunctionName>
       </Action>
     </Control>
     ```
@@ -118,8 +118,8 @@ In this exercise you will add a button to do English-to-Spanish translation and 
   1. Add the following elements after the last `<bt:String>` element inside the `<bt:ShortStrings>` element:
   
     ```xml
-    <bt:String id="englishSpanishLabel" DefaultValue="English to Spanish"/>
-    <bt:String id="englishSpanishTitle" DefaultValue="Translate English to Spanish"/>
+    <bt:String id="toLatinLabel" DefaultValue="Translate to Latin"/>
+    <bt:String id="toLatinTitle" DefaultValue="Translate any language to Latin"/>
     <bt:String id="translatePaneButtonLabel" DefaultValue="More Options"/>
     <bt:String id="translatePaneButtonTitle" DefaultValue="Choose to and from language"/>
     ```
@@ -128,7 +128,7 @@ In this exercise you will add a button to do English-to-Spanish translation and 
   1. Add the following elements after the last `<bt:String>` element inside the `<bt:LongStrings>` element:
   
     ```xml
-    <bt:String id="englishSpanishDesc" DefaultValue="Translates the selected text from English to Spanish"/>
+    <bt:String id="toLatinDesc" DefaultValue="Auto-detects the starting language and translates the selected text to Latin. Instantly sound smarter!"/>
     <bt:String id="translatePaneButtonDesc" DefaultValue="Opens a window allowing you to choose a to and from language for translation"/>
     ```
     
@@ -151,20 +151,20 @@ In this exercise you will add a button to do English-to-Spanish translation and 
         <bt:String id="customTabLabel"  DefaultValue="My Add-in Tab"/>
         <bt:String id="paneReadButtonLabel" DefaultValue="Display all properties"/>
         <bt:String id="paneReadSuperTipTitle" DefaultValue="Get all properties"/>
-        <bt:String id="englishSpanishLabel" DefaultValue="English to Spanish"/>
-        <bt:String id="englishSpanishTitle" DefaultValue="Translate English to Spanish"/>
+        <bt:String id="toLatinLabel" DefaultValue="Translate to Latin"/>
+        <bt:String id="toLatinTitle" DefaultValue="Translate any language to Latin"/>
         <bt:String id="translatePaneButtonLabel" DefaultValue="More Options"/>
         <bt:String id="translatePaneButtonTitle" DefaultValue="Choose to and from language"/> 
       </bt:ShortStrings>
       <bt:LongStrings>
         <bt:String id="paneReadSuperTipDescription" DefaultValue="Opens a pane displaying all available properties. This is an example of a button that opens a task pane."/>
-        <bt:String id="englishSpanishDesc" DefaultValue="Translates the selected text from English to Spanish"/>
-        <bt:String id="translatePaneButtonDesc" DefaultValue="Opens a window allowing you to choose a to and from language for translation"/>
+        <bt:String id="toLatinDesc" DefaultValue="Auto-detects the starting language and translates the selected text to Latin. Instantly sound smarter!"/>
+        <bt:String id="translatePaneButtonDesc" DefaultValue="Opens a window allowing you to choose a to and from language for translation."/>
       </bt:LongStrings>
     </Resources>
     ```
     
-1. Save your changes and press F5 to start debugging. Once the app starts, open Outlook 2016. (If it is still open from before, the add-in should refresh after a moment.) Create a new message. You should see the **English to Spanish** and **More Options** buttons on the ribbon:
+1. Save your changes and press F5 to start debugging. Once the app starts, open Outlook 2016. (If it is still open from before, the add-in should refresh after a moment.) Create a new message. You should see the **Translate to Latin** and **More Options** buttons on the ribbon:
 
   ![A new message in Outlook 2016 with the add-in buttons](./Images/compose-message.PNG)
   
@@ -205,8 +205,10 @@ In this exercise you will implement the functions to call the [Yandex Translate 
       // Get one at https://translate.yandex.com/developers
       var apiKey = 'PASTE YOUR YANDEX API KEY HERE';
 
+      var langspec = sourcelang.length > 0 ? sourcelang + '-' + targetlang : targetlang;
+
       return 'https://translate.yandex.net/api/v1.5/tr.json/translate?key='
-        + apiKey + '&lang=' + sourcelang + '-' + targetlang + encodedText;
+        + apiKey + '&lang=' + langspec + encodedText;
     }
 
     function translate(sourcelang, targetlang, callback) {
@@ -266,8 +268,8 @@ In this exercise you will implement the functions to call the [Yandex Translate 
   1. Open the **TranslateWeb/Functions/FunctionFile.js** file and add the following function.
 
     ```javascript
-    function translateEnglish2Spanish(event) {
-      translate('en', 'es', function(error) {
+    function translateToLatin(event) {
+      translate('', 'la', function (error) {
         if (error) {
           Office.context.mailbox.item.notificationMessages.addAsync('translateError', {
             type: 'errorMessage',
@@ -277,13 +279,13 @@ In this exercise you will implement the functions to call the [Yandex Translate 
         else {
           Office.context.mailbox.item.notificationMessages.addAsync('success', {
             type: 'informationalMessage',
-            icon: 'icon16',
+            icon: 'icon-16',
             message: 'Translated successfully',
             persistent: false
           });
         }
       });
-      
+
       event.completed();
     }
     ```
@@ -332,10 +334,71 @@ In this exercise you will implement the functions to call the [Yandex Translate 
                   <label class="ms-Label">Starting language</label>
                   <i class="ms-Dropdown-caretDown ms-Icon ms-Icon--caretDown"></i>
                   <select class="ms-Dropdown-select">
-                    <option value="none">Choose a language...</option>
+                    <option>Choose a language...</option>
+                    <option id="start-Auto-detect" value="auto-detect">Auto-detect</option>
+                    <option id="start-Afrikaans" value="af">Afrikaans</option>
+                    <option id="start-Albanian" value="sq">Albanian</option>
+                    <option id="start-Arabic" value="ar">Arabic</option>
+                    <option id="start-Armenian" value="hy">Armenian</option>
+                    <option id="start-Azerbaijan" value="az">Azerbaijan</option>
+                    <option id="start-Basque" value="eu">Basque</option>
+                    <option id="start-Belarusian" value="be">Belarusian</option>
+                    <option id="start-Bosnian" value="bs">Bosnian</option>
+                    <option id="start-Bulgarian" value="bg">Bulgarian</option>
+                    <option id="start-Catalan" value="ca">Catalan</option>
+                    <option id="start-Chinese" value="zh">Chinese</option>
+                    <option id="start-Croatian" value="hr">Croatian</option>
+                    <option id="start-Czech" value="cs">Czech</option>
+                    <option id="start-Danish" value="da">Danish</option>
+                    <option id="start-Dutch" value="nl">Dutch</option>
                     <option id="start-English" value="en">English</option>
-                    <option id="start-Spanish" value="es">Spanish</option>
+                    <option id="start-Estonian" value="et">Estonian</option>
+                    <option id="start-Finish" value="fi">Finish</option>
                     <option id="start-French" value="fr">French</option>
+                    <option id="start-Galician" value="gl">Galician</option>
+                    <option id="start-Georgian" value="ka">Georgian</option>
+                    <option id="start-German" value="de">German</option>
+                    <option id="start-Greek" value="el">Greek</option>
+                    <option id="start-Haitian" value="ht">Haitian</option>
+                    <option id="start-Hungarian" value="hu">Hungarian</option>
+                    <option id="start-Icelandic" value="is">Icelandic</option>
+                    <option id="start-Indonesian" value="id">Indonesian</option>
+                    <option id="start-Irish" value="ga">Irish</option>
+                    <option id="start-Italian" value="it">Italian</option>
+                    <option id="start-Japanese" value="ja">Japanese</option>
+                    <option id="start-Kazakh" value="kk">Kazakh</option>
+                    <option id="start-Korean" value="ko">Korean</option>
+                    <option id="start-Kyrgyz" value="ky">Kyrgyz</option>
+                    <option id="start-Latin" value="la">Latin</option>
+                    <option id="start-Latvian" value="lv">Latvian</option>
+                    <option id="start-Lithuanian" value="lt">Lithuanian</option>
+                    <option id="start-Macedonian" value="mk">Macedonian</option>
+                    <option id="start-Malagasy" value="mg">Malagasy</option>
+                    <option id="start-Malay" value="ms">Malay</option>
+                    <option id="start-Maltese" value="mt">Maltese</option>
+                    <option id="start-Mongolian" value="mn">Mongolian</option>
+                    <option id="start-Norwegian" value="no">Norwegian</option>
+                    <option id="start-Persian" value="fa">Persian</option>
+                    <option id="start-Polish" value="pl">Polish</option>
+                    <option id="start-Portuguese" value="pt">Portuguese</option>
+                    <option id="start-Romanian" value="ro">Romanian</option>
+                    <option id="start-Russian" value="ru">Russian</option>
+                    <option id="start-Serbian" value="sr">Serbian</option>
+                    <option id="start-Slovakian" value="sk">Slovakian</option>
+                    <option id="start-Slovenian" value="sl">Slovenian</option>
+                    <option id="start-Spanish" value="es">Spanish</option>
+                    <option id="start-Swahili" value="sw">Swahili</option>
+                    <option id="start-Swedish" value="sv">Swedish</option>
+                    <option id="start-Tagalog" value="tl">Tagalog</option>
+                    <option id="start-Tajik" value="tg">Tajik</option>
+                    <option id="start-Tatar" value="tt">Tatar</option>
+                    <option id="start-Thai" value="th">Thai</option>
+                    <option id="start-Turkish" value="tr">Turkish</option>
+                    <option id="start-Ukrainian" value="uk">Ukrainian</option>
+                    <option id="start-Uzbek" value="uz">Uzbek</option>
+                    <option id="start-Vietnamese" value="vi">Vietnamese</option>
+                    <option id="start-Welsh" value="cy">Welsh</option>
+                    <option id="start-Yiddish" value="he">Yiddish</option>
                   </select>
                 </div>
               </div>
@@ -345,9 +408,69 @@ In this exercise you will implement the functions to call the [Yandex Translate 
                   <i class="ms-Dropdown-caretDown ms-Icon ms-Icon--caretDown"></i>
                   <select class="ms-Dropdown-select">
                     <option>Choose a language...</option>
+                    <option id="end-Afrikaans" value="af">Afrikaans</option>
+                    <option id="end-Albanian" value="sq">Albanian</option>
+                    <option id="end-Arabic" value="ar">Arabic</option>
+                    <option id="end-Armenian" value="hy">Armenian</option>
+                    <option id="end-Azerbaijan" value="az">Azerbaijan</option>
+                    <option id="end-Basque" value="eu">Basque</option>
+                    <option id="end-Belarusian" value="be">Belarusian</option>
+                    <option id="end-Bosnian" value="bs">Bosnian</option>
+                    <option id="end-Bulgarian" value="bg">Bulgarian</option>
+                    <option id="end-Catalan" value="ca">Catalan</option>
+                    <option id="end-Chinese" value="zh">Chinese</option>
+                    <option id="end-Croatian" value="hr">Croatian</option>
+                    <option id="end-Czech" value="cs">Czech</option>
+                    <option id="end-Danish" value="da">Danish</option>
+                    <option id="end-Dutch" value="nl">Dutch</option>
                     <option id="end-English" value="en">English</option>
-                    <option id="end-Spanish" value="es">Spanish</option>
+                    <option id="end-Estonian" value="et">Estonian</option>
+                    <option id="end-Finish" value="fi">Finish</option>
                     <option id="end-French" value="fr">French</option>
+                    <option id="end-Galician" value="gl">Galician</option>
+                    <option id="end-Georgian" value="ka">Georgian</option>
+                    <option id="end-German" value="de">German</option>
+                    <option id="end-Greek" value="el">Greek</option>
+                    <option id="end-Haitian" value="ht">Haitian</option>
+                    <option id="end-Hungarian" value="hu">Hungarian</option>
+                    <option id="end-Icelandic" value="is">Icelandic</option>
+                    <option id="end-Indonesian" value="id">Indonesian</option>
+                    <option id="end-Irish" value="ga">Irish</option>
+                    <option id="end-Italian" value="it">Italian</option>
+                    <option id="end-Japanese" value="ja">Japanese</option>
+                    <option id="end-Kazakh" value="kk">Kazakh</option>
+                    <option id="end-Korean" value="ko">Korean</option>
+                    <option id="end-Kyrgyz" value="ky">Kyrgyz</option>
+                    <option id="end-Latin" value="la">Latin</option>
+                    <option id="end-Latvian" value="lv">Latvian</option>
+                    <option id="end-Lithuanian" value="lt">Lithuanian</option>
+                    <option id="end-Macedonian" value="mk">Macedonian</option>
+                    <option id="end-Malagasy" value="mg">Malagasy</option>
+                    <option id="end-Malay" value="ms">Malay</option>
+                    <option id="end-Maltese" value="mt">Maltese</option>
+                    <option id="end-Mongolian" value="mn">Mongolian</option>
+                    <option id="end-Norwegian" value="no">Norwegian</option>
+                    <option id="end-Persian" value="fa">Persian</option>
+                    <option id="end-Polish" value="pl">Polish</option>
+                    <option id="end-Portuguese" value="pt">Portuguese</option>
+                    <option id="end-Romanian" value="ro">Romanian</option>
+                    <option id="end-Russian" value="ru">Russian</option>
+                    <option id="end-Serbian" value="sr">Serbian</option>
+                    <option id="end-Slovakian" value="sk">Slovakian</option>
+                    <option id="end-Slovenian" value="sl">Slovenian</option>
+                    <option id="end-Spanish" value="es">Spanish</option>
+                    <option id="end-Swahili" value="sw">Swahili</option>
+                    <option id="end-Swedish" value="sv">Swedish</option>
+                    <option id="end-Tagalog" value="tl">Tagalog</option>
+                    <option id="end-Tajik" value="tg">Tajik</option>
+                    <option id="end-Tatar" value="tt">Tatar</option>
+                    <option id="end-Thai" value="th">Thai</option>
+                    <option id="end-Turkish" value="tr">Turkish</option>
+                    <option id="end-Ukrainian" value="uk">Ukrainian</option>
+                    <option id="end-Uzbek" value="uz">Uzbek</option>
+                    <option id="end-Vietnamese" value="vi">Vietnamese</option>
+                    <option id="end-Welsh" value="cy">Welsh</option>
+                    <option id="end-Yiddish" value="he">Yiddish</option>
                   </select>
                 </div>
               </div>
@@ -365,11 +488,6 @@ In this exercise you will implement the functions to call the [Yandex Translate 
                 <div id="error-box" class="ms-bgColor-error">
                   <div id="error-msg" class="ms-font-l ms-fontColor-error"></div>
                 </div>
-              </div>
-            </div>
-            <div class="ms-Grid-row">
-              <div class="ms-Grid-col ms-u-sm12">
-                <pre id="debug"></pre>
               </div>
             </div>
           </div>
@@ -394,7 +512,7 @@ In this exercise you will implement the functions to call the [Yandex Translate 
       };
 
       function doTranslate() {
-        $("#error-box").hide('fast');
+        $('#error-box').hide('fast');
         var startlang = $('#start-lang').children('.ms-Dropdown-title').text();
         var endlang = $('#end-lang').children('.ms-Dropdown-title').text();
 
@@ -402,12 +520,19 @@ In this exercise you will implement the functions to call the [Yandex Translate 
         var endlangcode = $('#end-lang').find('#end-' + endlang.replace(/\s|\./g, ''));
 
         if (startlangcode.length > 0 && endlangcode.length > 0) {
-          $('#pending-message').html('Working on your ' + startlang +
-          ' to ' + endlang + ' translation request');
+          var startlangcodeval = startlangcode.val() === 'auto-detect' ? '' : startlangcode.val();
+
+          if (startlangcodeval === '') {
+            $('#pending-message').html('Working on your ' + endlang + ' translation request');
+          }
+          else {
+            $('#pending-message').html('Working on your ' + startlang +
+              ' to ' + endlang + ' translation request');
+          }
           $('#translate-form').hide('fast');
           $('#pending').show('fast');
-
-          translate(startlangcode.val(), endlangcode.val(), function (error) {
+          
+          translate(startlangcodeval, endlangcode.val(), function (error) {
             $('#pending').hide('fast');
             $('#translate-form').show('fast');
             if (error) {
@@ -427,11 +552,61 @@ In this exercise you will implement the functions to call the [Yandex Translate 
   1. Right-click the **TranslatorWeb** project and select **Add**, then **Style Sheet**. Name the file `TranslatePane` and click **OK**. Replace the contents of that file with the following.
   
     ```css
+    #content-header {
+      background: #2a8dd4;
+      color: #fff;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 80px; /* Fixed header height */
+      overflow: hidden; /* Disable scrollbars for header */
+    }
+
+    #content-main {
+      background: #fff;
+      position: fixed;
+      top: 80px; /* Same value as #content-header's height */
+      left: 0;
+      right: 0;
+      bottom: 0;
+      overflow: auto; /* Enable scrollbars within main content section */
+    }
+
+    #translateText {
+      width: 100px;
+    }
+
+    #error-box {
+      margin: 20px 0;
+      padding: 5px;
+    }
+
+    .padding {
+      padding: 15px;
+    }
     ```
     
   1. Add the Fabric UI Dropdown plugin
     1. Download the [Jquery.Dropdown.js file](https://github.com/OfficeDev/Office-UI-Fabric/blob/master/src/components/Dropdown/Jquery.Dropdown.js) from GitHub.
     1. Move the file into the **TranslatorWeb/Scripts/FabricUI** folder in the project.
     1. Right-click the **TranslatorWeb/Scripts/FabricUI**, choose **Add**, then **Existing item**. Browse to the **Jquery.Dropdown.js** file in the **FabricUI** folder and click **Add**.
+    
+  1. Run the add-in
+    1. Press **F5** to begin debugging.
+    1. Open Outlook 2016 and login to the user's mailbox. Compose a new message.
+    1. Enter some text in the body, then select it.
+      
+      ![A new message in Outlook 2016 with text selected](./Images/latin-before.PNG)
+      
+    1. Click the **Translate to Latin** button and verify that the text is translated.
+    
+      ![A new message in Outlook 2016 with text translated to Latin](./Images/latin-after.PNG)
+      
+    1. Click the **More Options** button to open the translation pane. Try different combinations.
+    
+      ![A new message in Outlook 2016 with translation pane showing](./Images/translate-pane.PNG)
+      
+  Congratulations! In this exercise you have created an Outlook add-in that adds buttons to the Outlook ribbon and modifies the body of messages in the compose window.
     
   

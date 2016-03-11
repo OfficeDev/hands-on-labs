@@ -11,7 +11,7 @@
   };
 
   function doTranslate() {
-    $("#error-box").hide('fast');
+    $('#error-box').hide('fast');
     var startlang = $('#start-lang').children('.ms-Dropdown-title').text();
     var endlang = $('#end-lang').children('.ms-Dropdown-title').text();
 
@@ -19,12 +19,19 @@
     var endlangcode = $('#end-lang').find('#end-' + endlang.replace(/\s|\./g, ''));
 
     if (startlangcode.length > 0 && endlangcode.length > 0) {
-      $('#pending-message').html('Working on your ' + startlang +
-       ' to ' + endlang + ' translation request');
+      var startlangcodeval = startlangcode.val() === 'auto-detect' ? '' : startlangcode.val();
+
+      if (startlangcodeval === '') {
+        $('#pending-message').html('Working on your ' + endlang + ' translation request');
+      }
+      else {
+        $('#pending-message').html('Working on your ' + startlang +
+          ' to ' + endlang + ' translation request');
+      }
       $('#translate-form').hide('fast');
       $('#pending').show('fast');
-
-      translate(startlangcode.val(), endlangcode.val(), function (error) {
+      
+      translate(startlangcodeval, endlangcode.val(), function (error) {
         $('#pending').hide('fast');
         $('#translate-form').show('fast');
         if (error) {

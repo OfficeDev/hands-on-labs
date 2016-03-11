@@ -15,8 +15,8 @@ function defaultStatus(event) {
   statusUpdate("icon16" , "Hello World!");
 }
 
-function translateEnglish2Spanish(event) {
-  translate('en', 'es', function (error) {
+function translateToLatin(event) {
+  translate('', 'la', function (error) {
     if (error) {
       Office.context.mailbox.item.notificationMessages.addAsync('translateError', {
         type: 'errorMessage',

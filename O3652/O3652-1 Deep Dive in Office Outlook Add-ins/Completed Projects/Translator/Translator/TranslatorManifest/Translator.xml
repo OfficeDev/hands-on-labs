@@ -71,11 +71,11 @@
             <OfficeTab id="TabDefault">
               <Group id="msgComposeGroup">
                 <Label resid="groupLabel"/>
-                <Control xsi:type="Button" id="msgComposeEn-Es">
-                  <Label resid="englishSpanishLabel"/>
+                <Control xsi:type="Button" id="msgComposeToLatin">
+                  <Label resid="toLatinLabel"/>
                   <Supertip>
-                    <Title resid="englishSpanishTitle"/>
-                    <Description resid="englishSpanishDesc"/>
+                    <Title resid="toLatinTitle"/>
+                    <Description resid="toLatinDesc"/>
                   </Supertip>
                   <Icon>
                     <bt:Image size="16" resid="icon16"/>
@@ -83,7 +83,7 @@
                     <bt:Image size="80" resid="icon80"/>
                   </Icon>
                   <Action xsi:type="ExecuteFunction">
-                    <FunctionName>translateEnglish2Spanish</FunctionName>
+                    <FunctionName>translateToLatin</FunctionName>
                   </Action>
                 </Control>
                 <Control xsi:type="Button" id="msgComposePaneButton">
@@ -153,15 +153,15 @@
         <bt:String id="customTabLabel"  DefaultValue="My Add-in Tab"/>
         <bt:String id="paneReadButtonLabel" DefaultValue="Display all properties"/>
         <bt:String id="paneReadSuperTipTitle" DefaultValue="Get all properties"/>
-        <bt:String id="englishSpanishLabel" DefaultValue="English to Spanish"/>
-        <bt:String id="englishSpanishTitle" DefaultValue="Translate English to Spanish"/>
+        <bt:String id="toLatinLabel" DefaultValue="Translate to Latin"/>
+        <bt:String id="toLatinTitle" DefaultValue="Translate any language to Latin"/>
         <bt:String id="translatePaneButtonLabel" DefaultValue="More Options"/>
         <bt:String id="translatePaneButtonTitle" DefaultValue="Choose to and from language"/> 
       </bt:ShortStrings>
       <bt:LongStrings>
         <bt:String id="paneReadSuperTipDescription" DefaultValue="Opens a pane displaying all available properties. This is an example of a button that opens a task pane."/>
-        <bt:String id="englishSpanishDesc" DefaultValue="Translates the selected text from English to Spanish"/>
-        <bt:String id="translatePaneButtonDesc" DefaultValue="Opens a window allowing you to choose a to and from language for translation"/>
+        <bt:String id="toLatinDesc" DefaultValue="Auto-detects the starting language and translates the selected text to Latin. Instantly sound smarter!"/>
+        <bt:String id="translatePaneButtonDesc" DefaultValue="Opens a window allowing you to choose a to and from language for translation."/>
       </bt:LongStrings>
     </Resources>
   </VersionOverrides>
