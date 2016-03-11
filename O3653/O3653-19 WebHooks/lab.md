@@ -63,27 +63,27 @@ This application uses SignalR, which doesn't support ASP.NET session state. So y
     }
    ```
 
-1. Open **AccountController.cs** in the Controllers folder
+1. Open **AccountController.cs** in the Controllers folder.
  
 1. Replace the **SignOut** method with the following code:
 
 
-``` C#
-        public void SignOut()
+   ```c#
+    public void SignOut()
+    {
+        if (Request.IsAuthenticated)
         {
-            if (Request.IsAuthenticated)
-            {
-                // Get the user's token cache and clear it
-                string userObjId = System.Security.Claims.ClaimsPrincipal.Current
-                  .FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
+            // Get the user's token cache and clear it
+            string userObjId = System.Security.Claims.ClaimsPrincipal.Current
+                .FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
 
-            }
-            // Send an OpenID Connect sign-out request. 
-            HttpContext.GetOwinContext().Authentication.SignOut(
-              CookieAuthenticationDefaults.AuthenticationType);
-            Response.Redirect("/");
         }
-```
+        // Send an OpenID Connect sign-out request. 
+        HttpContext.GetOwinContext().Authentication.SignOut(
+            CookieAuthenticationDefaults.AuthenticationType);
+        Response.Redirect("/");
+    }
+   ```
 
 ## Step 2: Set up the ngrok proxy and notification URL data
 You must expose a public HTTPS endpoint to create a subscription and receive notifications from Microsoft Graph. While testing, you can use ngrok to temporarily allow messages from Microsoft Graph to tunnel to a port on your local computer. This makes it easier to test and debug webhooks. To learn more about using ngrok, see the [ngrok website](https://ngrok.com/).  
@@ -225,7 +225,17 @@ using System.Threading.Tasks;
             string authority = string.Format(ConfigurationManager.AppSettings["ida:AADInstance"], tenantId, "");
             AuthenticationContext authContext = new AuthenticationContext(authority, false);
             ClientCredential credential = new ClientCredential(ConfigurationManager.AppSettings["ida:AppId"], ConfigurationManager.AppSettings["ida:AppSecret"]);
-            authResult = await authContext.AcquireTokenSilentAsync("https://graph.microsoft.com", credential, new UserIdentifier(userObjId, UserIdentifierType.UniqueId));
+            try
+            {
+                authResult = await authContext.AcquireTokenSilentAsync("https://graph.microsoft.com", credential,
+                                new UserIdentifier(userObjId, UserIdentifierType.UniqueId));
+            }
+            catch (AdalSilentTokenAcquisitionException)
+            {
+                Request.GetOwinContext().Authentication.Challenge(new AuthenticationProperties { RedirectUri = "/Subscription/CreateSubscription" },
+                                            OpenIdConnectAuthenticationDefaults.AuthenticationType);
+                return new EmptyResult();
+            }
         }
         catch (Exception ex)
         {
@@ -271,31 +281,33 @@ This sample creates a subscription for the *me/mailFolders('Inbox')/messages* re
 1. Replace the *// Send the request and parse the response* comment with the following code. This sends the request, parses the response, and loads the view.
 
    ```c#
-        HttpResponseMessage response = await client.SendAsync(request);
-        if (response.IsSuccessStatusCode)
+    // Send the request and parse the response.
+    HttpResponseMessage response = await client.SendAsync(request);
+    if (response.IsSuccessStatusCode)
+    {
+
+        // Parse the JSON response.
+        string stringResult = await response.Content.ReadAsStringAsync();
+        SubscriptionViewModel viewModel = new SubscriptionViewModel
         {
+            Subscription = JsonConvert.DeserializeObject<Subscription>(stringResult)
+        };
 
-            // Parse the JSON response.
-            string stringResult = await response.Content.ReadAsStringAsync();
-            SubscriptionViewModel viewModel = new SubscriptionViewModel
-            {
-                Subscription = JsonConvert.DeserializeObject<Subscription>(stringResult)
-            };
+        // This app temporarily stores the current subscription ID, refreshToken and client state. 
+        // These are required so the NotificationController, which is not authenticated can retrieve an access token keyed from subscription id
+        // Production apps typically use some method of persistent storage.
+        HttpRuntime.Cache.Insert("subscriptionId_" + viewModel.Subscription.Id, 
+            Tuple.Create(viewModel.Subscription.ClientState, authResult.RefreshToken), null, DateTime.MaxValue, new TimeSpan(24, 0, 0), System.Web.Caching.CacheItemPriority.NotRemovable, null);
 
-            // This app temporarily stores the current subscription ID, refreshToken and client state. 
-            // These are required so the NotificationController, which is not authenticated can retrieve an access token keyed from subscription id
-            // Production applications typically use some method of persistent storage.
-            HttpRuntime.Cache.Insert("subscriptionId_" + viewModel.Subscription.Id, 
-                Tuple.Create(viewModel.Subscription.ClientState, authResult.RefreshToken), null, DateTime.MaxValue, new TimeSpan(24, 0, 0), System.Web.Caching.CacheItemPriority.NotRemovable, null);
+        // Save the latest subscription ID, so we can delete it later and filter teh view on it.
+        Session["SubscriptionId"] = viewModel.Subscription.Id;
+        return View("Subscription", viewModel);
 
-            // Save the latest subscription ID, so we can delete it later and filter teh view on it.
-            Session["SubscriptionId"] = viewModel.Subscription.Id;
-            return View("Subscription", viewModel);
-        }
-        else
-        {
-            return RedirectToAction("Index", "Error", new { message = response.StatusCode, debug = await response.Content.ReadAsStringAsync() });
-        }
+    }
+    else
+    {
+        return RedirectToAction("Index", "Error", new { message = response.StatusCode, debug = await response.Content.ReadAsStringAsync() });
+    }
    ```
 
 ### Build the DELETE /subscriptions/id request
@@ -322,8 +334,18 @@ This sample creates a subscription for the *me/mailFolders('Inbox')/messages* re
                 string authority = string.Format(ConfigurationManager.AppSettings["ida:AADInstance"], tenantId, "");
                 AuthenticationContext authContext = new AuthenticationContext(authority, false);
                 ClientCredential credential = new ClientCredential(ConfigurationManager.AppSettings["ida:AppId"], ConfigurationManager.AppSettings["ida:AppSecret"]);
-                AuthenticationResult authResult = await authContext.AcquireTokenSilentAsync("https://graph.microsoft.com", credential, new UserIdentifier(userObjId, UserIdentifierType.UniqueId));
-
+                AuthenticationResult authResult = null;
+                try
+                {
+                    authResult = await authContext.AcquireTokenSilentAsync("https://graph.microsoft.com", credential,
+                                    new UserIdentifier(userObjId, UserIdentifierType.UniqueId));
+                }
+                catch (AdalSilentTokenAcquisitionException)
+                {
+                    Request.GetOwinContext().Authentication.Challenge(new AuthenticationProperties { RedirectUri = "/Subscription/DeleteSubscription" },
+                                                OpenIdConnectAuthenticationDefaults.AuthenticationType);
+                    return new EmptyResult();
+                }
                 accessToken = authResult?.AccessToken;
 
             }
