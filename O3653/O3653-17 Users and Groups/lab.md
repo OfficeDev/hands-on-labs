@@ -25,10 +25,10 @@ In this first step, you will create a new ASP.NET MVC project using the
 
 ## Step 2: Implement user search bar using the Microsoft Graph SDK
 
-2. Create a new controller: Right click on the **Controller** folder and select **Add**, **Controller**. Select **MVC 5 Controller - Empty**, click **Add** and then name the new controller **UserSearchController**.
-3. Create an associated view by right clicking the function **Index()**, **Add View**, and click **Add**. The view is created at **Views\UserSearch\Index.cshtml**.
-4. In **UserSearchController.cs**, replace the auto-generated **using** directives with
-    ```c#
+1. Create a new controller: Right click on the **Controller** folder and select **Add**, **Controller**. Select **MVC 5 Controller - Empty**, click **Add** and then name the new controller **UserSearchController**.
+2. Create an associated view by right clicking the function **Index()**, **Add View**, and click **Add**. The view is created at **Views\UserSearch\Index.cshtml**.
+3. In **UserSearchController.cs**, replace the auto-generated **using** directives with
+    ```csharp
     using System;
     using System.IO;
     using System.Collections.Generic;
@@ -115,7 +115,7 @@ In this first step, you will create a new ASP.NET MVC project using the
     }
     ```
 
-6. Replace the contents of **Views\UserSearch\Index.cshtml** with the following code. This renders a search bar and a table to display the results.
+7. Replace the contents of **Views\UserSearch\Index.cshtml** with the following code. This renders a search bar and a table to display the results.
 
     ```xml
     @using Microsoft.Graph
@@ -149,7 +149,7 @@ In this first step, you will create a new ASP.NET MVC project using the
 
     </table>
     ```
-7. Add the following code to **Views\Shared\\_Layout.cshtml**, directly under the line ``` <li>@Html.ActionLink("Contact", "Contact", "Home")</li>``` to add a link to the navbar at the top of the page.
+8. Add the following code to **Views\Shared\\_Layout.cshtml**, directly under the line ``` <li>@Html.ActionLink("Contact", "Contact", "Home")</li>``` to add a link to the navbar at the top of the page.
 
     ```xml
     @if (Request.IsAuthenticated)
@@ -162,8 +162,8 @@ In this first step, you will create a new ASP.NET MVC project using the
 
 ## Step 3: Create the detailed user profile page
 In this step, we'll enable selecting a user from the user search results table, for whom we'll show more details.
-1. Right click the folder **Models**, **Add**, **Class**, and name it **Profile.cs**. Replace the contents of this class with the following.
 
+1. Right click the folder **Models**, **Add**, **Class**, and name it **Profile.cs**. Replace the contents of this class with the following.
     ```csharp
     using Microsoft.Graph;
     using System;
@@ -177,7 +177,6 @@ In this step, we'll enable selecting a user from the user search results table, 
         }
     }
     ```
-
 2. Add an **onclick** event to the table row element in **Views\UserSearch\Index.cshtml** to navigate to a different page when the table row is clicked.
     ```xml
     <tr onclick="location.href = '@(Url.Action("ShowProfile", "UserSearch", new { userId = user.Id }))'">
@@ -228,7 +227,7 @@ In this step, we'll enable selecting a user from the user search results table, 
         return View(profile);
     }
     ```
-4. Create a new view under **Views\UserSearch** and name it **ShowProfile.cshtml**. Replace the contents of this file with the following.
+5. Create a new view under **Views\UserSearch** and name it **ShowProfile.cshtml**. Replace the contents of this file with the following.
     ```xml
     @model PeoplePicker.Models.Profile
     @{
@@ -299,7 +298,7 @@ In this step, we'll enable selecting a user from the user search results table, 
     </table>
     ```
 
-5. Hit F5 to compile and try out the new ShowProfile page. Search for users and click on a user to see their details.
+6. Hit F5 to compile and try out the new ShowProfile page. Search for users and click on a user to see their details.
 
 ***
 Hooray! Congratulations on creating your PeoplePicker app! You have created an MVC application that uses Microsoft Graph to search and view users in your tenant.
