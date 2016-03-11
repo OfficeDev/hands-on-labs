@@ -611,72 +611,81 @@ using System.Threading.Tasks;
 
 ### Create the notification endpoint
 
-1. Add the **Listen** method to the **Notification** class. This is the callback method you'll register for notifications.
+1. Replace the **Notification** class with the following code. This adds the **Listen** callback method you'll register for notifications.
 
    ```c#
-    // The notificationUrl endpoint that's registered with the webhooks subscription.
-    [HttpPost]
-    public async Task<ActionResult> Listen()
+    public class NotificationController : Controller
     {
-
-        // Validate the new subscription by sending the token back to MS Graph.
-        // This response is required for each subscription.
-        if (Request.QueryString["validationToken"] != null)
+        public ActionResult LoadView()
         {
-            var token = Request.QueryString["validationToken"];
-            return Content(token, "plain/text");
+            return View("Notification");
         }
 
-        // Parse the received notifications.
-        else
+        // The notificationUrl endpoint that's registered with the webhooks subscription.
+        [HttpPost]
+        public async Task<ActionResult> Listen()
         {
-            try
+
+            // Validate the new subscription by sending the token back to MS Graph.
+            // This response is required for each subscription.
+            if (Request.QueryString["validationToken"] != null)
             {
-                var notifications = new Dictionary<string, Notification>();
-                using (var inputStream = new System.IO.StreamReader(Request.InputStream))
+                var token = Request.QueryString["validationToken"];
+                return Content(token, "plain/text");
+            }
+
+            // Parse the received notifications.
+            else
+            {
+                try
                 {
-                    JObject jsonObject = JObject.Parse(inputStream.ReadToEnd());
-                    if (jsonObject != null)
+                    var notifications = new Dictionary<string, Notification>();
+                    using (var inputStream = new System.IO.StreamReader(Request.InputStream))
                     {
-
-                        // Notifications are sent in a 'value' array.
-                        JArray value = JArray.Parse(jsonObject["value"].ToString());
-                        foreach (var notification in value)
+                        JObject jsonObject = JObject.Parse(inputStream.ReadToEnd());
+                        if (jsonObject != null)
                         {
-                            Notification current = JsonConvert.DeserializeObject<Notification>(notification.ToString());
-                            current.ResourceData = JsonConvert.DeserializeObject<ResourceData>(notification["resourceData"].ToString());
 
-                            var subscriptionParams = (Tuple<string, string>)HttpRuntime.Cache.Get("subscriptionId_" + current.SubscriptionId);
-                            if (subscriptionParams != null)
+                            // Notifications are sent in a 'value' array.
+                            JArray value = JArray.Parse(jsonObject["value"].ToString());
+                            foreach (var notification in value)
                             {
-                                // Verify the message is from Microsoft Graph.
-                                if (current.ClientState == subscriptionParams.Item1)
+                                Notification current = JsonConvert.DeserializeObject<Notification>(notification.ToString());
+                                current.ResourceData = JsonConvert.DeserializeObject<ResourceData>(notification["resourceData"].ToString());
+
+                                var subscriptionParams = (Tuple<string, string>)HttpRuntime.Cache.Get("subscriptionId_" + current.SubscriptionId);
+                                if (subscriptionParams != null)
                                 {
-                                    // Just keep the latest notification for each resource.
-                                    // No point pulling data more than once.
-                                    notifications[current.Resource] = current;
+                                    // Verify the message is from Microsoft Graph.
+                                    if (current.ClientState == subscriptionParams.Item1)
+                                    {
+                                        // Just keep the latest notification for each resource.
+                                        // No point pulling data more than once.
+                                        notifications[current.Resource] = current;
+                                    }
                                 }
                             }
-                        }
-                        if (notifications.Count > 0)
-                        {
+                            if (notifications.Count > 0)
+                            {
 
-                            // Query for the changed messages. 
-                            await GetChangedMessagesAsync(notifications.Values);
+                                // Query for the changed messages. 
+                                await GetChangedMessagesAsync(notifications.Values);
+                            }
                         }
                     }
+                    return new HttpStatusCodeResult(200);
                 }
-                return new HttpStatusCodeResult(200);
-            }
-            catch (Exception)
-            {
+                catch (Exception)
+                {
 
-                // TODO: Handle the exception.
-                // Return a 200 so the service doesn't resend the notification.
-                return new HttpStatusCodeResult(200);
+                    // TODO: Handle the exception.
+                    // Return a 200 so the service doesn't resend the notification.
+                    return new HttpStatusCodeResult(200);
+                }
             }
         }
     }
+}
    ```
 
 ### Get changed messages
@@ -733,14 +742,6 @@ using System.Threading.Tasks;
 
 This app uses SignalR to notify the client to refresh its view.
 
-1. Open **Startup.cs** in the root directory of the project.
-
-1. Add the following line to the **Configuration** method.
-
-   ```c#
-app.MapSignalR();
-   ```
-
 1. Right-click the **GraphWebhooks** project and create a folder named **SignalR**.
 
 1. Right-click the **SignalR** folder and choose **Add/SignalR Hub Class (v2)**. 
@@ -755,7 +756,6 @@ app.MapSignalR();
 
    ```c#
 using GraphWebhooks.Models;
-using System.Threading.Tasks;
    ```
 
 1. Replace the **NotificationService** class with the following code.
@@ -774,6 +774,14 @@ using System.Threading.Tasks;
     }
    ```
 
+1. Open **Startup.cs** in the root directory of the project.
+
+1. Add the following line to the **Configuration** method.
+
+   ```c#
+app.MapSignalR();
+   ```
+   
 ## Step 10: Create the Notification view
 In this step you'll create a view that displays some properties of the changed message. 
 
@@ -783,7 +791,7 @@ In this step you'll create a view that displays some properties of the changed m
 
 1. Select the **Empty** template, select **Message (GraphWebhooks.Models)**, and then click **Add**.
 
-1. In the **Notification.cshtml* file that's created, replace the content with the following code:
+1. In the **Notification.cshtml** file that's created, replace the content with the following code:
 
    ```html
 @model GraphWebhooks.Models.Message
