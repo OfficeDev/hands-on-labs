@@ -3,7 +3,7 @@
 ## TODO  
 - changes from beta -> v1.0 path  
 - changes to JSON Attributes on model for subscriptionExpirationDateTime -> expirationDateTime and subscriptionId -> id
-- change subscriptionExpirationDateTime to DateTimeOffset - GAJ ???
+- change Notification.subscriptionExpirationDateTime to DateTimeOffset - GAJ ??? 
 
 ## What You'll Learn
 In this lab, you'll create an ASP.NET MVC application that subscribes for Microsoft Graph webhooks and receives change notifications. You'll use the Microsoft Graph API to create a subscription, and you'll create a public endpoint that receives change notifications. 
@@ -113,7 +113,7 @@ ngrok http <port-number> -host-header=localhost:<port-number>
 1. In Visual Studio, open the Web.config file in the root directory of the project. Insert the following key in the **appSettings** section, replacing the *<ENTER_YOUR_PROXY_URL>* placeholder value with the URL you just copied.
 
    ```xml
-    <add key="ida:NotificationUrl" value="<ENTER_YOUR_PROXY_URL>/notification/listen" />
+    <add key="ida:NotificationUrl" value="ENTER_YOUR_PROXY_URL/notification/listen" />
    ```
 
    > NOTE: Keep the console open while testing. If you close it, the tunnel also closes and you'll need to generate a new URL and update the sample.
