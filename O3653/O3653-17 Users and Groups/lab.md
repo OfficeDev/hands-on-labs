@@ -178,10 +178,12 @@ In this step, we'll enable selecting a user from the user search results table, 
     }
     ```
 2. Add an **onclick** event to the table row element in **Views\UserSearch\Index.cshtml** to navigate to a different page when the table row is clicked.
+
     ```xml
     <tr onclick="location.href = '@(Url.Action("ShowProfile", "UserSearch", new { userId = user.Id }))'">
     ```
-3. Add the following directive in **UserSearchController.cs** to use the model we just created:
+3. Add the following directive in **UserSearchController.cs** to use the model we just created
+
     ```csharp
     using PeoplePicker.Models;
     ```
