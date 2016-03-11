@@ -1,14 +1,9 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Web;
 using GroupsWebApp.TokenStorage;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
+using Microsoft.Owin.Security;
+using Microsoft.Owin.Security.OpenIdConnect;
 
 namespace GroupsWebApp.Auth
 {
@@ -40,9 +35,20 @@ namespace GroupsWebApp.Auth
 
       ClientCredential credential = new ClientCredential(AppId, AppSecret);
 
-      AuthenticationResult authResult = await authContext.AcquireTokenSilentAsync("https://graph.microsoft.com", credential,
-        new UserIdentifier(TokenCache.UserObjectId, UserIdentifierType.UniqueId));
-      return authResult.AccessToken;
+      try
+      {
+        AuthenticationResult authResult = await authContext.AcquireTokenSilentAsync("https://graph.microsoft.com", credential,
+          new UserIdentifier(TokenCache.UserObjectId, UserIdentifierType.UniqueId));
+        return authResult.AccessToken;
+      }
+      catch (AdalSilentTokenAcquisitionException)
+      {
+        HttpContext.Current.Request.GetOwinContext().Authentication.Challenge(
+          new AuthenticationProperties() { RedirectUri = redirectUri },
+          OpenIdConnectAuthenticationDefaults.AuthenticationType);
+
+        return null;
+      }
     }
   }
 }

@@ -197,6 +197,7 @@ SDK and work with Office 365 Groups.
     }
     catch (ServiceException ex)
     {
+      if (ex.Error.Code == "InvalidAuthenticationToken") { return new EmptyResult(); }
       return RedirectToAction("Index", "Error", new { message = ex.Error.Message });
     }
   }
@@ -221,6 +222,7 @@ SDK and work with Office 365 Groups.
     }
     catch (ServiceException ex)
     {
+      if (ex.Error.Code == "InvalidAuthenticationToken") { return new EmptyResult(); }
       return RedirectToAction("Index", "Error", new { message = ex.Error.Message });
     }
   }
@@ -248,6 +250,7 @@ SDK and work with Office 365 Groups.
     }
     catch (ServiceException ex)
     {
+      if (ex.Error.Code == "InvalidAuthenticationToken") { return new EmptyResult(); }
       return RedirectToAction("Index", "Error", new { message = ex.Error.Message });
     }
   }
@@ -289,6 +292,7 @@ SDK and work with Office 365 Groups.
       }
       catch (ServiceException ex)
       {
+        if (ex.Error.Code == "InvalidAuthenticationToken") { return new EmptyResult(); }
         TempData["error"] = ex.Error.Message;
       }
     }
@@ -332,6 +336,7 @@ SDK and work with Office 365 Groups.
     }
     catch (ServiceException ex)
     {
+      if (ex.Error.Code == "InvalidAuthenticationToken") { return new EmptyResult(); }
       return RedirectToAction("Index", "Error", new { message = ex.Error.Message });
     }
   }
@@ -369,6 +374,7 @@ SDK and work with Office 365 Groups.
       }
       catch (ServiceException ex)
       {
+        if (ex.Error.Code == "InvalidAuthenticationToken") { return new EmptyResult(); }
         TempData["error"] = ex.Error.Message;
       }
     }
@@ -412,6 +418,7 @@ SDK and work with Office 365 Groups.
     }
     catch (ServiceException ex)
     {
+      if (ex.Error.Code == "InvalidAuthenticationToken") { return new EmptyResult(); }
       return RedirectToAction("Index", "Error", new { message = ex.Error.Message });
     }
   }
@@ -459,6 +466,7 @@ SDK and work with Office 365 Groups.
       }
       catch (ServiceException ex)
       {
+        if (ex.Error.Code == "InvalidAuthenticationToken") { return new EmptyResult(); }
         TempData["error"] = ex.Error.Message;
       }
     }
@@ -517,6 +525,7 @@ SDK and work with Office 365 Groups.
     }
     catch (ServiceException ex)
     {
+      if (ex.Error.Code == "InvalidAuthenticationToken") { return new EmptyResult(); }
       return RedirectToAction("Index", "Error", new { message = ex.Error.Message });
     }
   }
@@ -555,6 +564,7 @@ SDK and work with Office 365 Groups.
       }
       catch (ServiceException ex)
       {
+        if (ex.Error.Code == "InvalidAuthenticationToken") { return new EmptyResult(); }
         TempData["error"] = ex.Error.Message;
       }
     }
@@ -598,6 +608,7 @@ SDK and work with Office 365 Groups.
     }
     catch (ServiceException ex)
     {
+      if (ex.Error.Code == "InvalidAuthenticationToken") { return new EmptyResult(); }
       return RedirectToAction("Index", "Error", new { message = ex.Error.Message });
     }
   }
@@ -635,6 +646,7 @@ SDK and work with Office 365 Groups.
       }
       catch (ServiceException ex)
       {
+        if (ex.Error.Code == "InvalidAuthenticationToken") { return new EmptyResult(); }
         // TEMP WORKAROUND
         if (!ex.Error.Message.Equals("An unexpected error occurred during deserialization."))
         {
