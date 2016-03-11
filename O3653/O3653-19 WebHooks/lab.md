@@ -196,7 +196,6 @@ In this step you'll create a controller that will send a **POST /subscriptions**
 1. Add the following **using** statements:
 
    ```c#
-using GraphWebhooks.Auth;
 using GraphWebhooks.Models;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using Newtonsoft.Json;
@@ -299,7 +298,7 @@ This sample creates a subscription for the *me/mailFolders('Inbox')/messages* re
         HttpRuntime.Cache.Insert("subscriptionId_" + viewModel.Subscription.Id, 
             Tuple.Create(viewModel.Subscription.ClientState, authResult.RefreshToken), null, DateTime.MaxValue, new TimeSpan(24, 0, 0), System.Web.Caching.CacheItemPriority.NotRemovable, null);
 
-        // Save the latest subscription ID, so we can delete it later and filter teh view on it.
+        // Save the latest subscription ID, so we can delete it later and filter the view on it.
         Session["SubscriptionId"] = viewModel.Subscription.Id;
         return View("Subscription", viewModel);
 
@@ -597,8 +596,6 @@ In this step you'll create a controller that exposes the notification endpoint.
 1. Add the following **using** statements:
 
   ```c#
-
-using GraphWebhooks.Auth;
 using GraphWebhooks.Models;
 using GraphWebhooks.SignalR;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
