@@ -3,7 +3,7 @@
 ## TODO  
 - changes from beta -> v1.0 path  
 - changes to JSON Attributes on model for subscriptionExpirationDateTime -> expirationDateTime and subscriptionId -> id
-- change Notification.subscriptionExpirationDateTime to DateTimeOffset - GAJ ??? 
+- change Notification.subscriptionExpirationDateTime (217617 currently returns as string) to DateTimeOffset - GAJ ??? 
 
 ## What You'll Learn
 In this lab, you'll create an ASP.NET MVC application that subscribes for Microsoft Graph webhooks and receives change notifications. You'll use the Microsoft Graph API to create a subscription, and you'll create a public endpoint that receives change notifications. 
@@ -611,7 +611,7 @@ using System.Threading.Tasks;
 
 ### Create the notification endpoint
 
-1. Replace the **Notification** class with the following code. This is the callback method you'll register for notifications.
+1. Add the **Listen** method to the **Notification** class. This is the callback method you'll register for notifications.
 
    ```c#
     // The notificationUrl endpoint that's registered with the webhooks subscription.
