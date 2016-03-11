@@ -194,22 +194,30 @@ In this step, we'll enable selecting a user from the user search results table, 
         var client = GetGraphServiceClient();
         Profile profile = new Profile();
 
-        try {
+        try
+        {
             // Graph query for user details by userId
             profile.user = await client.Users[userId].Request().GetAsync();
             profile.photo = "";
-
-            // Graph query for user photo by userId
-            var photo = await client.Users[userId].Photo.Content.Request().GetAsync();
-
-            if (photo != null)
+            try
             {
-                // Convert to MemoryStream for ease of rendering
-                using (MemoryStream stream = (MemoryStream)photo)
+                // Graph query for user photo by userId
+                var photo = await client.Users[userId].Photo.Content.Request().GetAsync();
+
+                if (photo != null)
                 {
-                    string toBase64Photo = Convert.ToBase64String(stream.ToArray());
-                    profile.photo = "data:image/jpeg;base64, " + toBase64Photo;
+                    // Convert to MemoryStream for ease of rendering
+                    using (MemoryStream stream = (MemoryStream)photo)
+                    {
+                        string toBase64Photo = Convert.ToBase64String(stream.ToArray());
+                        profile.photo = "data:image/jpeg;base64, " + toBase64Photo;
+                    }
                 }
+            }
+            catch (ServiceException)
+            {
+                // If this user has no profile picture, return the profile with the empty photo
+                return View(profile);
             }
         }
         catch (Exception)
