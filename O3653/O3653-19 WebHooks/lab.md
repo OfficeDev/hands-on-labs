@@ -685,7 +685,6 @@ using System.Threading.Tasks;
             }
         }
     }
-}
    ```
 
 ### Get changed messages
