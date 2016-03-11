@@ -12,6 +12,8 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
+using Microsoft.Owin.Security;
+using Microsoft.Owin.Security.OpenIdConnect;
 
 namespace GraphWebhooks.Controllers
 {
@@ -37,7 +39,17 @@ namespace GraphWebhooks.Controllers
                 string authority = string.Format(ConfigurationManager.AppSettings["ida:AADInstance"], tenantId, "");
                 AuthenticationContext authContext = new AuthenticationContext(authority, false);
                 ClientCredential credential = new ClientCredential(ConfigurationManager.AppSettings["ida:AppId"], ConfigurationManager.AppSettings["ida:AppSecret"]);
-                authResult = await authContext.AcquireTokenSilentAsync("https://graph.microsoft.com", credential, new UserIdentifier(userObjId, UserIdentifierType.UniqueId));
+                try
+                {
+                    authResult = await authContext.AcquireTokenSilentAsync("https://graph.microsoft.com", credential,
+                                    new UserIdentifier(userObjId, UserIdentifierType.UniqueId));
+                }
+                catch (AdalSilentTokenAcquisitionException)
+                {
+                    Request.GetOwinContext().Authentication.Challenge(new AuthenticationProperties { RedirectUri = "/Subscription/CreateSubscription" },
+                                               OpenIdConnectAuthenticationDefaults.AuthenticationType);
+                    return new EmptyResult();
+                }
             }
             catch (Exception ex)
             {
@@ -111,8 +123,18 @@ namespace GraphWebhooks.Controllers
                     string authority = string.Format(ConfigurationManager.AppSettings["ida:AADInstance"], tenantId, "");
                     AuthenticationContext authContext = new AuthenticationContext(authority, false);
                     ClientCredential credential = new ClientCredential(ConfigurationManager.AppSettings["ida:AppId"], ConfigurationManager.AppSettings["ida:AppSecret"]);
-                    AuthenticationResult authResult = await authContext.AcquireTokenSilentAsync("https://graph.microsoft.com", credential, new UserIdentifier(userObjId, UserIdentifierType.UniqueId));
-
+                    AuthenticationResult authResult = null;
+                    try
+                    {
+                        authResult = await authContext.AcquireTokenSilentAsync("https://graph.microsoft.com", credential,
+                                        new UserIdentifier(userObjId, UserIdentifierType.UniqueId));
+                    }
+                    catch (AdalSilentTokenAcquisitionException)
+                    {
+                        Request.GetOwinContext().Authentication.Challenge(new AuthenticationProperties { RedirectUri = "/Subscription/DeleteSubscription" },
+                                                   OpenIdConnectAuthenticationDefaults.AuthenticationType);
+                        return new EmptyResult();
+                    }
                     accessToken = authResult?.AccessToken;
 
                 }
