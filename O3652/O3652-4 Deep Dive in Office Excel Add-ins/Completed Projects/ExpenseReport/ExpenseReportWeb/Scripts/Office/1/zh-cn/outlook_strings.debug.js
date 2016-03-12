@@ -5,7 +5,7 @@ _u.ExtensibilityStrings = function()
 };
 _u.ExtensibilityStrings.registerClass("_u.ExtensibilityStrings");
 _u.ExtensibilityStrings.l_DeleteAttachmentDoesNotExist_Text = "无法删除附件，因为找不到具有附件索引的附件。";
-_u.ExtensibilityStrings.l_EwsRequestOversized_Text = "请求超出 1 MB 大小限制。请修改您的 EWS 请求。";
+_u.ExtensibilityStrings.l_EwsRequestOversized_Text = "此请求超过了 1 MB 的大小限制。请修改您的 EWS 请求。";
 _u.ExtensibilityStrings.l_ElevatedPermissionNeededForMethod_Text = "调用该方法需要提升的权限:“{0}”。";
 _u.ExtensibilityStrings.l_AttachmentErrorName_Text = "附件错误";
 _u.ExtensibilityStrings.l_InvalidEventDates_Text = "结束日期早于开始日期。";
