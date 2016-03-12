@@ -15,3 +15,8 @@
 .dl-horizontal dt {
     white-space: normal;
 }
+
+.sync-form {
+    float: left;
+    margin-right: 10px;
+}

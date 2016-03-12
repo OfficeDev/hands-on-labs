@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Security.Claims;
 using InboxSync.TokenStorage;
+using Microsoft.Owin.Security;
+using Microsoft.Owin.Security.OpenIdConnect;
 
 namespace InboxSync.Auth
 {
@@ -94,7 +96,13 @@ namespace InboxSync.Auth
     public async Task<string> GetUserAccessToken(string redirectUri)
     {
       if (null == TokenCache || null == TokenCache.Tokens)
-        return string.Empty;
+      {
+        HttpContext.Current.Request.GetOwinContext().Authentication.Challenge(
+          new AuthenticationProperties() { RedirectUri = redirectUri },
+          OpenIdConnectAuthenticationDefaults.AuthenticationType);
+
+        return null;
+      }
 
       // If the token is expired, use refresh token to obtain
       // a new one before returning

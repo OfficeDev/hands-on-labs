@@ -12,5 +12,8 @@ namespace InboxSync.Models
     public string RefreshToken { get; set; }
     public string IdToken { get; set; }
     public string SyncState { get; set; }
+    public string SubscriptionId { get; set; }
+    public DateTime SubscriptionExpires { get; set; }
+    public string SignalRConnection { get; set; }
   }
 }

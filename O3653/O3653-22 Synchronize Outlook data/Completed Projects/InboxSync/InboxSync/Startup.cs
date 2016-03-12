@@ -14,6 +14,7 @@ using Microsoft.IdentityModel.Protocols;
 using System.Security.Claims;
 using InboxSync.TokenStorage;
 using InboxSync.Auth;
+using InboxSync.Helpers;
 
 [assembly: OwinStartup(typeof(InboxSync.Startup))]
 
@@ -30,6 +31,8 @@ namespace InboxSync
 
     public void Configuration(IAppBuilder app)
     {
+      app.MapSignalR();
+
       app.SetDefaultSignInAsAuthenticationType(CookieAuthenticationDefaults.AuthenticationType);
 
       app.UseCookieAuthentication(new CookieAuthenticationOptions());
@@ -48,11 +51,27 @@ namespace InboxSync
           Authority = string.Format(CultureInfo.InvariantCulture, aadInstance, "common", "/v2.0"),
           Scope = "openid offline_access profile " + string.Join(" ", scopes),
           ResponseType = "code id_token",
-          RedirectUri = "http://localhost:21942/",
+          RedirectUri = "https://708fe940-0ee0-4-231-b9ee.azurewebsites.net/",
           PostLogoutRedirectUri = "/",
           TokenValidationParameters = new TokenValidationParameters
           {
-            ValidateIssuer = false,
+            // For demo purposes only, see below
+            ValidateIssuer = false
+
+            // In a real multitenant app, you would add logic to determine whether the
+            // issuer was from an authorized tenant
+            //ValidateIssuer = true,
+            //IssuerValidator = (issuer, token, tvp) =>
+            //{
+            //  if (MyCustomTenantValidation(issuer))
+            //  {
+            //    return issuer;
+            //  }
+            //  else
+            //  {
+            //    throw new SecurityTokenInvalidIssuerException("Invalid issuer");
+            //  }
+            //}
           },
           Notifications = new OpenIdConnectAuthenticationNotifications
           {
@@ -89,6 +108,9 @@ namespace InboxSync
 
       var response = await authHelper.GetTokensFromAuthority("authorization_code", notification.Code,
         notification.Request.Uri.ToString());
+
+      var user = await UserManager.AddOrUpdateUser(principal.FindFirst("preferred_username").Value, response);
+      httpContext.Session["user_id"] = user.Id.ToString();
     }
   }
 }
