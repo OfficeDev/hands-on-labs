@@ -5,11 +5,11 @@ In this exercise you will create a Excel Add-in that uses the v2 JavaScript API 
 
 1. Launch Visual Studio 2015 as administrator.
 1. From the **File** menu select the **New Project** command. When the **New Project** dialog appears, select the **Excel Add-in** project template from the **Office/SharePoint** template folder as shown below. Name the new project **ExpenseReport** and click **OK** to create the new project.
-2. 	![](Images/Fig01new.png)
+2. 	![](Images/Fig01new.PNG)
 
 1. When you create a new App for Office project, Visual Studio prompts you with the **Choose the add-in type** page of the **Create Office Add-in** dialog. This is the point where you select the type of Add-in you want to create. Leave the default setting with the radio button titled **Add new functionalities to Excel** and select **Finish** to continue.
 
-	![](Images/Fig02new.png)
+	![](Images/Fig02new.PNG)
 
 
 1. Reference the Excel 2016 v2 JavaScript API in the add-in:
