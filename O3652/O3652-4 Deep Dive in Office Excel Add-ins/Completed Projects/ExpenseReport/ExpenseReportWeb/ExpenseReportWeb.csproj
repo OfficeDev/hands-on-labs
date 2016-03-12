@@ -9,7 +9,7 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{89DBE6AC-8E07-4A32-9F96-4793269CED58}</ProjectGuid>
+    <ProjectGuid>{35015773-3F6F-45C8-B115-EC0CB5705F05}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -76,14 +76,58 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\fabric.components.css" />
+    <Content Include="Content\fabric.components.min.css" />
+    <Content Include="Content\fabric.components.rtl.css" />
+    <Content Include="Content\fabric.components.rtl.min.css" />
+    <Content Include="Content\fabric.css" />
+    <Content Include="Content\fabric.min.css" />
+    <Content Include="Content\fabric.rtl.css" />
+    <Content Include="Content\fabric.rtl.min.css" />
+    <Content Include="Content\sass\_Office.Color.Variables.scss" />
+    <Content Include="Content\sass\_Fabric.ZIndex.Variables.scss" />
+    <Content Include="Content\sass\_Fabric.Utilities.scss" />
+    <Content Include="Content\sass\_Fabric.Typography.Variables.scss" />
+    <Content Include="Content\sass\_Fabric.Typography.scss" />
+    <Content Include="Content\sass\_Fabric.Typography.Language.Overrides.scss" />
+    <Content Include="Content\sass\_Fabric.Typography.Fonts.scss" />
+    <Content Include="Content\sass\_Fabric.Responsive.Variables.scss" />
+    <Content Include="Content\sass\_Fabric.Responsive.Utilities.Variables.scss" />
+    <Content Include="Content\sass\_Fabric.Mixins.scss" />
+    <Content Include="Content\sass\_Fabric.Icons.scss" />
+    <Content Include="Content\sass\_Fabric.Grid.scss" />
+    <Content Include="Content\sass\_Fabric.Common.scss" />
+    <Content Include="Content\sass\_Fabric.Color.Variables.scss" />
+    <Content Include="Content\sass\_Fabric.Color.Mixins.scss" />
+    <Content Include="Content\sass\_Fabric.Animations.scss" />
+    <Content Include="Content\sass\_Fabric.Animations.RTL.scss" />
+    <Content Include="Content\sass\Fabric.Utilities.Output.scss" />
+    <Content Include="Content\sass\Fabric.Typography.Output.scss" />
+    <Content Include="Content\sass\Fabric.Typography.Language.Overrides.Output.scss" />
+    <Content Include="Content\sass\Fabric.Typography.Fonts.Output.scss" />
+    <Content Include="Content\sass\Fabric.scss" />
+    <Content Include="Content\sass\Fabric.RTL.scss" />
+    <Content Include="Content\sass\Fabric.Responsive.Utilities.Output.scss" />
+    <Content Include="Content\sass\Fabric.Icons.RTL.Output.scss" />
+    <Content Include="Content\sass\Fabric.Icons.Output.scss" />
+    <Content Include="Content\sass\Fabric.Icons.Font.Output.scss" />
+    <Content Include="Content\sass\Fabric.Grid.Output.scss" />
+    <Content Include="Content\sass\Fabric.Components.scss" />
+    <Content Include="Content\sass\Fabric.Color.Mixins.Output.scss" />
+    <Content Include="Content\sass\Fabric.Animations.RTL.Output.scss" />
+    <Content Include="Content\sass\Fabric.Animations.Output.scss" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
-    <Content Include="App\App.css" />
-    <Content Include="App\App.js" />
-    <Content Include="App\Home\Home.css" />
-    <Content Include="App\Home\Home.html" />
-    <Content Include="App\Home\Home.js" />
-    <Content Include="Content\Office.css" />
+    <Content Include="Functions\FunctionFile.html" />
+    <Content Include="Functions\FunctionFile.js" />
+    <Content Include="Home.css" />
+    <Content Include="Home.html" />
+    <Content Include="Home.js" />
+    <Content Include="Images\AddinIcon.png" />
+    <Content Include="Images\Button16x16.png" />
+    <Content Include="Images\Button32x32.png" />
+    <Content Include="Images\Button80x80.png" />
     <Content Include="Images\Close.png" />
+    <Content Include="Scripts\FabricUI\MessageBanner.js" />
     <Content Include="Scripts\jquery-1.9.1.js" />
     <Content Include="Scripts\jquery-1.9.1.min.js" />
     <Content Include="Scripts\jquery-1.9.1.min.map" />
@@ -91,6 +135,8 @@
     <None Include="Scripts\Office\1\outlook-win32.debug-vsdoc.js" />
     <None Include="Scripts\Office\1\office-vsdoc.js" />
     <Content Include="Content\OfficeThemes.css" />
+    <Content Include="Scripts\jquery.fabric.js" />
+    <Content Include="Scripts\jquery.fabric.min.js" />
     <Content Include="Scripts\Office\1\access-web-16.00.debug.js" />
     <Content Include="Scripts\Office\1\access-web-16.00.js" />
     <Content Include="Scripts\Office\1\ar-sa\office_strings.debug.js" />
@@ -101,10 +147,6 @@
     <Content Include="Scripts\Office\1\bg-bg\office_strings.js" />
     <Content Include="Scripts\Office\1\bg-bg\outlook_strings.debug.js" />
     <Content Include="Scripts\Office\1\bg-bg\outlook_strings.js" />
-    <Content Include="Scripts\Office\1\ca-es\office_strings.debug.js" />
-    <Content Include="Scripts\Office\1\ca-es\office_strings.js" />
-    <Content Include="Scripts\Office\1\ca-es\outlook_strings.debug.js" />
-    <Content Include="Scripts\Office\1\ca-es\outlook_strings.js" />
     <Content Include="Scripts\Office\1\cs-cz\office_strings.debug.js" />
     <Content Include="Scripts\Office\1\cs-cz\office_strings.js" />
     <Content Include="Scripts\Office\1\cs-cz\outlook_strings.debug.js" />
@@ -133,10 +175,6 @@
     <Content Include="Scripts\Office\1\et-ee\office_strings.js" />
     <Content Include="Scripts\Office\1\et-ee\outlook_strings.debug.js" />
     <Content Include="Scripts\Office\1\et-ee\outlook_strings.js" />
-    <Content Include="Scripts\Office\1\eu-es\office_strings.debug.js" />
-    <Content Include="Scripts\Office\1\eu-es\office_strings.js" />
-    <Content Include="Scripts\Office\1\eu-es\outlook_strings.debug.js" />
-    <Content Include="Scripts\Office\1\eu-es\outlook_strings.js" />
     <Content Include="Scripts\Office\1\excel-15.01.debug.js" />
     <Content Include="Scripts\Office\1\excel-15.01.js" />
     <Content Include="Scripts\Office\1\excel-15.debug.js" />
@@ -161,10 +199,6 @@
     <Content Include="Scripts\Office\1\fr-fr\office_strings.js" />
     <Content Include="Scripts\Office\1\fr-fr\outlook_strings.debug.js" />
     <Content Include="Scripts\Office\1\fr-fr\outlook_strings.js" />
-    <Content Include="Scripts\Office\1\gl-es\office_strings.debug.js" />
-    <Content Include="Scripts\Office\1\gl-es\office_strings.js" />
-    <Content Include="Scripts\Office\1\gl-es\outlook_strings.debug.js" />
-    <Content Include="Scripts\Office\1\gl-es\outlook_strings.js" />
     <Content Include="Scripts\Office\1\he-il\office_strings.debug.js" />
     <Content Include="Scripts\Office\1\he-il\office_strings.js" />
     <Content Include="Scripts\Office\1\he-il\outlook_strings.debug.js" />
@@ -285,22 +319,10 @@
     <Content Include="Scripts\Office\1\sl-si\office_strings.js" />
     <Content Include="Scripts\Office\1\sl-si\outlook_strings.debug.js" />
     <Content Include="Scripts\Office\1\sl-si\outlook_strings.js" />
-    <Content Include="Scripts\Office\1\sr-cyrl-cs\office_strings.debug.js" />
-    <Content Include="Scripts\Office\1\sr-cyrl-cs\office_strings.js" />
-    <Content Include="Scripts\Office\1\sr-cyrl-cs\outlook_strings.debug.js" />
-    <Content Include="Scripts\Office\1\sr-cyrl-cs\outlook_strings.js" />
-    <Content Include="Scripts\Office\1\sr-cyrl-rs\office_strings.debug.js" />
-    <Content Include="Scripts\Office\1\sr-cyrl-rs\office_strings.js" />
-    <Content Include="Scripts\Office\1\sr-cyrl-rs\outlook_strings.debug.js" />
-    <Content Include="Scripts\Office\1\sr-cyrl-rs\outlook_strings.js" />
     <Content Include="Scripts\Office\1\sr-latn-cs\office_strings.debug.js" />
     <Content Include="Scripts\Office\1\sr-latn-cs\office_strings.js" />
     <Content Include="Scripts\Office\1\sr-latn-cs\outlook_strings.debug.js" />
     <Content Include="Scripts\Office\1\sr-latn-cs\outlook_strings.js" />
-    <Content Include="Scripts\Office\1\sr-latn-rs\office_strings.debug.js" />
-    <Content Include="Scripts\Office\1\sr-latn-rs\office_strings.js" />
-    <Content Include="Scripts\Office\1\sr-latn-rs\outlook_strings.debug.js" />
-    <Content Include="Scripts\Office\1\sr-latn-rs\outlook_strings.js" />
     <Content Include="Scripts\Office\1\sv-se\office_strings.debug.js" />
     <Content Include="Scripts\Office\1\sv-se\office_strings.js" />
     <Content Include="Scripts\Office\1\sv-se\outlook_strings.debug.js" />
@@ -363,9 +385,9 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>1631</DevelopmentServerPort>
+          <DevelopmentServerPort>4394</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:1631/</IISUrl>
+          <IISUrl>http://localhost:4394/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

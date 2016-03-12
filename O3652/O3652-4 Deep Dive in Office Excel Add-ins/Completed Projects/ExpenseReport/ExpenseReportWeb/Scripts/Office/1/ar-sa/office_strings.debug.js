@@ -20,6 +20,7 @@ Strings.OfficeOM.L_SelectionNotSupportCoercionType = "التحديد الحال�
 Strings.OfficeOM.L_InvalidBindingError = "خطأ الربط غير صالح";
 Strings.OfficeOM.L_InvalidGetStartRowColumn = "قيم startRow أو startColumn المحددة غير صحيحة.";
 Strings.OfficeOM.L_InvalidSetRows = "الصفوف المحددة غير صالحة.";
+Strings.OfficeOM.L_NetworkProblem = "مشكلة في الشبكة";
 Strings.OfficeOM.L_CannotWriteToSelection = "لا يمكن الكتابة إلى التحديد الحالي.";
 Strings.OfficeOM.L_MissingParameter = "معلمة مفقودة";
 Strings.OfficeOM.L_IndexOutOfRange = "الفهرس خارج النطاق.";
@@ -36,6 +37,7 @@ Strings.OfficeOM.L_ColIndexOutOfRange = "إن قيمة فهرس العمود خ�
 Strings.OfficeOM.L_UnsupportedEnumeration = "قائمة تعداد غير معتمدة";
 Strings.OfficeOM.L_InvalidParameters = "للدالة {0} معلمات غير صالحة.";
 Strings.OfficeOM.L_SetDataParametersConflict = "تعارض المعلمات المحددة.";
+Strings.OfficeOM.L_CloseFileBeforeRetrieve = "استدعاء closeAsync على الملف الحالي قبل استرداد آخر.";
 Strings.OfficeOM.L_DataNotMatchCoercionType = "نوع كائن البيانات المحدد غير متوافق مع التحديد الحالي.";
 Strings.OfficeOM.L_UnsupportedEnumerationMessage = "قائمة التعداد غير معتمدة في تطبيق المضيف الحالي.";
 Strings.OfficeOM.L_InvalidCoercion = "نوع الاندماج غير صالح";
@@ -58,18 +60,22 @@ Strings.OfficeOM.L_NamedItemNotFound = "العنصر المسمى غير موج�
 Strings.OfficeOM.L_InvalidApiCallInContext = "استدعاء API غير صالح في السياق الحالي.";
 Strings.OfficeOM.L_InvalidGetRows = "الصفوف المحددة غير صالحة.";
 Strings.OfficeOM.L_CellFormatAmountBeyondLimits = "ملاحظة: يُقترح أن تكون مجموعات التنسيق المعينة بواسطة استدعاء API الخاص بالتنسيق أقل من 100.";
+Strings.OfficeOM.L_TooManyIncompleteRequests = "انتظر حتى اكتمال المكالمة السابقة.";
 Strings.OfficeOM.L_SetDataIsTooLarge = "كائن البيانات المحدد طويل جداً.";
 Strings.OfficeOM.L_DataWriteError = "خطأ في كتابة البيانات";
 Strings.OfficeOM.L_InvalidBindingOperation = "عملية الربط غير صالحة";
+Strings.OfficeOM.L_APICallFailed = "فشل استدعاء API";
 Strings.OfficeOM.L_SpecifiedIdNotExist = "إن المعرف المحدد غير موجود.";
 Strings.OfficeOM.L_FunctionCallFailed = "فشل استدعاء الدالة {0}، رمز الخطأ: {1}.";
 Strings.OfficeOM.L_DataNotMatchBindingSize = "لا يتطابق كائن البيانات الذي تم توفيره مع حجم التحديد الحالي.";
 Strings.OfficeOM.L_SaveSettingsError = "خطأ في إعدادات الحفظ";
+Strings.OfficeOM.L_RequestTokenUnavailable = "تم إحباط API هذه لإبطاء تكرار المكالمة.";
 Strings.OfficeOM.L_InvalidSetStartRowColumn = "قيم startRow أو startColumn المحددة غير صحيحة.";
 Strings.OfficeOM.L_InvalidFormat = "خطأ تنسيق غير صالح";
 Strings.OfficeOM.L_BindingNotExist = "الربط المحدد غير موجود.";
 Strings.OfficeOM.L_SettingNameNotExist = "اسم الإعداد المحدد غير موجود.";
 Strings.OfficeOM.L_EventHandlerAdditionFailed = "فشل في إضافة معالج الحدث.";
+Strings.OfficeOM.L_BrowserAPINotSupported = "لا يعتمد هذا المستعرض API المطلوبة.";
 Strings.OfficeOM.L_InvalidAPICall = "استدعاء API غير صالح";
 Strings.OfficeOM.L_EventRegistrationError = "خطأ في تسجيل الأحداث";
 Strings.OfficeOM.L_ElementMissing = "تعذر علينا تنسيق خلية الجدول لأن بعض قيم المعلمات مفقودة. تحقق من المعلمات مرة أخرى ثم أعد المحاولة.";
@@ -86,18 +92,22 @@ Strings.OfficeOM.L_OutOfRange = "خارج النطاق";
 Strings.OfficeOM.L_InvalidSelectionForBindingType = "لا يمكن إنشاء ربط مع التحديد الحالي ونوع الربط المحدد.";
 Strings.OfficeOM.L_TooManyOptionalObjects = "كائنات اختيارية متعددة في قائمة المعلمات";
 Strings.OfficeOM.L_OperationNotSupportedOnMatrixData = "يجب أن يكون المحتوى المحدد بتنسيق الجدول. قم بتنسيق البيانات كجدول وحاول مرة أخرى.";
+Strings.OfficeOM.L_APINotSupported = "API غير معتمدة";
+Strings.OfficeOM.L_SliceSizeNotSupported = "حجم الشريحة المحدد غير معتمد.";
 Strings.OfficeOM.L_EventHandlerRemovalFailed = "فشلت عملية إزالة معالج الحدث.";
 Strings.OfficeOM.L_BindingToMultipleSelection = "لا يتم اعتماد التحديدات المتقطعة.";
 Strings.OfficeOM.L_DataReadError = "خطأ في قراءة البيانات";
 Strings.OfficeOM.L_InternalErrorDescription = "حدث خطأ داخلي.";
 Strings.OfficeOM.L_InvalidDataFormat = "تنسيق كائن البيانات المحدد غير صحيح.";
+Strings.OfficeOM.L_RequestTimeout = "استغرقت المكالمة وقتاً طويلاً وبالتالي يتعذر تنفيذها.";
 Strings.OfficeOM.L_DataStale = "البيانات غير حديثة";
 Strings.OfficeOM.L_GetSelectionNotSupported = "التحديد الحالي غير معتمد.";
+Strings.OfficeOM.L_MemoryLimit = "تجاوز حد الذاكرة";
 Strings.OfficeOM.L_CellDataAmountBeyondLimits = "ملاحظة: يُقترح أن يكون عدد الخلايا الموجود في جدول أقل من 20000 خلية.";
 Strings.OfficeOM.L_InvalidTableOptionValue = "تحتوي معلمة واحدة أو أكثر من معلمات tableOptions على قيم غير مسموح بها. تحقق من القيم مرة أخرى ثم أعد المحاولة.";
 Strings.OfficeOM.L_PermissionDenied = "تم رفض الإذن";
 Strings.OfficeOM.L_InvalidDataObject = "كائن البيانات غير صالح";
-Strings.OfficeOM.L_UserNotSignedIn = "No user is signed into Office.";
+Strings.OfficeOM.L_UserNotSignedIn = "لم يسجل أي مستخدم دخوله إلى Office.";
 Strings.OfficeOM.L_SelectionCannotBound = "يتعذر الربط بالتحديد الحالي.";
 Strings.OfficeOM.L_InvalidColumnsForBinding = "الأعمدة المحددة غير صالحة.";
 Strings.OfficeOM.L_BadSelectorString = "لم يتم تنسيق السلسة التي تم تمريرها إلى المحدد بشكل سليم أو أنها غير معتمدة.";
@@ -109,6 +119,7 @@ Strings.OfficeOM.L_InternalError = "خطأ داخلي";
 Strings.OfficeOM.L_NotSupported = "الدالة {0} غير معتمدة.";
 Strings.OfficeOM.L_CustomXmlNodeNotFound = "لم يتم العثور على العقدة المحددة.";
 Strings.OfficeOM.L_CoercionTypeNotMatchBinding = "نوع الاندماج المحدد غير متوافق مع هذا النوع من الربط.";
+Strings.OfficeOM.L_NetworkProblemRetrieveFile = "حالت مشكلة في الشبكة دون استرداد الملف.";
 Strings.OfficeOM.L_TooManyArguments = "العديد من الوسيطات";
 Strings.OfficeOM.L_OperationNotSupportedOnThisBindingType = "العملية غير معتمدة على هذا النوع من الربط.";
 Strings.OfficeOM.L_InValidOptionalArgument = "وسيطة اختيارية غير صالحة";

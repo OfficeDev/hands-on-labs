@@ -1,5 +1,5 @@
 /* Outlook web application specific API library */
-/* Version: 16.0.4017.3000 */
+/* Version: 16.0.4017.3000 Build Time: 07/15/2015 */
 /*
 	Copyright (c) Microsoft Corporation.  All rights reserved.
 */
@@ -3582,13 +3582,17 @@ OSF.DDA.WAC.Delegate.unregisterEventAsync=function OSF_DDA_WAC_Delegate$Unregist
 	else if(typeof Function !=="undefined")
 	{
 		var msAjaxCDNPath=(window.location.protocol.toLowerCase()==="https:" ? "https:" : "http:")+"//ajax.aspnetcdn.com/ajax/3.5/MicrosoftAjax.js";
-		OSF.OUtil.loadScript(msAjaxCDNPath,function OSF$loadMSAjaxCallback()
-		{
-			if(isMicrosftAjaxLoaded())
-				checkScriptOverride();
-			else if(typeof Function !=="undefined")
-				throw"Not able to load MicrosoftAjax.js.";
-		})
+		var onMicrosoftAjaxLoaded=function()
+			{
+				if(isMicrosftAjaxLoaded())
+					checkScriptOverride();
+				else if(typeof Function !=="undefined")
+					throw"Not able to load MicrosoftAjax.js.";
+			};
+		if(!(OSF._OfficeAppFactory && OSF._OfficeAppFactory && OSF._OfficeAppFactory.getLoadScriptHelper && OSF._OfficeAppFactory.getLoadScriptHelper().isScriptLoading(OSF.ConstantNames.MicrosoftAjaxId)))
+			OSF.OUtil.loadScript(msAjaxCDNPath,onMicrosoftAjaxLoaded);
+		else
+			OSF._OfficeAppFactory.getLoadScriptHelper().waitForScripts([OSF.ConstantNames.MicrosoftAjaxId],onMicrosoftAjaxLoaded)
 	}
 })();
 OSF.InitializationHelper=function OSF_InitializationHelper(hostInfo, webAppState, context, settings, hostFacade)

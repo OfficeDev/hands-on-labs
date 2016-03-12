@@ -1,75 +1,120 @@
-## Exercise 3: Leverage the Excel v2 JavaScript API in Excel 2016
+## Exercise 1: Build an Expense Report with new JavaScript APIs for Excel Add-ins 2016
 In this exercise you will create a Excel Add-in that uses the v2 JavaScript API included in Excel 2016. 
 
 > **Note**: For this exercise you must have Excel 2016 Preview, or a later version, installed. Refer to the prerequisites at the beginning of this lab for links on where to obtain Office 2016 Preview.
 
 1. Launch Visual Studio 2015 as administrator.
-1. From the **File** menu select the **New Project** command. When the **New Project** dialog appears, select the **App for Office** project template from the **Office/SharePoint** template folder as shown below. Name the new project **ExpenseReport** and click **OK** to create the new project.
+1. From the **File** menu select the **New Project** command. When the **New Project** dialog appears, select the **Excel Add-in** project template from the **Office/SharePoint** template folder as shown below. Name the new project **ExpenseReport** and click **OK** to create the new project.
+2. 	![](Images/Fig01new.PNG)
 
-1. When you create a new App for Office project, Visual Studio prompts you with the **Choose the app type** page of the **Create app for Office** dialog. This is the point where you select the type of App for Office you want to create. Leave the default setting with the radio button titled **Task pane** and select **OK** to continue.
+1. When you create a new App for Office project, Visual Studio prompts you with the **Choose the add-in type** page of the **Create Office Add-in** dialog. This is the point where you select the type of Add-in you want to create. Leave the default setting with the radio button titled **Add new functionalities to Excel** and select **Finish** to continue.
 
-	![](Images/Fig02.png)
+	![](Images/Fig02new.PNG)
 
-1. On the **Choose the host applications** page of the **Create app for Office** dialog, uncheck all the Office application except for **Excel** and then click **Finish** to create the new Visual Studio solution. 
-
-	![](Images/Fig03.png)
 
 1. Reference the Excel 2016 v2 JavaScript API in the add-in:
-	1. Locate and open the homepage for the add-in: **App \ Home \ Home.html**.
+	1. Locate and open the homepage for the add-in: **Home.html**.
 	1. Immediately after the reference to `Office.js` in the `<head>` portion of the page, add the following two script references to the Excel v2 JavaScript API beta CDN:
 
 		````html
     <script src="https://appsforoffice.microsoft.com/lib/beta/hosted/office.js"></script>
 		````
 
-	> **Note:** Eventually the Excel v2 JavaScript API will be merged into the single `Office.js` file so this step will not be necessary, but in the preview timeframe it is required as an extra step.
+	> **Note:** Eventually the all Excel JavaScript APIs will be merged into the single `Office.js` file so this step will not be necessary, but in the 1.2 API preview timeframe it is required as an extra step.
 
 1. Now update the user interface for the add-in:
 	1. Locate the `<body>` section of the page within the `home.html` file.
 	1. Replace the entire contents of the `<body>` with the following markup:
 
 		````html
-		<body>
-		  <div id="content-header">
-		    <div class="padding">
-		      <h1>Welcome</h1>
-		    </div>
-		  </div>
-		  <div id="content-main">
-		    <div class="padding">
-           <button id="insertData">Inseart Data, add a table and adjust layout</button>
-            <button id="sort">Sort my data based on transaction date</button>
-            <button id="filter">Only show my transtions in fuel and education</button>
-            <button id="report">Create a report on my spending and Protect the report </button>
-		    </div>
-		 </div>
-		</body>
+	    <div id="content-main">
+        <div class="padding">
+            <br />
+
+            <button class="ms-Button ms-Button--primary" id="insertData">
+                <span class="ms-Button-icon"><i class="ms-Icon ms-Icon--plus"></i></span>
+                <span class="ms-Button-label" id="button-text">Insert Data</span>
+                <span class="ms-Button-description" id="button-desc">Inseart Data, add a table and adjust layout</span>
+            </button>
+        <br />
+            <br />
+            <button class="ms-Button ms-Button--primary" id="sort">
+                <span class="ms-Button-icon"><i class="ms-Icon ms-Icon--plus"></i></span>
+                <span class="ms-Button-label" id="button-text">Sort</span>
+                <span class="ms-Button-description" id="button-desc">Sort my data based on transaction date</span>
+            </button>
+            <br />
+            <br />
+            <button class="ms-Button ms-Button--primary" id="filter">
+                <span class="ms-Button-icon"><i class="ms-Icon ms-Icon--plus"></i></span>
+                <span class="ms-Button-label" id="button-text">Filter</span>
+                <span class="ms-Button-description" id="button-desc">Only show my transtions in fuel and education</span>
+            </button>
+            <br />
+            <br />
+            <button class="ms-Button ms-Button--primary" id="report">
+                <span class="ms-Button-icon"><i class="ms-Icon ms-Icon--plus"></i></span>
+                <span class="ms-Button-label" id="button-text">Report</span>
+                <span class="ms-Button-description" id="button-desc">Create a report on my spending and Protect the report </span>
+            </button>
+        </div>
+    </div>
 		````
 
 1. The next step is to code the business logic for the add-in.
-	1. Locate the **App \ Home \ Home.js** file.
+	1. Locate the ** Home.js** file.
 	1. Remove all the sample code except the add-in initialization code so all that is left is the following:
 
 		````javascript
-		(function () {
-		  "use strict";
+(function () {
+    "use strict";
 
-		  // The initialize function must be run each time a new page is loaded
-		  Office.initialize = function (reason) {
-		    $(document).ready(function () {
-		      app.initialize();
 
-		      // attach click handlers to the workbook
-		      // TODO-1
-		      // TODO-2
-		      // TODO-3
-		      // TODO-4
 
-		    });
-		  };
+    // The initialize function must be run each time a new page is loaded.
+    Office.initialize = function (reason) {
+        $(document).ready(function () {
+            // Initialize the FabricUI notification mechanism and hide it
+            var element = document.querySelector('.ms-MessageBanner');
+            messageBanner = new fabric.MessageBanner(element);
+            messageBanner.hideBanner();
 
-	
-		})();
+
+            // attach click handlers to the workbook
+            // TODO-1
+
+            // TODO-2
+
+            // TODO-3
+
+            // TODO-4
+
+            return;
+
+            
+
+        });
+    }
+
+    // Helper function for treating errors
+    function errorHandler(error) {
+        // Always be sure to catch any accumulated errors that bubble up from the Excel.run execution
+        showNotification("Error", error);
+        console.log("Error: " + error);
+        if (error instanceof OfficeExtension.Error) {
+            console.log("Debug info: " + JSON.stringify(error.debugInfo));
+        }
+    }
+
+    // Helper function for displaying notifications
+    function showNotification(header, content) {
+        $("#notificationHeader").text(header);
+        $("#notificationBody").text(content);
+        messageBanner.showBanner();
+        messageBanner.toggleExpansion();
+    }
+})();
+
 		````
 
 
