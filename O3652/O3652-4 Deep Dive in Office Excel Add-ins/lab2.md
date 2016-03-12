@@ -27,21 +27,39 @@ In this exercise you will create a Excel Add-in that uses the v2 JavaScript API 
 	1. Replace the entire contents of the `<body>` with the following markup:
 
 		````html
-		<body>
-		  <div id="content-header">
-		    <div class="padding">
-		      <h1>Welcome</h1>
-		    </div>
-		  </div>
-		  <div id="content-main">
-		    <div class="padding">
-           <button id="insertData">Inseart Data, add a table and adjust layout</button>
-            <button id="sort">Sort my data based on transaction date</button>
-            <button id="filter">Only show my transtions in fuel and education</button>
-            <button id="report">Create a report on my spending and Protect the report </button>
-		    </div>
-		 </div>
-		</body>
+	<div id="content-main">
+        <div class="padding">
+            <br />
+            <div class="ms-font-xxl ms-fontColor-neutralSecondary ms-fontWeight-semilight">Sample</div>
+            <br /><br />
+            <div class="ms-font-xl ms-fontColor-neutralTertiary">Getting Started</div>
+            <p class="ms-font-m-plus ms-fontColor-neutralTertiary" id="template-description"></p>
+            <div class="ms-font-m"><a target="_blank" class="ms-Link ms-Link--hero" href="https://go.microsoft.com/fwlink/?LinkId=276812">Find more samples online...</a></div>
+            <br /><br />
+            
+            <button class="ms-Button ms-Button--primary" id="insertData-button">
+                <span class="ms-Button-icon"><i class="ms-Icon ms-Icon--plus"></i></span>
+                <span class="ms-Button-label" id="button-text"></span>
+                <span class="ms-Button-description" id="button-desc"></span>
+            </button>
+            <button class="ms-Button ms-Button--primary" id="sort-button">
+                <span class="ms-Button-icon"><i class="ms-Icon ms-Icon--plus"></i></span>
+                <span class="ms-Button-label" id="button-text"></span>
+                <span class="ms-Button-description" id="button-desc"></span>
+            </button>
+            <button class="ms-Button ms-Button--primary" id="filter-button">
+                <span class="ms-Button-icon"><i class="ms-Icon ms-Icon--plus"></i></span>
+                <span class="ms-Button-label" id="button-text"></span>
+                <span class="ms-Button-description" id="button-desc"></span>
+            </button>
+            <button class="ms-Button ms-Button--primary" id="report-button">
+                <span class="ms-Button-icon"><i class="ms-Icon ms-Icon--plus"></i></span>
+                <span class="ms-Button-label" id="button-text"></span>
+                <span class="ms-Button-description" id="button-desc"></span>
+            </button>
+
+        </div>
+    </div>
 		````
 
 1. The next step is to code the business logic for the add-in.
@@ -49,25 +67,57 @@ In this exercise you will create a Excel Add-in that uses the v2 JavaScript API 
 	1. Remove all the sample code except the add-in initialization code so all that is left is the following:
 
 		````javascript
-		(function () {
-		  "use strict";
+(function () {
+    "use strict";
 
-		  // The initialize function must be run each time a new page is loaded
-		  Office.initialize = function (reason) {
-		    $(document).ready(function () {
-		      app.initialize();
+    var cellToHighlight;
+    var messageBanner;
 
-		      // attach click handlers to the workbook
-		      // TODO-1
-		      // TODO-2
-		      // TODO-3
-		      // TODO-4
+    // The initialize function must be run each time a new page is loaded.
+    Office.initialize = function (reason) {
+        $(document).ready(function () {
+            // Initialize the FabricUI notification mechanism and hide it
+            var element = document.querySelector('.ms-MessageBanner');
+            messageBanner = new fabric.MessageBanner(element);
+            messageBanner.hideBanner();
+            
+            // If not using Excel 2016, use fallback logic.
+            if (!Office.context.requirements.isSetSupported('ExcelApi', '1.2')) {
+                $("#template-description").text("This sample will display the value of the cells you have selected in the spreadsheet.");
+                $('#button-text').text("Display!");
+                $('#button-desc').text("Display the selection");
+                // attach click handlers to the workbook
+                // TODO-1
+                // TODO-2
+                // TODO-3
+                // TODO-4
+                return;
+            }
 
-		    });
-		  };
+        });
+    }
 
-	
-		})();
+
+
+    // Helper function for treating errors
+    function errorHandler(error) {
+        // Always be sure to catch any accumulated errors that bubble up from the Excel.run execution
+        showNotification("Error", error);
+        console.log("Error: " + error);
+        if (error instanceof OfficeExtension.Error) {
+            console.log("Debug info: " + JSON.stringify(error.debugInfo));
+        }
+    }
+
+    // Helper function for displaying notifications
+    function showNotification(header, content) {
+        $("#notificationHeader").text(header);
+        $("#notificationBody").text(content);
+        messageBanner.showBanner();
+        messageBanner.toggleExpansion();
+    }
+})();
+
 		````
 
 
