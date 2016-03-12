@@ -1,5 +1,5 @@
 /* PowerPoint specific API library */
-/* Version: 15.0.4615.1000 */
+/* Version: 15.0.4764.1000 */
 /*
 	Copyright (c) Microsoft Corporation.  All rights reserved.
 */
@@ -1368,11 +1368,11 @@ OSF.DDA.Slide=function OSF_DDA_Slide(input) {
 		}
 	}
 	if(input.length !=numField) {
-		throw Error.argument("slide");
+		throw OsfMsAjaxFactory.msAjaxError.argument("slide");
 	}
 	OSF.OUtil.defineEnumerableProperties(this, mapList);
 	if(isNaN(this.id) || isNaN(this.index)) {
-		throw Error.argument("slide");
+		throw OsfMsAjaxFactory.msAjaxError.argument("slide");
 	}
 };
 OSF.DDA.SlideRange=function OSF_DDA_SlideRange(input) {
@@ -1389,7 +1389,7 @@ OSF.DDA.SlideRange=function OSF_DDA_SlideRange(input) {
 		}
 	}
 	if(!dataValid) {
-		throw Error.argument("sliderange");
+		throw OsfMsAjaxFactory.msAjaxError.argument("sliderange");
 	}
 	OSF.OUtil.defineEnumerableProperties(this, {
 		"slides": {
