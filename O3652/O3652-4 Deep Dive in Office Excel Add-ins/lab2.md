@@ -27,51 +27,49 @@ In this exercise you will create a Excel Add-in that uses the v2 JavaScript API 
 	1. Replace the entire contents of the `<body>` with the following markup:
 
 		````html
-	<div id="content-main">
+	    <div id="content-main">
         <div class="padding">
             <br />
-            <div class="ms-font-xxl ms-fontColor-neutralSecondary ms-fontWeight-semilight">Sample</div>
-            <br /><br />
-            <div class="ms-font-xl ms-fontColor-neutralTertiary">Getting Started</div>
-            <p class="ms-font-m-plus ms-fontColor-neutralTertiary" id="template-description"></p>
-            <div class="ms-font-m"><a target="_blank" class="ms-Link ms-Link--hero" href="https://go.microsoft.com/fwlink/?LinkId=276812">Find more samples online...</a></div>
-            <br /><br />
-            
-            <button class="ms-Button ms-Button--primary" id="insertData-button">
-                <span class="ms-Button-icon"><i class="ms-Icon ms-Icon--plus"></i></span>
-                <span class="ms-Button-label" id="button-text"></span>
-                <span class="ms-Button-description" id="button-desc"></span>
-            </button>
-            <button class="ms-Button ms-Button--primary" id="sort-button">
-                <span class="ms-Button-icon"><i class="ms-Icon ms-Icon--plus"></i></span>
-                <span class="ms-Button-label" id="button-text"></span>
-                <span class="ms-Button-description" id="button-desc"></span>
-            </button>
-            <button class="ms-Button ms-Button--primary" id="filter-button">
-                <span class="ms-Button-icon"><i class="ms-Icon ms-Icon--plus"></i></span>
-                <span class="ms-Button-label" id="button-text"></span>
-                <span class="ms-Button-description" id="button-desc"></span>
-            </button>
-            <button class="ms-Button ms-Button--primary" id="report-button">
-                <span class="ms-Button-icon"><i class="ms-Icon ms-Icon--plus"></i></span>
-                <span class="ms-Button-label" id="button-text"></span>
-                <span class="ms-Button-description" id="button-desc"></span>
-            </button>
 
+            <button class="ms-Button ms-Button--primary" id="insertData">
+                <span class="ms-Button-icon"><i class="ms-Icon ms-Icon--plus"></i></span>
+                <span class="ms-Button-label" id="button-text">Insert Data</span>
+                <span class="ms-Button-description" id="button-desc">Inseart Data, add a table and adjust layout</span>
+            </button>
+        <br />
+            <br />
+            <button class="ms-Button ms-Button--primary" id="sort">
+                <span class="ms-Button-icon"><i class="ms-Icon ms-Icon--plus"></i></span>
+                <span class="ms-Button-label" id="button-text">Sort</span>
+                <span class="ms-Button-description" id="button-desc">Sort my data based on transaction date</span>
+            </button>
+            <br />
+            <br />
+            <button class="ms-Button ms-Button--primary" id="filter">
+                <span class="ms-Button-icon"><i class="ms-Icon ms-Icon--plus"></i></span>
+                <span class="ms-Button-label" id="button-text">Filter</span>
+                <span class="ms-Button-description" id="button-desc">Only show my transtions in fuel and education</span>
+            </button>
+            <br />
+            <br />
+            <button class="ms-Button ms-Button--primary" id="report">
+                <span class="ms-Button-icon"><i class="ms-Icon ms-Icon--plus"></i></span>
+                <span class="ms-Button-label" id="button-text">Report</span>
+                <span class="ms-Button-description" id="button-desc">Create a report on my spending and Protect the report </span>
+            </button>
         </div>
     </div>
 		````
 
 1. The next step is to code the business logic for the add-in.
-	1. Locate the **App \ Home \ Home.js** file.
+	1. Locate the ** Home.js** file.
 	1. Remove all the sample code except the add-in initialization code so all that is left is the following:
 
 		````javascript
 (function () {
     "use strict";
 
-    var cellToHighlight;
-    var messageBanner;
+
 
     // The initialize function must be run each time a new page is loaded.
     Office.initialize = function (reason) {
@@ -80,24 +78,23 @@ In this exercise you will create a Excel Add-in that uses the v2 JavaScript API 
             var element = document.querySelector('.ms-MessageBanner');
             messageBanner = new fabric.MessageBanner(element);
             messageBanner.hideBanner();
+
+
+            // attach click handlers to the workbook
+            // TODO-1
+
+            // TODO-2
+
+            // TODO-3
+
+            // TODO-4
+
+            return;
+
             
-            // If not using Excel 2016, use fallback logic.
-            if (!Office.context.requirements.isSetSupported('ExcelApi', '1.2')) {
-                $("#template-description").text("This sample will display the value of the cells you have selected in the spreadsheet.");
-                $('#button-text').text("Display!");
-                $('#button-desc').text("Display the selection");
-                // attach click handlers to the workbook
-                // TODO-1
-                // TODO-2
-                // TODO-3
-                // TODO-4
-                return;
-            }
 
         });
     }
-
-
 
     // Helper function for treating errors
     function errorHandler(error) {
