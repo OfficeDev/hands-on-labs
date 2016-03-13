@@ -193,4 +193,4 @@ Sample Connector Card Message JSON Payload
 
 15. Create a new issue for your repo. This will trigger the incoming webhook in your ASP.net applicationYou should now receive connector card messages for new github issues in your Office 365 group inbox.
 
-**Congratulations,** on completing this exercise! Try building your own connector, customize the card message experience to show your own brand and style, and the sender of the message will also show your logo (instead of incoming webhook). Check out dev.outlook.com/connectors for more developer information, code samples and instructions for submitting and listing your connector in the Office 365 Connectors catalog.
+**Congratulations,** on completing this exercise! Try building your own connector. Customize the card message experience to show your own brand and style, and the sender of the message will also show your logo (instead of "incoming webhook"). Check out dev.outlook.com/connectors for more developer information, code samples and instructions for submitting and listing your connector in the Office 365 Connectors catalog.
