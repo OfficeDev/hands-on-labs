@@ -1,6 +1,7 @@
-# Office 365 Connectors are a great way to get useful information and content into your Office 365 Group. Any user can connect their group to services like Trello, Bing News, Twitter, etc., and get notified of the group's activity in that service. From tracking a team's progress in Trello, to following important hashtags in Twitter, Office 365 Connectors make it easier for an Office 365 group to stay in sync and get more done. Developers can build connectors through incoming webhooks to generate rich connector cards.   Connector cards can be short text-based messages, or use "sections" to display rich or specially-formatted information. Outlook takes care of all the UX for you and renders the message automatically. When more content is added to the payload, the card scales gracefully. 
+# Learn how to build Office 365 Connectors using Webhooks
+Office 365 Connectors are a great way to get useful information and content into your Office 365 Group. Any user can connect their group to services like Trello, Bing News, Twitter, etc., and get notified of the group's activity in that service. From tracking a team's progress in Trello, to following important hashtags in Twitter, Office 365 Connectors make it easier for an Office 365 group to stay in sync and get more done. Developers can build connectors through incoming webhooks to generate rich connector cards.   Connector cards can be short text-based messages, or use "sections" to display rich or specially-formatted information. Outlook takes care of all the UX for you and renders the message automatically. When more content is added to the payload, the card scales gracefully. 
 
-# In this lab, you will use simple tools like Postman to post messages to Office 365 Groups using incoming webhooks. 
+In this lab, you will use simple tools like Postman to post messages to Office 365 Groups using incoming webhooks. 
 To illustrate further using a real world scenario, we will show you how to build an ASP.net application that receives Github notifications from your favorite repos and post them as connector messages to your Office 365 group. 
 
 
@@ -189,7 +190,5 @@ Sample Connector Card Message JSON Payload
 14. Optional: to debug the incoming webhook from Github service, place a breakpoint on the ExecuteAsync function of the GithubWebhookHandler.cs file of your Visual Studio project. To do this, open server explorer in Visual Studio, find and right click your web application under App service, and attach the debugger. 
 
 15. Create a new issue for your repo. This will trigger the incoming webhook in your ASP.net applicationYou should now receive connector card messages for new github issues in your Office 365 group inbox.
-
-16. Hungry for more ideas and scenarios? See here! https://blogs.msdn.microsoft.com/webdev/2015/09/04/introducing-microsoft-asp-net-webhooks-preview/ 
 
 **Congratulations,** on completing this exercise! Try building your own connector, customize the card message experience to show your own brand and style, and the sender of the message will also show your logo (instead of incoming webhook). Check out dev.outlook.com/connectors for more developer information, code samples and instructions for submitting and listing your connector in the Office 365 Connectors catalog.
