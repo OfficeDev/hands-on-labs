@@ -112,7 +112,7 @@ Sample Connector Card Message JSON Payload
 
 5. Open the global.asax file. You need to initialize the webhook receiver. Add a line of code for `GlobalConifguration.Configure(WebhookConfig.Register)`  in the Application_Start function. 
 
-			protected void Application_Start()
+		protected void Application_Start()
 	        {
 	            GlobalConfiguration.Configure(WebApiConfig.Register);
 	            GlobalConfiguration.Configure(WebHookConfig.Register);
@@ -138,6 +138,10 @@ Sample Connector Card Message JSON Payload
 		{
 		    public class GitHubWebHookHandler : WebHookHandler
 		    {
+
+		        // TODO: Copy and paste the group webhook URL here
+		        public const string groupWebHookURL = @"paste the Office 365 Group webhook URL here";
+
 		        public override Task ExecuteAsync(string receiver, WebHookHandlerContext context)
 		        {
 		        // make sure we're only processing the intended type of hook
@@ -153,8 +157,6 @@ Sample Connector Card Message JSON Payload
 		            return Task.FromResult(true);
 		        }
 		
-		        // Copy and paste the group webhook URL here
-		        public const string groupWebHookURL = @"paste the Office 365 Group webhook URL here";
 		
 		        private static async Task<HttpResponseMessage> PostRequest(string payload)
 		        {
