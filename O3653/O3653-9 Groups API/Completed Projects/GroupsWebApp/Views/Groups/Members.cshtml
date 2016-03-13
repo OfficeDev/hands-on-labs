@@ -1,0 +1,62 @@
+﻿@model IEnumerable<Microsoft.Graph.DirectoryObject>
+
+@{ ViewBag.Title = "Group Members"; }
+
+<h2>Group Members</h2>
+
+<div class="row" style="margin-top:50px;">
+    <div class="col-sm-12">
+        @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+        {
+        <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
+        }
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <form class="form-inline" action="/Groups/AddMember" method="post">
+                    <div class="form-group">
+                        <label for="newMemberEmail">Email</label>
+                        <input type="email" class="form-control" name="newMemberEmail" id="newMemberEmail" placeholder="user@contoso.com" />
+                    </div>
+                    <input type="hidden" name="groupId" value="@Request.Params["groupId"]" />
+                    <button type="submit" class="btn btn-default">Add Member</button>
+                </form>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table id="membersTable" class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email address</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (Microsoft.Graph.User user in Model)
+                    { 
+                    <tr>
+                        <td>
+                            @user.DisplayName
+                        </td>
+                        <td>
+                            @user.Mail
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="btn btn-group-sm">
+            @{
+              Dictionary<string, object> attributes = new Dictionary<string, object>();
+              attributes.Add("class", "btn btn-default");
+
+              if (null != ViewBag.NextLink)
+              {
+                RouteValueDictionary routeValues = new RouteValueDictionary();
+                routeValues.Add("nextLink", ViewBag.NextLink);
+                @Html.ActionLink("Next Page", "Members", "Groups", routeValues, attributes);
+              }
+            }
+        </div>
+    </div>
+</div>
