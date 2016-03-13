@@ -1,0 +1,7 @@
+﻿{
+  "ProviderId": "AspNet.WebHooks.ConnectedService",
+  "Version": "1.0.0",
+  "GettingStartedDocument": {
+    "Uri": "http://go.microsoft.com/fwlink/?LinkId=690277"
+  }
+}
