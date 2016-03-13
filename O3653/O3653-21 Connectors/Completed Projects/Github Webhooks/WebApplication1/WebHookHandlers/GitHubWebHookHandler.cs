@@ -16,6 +16,9 @@ namespace WebApplication1.WebHookHandlers
 {
     public class GitHubWebHookHandler : WebHookHandler
     {
+        // $TODO: Copy and paste the group webhook URL here
+        public const string groupWebHookURL = @"paste the Office 365 Group webhook URL here";
+
         public override Task ExecuteAsync(string receiver, WebHookHandlerContext context)
         {
 			// make sure we're only processing the intended type of hook
@@ -30,9 +33,6 @@ namespace WebApplication1.WebHookHandlers
 
             return Task.FromResult(true);
         }
-
-        // Copy and paste the group webhook URL here
-        public const string groupWebHookURL = @"paste the Office 365 Group webhook URL here";
 
         private static async Task<HttpResponseMessage> PostRequest(string payload)
         {
