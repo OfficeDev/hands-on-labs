@@ -21,7 +21,7 @@ Supported Office application — Excel (and/or others as desired). The Yeoman ge
 6. You will need to add the self-signed security certificate that gulp-webserver creates as a trusted root certificate or your add-in will not display. To verify that the add-in is running, open your browser and go to the main page at https://localhost:8443/app/home/home.html. 
 
 ## Exercise 2: Side load add-in into Excel for Mac
-*In this exercise, we'll go through the process of sideloading an add-in on Excel for Mac.
+*In this exercise, we'll go through the process of sideloading an add-in on Excel for Mac.*
 
 1. Open Terminal [shortcut on the desktop] and type **cd ~/Library/Containers/com.microsoft.Excel/Data/Documents/wef**
 2. You may have to create the wef folder if it doesnt already exist.
@@ -31,6 +31,15 @@ Supported Office application — Excel (and/or others as desired). The Yeoman ge
 6. Go to Insert tab & click on the My Add-ins drop-down. Click on the HelloWorld Add-in to open it Excel.
 
 ## Exercise 3: Debug HelloWorld add-in using VorlonJS
+*In this exercise, we'll use Vorlon.js to debug your add-in on the Mac.*
+
+1. Let's first install by typing **sudo npm I –g vorlon** in Terminal
+2. Type **sudo vorlon** in Terminal to start the VorlonJS server
+3. To check that Vorlon server is up and running, type http://localhost:1337 in a browser. You should see the VorlonJS start page.
+4. Copy the **<script .... ></script>** tag on that page and paste it into the <header> tag 
+5. Launch Excel and start your add-in
+6. You should now see the client connection on the Vorlon server page at http://localhost:1337
+
 
 
 
