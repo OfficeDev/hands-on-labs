@@ -4,7 +4,8 @@ Office Add-ins let you add your solution where ever they run. In PowerPoint, add
 
 This quick start will start with an excersize that will guide you through creating a PowerPoint add-in starting from Visual Studio. We will use Bing.com's Photo of the day. This add-in will expose you to the tools we use to create add-ins and the Office.js 1.1 API. In particular, we'll use the document.setSelectedDataAsync API to insert pictures into the user's current PowerPoint deck and customize the User Interface with Add-in Commands.
 
-**Prerequisites:** 
+##### Prerequisites: 
+
 1. Before you can start, you must have installed Office 2016 and Visual Studio 2015 Update 1.
 2. You must have the Office Developer Tools installed in Visual Studio 2015.
 
