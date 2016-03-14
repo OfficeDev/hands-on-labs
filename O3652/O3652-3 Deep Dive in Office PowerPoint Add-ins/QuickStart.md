@@ -29,50 +29,52 @@ This quick start will start with an excersize that will guide you through creati
 
     ![](Images/Fig03.png)
 
-6. Now, find the xml block that looks like this:
-	```XML
-	<!-- PrimaryCommandSurface==Main Office Ribbon. -->
-          <ExtensionPoint xsi:type="PrimaryCommandSurface">
-            <!-- Use OfficeTab to extend an existing Tab. Use CustomTab to create a new tab. -->
-            <OfficeTab id="TabHome">
-              <!-- Ensure you provide a unique id for the group. Recommendation for any IDs is to namespace using your company name. -->
-              <Group id="Contoso.Group1">
-                <!-- Label for your group. resid must point to a ShortString resource. -->
-                <Label resid="Contoso.Group1Label" />
-                <!-- Icons. Required sizes 16,32,80, optional 20, 24, 40, 48, 64. Strongly recommended to provide all sizes for great UX. -->
-                <!-- Use PNG icons and remember that all URLs on the resources section must use HTTPS. -->
-                <Icon>
-                  <bt:Image size="16" resid="Contoso.tpicon_16x16" />
-                  <bt:Image size="32" resid="Contoso.tpicon_32x32" />
-                  <bt:Image size="80" resid="Contoso.tpicon_80x80" />
-                </Icon>
+6. Now, find the xml block that looks like this. Take a minute and read through it as it describes how Add-ins can integrate with the Office UI. The example below demonstrates how an add-in can add a button to the PowerPoint Ribbon's Home tab.
 
-                <!-- Control. It can be of type "Button" or "Menu". -->
-                <Control xsi:type="Button" id="Contoso.TaskpaneButton">
-                  <Label resid="Contoso.TaskpaneButton.Label" />
-                  <Supertip>
-                    <!-- ToolTip title. resid must point to a ShortString resource. -->
-                    <Title resid="Contoso.TaskpaneButton.Label" />
-                    <!-- ToolTip description. resid must point to a LongString resource. -->
-                    <Description resid="Contoso.TaskpaneButton.Tooltip" />
-                  </Supertip>
-                  <Icon>
+	```XML
+        <!-- PrimaryCommandSurface==Main Office Ribbon. -->
+            <ExtensionPoint xsi:type="PrimaryCommandSurface">
+                <!-- Use OfficeTab to extend an existing Tab. Use CustomTab to create a new tab. -->
+                <OfficeTab id="TabHome">
+                <!-- Ensure you provide a unique id for the group. Recommendation for any IDs is to namespace using your company name. -->
+                <Group id="Contoso.Group1">
+                    <!-- Label for your group. resid must point to a ShortString resource. -->
+                    <Label resid="Contoso.Group1Label" />
+                    <!-- Icons. Required sizes 16,32,80, optional 20, 24, 40, 48, 64. Strongly recommended to provide all sizes for great UX. -->
+                    <!-- Use PNG icons and remember that all URLs on the resources section must use HTTPS. -->
+                    <Icon>
                     <bt:Image size="16" resid="Contoso.tpicon_16x16" />
                     <bt:Image size="32" resid="Contoso.tpicon_32x32" />
                     <bt:Image size="80" resid="Contoso.tpicon_80x80" />
-                  </Icon>
+                    </Icon>
 
-                  <!-- This is what happens when the command is triggered (E.g. click on the Ribbon). Supported actions are ExecuteFuncion or ShowTaskpane. -->
-                  <Action xsi:type="ShowTaskpane">
-                    <TaskpaneId>ButtonId1</TaskpaneId>
-                    <!-- Provide a url resource id for the location that will be displayed on the task pane. -->
-                    <SourceLocation resid="Contoso.Taskpane.Url" />
-                  </Action>
-                </Control>
-              </Group>
-            </OfficeTab>
-          </ExtensionPoint>
+                    <!-- Control. It can be of type "Button" or "Menu". -->
+                    <Control xsi:type="Button" id="Contoso.TaskpaneButton">
+                    <Label resid="Contoso.TaskpaneButton.Label" />
+                    <Supertip>
+                        <!-- ToolTip title. resid must point to a ShortString resource. -->
+                        <Title resid="Contoso.TaskpaneButton.Label" />
+                        <!-- ToolTip description. resid must point to a LongString resource. -->
+                        <Description resid="Contoso.TaskpaneButton.Tooltip" />
+                    </Supertip>
+                    <Icon>
+                        <bt:Image size="16" resid="Contoso.tpicon_16x16" />
+                        <bt:Image size="32" resid="Contoso.tpicon_32x32" />
+                        <bt:Image size="80" resid="Contoso.tpicon_80x80" />
+                    </Icon>
+
+                    <!-- This is what happens when the command is triggered (E.g. click on the Ribbon). Supported actions are ExecuteFuncion or ShowTaskpane. -->
+                    <Action xsi:type="ShowTaskpane">
+                        <TaskpaneId>ButtonId1</TaskpaneId>
+                        <!-- Provide a url resource id for the location that will be displayed on the task pane. -->
+                        <SourceLocation resid="Contoso.Taskpane.Url" />
+                    </Action>
+                    </Control>
+                </Group>
+                </OfficeTab>
+            </ExtensionPoint>
 	```
+    
 9. Let's modify the button to say "Hello world" instead of "Show Taskpane". Find the following element in the file
 
 	```XML
@@ -275,11 +277,14 @@ This quick start will start with an excersize that will guide you through creati
 
 1. Press F5 to start the project. When Powerpoint loads, click the *Daily Photo* button on the home tab.
 
-
+	![](Images/Fig08.png)  
 
 1. Then click the insert image button and you should see the Bing Photo of the Day added.
+1. You can then use the designer in PowerPoint to customize the slide deck with designs based on the photo.
 
-Congrats on completing this quick start challenge! You may also want to learn about our Graph APIs. 
+	![](Images/Fig09.png)  
+    
+Congrats on completing this quick start challenge! When you're done, you should see a photo like this
 
 ## BONUS: Insert photos of charts stored in a user's OneDrive
 One common scenario that may come to mind is to connect PowerPoint to Excel data. 
