@@ -285,7 +285,7 @@ This quick start will start with an excersize that will guide you through creati
 
 	![](Images/Fig09.PNG)  
     
-Congrats on completing this quick start challenge! When you're done, you should see a photo like this
+Congrats on completing this quick start challenge!
 
 ## BONUS: Insert photos of charts stored in a user's OneDrive
 One common scenario that may come to mind is to connect PowerPoint to Excel data. 
