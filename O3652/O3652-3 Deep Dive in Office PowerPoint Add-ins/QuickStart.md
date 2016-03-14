@@ -15,11 +15,20 @@ This quick start will start with an excersize that will guide you through creati
 
 1. Launch Visual Studio 2015 as administrator.
 2. From the **File** menu select the **New Project** command. When the **New Project** dialog appears, select the **PowerPoint Add-in** project template from the **Office/SharePoint** template folder as shown below. Name the new project **HelloWorld** and click **OK** to create the new project.
+
+    ![](Images/Fig01.png)
+
 3. When you create a new **PowerPoint Add-in** project, Visual Studio prompts you with the Choose the add-in type page of the Create Office Add-in dialog. This is the point where you select the type of Add-in you want to create. Leave the default setting with the radio button titled **Add new functionalities to PowerPoint** and select Finish to continue.
+
+    ![](Images/Fig02.png)
+
 4. Visual Studio will create the project. There are a few parts that great created for you:
 	- A manifest xml file - this holds the metadata that your add-in needs to run in Office, including how it will present itself on the ribbon
 	- A HelloWorldWeb project with a Home.html and Home.js - The HelloWorldWeb project in the solution contains the html and javascript you need to run your office add-in.
-5. Use the Solution Explorer to drill down into the **HelloWorld.xml** file as shown in the image below.
+5. Use the Solution Explorer to drill down into the **HelloWorld.xml** file.
+
+    ![](Images/Fig03.png)
+
 6. Now, find the xml block that looks like this:
 	```XML
 	<!-- PrimaryCommandSurface==Main Office Ribbon. -->
@@ -78,7 +87,7 @@ This quick start will start with an excersize that will guide you through creati
 
 *In this excersize, we will continue where you left of above. You will learn more about add-in commands and learn how to customize the add-in command on the ribbon.*
 
-14. Let's update the **Home.html**.  Find the div with the id **content-main**. It will look like the following
+1. Let's update the **Home.html**.  Find the div with the id **content-main**. It will look like the following
 
     ```HTML
         <div id="content-main">
@@ -96,7 +105,7 @@ This quick start will start with an excersize that will guide you through creati
             </div>
     ```
 
-15. Replace that with:
+1. Replace that with:
 
     ```HTML
         <div id="content-main">
@@ -112,7 +121,7 @@ This quick start will start with an excersize that will guide you through creati
         </div>
     ```
 
-15. Next, we'll replace the ENTIRE contents of the **Home.js** file with the following:
+1. Next, we'll replace the ENTIRE contents of the **Home.js** file with the following:
 
     ```js   
          /// <reference path="/Scripts/FabricUI/MessageBanner.js" />
@@ -164,23 +173,23 @@ This quick start will start with an excersize that will guide you through creati
         })();
     ```
 
-16. Next, we will create the web service to make the call to get Bing's photo of the day.
-1. Add a new folder the **HelloWorldWeb** project named **Controllers**.  
+1. Next, we will create the web service to make the call to get Bing's photo of the day.
+1. Add a new folder to the **HelloWorldWeb** project named **Controllers**.  
 
-	![](Images/Fig14.png)  
+	![](Images/Fig04.png)  
 
 1. Right-click on the **Controllers** folder and select **Add > New Scaffolded Item...**.
 1. In the **Add Scaffold** dialog, select **Web API 2 Controller - Empty** and click the **Add** button.  
 
-	![](Images/Fig15.png)    
+	![](Images/Fig05.png)  
 
-1. On the **AddController** dialog, enter a name of **PhotoController** and click the **Add** button.  
+1. On the **AddController** dialog, enter a name of **PhotoController** and click the **Add** button. 
 
-	![](Images/Fig16.png)  
+	![](Images/Fig06.png)  
 
 1. You should now see that the Web API controller has been added to a file named **PhotoController.cs**. You can also see that Visual Studio has added a few extra files such as **Global.asax** and **WebApiConfig.cs** to provide support for the Web API.  
 
-	![](Images/Fig17.png)
+	![](Images/Fig07.png)  
 
 1. Examine what's inside **PhotoController.cs**. You can see that there is an **ApiController**-derived class named **VideosController** which is initially empty.
 
@@ -203,14 +212,10 @@ This quick start will start with an excersize that will guide you through creati
 
     ````c#
     using System;
-    using System.Collections.Generic;
     using System.IO;
-    using System.Linq;
     using System.Net;
-    using System.Net.Http;
     using System.Text;
     using System.Web.Http;
-    using System.Web.Http.Results;
     using System.Xml;
 
     namespace HelloWorldWeb.Controllers
@@ -268,8 +273,11 @@ This quick start will start with an excersize that will guide you through creati
         }
     ```
 
-17. Press F5 to start the project. When Powerpoint loads, click the *Daily Photo* button on the home tab.
-18. Then click the insert image button and you should see the Bing Photo of the Day added.
+1. Press F5 to start the project. When Powerpoint loads, click the *Daily Photo* button on the home tab.
+
+
+
+1. Then click the insert image button and you should see the Bing Photo of the Day added.
 
 Congrats on completing this quick start challenge! You may also want to learn about our Graph APIs. 
 
@@ -277,4 +285,4 @@ Congrats on completing this quick start challenge! You may also want to learn ab
 One common scenario that may come to mind is to connect PowerPoint to Excel data. 
 
 1. Check out the **Excel Rest API** quick start and see how to use the Microsoft Graph
-2. Try out this code sample at  http://aka.ms/excel-chart-picker which lets you insert pictures of charts from Excel files stored in OneDrive.
+1. Try out this code sample at  http://aka.ms/excel-chart-picker which lets you insert pictures of charts from Excel files stored in OneDrive.
