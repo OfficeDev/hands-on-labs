@@ -7,6 +7,7 @@ In this lab, you will use Microsoft Graph to integrate the Office365 people apiâ
   2. You must have Visual Studio 2015 with Update 1 installed.
   3. You must have the Graph AAD Auth v2 Started Project template installed.
   4. You must have the OData v4 Client Code Generator addin installed.
+
 ## Exercise 1: Create a new project using Azure Active Directory v2 authentication
 
 In this first step, you will create a new ASP.NET MVC project using the
