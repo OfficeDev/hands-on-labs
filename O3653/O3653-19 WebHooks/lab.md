@@ -110,7 +110,7 @@ ngrok http <port-number> -host-header=localhost:<port-number>
 
 	![](images/ngrok2.PNG)
 
-1. In Visual Studio, open the Web.config file in the root directory of the project. Insert the following key in the **appSettings** section, replacing the *<ENTER_YOUR_PROXY_URL>* placeholder value with the URL you just copied.
+1. In Visual Studio, open the Web.config file in the root directory of the project. Insert the following key in the **appSettings** section, replacing the *ENTER_YOUR_PROXY_URL* placeholder value with the URL you just copied.
 
    ```xml
     <add key="ida:NotificationUrl" value="ENTER_YOUR_PROXY_URL/notification/listen" />
