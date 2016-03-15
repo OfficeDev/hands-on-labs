@@ -356,15 +356,15 @@ In this exercise, you will create an Excel add-in that uses the Excel JavaScript
 
 
 ###Test the Add-in
-1. Now deploy the Excel add-in to the local Excel client:
+1. 	Now deploy the Excel add-in to the local Excel client:
   1. Select the **Excel16Api** project within the **Solution Explorer** tool window.
   1. Within the **Properties** window, set the **Start Action** selector to **Office Desktop Client** and press **F5** to start the project.
   1. Visual Studio will launch the Excel desktop client and create a new Excel workbook.
-1. Enter a name for a new worksheet and click the button **Add a New Worksheet**. 
+1. 	Enter a name for a new worksheet and click the button **Add a New Worksheet**. 
 
 	Notice how Excel creates a new blank worksheet and changes focus to that worksheet.
 
-1. Now, make sure you have a few worksheets in the workbook and then click the button **Add Range of Data**.
+1. 	Now, make sure you have a few worksheets in the workbook and then click the button **Add Range of Data**.
 
 	Notice how Excel creates a list of all the worksheets starting with cell **A1** in the current worksheet, but it adds a title to the worksheet at the top.
 
