@@ -15,7 +15,7 @@ The purpose of this lab is to show step-by-step instruction for reading writing 
 
 ## Lab instructions 
 
-### 1: Create a new project 
+### Create a new project 
 
 In this first step, you will create a new ASP.NET MVC project using the **Graph AAD Auth v1 Starter Project** template and log in to your app and generate access tokens
 for calling the Graph API.
@@ -35,7 +35,13 @@ for calling the Graph API.
 ![](images/webconfig1.JPG)   
 ![](images/webconfig2.JPG)
 
-### 2: Use Excel REST API.
+### Add ToDo.xlsx file to new Assets folder
+
+Add an *Assets* folder to your project, drop the ToDo.xlsx file included in this lab into that new folder, and add the file to your project.
+
+![](images/ToDoworkbook.JPG)
+
+### Use Excel REST API.
 
 Let's create a MVC web application that allows us to create and manage to-do list by storing the content into an Excel file. 
 The high level functions performed by the application includes: 
