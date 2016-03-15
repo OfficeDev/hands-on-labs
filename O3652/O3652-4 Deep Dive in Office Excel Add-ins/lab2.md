@@ -1,20 +1,20 @@
-## Exercise 1: Build an Expense Report with new JavaScript APIs for Excel Add-ins 2016
-In this exercise you will create a Excel Add-in that uses the v2 JavaScript API included in Excel 2016. 
+## Exercise 1: Build an Expense Report with the new Excel JavaScript APIs in Office 2016
+In this exercise, you will create an Excel add-in that uses the Excel JavaScript API included in Excel 2016. 
 
 > **Note**: For this exercise you must have Excel 2016 Preview, or a later version, installed. Refer to the prerequisites at the beginning of this lab for links on where to obtain Office 2016 Preview.
 
 1. Launch Visual Studio 2015 as administrator.
-1. From the **File** menu select the **New Project** command. When the **New Project** dialog appears, select the **Excel Add-in** project template from the **Office/SharePoint** template folder as shown below. Name the new project **ExpenseReport** and click **OK** to create the new project.
+1. From the **File** menu select the **New Project** command. When the **New Project** dialog appears, select the **Excel Add-in** project template from the **Office/SharePoint** template folder, as shown below. Name the new project **ExpenseReport** and click **OK** to create the new project.
 2. 	![](Images/Fig01new.PNG)
 
-1. When you create a new App for Office project, Visual Studio prompts you with the **Choose the add-in type** page of the **Create Office Add-in** dialog. This is the point where you select the type of Add-in you want to create. Leave the default setting with the radio button titled **Add new functionalities to Excel** and select **Finish** to continue.
+1. When you create a new Office Add-ins project, Visual Studio prompts you with the **Choose the add-in type** page of the **Create Office Add-in** dialog. This is the point where you select the type of add-in you want to create. Leave the default setting with the radio button titled **Add new functionalities to Excel** and select **Finish** to continue.
 
 	![](Images/Fig02new.PNG)
 
 
-1. Reference the Excel 2016 v2 JavaScript API in the add-in:
+1. Reference the Excel JavaScript API in the add-in:
 	1. Locate and open the homepage for the add-in: **Home.html**.
-	1. Immediately after the reference to `Office.js` in the `<head>` portion of the page, add the following two script references to the Excel v2 JavaScript API beta CDN:
+	1. Immediately after the reference to `Office.js` in the `<head>` portion of the page, add the following two script references to the Excel JavaScript API beta CDN:
 
 		````html
     <script src="https://appsforoffice.microsoft.com/lib/beta/hosted/office.js"></script>
@@ -22,9 +22,9 @@ In this exercise you will create a Excel Add-in that uses the v2 JavaScript API 
 
 	> **Note:** Eventually the all Excel JavaScript APIs will be merged into the single `Office.js` file so this step will not be necessary, but in the 1.2 API preview timeframe it is required as an extra step.
 
-1. Now update the user interface for the add-in:
+1. Now update the UI for the add-in:
 	1. Locate the `<body>` section of the page within the `home.html` file.
-	1. Replace the entire contents of the `<body>` with the following markup:
+	1. Replace the contents of the `<body>` with the following markup:
 
 		````html
 	    <div id="content-main">
@@ -62,7 +62,7 @@ In this exercise you will create a Excel Add-in that uses the v2 JavaScript API 
 		````
 
 1. The next step is to code the business logic for the add-in.
-	1. Locate the ** Home.js** file.
+	1. Locate the **Home.js** file.
 	1. Remove all the sample code except the add-in initialization code so all that is left is the following:
 
 		````javascript
@@ -118,7 +118,7 @@ In this exercise you will create a Excel Add-in that uses the v2 JavaScript API 
 		````
 
 
-	1. Now add a function that will add a data:
+	1. Now add a function that will add data:
 		1. Replace the comment `// TODO-1` with the following jQuery code that creates a click event handler on one of the buttons in the `home.html` page you added previously:
 
 			````javascript
@@ -127,7 +127,7 @@ In this exercise you will create a Excel Add-in that uses the v2 JavaScript API 
 
 		1. Next, add the following function.
 
-			Notice how the code in this function is very different from the code in the previous exercises. The Excel v2 JavaScript API uses a context (`Excel.run()`) to allow you to batch multiple operations (such as `context.workbook.worksheets.add()`) that will be sent to the hosting Excel client application for processing at one time using the `context.sync()` method:
+			Notice how the code in this function is very different from the code in the previous exercises. The Excel  JavaScript API uses a context (`Excel.run()`) to allow you to batch multiple operations (such as `context.workbook.worksheets.add()`) that will be sent to the hosting Excel client application for processing at one time using the `context.sync()` method:
 
 			````javascript
 		  function insertData() {
@@ -301,7 +301,7 @@ In this exercise you will create a Excel Add-in that uses the v2 JavaScript API 
     }
 ````
 
-1. Next we add functionality to use Excel formulas and charting to generate a report then protect the report from editing. Here we first create a new sheet named "Summary", then create a summary table with total spendings based on Category. We then add a chart to visualize the data. Finally we protect the sheet from further changes.
+1. Next we add functionality to use Excel formulas and charting to generate a report and then protect the report from editing. Here we first create a new sheet named "Summary", then create a summary table with total spendings based on Category. We then add a chart to visualize the data. Finally we protect the sheet from further changes.
 	1. Go back to the `Office.initialize` statement and replace the comment `// TODO-4` with the following jQuery code that creates a click handler for the button that will add a range of unformatted data to the current worksheet:
 
 	````javascript
@@ -356,21 +356,21 @@ In this exercise you will create a Excel Add-in that uses the v2 JavaScript API 
 
 
 ###Test the Add-in
-1. Now deploy the Excel Add-in to the local Excel client:
+1. Now deploy the Excel add-in to the local Excel client:
   1. Select the **Excel16Api** project within the **Solution Explorer** tool window.
-  1. Within the **Properties** window set the **Start Action** selector to **Office Desktop Client** and press **F5** to start the project.
-  1. Visual Studio will launch the Excel desktop client & create a new Excel workbook.
+  1. Within the **Properties** window, set the **Start Action** selector to **Office Desktop Client** and press **F5** to start the project.
+  1. Visual Studio will launch the Excel desktop client and create a new Excel workbook.
 1. Enter a name for a new worksheet and click the button **Add a New Worksheet**. 
 
 	Notice how Excel creates a new blank worksheet and changes focus to that worksheet.
 
 1. Now, make sure you have a few worksheets in the workbook and then click the button **Add Range of Data**.
 
-	Notice how Excel creates a list of all the worksheets starting with cell **A1** in the current worksheet, but it adds a title to the worksheet at the top?
+	Notice how Excel creates a list of all the worksheets starting with cell **A1** in the current worksheet, but it adds a title to the worksheet at the top.
 
-1. Lastly, click the button **Add Formatted Data Range**.
+1. Finally, click the button **Add Formatted Data Range**.
 
 	Notice how Excel creates a new table of data in the middle of the worksheet, but the dates and currency values are formatted accordingly.
 
-Congratulations! You've now written an Excel Add-in that uses the new Excel v2 JavaScript API.
+Congratulations! You've now written an Excel add-in that uses the new Excel JavaScript API.
 
