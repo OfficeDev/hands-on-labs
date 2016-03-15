@@ -523,43 +523,30 @@ function onSearchAndTempletize() {
 
 
 ## Exercise 5: Changing content of tagged Content Controls!
-*In this exercise you will continue working on the Visual Studio solution for the StatementOfWork Add-in you created on in the previous steps. You will extend the Add-in's capabilities by adding JavaScript code to search for content in the document and add content controls. Content controls are a key building block in Word development and enables developers to insert 'placeholders' in the document that can be later identified and replaced with different content. This excercise is cummulative and assumes you completed  Excercise 2.*
+*In this exercise you will continue working on the Visual Studio solution for the StatementOfWork Add-in you created on in the previous steps. You will extend the Add-in's capabilities by adding JavaScript code to replace content in tagged content controls. Content controls are a key building block in Word development and enables developers to insert 'placeholders' in the document that can be later identified and replaced with different content. This excercise is cummulative and assumes you completed  Excercises 2 and 4.*
 
-1. A common scenario in Word development is reusing documents to create new ones. A "Statement of Work" (SOW) is a very good example of this. By replacing a few fields an existing SOW may be a completely new SOW instance. To illustrate that point, we will implement a simple example on how a template can be created. 
+1. A common scenario in Word development is reusing documents to create new ones. A "Statement of Work" (SOW) is a very good example of this. By replacing a few fields an existing SOW may be a completely new SOW instance. To illustrate that point, now that we created a template in the previous excercise, we will now change all content controls tagged as 'customer' with 'Fabrikam'. Note that this can very well come from data stored in an external system, like a CRM, ERP, etc. The idea is to generate a new instance of a document with a new customer. 
 
 2. Go back to Visual Studio, make sure you are using the StatementOfWord project.
 
 3. In the solution Explorer, double click on **Home.js** to open this JavaScript file.
-4. Add the following code to the **onSearchAndTempletize** function:
+4. Add the following code to the **onaddChangeCustomer** function:
 
 	````javascript
-function onSearchAndTempletize() {
-        // on this method i actually want to create kind of a template. will start by searching "Contoso". then i will wrap each instance with a content control
-        // i will also change the format of each search instance...
-
-        Word.run(function (ctx) {
-            var results = ctx.document.body.search("Contoso");
-            ctx.load(results);
-            // we need to sync to get the search results/
-            return ctx.sync()
+Word.run(function (ctx) {
+            var ccs = ctx.document.contentControls.getByTag("customer");
+            ctx.load(ccs, { select: 'text', expand: 'font' }); // i want to change the font highlight color, so i need to expand font. note i can also do select" 'font/highlightColor', but not in the mood :)
+            return ctx.sync()  // lets get all the content controls with the above tag
             .then(function () {
-                //once we have the results we navigate thorugh each occurence an change a few thinks, as well as wrapping with a content control.
-                for (var i = 0; i < results.items.length; i++) {
-                    results.items[i].font.color = "#FF0000"    // Change color to Red
-                    results.items[i].font.highlightColor = "#FFFF00";
-                    results.items[i].font.bold = true;
-                    var cc = results.items[i].insertContentControl();
-                    cc.tag = "customer";  // this is an important piece of code, later on the excercise i will retrieve all the content controls with this tag and replace the content.
-                    cc.title = "Customer Name";
+                //lets iterate and change!!!
+                for (var i = 0; i < ccs.items.length; i++) {
+                    ccs.items[i].insertText("Fabrikam", "replace");
+                    ccs.items[i].font.highlightColor = "#FFFFFF";
                 }
-                return ctx.sync()  // OK ready! lets send it to the host for processing :)
+
             })
-            .then(function () {
-                app.showNotification("Task Complete!");
-            })
-            .catch(function (myError) {
-                app.showNotification("Error", myError.message);
-            })
+            .then(function () { app.showNotification("Task Complete!"); })
+            .catch(function (myError) { app.showNotification("Error", myError.message); })
         });
 
 
@@ -567,14 +554,14 @@ function onSearchAndTempletize() {
 	````
 	
 
-4. Note that the code is searching for "Contoso", the search method returns a collection of ranges matching the search criteria, the code iterates through that collection and wraps each instance with a content control. Note that each added content control its tagged with a "Customer Name" title, this is important as we will use this information in the next excercise to replace the content of all the content controls with this tag with a new customer. For visibility purposes we are also adding a red font color and yellow highlight to each search result instance. The image should be replaced and the document should look like this:
+4. Note that the code is first getting all the content controls tagged as 'customer', then iterates each of the ocurrences and changes the content and the formatting information.
 
-5. Test your work by pressing F5 to start a debug session and then click the **Step 1: Starting SOW** button. After the document gets inserted click on the  **Step 3: Search and Templetize!** button to try your code. Each "Contoso" instance should be wrapped with a content control and with a different format like the following image:
+5. Test your work by pressing F5 to start a debug session and then click the **Step 1: Starting SOW** button. After the document gets inserted click on the  **Step 3: Search and Templetize!** to create a template. Now try your code by clicking on **Step 4: Replace Customer!** Each "Contoso" instance should be replaced with 'Fabrikam' and look like the following image:
 
-	![](Images/Fig13.png) 
+	![](Images/Fig16.png) 
 	
 
-5. Congratulations! In this exercise you learned how to navigate through the inline pictures on a document and learned how to replace images!, lets continue with Excercise 4!
+5. Congratulations! In this exercise you learned how to get content controls by its tag and replace their content!, lets continue with Excercise 6!
 
 
 
