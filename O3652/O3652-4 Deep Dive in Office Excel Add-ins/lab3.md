@@ -3,13 +3,13 @@ This lab will teach you how to create an add-in using only the shell and a brows
 
 **Prerequisites**
 
-This lab requires that you have the Yeoman generator for Office add-ins installed. The Yeoman generator requires other tools to run, including Node.js, Git, Gulp, and Bower. These tools have been installed on this computer already.
+This lab requires that you have the Yeoman generator for Office Add-ins installed. The Yeoman generator requires other tools to run, including Node.js, Git, Gulp, and Bower. These tools have been installed on this computer already.
 
 ## Exercise 1: Create an add-in with the Yeoman generator
 
 1. Open a terminal/command prompt.
-1. Navigate to the C:\lab\ folder on Windows or the /usr/ directory on Mac.
-1. Create a new folder for your add-in project with the command `mkdir addinname` and navigate into that folder.
+1. Go to the C:\lab\ folder on Windows or the /usr/ directory on Mac.
+1. Create a new folder for your add-in project with the command `mkdir addinname` and go to that folder.
 1. Run the Office yeoman generator by entering the command `yo office`.
 1. Provide the following information about your add-in:
   * Name of the add-in: myHelloWorldAddin
@@ -28,11 +28,11 @@ This lab requires that you have the Yeoman generator for Office add-ins installe
 4. Go to the **Insert** tab and choose **Office Add-ins**.
 5. In the Office Add-ins dialog, choose **Manage My Add-ins** in the upper-right corner, and select **Upload My Add-in**.
 6. Click **Browse** and select the *manifest-myhelloworldaddin.xml* file from your project folder, then click **Upload**.
-7. Your add-in should load in Excel. You can type in some data in the spreadsheet, highlight it, and then click the Get Selected Data button to see an example how add-ins interact with Office content using the JavaScript APIs.
+7. Your add-in should load in Excel. You can type in some data in the spreadsheet, highlight it, and then click the **Get Selected Data** button to see an example that shows how add-ins interact with Office content using the JavaScript APIs.
 
 ## Exercise 3: Edit and debug the add-in code
 
-An Office add-in is just a web app that is displayed within the Office UI and can interact with Office content using Office.js APIs. In this exercise, you'll edit the HTML and JavaScript of the add-in, see your changes reflected, and use a debugger to verify your code is running properly.
+An Office Add-in is just a web app that is displayed within the Office UI and can interact with Office content using Office.js APIs. In this exercise, you'll edit the HTML and JavaScript of the add-in, see your changes reflected, and use a debugger to verify that your code is running properly.
 
 1. Launch Visual Studio Code.
 2. Open the home.html file found in your-project-folder/app/home/. 
@@ -53,7 +53,7 @@ An Office add-in is just a web app that is displayed within the Office UI and ca
     });
   };
  ```
-7. And add the function for the click to perform, which in this case is to write a message to the console:
+7. Add the function for the click to perform, which in this case is to write a message to the console:
  ```javascript
  function writeToConsole(){
      console.log("You pressed the console logging button!");
@@ -65,4 +65,4 @@ An Office add-in is just a web app that is displayed within the Office UI and ca
 11. Click the button that says "Write to the debug console". You should see a message in the console.
  
 
-You've now completed the entire lifecycle of add-in development: new project creation, code editing, hosting, loading the add-in into Office, testing, and debugging. You can use this method to create add-ins for any Office application, on every platform, that supports add-ins.
+You've now completed the entire lifecycle of add-in development: new project creation, code editing, hosting, loading the add-in into Office, testing, and debugging. You can use this method to create add-ins for any Office application, on any platform that supports add-ins.
