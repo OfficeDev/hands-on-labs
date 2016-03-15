@@ -608,5 +608,9 @@ Word.run(function (ctx) {
 	![](Images/Fig17.png) 
 	
 
-5. Congratulations! In this exercise you learned how to get content controls by its tag and replace their content!, lets continue with Excercise 8!
+5. Congratulations! In this exercise you learned how to insert existing Word (docx) files into a document!, lets continue with Excercise 8!
+
+
+# From now on, this lab is using the PREVIEW APIs for the Word JavaScript API 1.3 requirement set.
+
 
