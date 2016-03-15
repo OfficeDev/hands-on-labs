@@ -1,23 +1,21 @@
 # Deep Dive into Office Excel Add-ins
-In this lab you will get hands-on experience developing an Office Excel Add-in creates bindings between the app and a spreadsheet.
-
-> **Note**: The name "apps for Office" is changing to "Office Add-ins". During the transition, the documentation and the UI of some Office host applications and Visual Studio tools might still use the term "apps for Office". For details, see [New name for apps for Office and SharePoint](https://msdn.microsoft.com/en-us/library/office/fp161507.aspx#bk_newname).
+In this lab, you will get hands-on experience developing an Office Add-in for Excel that creates bindings between the app and a spreadsheet.
 
 **Prerequisites:** 
 
-1. You must have an Office 365 tenant and Microsoft Azure subscription to complete this lab. If you do not have one, the lab for **O3651-7 Setting up your Developer environment in Office 365** shows you how to obtain a trial. You must also have access to an Exchange inbox within an Office 365 developer tenancy.
+1. You must have an Office 365 tenant and Microsoft Azure subscription to complete this lab. If you do not have one, the lab for **O3651-7 Setting up your Developer environment in Office 365** shows you how to obtain a trial. You must also have access to an Exchange Inbox within an Office 365 developer tenancy.
 1. You must have the Office 365 API Tools version 1.4.50428.2 installed in Visual Studio 2013 & Update 4 installed.
 1. In order to complete exercise 3, you must have Office 2016 Preview installed which you can obtain from here: https://products.office.com/en-us/office-2016-preview
 
-## Exercise 1: Creating the LoanAppraisal App for Office Project
-In this exercise you will create a new App for Office project in Visual Studio so that you can begin to write, test and debug an Office Excel Add-in.
+## Exercise 1: Creating the LoanAppraisal Office Add-in Project
+In this exercise you will create a new Office Add-in project in Visual Studio so that you can begin to write, test, and debug an Excel add-in.
 
 1. Launch Visual Studio 2013 as administrator.
-1. From the **File** menu select the **New Project** command. When the **New Project** dialog appears, select the **App for Office** project template from the **Office/SharePoint** template folder as shown below. Name the new project **LoanAppraisal** and click **OK** to create the new project.  
+1. From the **File** menu, select the **New Project** command. When the **New Project** dialog appears, select the **Office Add-in** project template from the **Office/SharePoint** template folder, as shown. Name the new project **LoanAppraisal** and click **OK** to create the new project.  
 
 	![](Images/Fig01.png)
 
-1. When you create a new App for Office project, Visual Studio prompts you with the **Choose the app type** page of the **Create app for Office** dialog. This is the point where you select the type of App for Office you want to create. Leave the default setting with the radio button titled **Task pane** and select **Next** to continue.  
+1. When you create a new Office Add-in project, Visual Studio prompts you with the **Choose the app type** page of the **Create app for Office** dialog. This is the point where you select the type of App for Office you want to create. Leave the default setting with the radio button titled **Task pane** and select **Next** to continue.  
 
 	![](Images/Fig02.png)
 
@@ -25,21 +23,21 @@ In this exercise you will create a new App for Office project in Visual Studio s
 
 	![](Images/Fig03.png)
 
-1. Take a look at the structure of the new Visual Studio solution once it has been created. At a high-level, the new solution has been created using two Visual Studio projects named **LoanAppraisal** and **LoanAppraisalWeb**. You should also observe that the top project contains a top-level manifest for the app named **LoanAppraisalManifest** which contains a single file named **LoanAppraisal.xml**.  
+1. Take a look at the structure of the new Visual Studio solution once it has been created. At a high level, the new solution has been created using two Visual Studio projects named **LoanAppraisal** and **LoanAppraisalWeb**. You should also observe that the top project contains a top-level manifest for the app named **LoanAppraisalManifest** which contains a single file named **LoanAppraisal.xml**.  
 
 	![](Images/Fig04.png)
 
-1. In the Solution Explorer, double-click on the node named **LoanAppraisalManifest** to open the app manifest file in the Visual Studio designer. Update the **Display Name** settings in the app manifest from **LoanAppraisal** to **Loan Appraisal App**.  
+1. In the Solution Explorer, double-click the node named **LoanAppraisalManifest** to open the app manifest file in the Visual Studio designer. Update the **Display Name** settings in the app manifest from **LoanAppraisal** to **Loan Appraisal App**.  
 
 	![](Images/Fig05.png)
 
 1. Save and close **LoanAppraisalManifest**.
-1. Over the next few steps you will walk through the default app implementation that Visual Studio generated for you when the app project was created. Begin by looking at the structure of the **app** folder which has two important files named **app.css** and **app.js** which contain CSS styles and JavaScript code which is to be used on an app-wide basis.
+1. Over the next few steps you will walk through the default app implementation that Visual Studio generated for you when the project was created. Begin by looking at the structure of the **app** folder, which has two important files named **app.css** and **app.js** that contain CSS styles and JavaScript code that is to be used on an add-in-wide basis.
 
 	![](Images/Fig06.png)
 
-1. You can see that inside the **app** folder there is a child folder named **Home** which contains three files named **Home.html**, **Home.css** and **Home.js**. Note that the app project is currently configured to use **Home.html** as the app's start page and that **Home.html** is linked to both **Home.css** and **Home.js**. 
-1. Double-click on **app.js** to open it in a code editor window. you should be able to see that the code creates a global variable named **app** based on the JavaScript *Closure* pattern. The global **app** object defines a method named **initialize** but it does not execute this method. 
+1. You can see that inside the **app** folder there is a child folder named **Home** that contains three files: **Home.html**, **Home.css**, and **Home.js**. Note that the add-in project is currently configured to use **Home.html** as the start page and that **Home.html** is linked to both **Home.css** and **Home.js**. 
+1. Double-click **app.js** to open it in a code editor window. You should be able to see that the code creates a global variable named **app** based on the JavaScript *Closure* pattern. The global **app** object defines a method named **initialize** but it does not execute this method. 
  
 	````javascript
 	var app = (function () {
@@ -76,8 +74,8 @@ In this exercise you will create a new App for Office project in Visual Studio s
 	````
 
 1. Close **app.js** and be sure not to save any changes.
-1. Next you will examine the JavaScript code in **home.js**. Double-click on **home.js** to open it in a code editor window. Note that **Home.html** links to **app.js** before it links to **home.js** which means that JavaScript code written in **Home.js** can access the global **app** object created in **app.js**.
-1. Walk through the code in **Home.js** and see how it uses a self-executing function to register an event handler on the **Office.initialize** method which in turn registers a document-ready event handler using jQuery. This allows the app to call **app.initialize** and to register an event handler using the **getDataFromSelection** function. 
+1. Next you will examine the JavaScript code in **home.js**. Double-click **home.js** to open it in a code editor window. Note that **Home.html** links to **app.js** before it links to **home.js**, which means that JavaScript code written in **Home.js** can access the global **app** object created in **app.js**.
+1. Walk through the code in **Home.js** and see how it uses a self-executing function to register an event handler on the **Office.initialize** method, which in turn registers a document-ready event handler using jQuery. This allows the add-in to call **app.initialize** and to register an event handler using the **getDataFromSelection** function. 
 
 	````javascript 
 	(function () {
@@ -105,7 +103,7 @@ In this exercise you will create a new App for Office project in Visual Studio s
 	})();
 	````
 
-1. Delete the **getDataFromSelection** function from **Home.js** and also remove the line of code that binds the event handler to the button with the id of **get-data-from-selection** so your code matches the following code listing.
+1. Delete the **getDataFromSelection** function from **Home.js** and also remove the line of code that binds the event handler to the button with the id of **get-data-from-selection**, so your code matches the following code listing.
 
 	````javascript
 	(function () {
@@ -181,23 +179,23 @@ In this exercise you will create a new App for Office project in Visual Studio s
 	})();
 	````
 
-1. Now it's time to test the app using the Visual Studio debugger. Press the **{F5}** key to run the project in the Visual Studio debugger. The debugger should launch Microsoft Excel 2013 and you should see your **LoanAppraisal** app in the task pane on the right side of a new Excel workbook as shown in the following screenshot.  
+1. Now it's time to test the add-in using the Visual Studio debugger. Press the **{F5}** key to run the project in the Visual Studio debugger. The debugger should launch Microsoft Excel 2013 and you should see your **LoanAppraisal** app in the task pane on the right side of a new Excel workbook, as shown in the following screenshot.  
 
 	![](Images/Fig07.png)
 
-1. Close Microsoft Excel to terminate your debugging session and return to Visual Studio.
+1. Close Microsoft Excel to end your debugging session and return to Visual Studio.
 
-## Exercise 2: Adding a Test Document to an Apps for Office project
-*In this exercise you continue to work on the LoanAppraisal project you created in the previous lab by integrating a preexisting Excel workbook into the development process. This will make it possible for you to develop an app binds to named ranges within the workbook.*
+## Exercise 2: Adding a Test Document to an Office Add-ins project
+*In this exercise you continue to work on the LoanAppraisal project you created in the previous lab by integrating a preexisting Excel workbook into the development process. This will make it possible for you to develop an add-in that binds to named ranges within the workbook.*
 
-1. Ensure that you still have the **LoanAppraisal** app project opened in Visual Studio.
+1. Ensure that you still have the **LoanAppraisal** project opened in Visual Studio.
 1. Download [**TestDoc.xlsx**](Starter Files/TestDoc.xlsx?raw=true).
-1. Double-click on **TestDoc.xlsx** to open the workbook in Microsoft Excel.  You should see that the workbook provides morgage loan information and a chart as shown in the following scrrenshot.  
+1. Double-click **TestDoc.xlsx** to open the workbook in Microsoft Excel.  You should see that the workbook provides morgage loan information and a chart, as shown in the following scrrenshot.  
 
 	![](Images/Fig08.png)  
 
 1. Close **TestDoc.xlsx** and also close Microsoft Excel.
-1.	Add the file **TestDoc.xlsx** into the **LoanAppraisal** project. The easiest you to do this is to copy the file to the clipboard in Windows Explorer and then to paste it into the root of the the **LoanAppraisal** project. When you are done, you should be able to see **TestDoc.xlsx** at the root of the the **LoanAppraisal** project righ below **LoanAppraisalManifest** as shown in the following screenshot.
+1.	Add the file **TestDoc.xlsx** into the **LoanAppraisal** project. The easiest way for you to do this is to copy the file to the clipboard in Windows Explorer and then to paste it into the root of the the **LoanAppraisal** project. When you are done, you should be able to see **TestDoc.xlsx** at the root of the the **LoanAppraisal** project, right below **LoanAppraisalManifest**, as shown in the following screenshot.
 
 	![](Images/Fig09.png)  
 
@@ -205,26 +203,26 @@ In this exercise you will create a new App for Office project in Visual Studio s
 
 	![](Images/Fig10.png)  
 
-1.	Press **{F5}** to begin a debugging session. You should see that Visual Studio initialize the debugging session with **TestDoc.xlsx** instead of using a new Excel workbook. However, you might notice that the **LoanAppraisal** app has not be activated. In the Excel ribbon, navigate to the **Insert** tab and select **Loan Appraisal App** from the **My Apps** drop down menu.
+1.	Press **{F5}** to begin a debugging session. You should see that Visual Studio initializes the debugging session with **TestDoc.xlsx** instead of using a new Excel workbook. However, you might notice that the **LoanAppraisal** add-in has not be activated. In the Excel ribbon, navigate to the **Insert** tab and select **Loan Appraisal App** from the **My Apps** drop-down menu.
 
 	![](Images/Fig11.png)
 
-1.	You should now see that the app has activated over in the task pane.  
+1.	You should now see that the add-in has activated over in the task pane.  
 
 	![](Images/Fig12.png)
 
-1.	Inside Excel, save your changes to **TestDoc.xlsx** to update the test file to include the app in future debugging sessions.
+1.	Inside Excel, save your changes to **TestDoc.xlsx** to update the test file to include the add-in in future debugging sessions.
 1.	Close **TestDoc.xlsx** and then close Microsoft Excel.
-1.	Return to Visual Studio and press **{F5}** to start another debugging session. Now the app should be initialized automatically when Visual Studio initialize a debugging session.  
+1.	Return to Visual Studio and press **{F5}** to start another debugging session. Now the add-in should be initialized automatically when Visual Studio initializes a debugging session.  
 
 	![](Images/Fig12.png)
 
-1.	Now that you have integrated the test document into your project, it is time to move ahead to the next exercise where you will write code to bind to name ranges in the workbook.
+1.	Now that you have integrated the test document into your project, it is time to move ahead to the next exercise, where you will write code to bind to name ranges in the workbook.
 
-## Exercise 3: Adding Bindings Between an App and a Excel Workbook
-In this exercise you will write code to create bindings on named ranges within the the Excel workbook named TestDoc.xlsx. You will also create event handlers so that the app responds to the user when updating the app user interface.
+## Exercise 3: Adding Bindings Between an Add-in and a Excel Workbook
+In this exercise, you will write code to create bindings on named ranges within the the Excel workbook named TestDoc.xlsx. You will also create event handlers so that the add-in responds to the user when updating the add-in UI.
 
-1. The workbook **TestDoc.xlsx** contains several cells that have already been defined as named ranges. Review the following list which shows the names of the Excel named ranges that you will be programming against in this exercise.
+1. The workbook **TestDoc.xlsx** contains several cells that have already been defined as named ranges. Review the following list, which shows the names of the Excel named ranges that you will be programming against in this exercise.
 	-	**Applicant_Name**
 	-	**Loan_Amount**
 	-	**Interest_Rate**
@@ -235,11 +233,11 @@ In this exercise you will write code to create bindings on named ranges within t
 	-	**Fixed_Expenses**
 	-	**Available_Income**
 2. Open **Home.html** in an editor window.
-3. Modify the contents of the **content-main** div element with the HTML code from [**content-main.css.txt**](Starter Files/content-main.css.txt?raw=true) which is located in the **Starter Files** folder for this lab.
+3. Modify the contents of the **content-main** div element with the HTML code from [**content-main.css.txt**](Starter Files/content-main.css.txt?raw=true), which is located in the **Starter Files** folder for this lab.
 
 1.	Save and close **Home.html**.
 1.	Open **Home.css** in an editor window.
-1.  Modify the contents of **Home.css** with the set of CSS rules shown in [**Home.css.txt**](Starter Files/Home.css.txt?raw=true) which is located in the **Starter Files** folder for this lab.
+1.  Modify the contents of **Home.css** with the set of CSS rules shown in [**Home.css.txt**](Starter Files/Home.css.txt?raw=true), which is located in the **Starter Files** folder for this lab.
 
 1. Save and close **Home.css**.
 1. Open **Home.js** in a code editor widow. Remove the following line of code.
@@ -266,7 +264,7 @@ In this exercise you will write code to create bindings on named ranges within t
 	})();
 	````
 
-1. Start a debugging session by pressing the **{F5}** key to inspect the app's new HTML layout. You should see the user interface appears like the one in the following screenshot.
+1. Start a debugging session by pressing the **{F5}** key to inspect the add-in's new HTML layout. You should see that the UI appears like the one in the following screenshot.
 
 	![](Images/Fig13.png)    
 
@@ -291,7 +289,7 @@ In this exercise you will write code to create bindings on named ranges within t
     var currentApplicant = applicants[0];
 	````
 
-1.After this step is complete, your **Home.js** file should match the following code listing.
+1. 	After this step is complete, your **Home.js** file should match the following code listing.
 
 	````javascript
 	/// <reference path="../App.js" />
@@ -324,7 +322,7 @@ In this exercise you will write code to create bindings on named ranges within t
 	})();
 	````
 
-1.	Place your cursor under the code that assigns a function to **Office.initialize** and add five new functions named **updateAppUI**, **onInitializeUI**, **formatToCurrencyUSD**, **onRateChanged** and **onApplicantChanged**.
+1.	Place your cursor under the code that assigns a function to **Office.initialize** and add five new functions named **updateAppUI**, **onInitializeUI**, **formatToCurrencyUSD**, **onRateChanged**, and **onApplicantChanged**.
 
 	````javascript	
 	// The initialize function must be run each time a new page is loaded
@@ -436,7 +434,7 @@ In this exercise you will write code to create bindings on named ranges within t
 	}
 	````
 
-1. Modify the app's initialization code to call the **onInitializeUI** function. 
+1. Modify the add-in's initialization code to call the **onInitializeUI** function. 
 
 	````javascript
 	// The initialize function must be run each time a new page is loaded
@@ -448,7 +446,7 @@ In this exercise you will write code to create bindings on named ranges within t
 	}
 	````
 
-1. Now it's again time to test the app in the Visual Studio. Press the **{F5}** key and wait for the debugging session and the app to initialize. Once the app has activated, you should be able to see it is displaying information about a load for the current applicant as shown in the following screenshot. Also note that the UI for the app will automatically update when you change the interest rate or the loan applicant.  
+1. Now it's again time to test the add-in in the Visual Studio. Press the **{F5}** key and wait for the debugging session and the add-in to initialize. After the add-in has activated, you should be able to see it is displaying information about a load for the current applicant as shown in the following screenshot. Also note that the UI for the add-in will automatically update when you change the interest rate or the loan applicant.  
 
 	![](Images/Fig14.png)  
 
@@ -602,7 +600,7 @@ In this exercise you will write code to create bindings on named ranges within t
 	}
 	````
 
-1. Modify the app's initialization code to call the **createBindings** function just after calling **onInitializeUI**. 
+1. Modify the add-in's initialization code to call the **createBindings** function just after calling **onInitializeUI**. 
 
 	````javascript
 	// The initialize function must be run each time a new page is loaded
@@ -615,21 +613,21 @@ In this exercise you will write code to create bindings on named ranges within t
 	}
 	````
 
-1. Now it's again time to test the app in the Visual Studio. Press the **{F5}** key and wait for the debugging session and the app to initialize. Once the app has activated, test how the app behaves when you change the Interest Rate or the Loan Applicant using the radio button at the bottom of the task pane. You should see that the app updates information in the workbook and then retrieves values from the workbook for Monthly Payment and Yearly Morgage and updates the UI in the task pane.
+1. Now it's again time to test the add-in in the Visual Studio. Press the **{F5}** key and wait for the debugging session and the add-in to initialize. Once the add-in has activated, test how it behaves when you change the Interest Rate or the Loan Applicant using the radio button at the bottom of the task pane. You should see that the add-in updates information in the workbook and then retrieves values from the workbook for Monthly Payment and Yearly Morgage and updates the UI in the task pane.
 
 	![](Images/Fig15.png)  
 
-Congratulations! In exercise you wrote code to create bindings on named ranges within the the Excel workbook named TestDoc.xlsx. You also created event handlers so that the app responds to the user when updating the app user interface.
+Congratulations! In this exercise, you wrote code to create bindings on named ranges within the the Excel workbook named TestDoc.xlsx. You also created event handlers so that the add-in responds to the user when updating the add-in UI.
 
-## Exercise 3: Leverage the Excel v2 JavaScript API in Excel 2016
-In this exercise you will create a Excel Add-in that uses the v2 JavaScript API included in Excel 2016. 
+## Exercise 3: Leverage the Excel JavaScript API in Excel 2016
+In this exercise you will create a Excel add-in that uses the Excel JavaScript API included in Excel 2016. 
 
 > **Note**: For this exercise you must have Excel 2016 Preview, or a later version, installed. Refer to the prerequisites at the beginning of this lab for links on where to obtain Office 2016 Preview.
 
 1. Launch Visual Studio 2013 as administrator.
-1. From the **File** menu select the **New Project** command. When the **New Project** dialog appears, select the **App for Office** project template from the **Office/SharePoint** template folder as shown below. Name the new project **Excel16Api** and click **OK** to create the new project.
+1. From the **File** menu, select the **New Project** command. When the **New Project** dialog appears, select the **Office Add-in** project template from the **Office/SharePoint** template folder as shown below. Name the new project **Excel16Api** and click **OK** to create the new project.
 
-1. When you create a new App for Office project, Visual Studio prompts you with the **Choose the app type** page of the **Create app for Office** dialog. This is the point where you select the type of App for Office you want to create. Leave the default setting with the radio button titled **Task pane** and select **OK** to continue.
+1. When you create a new Office Add-in project, Visual Studio prompts you with the **Choose the app type** page of the **Create app for Office** dialog. This is the point where you select the type of Office Add-in you want to create. Leave the default setting with the radio button titled **Task pane** and select **OK** to continue.
 
 	![](Images/Fig02.png)
 
@@ -637,9 +635,9 @@ In this exercise you will create a Excel Add-in that uses the v2 JavaScript API 
 
 	![](Images/Fig03.png)
 
-1. Reference the Word 2016 v2 JavaScript API in the add-in:
+1. Reference the Word JavaScript API in the add-in:
 	1. Locate and open the homepage for the add-in: **App \ Home \ Home.html**.
-	1. Immediately after the reference to `Office.js` in the `<head>` portion of the page, add the following two script references to the Word v2 JavaScript API:
+	1. Immediately after the reference to `Office.js` in the `<head>` portion of the page, add the following two script references to the Word JavaScript API:
 
 		````html
 		<script src="https://oep.azurewebsites.net/preview/4229.1002/office.runtime.js" 
@@ -648,9 +646,9 @@ In this exercise you will create a Excel Add-in that uses the v2 JavaScript API 
 		        type="text/javascript"></script>
 		````
 
-	> **Note:** Eventually the Excel v2 JavaScript API will be merged into the single `Office.js` file so this step will not be necessary, but in the preview timeframe it is required as an extra step.
+	> **Note:** Eventually the Excel JavaScript API will be merged into the single `Office.js` file so this step will not be necessary, but in the preview timeframe it is required as an extra step.
 
-1. Now update the user interface for the add-in:
+1. Now update the UI for the add-in:
 	1. Locate the `<body>` section of the page within the `home.html` file.
 	1. Replace the entire contents of the `<body>` with the following markup:
 
@@ -719,7 +717,7 @@ In this exercise you will create a Excel Add-in that uses the v2 JavaScript API 
 
 		1. Next, add the following function before the error handler function you added previously.
 
-			Notice how the code in this function is very different from the code in the previous exercises. The Excel v2 JavaScript API uses a context (`Excel.RequestContext()`) to allow you to batch multiple operations (such as `context.workbook.worksheets.add()`) that will be sent to the hosting Excel client application for processing at one time using the `context.executeAsync()` method:
+			Notice how the code in this function is very different from the code in the previous exercises. The Excel  JavaScript API uses a context (`Excel.RequestContext()`) to allow you to batch multiple operations (such as `context.workbook.worksheets.add()`) that will be sent to the hosting Excel client application for processing at one time using the `context.executeAsync()` method:
 
 			````javascript
 		  function addWorksheet() {
@@ -824,10 +822,10 @@ In this exercise you will create a Excel Add-in that uses the v2 JavaScript API 
 		````
 
 ###Test the Add-in
-1. Now deploy the Excel Add-in to the local Excel client:
+1. Now deploy the Excel add-in to the local Excel client:
   1. Select the **Excel16Api** project within the **Solution Explorer** tool window.
-  1. Within the **Properties** window set the **Start Action** selector to **Office Desktop Client** and press **F5** to start the project.
-  1. Visual Studio will launch the Excel desktop client & create a new Excel workbook.
+  1. Within the **Properties** window, set the **Start Action** selector to **Office Desktop Client** and press **F5** to start the project.
+  1. Visual Studio will launch the Excel desktop client and create a new Excel workbook.
 1. Enter a name for a new worksheet and click the button **Add a New Worksheet**. 
 
 	Notice how Excel creates a new blank worksheet and changes focus to that worksheet.
@@ -840,4 +838,4 @@ In this exercise you will create a Excel Add-in that uses the v2 JavaScript API 
 
 	Notice how Excel creates a new table of data in the middle of the worksheet, but the dates and currency values are formatted accordingly.
 
-Congratulations! You've now written an Excel Add-in that uses the new Excel v2 JavaScript API.
+Congratulations! You've now written an Excel add-in that uses the new Excel JavaScript API.
