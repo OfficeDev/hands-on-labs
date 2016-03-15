@@ -185,7 +185,7 @@ using PeopleGraphWeb.Service;
         public async Task<ActionResult> Details(string id)
         {
             var service = await GetService();
-            return View(service.Me.People.ByKey(id));
+            return View(service.Me.People.ByKey(id).GetValue());
         }
 ```
 
