@@ -2,7 +2,7 @@
 
 Office Add-ins let you add your solution where ever they run. In PowerPoint, add-ins can help you build richer presentations.
 
-This quick start will start with an excersize that will guide you through creating a PowerPoint add-in starting from Visual Studio. We will use Bing.com's Photo of the day. This add-in will expose you to the tools we use to create add-ins and the Office.js 1.1 API. In particular, we'll use the document.setSelectedDataAsync API to insert pictures into the user's current PowerPoint deck and customize the User Interface with Add-in Commands.
+This quick start will start with an excersize that will guide you through creating a PowerPoint add-in starting from Visual Studio. We will use Bing.com's Photo of the day. This add-in will expose you to the tools we use to create add-ins and the Office.js 1.1 API. In particular, we'll use the **document.setSelectedDataAsync** API to insert pictures into the user's current PowerPoint deck and customize the UI with add-in commands.
 
 ##### Prerequisites: 
 
@@ -15,22 +15,22 @@ This quick start will start with an excersize that will guide you through creati
 *In this exercise you will learn how to use Visual Studio to create your first add-in and you will learn about the files that are created for you.  You will also learn about how to customize buttons on the ribbon. *
 
 1. Launch Visual Studio 2015 as administrator.
-2. From the **File** menu select the **New Project** command. When the **New Project** dialog appears, select the **PowerPoint Add-in** project template from the **Office/SharePoint** template folder as shown below. Name the new project **HelloWorld** and click **OK** to create the new project.
+2. From the **File** menu, select the **New Project** command. When the **New Project** dialog appears, select the **PowerPoint Add-in** project template from the **Office/SharePoint** template folder, as shown below. Name the new project **HelloWorld** and click **OK** to create the new project.
 
     ![](Images/Fig01.PNG)
 
-3. When you create a new **PowerPoint Add-in** project, Visual Studio prompts you with the Choose the add-in type page of the Create Office Add-in dialog. This is the point where you select the type of Add-in you want to create. Leave the default setting with the radio button titled **Add new functionalities to PowerPoint** and select Finish to continue.
+3. When you create a new **PowerPoint Add-in** project, Visual Studio prompts you with the Choose the add-in type page of the Create Office Add-in dialog. This is the point where you select the type of add-in you want to create. Leave the default setting with the radio button titled **Add new functionalities to PowerPoint** and select **Finish** to continue.
 
     ![](Images/Fig02.PNG)
 
-4. Visual Studio will create the project. There are a few parts that great created for you:
-	- A manifest xml file - this holds the metadata that your add-in needs to run in Office, including how it will present itself on the ribbon
-	- A HelloWorldWeb project with a Home.html and Home.js - The HelloWorldWeb project in the solution contains the html and javascript you need to run your office add-in.
+4. Visual Studio will create the project. There are a few parts that are created for you:
+	- A manifest xml file - this holds the metadata that your add-in needs to run in Office, including how it will present itself on the ribbon.
+	- A HelloWorldWeb project with a Home.html and Home.js - The HelloWorldWeb project in the solution contains the HTLM and Javascript you need to run your Office Add-in.
 5. Use the Solution Explorer to drill down into the **HelloWorld.xml** file.
 
     ![](Images/Fig03.PNG)
 
-6. Now, find the xml block that looks like this. Take a minute and read through it as it describes how Add-ins can integrate with the Office UI. The example below demonstrates how an add-in can add a button to the PowerPoint Ribbon's Home tab.
+6. Now, find the XML block that looks like this. Take a minute and read through it as it describes how add-ins can integrate with the Office UI. The example below demonstrates how an add-in can add a button to the PowerPoint ribbon's Home tab.
 
 	```XML
         <!-- PrimaryCommandSurface==Main Office Ribbon. -->
@@ -76,21 +76,21 @@ This quick start will start with an excersize that will guide you through creati
             </ExtensionPoint>
 	```
     
-9. Let's modify the button to say "Hello world" instead of "Show Taskpane". Find the following element in the file
+9. Let's modify the button to say "Hello world" instead of "Show Taskpane". Find the following element in the file.
 
 	```XML
 		<Title resid="Contoso.TaskpaneButton.Label" />
 	```
-10. This indicates the label of the title is stored in a string resource named **Contoso.TaskpaneButton.Label**.
+10. This indicates that the label of the title is stored in a string resource named **Contoso.TaskpaneButton.Label**.
 11. Scroll down until you find the short string resource with that label.
 12. Now, set the DefaultValue attribute to *Daily Photo*.
 
 
 ### Excersize 2: Get the Photo of the day from Bing and insert it
 
-*In this excersize, we will continue where you left of above. You will learn more about add-in commands and learn how to customize the add-in command on the ribbon.*
+*In this excersize, we will continue where you left off. You will learn more about add-in commands and learn how to customize the add-in command on the ribbon.*
 
-1. Let's update the **Home.html**.  Find the div with the id **content-main**. It will look like the following
+1. Let's update the **Home.html**.  Find the div with the id **content-main**. It will look like the following.
 
     ```HTML
         <div id="content-main">
@@ -124,7 +124,7 @@ This quick start will start with an excersize that will guide you through creati
         </div>
     ```
 
-1. Next, we'll replace the ENTIRE contents of the **Home.js** file with the following:
+1. Next, we'll replace the contents of the **Home.js** file with the following:
 
     ```js   
          /// <reference path="/Scripts/FabricUI/MessageBanner.js" />
@@ -181,7 +181,7 @@ This quick start will start with an excersize that will guide you through creati
 
 	![](Images/Fig04.PNG)  
 
-1. Right-click on the **Controllers** folder and select **Add > New Scaffolded Item...**.
+1. Right-click the **Controllers** folder and select **Add > New Scaffolded Item...**.
 1. In the **Add Scaffold** dialog, select **Web API 2 Controller - Empty** and click the **Add** button.  
 
 	![](Images/Fig05.PNG)  
@@ -190,11 +190,11 @@ This quick start will start with an excersize that will guide you through creati
 
 	![](Images/Fig06.PNG)  
 
-1. You should now see that the Web API controller has been added to a file named **PhotoController.cs**. You can also see that Visual Studio has added a few extra files such as **Global.asax** and **WebApiConfig.cs** to provide support for the Web API.  
+1. You should now see that the Web API controller has been added to a file named **PhotoController.cs**. You can also see that Visual Studio has added a few extra files, such as **Global.asax** and **WebApiConfig.cs**, to provide support for the Web API.  
 
 	![](Images/Fig07.PNG)  
 
-1. Examine what's inside **PhotoController.cs**. You can see that there is an **ApiController**-derived class named **VideosController** which is initially empty.
+1. Examine what's inside **PhotoController.cs**. You can see that there is an **ApiController**-derived class named **VideosController**, which is initially empty.
 
 	```c#
 	using System;
@@ -285,10 +285,10 @@ This quick start will start with an excersize that will guide you through creati
 
 	![](Images/Fig09.PNG)  
     
-Congrats on completing this quick start challenge!
+Congratulations on completing this quick start challenge!
 
 ## BONUS: Insert photos of charts stored in a user's OneDrive
-One common scenario that may come to mind is to connect PowerPoint to Excel data. 
+One common scenario that might come to mind is to connect PowerPoint to Excel data. 
 
-1. Check out the **Excel Rest API** quick start and see how to use the Microsoft Graph
-1. Try out this code sample at  http://aka.ms/excel-chart-picker which lets you insert pictures of charts from Excel files stored in OneDrive.
+1. Check out the **Excel Rest API** quick start and see how to use the Microsoft Graph.
+1. Try out this code sample at http://aka.ms/excel-chart-picker which lets you insert pictures of charts from Excel files stored in OneDrive.
