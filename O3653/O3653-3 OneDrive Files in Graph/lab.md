@@ -1,13 +1,18 @@
 # Microsoft Graph for OneDrive for Business
+
 In this lab, you will use Microsoft Graph to integrate OneDrive for Business
 with an ASP.NET MVC application.
 
+## Overview
+Through Microsoft Graph API, you can access files in OneDrive, OneDrive for
+Business, and Office Groups, by accessing the **drive** property of a user or
+group entity. You can navigate the hierarchy of a drive by path or by enumerating
+the contents of folders and files.
+
 ## Prerequisites
-1. You must have an Office 365 tenant and Microsoft Azure subscription to
-   complete this lab. If you do not have one, the lab for **O3651-7 Setting up
-   your Developer environment in Office 365** shows you how to obtain a trial.
-2. You must have Visual Studio 2015 with Update 1 installed.
-3. You must have the Graph AAD Auth v2 Started Project template installed.
+* Visual Studio 2015 with Update 1 installed.
+* **Graph AAD Auth v2 Starter Project** template installed.
+* An account in an Office 365 tenant.
 
 ## Exercise 1: Create a new project using Azure Active Directory v2 authentication
 
@@ -20,7 +25,11 @@ for calling the Graph API.
    1. Search the installed templates for **Graph** and select the
       **Graph AAD Auth v2 Starter Project** template.
    2. Name the new project **GraphFilesWeb** and click **OK**.
-   3. Open the **Web.config** file and find the **appSettings** element. This is where you will need to add your appId and app secret you will generate in the next step.
+   3. Open the **Web.config** file and find the **appSettings** element. This is
+      where you will need to add your appId and app secret you will generate in the next step.
+
+    ![](images/01-1-CreateProject.png)
+
 2. Launch the [Application Registration Portal](https://apps.dev.microsoft.com)
    to register a new application.
       1. Sign into the portal using your Office 365 username and password.
@@ -29,6 +38,8 @@ for calling the Graph API.
       3. Under **Application Secrets** click **Generate New Password** to create a new client secret for your app.
       4. Copy the displayed app password and paste it into the value for **ida:AppSecret** in your project's **web.config** file.
       5. Modify the **ida:AppScopes** value to include the required **https://graph.microsoft.com/files.readwrite** scope.
+
+    ![](images/01-02-NewApplicationRegistration.png)
 
 ```xml
 <configuration>
@@ -50,6 +61,8 @@ for calling the Graph API.
    4. Back on the Application Registration Portal page, click **Add Platform** and then **Web**.
    5. Paste the value of **Project Url** into the **Redirect URIs** field.
    6. Scroll to the bottom of the page and click **Save**.
+
+    ![](images/01-03-AddRedirect.png)
 
 4. Press F5 to compile and launch your new application in the default browser.
    1. Once the Graph and AAD v2 Auth Endpoint Starter page appears, click **Sign in** and login to your Office 365 account.
@@ -222,7 +235,7 @@ to an MVC view that will display the contents of the OneDrive folder selected.
    3. Right click on the new folder **Files** and select **Add** then **New Item**.
    4. Select **MVC View Page** and change the filename **Index.cshtml** and click **Add**.
 
-6. **Replace** all of the code in the **Files/Index.cshtml** with the following:
+4. **Replace** all of the code in the **Files/Index.cshtml** with the following:
 
 ```asp
   @model IEnumerable<Microsoft.Graph.DriveItem>
@@ -281,14 +294,11 @@ to an MVC view that will display the contents of the OneDrive folder selected.
   </div>
 ```
 
-7. In **Visual Studio**, hit **F5** to begin debugging.
-8. When prompted, log in with your Office 365 Account.
-9. Click the link **OneDrive Files** on the top of the home page.
-10. Verify that your application displays files from the user's OneDrive.
-
-  ![](Images/08.png)
-
-11. Stop debugging. You've connected your app to OneDrive files through Graph API!
+5. In **Visual Studio**, hit **F5** to begin debugging.
+6. When prompted, log in with your Office 365 Account.
+7. Click the link **OneDrive Files** on the top of the home page.
+8. Verify that your application displays files from the user's OneDrive.
+9. Stop debugging. You've connected your app to OneDrive files through Graph API!
 
 ### Paging through the results
 1. **Add** the following code under the comment `Place Paging controls here` in **Index.cshtml**
@@ -325,7 +335,6 @@ if (null != ViewBag.NextLink)
 ```
 
 2. Press **F5** to begin debugging.
-
 3. Test uploading a new file and ensure it appears in the folder list.
 
 ### Delete an item
@@ -344,7 +353,6 @@ if (null != ViewBag.NextLink)
 ```
 
 2. Press **F5** to begin debugging.
-
 3. Test the delete functionality in the application by deleting a file.
 
 Congratulations! In this exercise you have created an MVC application that uses
