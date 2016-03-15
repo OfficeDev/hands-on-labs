@@ -10,6 +10,7 @@ The purpose of this lab is to show step-by-step instruction for reading writing 
         * [Update Shared folder](#update-shared-folder)
         * [Create Helpers](#create-helpers)                            
     * [Run project](#run-project)
+        * [View source Excel file](#view-source-excel-file) 
 * [Overview of Excel API](#overview-of-excel-api)
 
 ## Lab instructions 
@@ -1099,7 +1100,15 @@ Click on the `Charts' link to see the breakdown of tasks using a pie chart creat
 
 ![](images/app6.JPG)
 
-As a last step, you can login to the OneDrive Business account and open the `ToDoList.xlsx` in the browser to see the updates made by the app. ** Do not open the file using the Excel desktop application as it will result in edit conflict for future updates made using the app **. 
+#### View source Excel file
+
+As a last step, you can login to the OneDrive Business account and open the `ToDoList.xlsx` in the browser to see the updates made by the app. **Do not open the file using the Excel desktop application as it will result in edit conflict for future updates made using the app**. 
+
+![](images/app7.JPG)
+
+![](images/app8.JPG)
+
+![](images/app10.JPG)
 
 
 ## Overview of Excel API
