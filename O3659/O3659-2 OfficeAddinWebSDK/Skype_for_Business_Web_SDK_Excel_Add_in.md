@@ -33,7 +33,7 @@ In this lab you will get hands-on experience developing an Excel add-in with Sky
 7.  On the top navigation, click the **Insert** tab and select **My Add-ins**.
 8.  In the **Developer Add-in** section, click on your application name.
 
-	![image](screenshots/Add-in.PNG)
+	![image](Screenshots/Add-in.PNG)
 
 9.  The add in should now appear in the right task pane.  Click close and save your excel file.
 6.  Navigate to [https://msdn.microsoft.com/en-us/office/office365/howto/add-common-consent-manually] in order to create your application in Azure and attain your **Client ID**.  Note this ID as it will be used later in the lab.
@@ -340,7 +340,7 @@ Now that the functionality for getting selected information from Excel is setup,
 5. Run the code and login.
 6. Once you are logged in, select an Excel cell with an email address.  Watch the right task pane updated with the selected user contact information:
 
-	![image](screenshots/contact_card.PNG)
+	![image](Screenshots/contact_card.PNG)
 
 7. If you select another user, you will see the contact info update again in the task pane.
 
@@ -453,7 +453,7 @@ A new feature in the Skype for Business Online SDK is the Conversation Control. 
 8. Type a message and hit Enter.
 9. Type a message in the Skype for Business Client and type enter.  You should see your first chat interaction.
 
-	![image](screenshots/conversation.PNG)
+	![image](Screenshots/conversation.PNG)
     
 10. Close the chat by clicking the red phone button.
 11. Select another user in Excel, click the chat icon, and then click the video icon.
@@ -473,24 +473,24 @@ In order for other users in your organization to take advantage of the add-in yo
 1. Right click on the **ExcelAddIn** App for Office project and select Publish.
 2. In the **Current Profile** drop down, select **New**.
 
-	![image](screenshots/publish_setup.PNG)
+	![image](Screenshots/publish_setup.PNG)
 
 3. Select **Import publishing profile** and browse to the downloaded Azure Publish Profile from the pre-requisites.  Click Finish.
 
-	![image](screenshots/publish_path.PNG)
+	![image](Screenshots/publish_path.PNG)
 
 4. Double click the ExcelAddinManifest file and make sure the source location is set to `https://[yourwebsitedomain]/App/Home/Home.html`
 5. Add your O365 tenant domain to the AppDomains list on the ExcelAddInManifest -> App Domains tab.
 
-	![image](screenshots/allowed_domains.PNG)
+	![image](Screenshots/allowed_domains.PNG)
 
 6. On the Publish screen, click the **Package the app** option.
 
-	![image](screenshots/package_app.PNG)
+	![image](Screenshots/package_app.PNG)
 
 7. Next, click the **Deploy your web project** button on the Publish screen.
 
-	![image](screenshots/deploy.PNG)
+	![image](Screenshots/deploy.PNG)
 
 8. Use the Web Deploy Option and follow the wizard.
 9. Follow the steps at this link to publish your add-in to the add-in catalog [https://msdn.microsoft.com/en-us/library/office/fp123515.aspx]
