@@ -1,28 +1,28 @@
 # Deep Dive into Office Word Add-ins (using 1.2 and 1.3 Requirement Sets)
-In this lab you will get hands-on experience developing an Office Word Add-in, using the 1.3 requirement set of the Word JavaScript API.
+In this lab, you will get hands-on experience developing a Word add-in by using the 1.3 requirement set of the Word JavaScript API.
 
 **Prerequisites:**
 1. You must have Visual Studio 2015 & Update 1 installed.
-2. You must have Office 2016 Preview installed which you can obtain from here: https://products.office.com/en-us/office-2016-preview. Make sure you are using the January Fork release (6741).
-3. This lab requires you to use multiple starter files or an entire starter project from the GitHub location. You can either download the whole repo as a zip or clone the repo https://github.com/OfficeDev/TrainingContent.git for those familiar with git.
+2. You must have Office 2016 Preview installed, which you can obtain here: https://products.office.com/en-us/office-2016-preview. Make sure you are using the January Fork release (6741).
+3. This lab requires you to use multiple starter files or an entire starter project from the GitHub location. You can either download the whole repo as a zip or clone the repo https://github.com/OfficeDev/TrainingContent.git, for those familiar with git.
 
 ## Exercise 1: Creating the Statement of Work Wizard Add-in Project and Hello World!
-*In this exercise you will create a new Office Add-in project in Visual Studio so that you can begin to write, test and debug an Office Word Add-in. The user interface of the Office Add-in you will create in this lab will not be very complicated as it will just contain HTML buttons and JavaScript command handlers. You will also code your first  "Hello World!" sample!*
+*In this exercise, you will create a new Office Add-in project in Visual Studio so that you can begin to write, test and debug a Word Add-in. The user interface of the Office Add-in you will create in this lab will not be very complicated as it will just contain HTML buttons and JavaScript command handlers. You will also code your first  "Hello World!" sample!*
 
 1. Launch Visual Studio 2015 as an administrator.
-2. From the **File** menu select the **New Project** command. When the **New Project** dialog appears, select the **Office Add-in** project template from the **Office/SharePoint** template folder as shown below. Name the new project **StatementOfWork** and click **OK** to create the new project.
+2. From the **File** menu, select the **New Project** command. When the **New Project** dialog appears, select the **Office Add-in** project template from the **Office/SharePoint** template folder as shown below. Name the new project **StatementOfWork** and click **OK** to create the new project.
 
 	![](Images/Fig01.png)
 
-3. When you create a new Office Add-in project, Visual Studio prompts you with the **Choose the Add-in type** page of the **Create Office Add-in** dialog. This is the point where you select the type of Office Add-in you want to create. Leave the default setting with the radio button titled **Task pane** and select **Next** to continue.
+3. When you create a new Office Add-in project, Visual Studio prompts you with the **Choose the Add-in type** page of the **Create Office Add-in** dialog. This is the point where you select the type of Office Add-in you want to create. Leave the default setting with the radio button titled **Task pane** selected, and select **Next** to continue.
 
 	![](Images/Fig02.png)
 
-4. On the **Choose the host applications** page of the **Create Office Add-in** dialog, uncheck all the Office applications except for **Word** and then click **Finish** to create the new Visual Studio solution. 
+4. On the **Choose the host applications** page of the **Create Office Add-in** dialog, uncheck all the Office applications except for **Word**, and then click **Finish** to create the new Visual Studio solution. 
 
 	![](Images/Fig03.png)
 
-5. Take a look at the structure of the new Visual Studio solution once it has been created. At a high-level, the new solution has been created using two Visual Studio projects named **StatementOfWork** and **StatementOfWorkWeb**. You should also observe that the top project contains a top-level manifest for the Add-in named **StatementOfWorkManifest** which contains a single file named **StatementOfWork.xml**.
+5. Take a look at the structure of the new Visual Studio solution after it has been created. At a high-level, the new solution has been created using two Visual Studio projects named **StatementOfWork** and **StatementOfWorkWeb**. You should also observe that the top project contains a top-level manifest for the add-in named **StatementOfWorkManifest**, which contains a single file named **StatementOfWork.xml**.
 
 	![](Images/Fig04.png)
 
@@ -31,13 +31,13 @@ In this lab you will get hands-on experience developing an Office Word Add-in, u
 	![](Images/Fig05.png)
 
 7. Save and close **StatementOfWorkManifest**.
-8. Over the next few steps you will walk through the default Add-in implementation that Visual Studio generated for you when the Add-in project was created. Begin by looking at the structure of the **AddIn** folder which has two important files named **app.css** and **app.js** which contain CSS styles and JavaScript code which is to be used on an app-wide basis.
+8. Over the next few steps, you will walk through the default add-in implementation that Visual Studio generated for you when the Add-in project was created. Begin by looking at the structure of the **AddIn** folder, which has two important files named **app.css** and **app.js**. These files contain CSS styles and JavaScript code to use for the add-in.
 
 	![](Images/Fig06.png)
 
-9. You can see that inside the **AddIn** folder there is a child folder named **Home** which contains three files named **Home.html**, **Home.css** and **Home.js**. Note that the Add-in project is currently configured to use **Home.html** as the Add-in's start page and that **Home.html** is linked to both **Home.css** and **Home.js**.
+9. You can see that inside the **AddIn** folder there is a child folder named **Home**, which contains three files named **Home.html**, **Home.css** and **Home.js**. Note that the add-in project is currently configured to use **Home.html** as the add-in's start page and that **Home.html** is linked to both **Home.css** and **Home.js**.
  
-10. Double-click on **app.js** to open it in a code editor window. you should be able to see that the code creates a global variable named **app** based on the JavaScript *Closure* pattern. The global **app** object defines a method named **initialize** but it does not execute this method. 
+10. Double-click **app.js** to open it in a code editor window. You should be able to see that the code creates a global variable named **app** based on the JavaScript *Closure* pattern. The global **app** object defines a method named **initialize** but it does not execute this method. 
 
 	````javascript 
 	var app = (function () {
@@ -69,8 +69,8 @@ In this lab you will get hands-on experience developing an Office Word Add-in, u
 	````
 
 11. Close **app.js** and be sure not to save any changes.
-12. Next you will examine the JavaScript code in **home.js**. Double-click on **home.js** to open it in a code editor window. Note that **Home.html** links to **app.js** before it links to **home.js** which means that JavaScript code written in **Home.js** can access the global **app** object created in **app.js**.
-13. Walk through the code in **Home.js** and see how it uses a self-executing function to register an event handler on the **Office.initialize** method which in turn registers a document-ready event handler using jQuery. This allows the Add-in to call **app.initialize** and to register an event handler using the **getDataFromSelection** function. 
+12. Next you will examine the JavaScript code in **home.js**. Double-click **home.js** to open it in a code editor window. Note that **Home.html** links to **app.js** before it links to **home.js**, which means that JavaScript code written in **Home.js** can access the global **app** object created in **app.js**.
+13. Walk through the code in **Home.js** and see how it uses a self-executing function to register an event handler on the **Office.initialize** method, which in turn registers a document-ready event handler using jQuery. This allows the add-in to call **app.initialize** and to register an event handler using the **getDataFromSelection** function. 
 
 	````javascript 
 	(function () {
@@ -98,7 +98,7 @@ In this lab you will get hands-on experience developing an Office Word Add-in, u
 	})();
 	````
 
-14. Delete the **getDataFromSelection** function from **Home.js** and also remove the line of code that binds the event handler to the button with the id of **get-data-from-selection** so your code matches the following code listing.
+14. Delete the **getDataFromSelection** function from **Home.js** and also remove the line of code that binds the event handler to the button with the id of **get-data-from-selection** so that your code matches the following code listing.
 
 	````javascript
 	(function () {
@@ -115,7 +115,7 @@ In this lab you will get hands-on experience developing an Office Word Add-in, u
 	})(); 
 	````
 15. Save your changes to **Home.js**. You will return to this source file after you have added your HTML layout to **Home.html**.
-16. Now it's time to examine the HTML that has been added to the project to create the Add-in's user interface. Double-click **Home.html** to open this file in a Visual Studio editor window. Examine the layout of HTML elements inside the body element. 
+16. Now it's time to examine the HTML that has been added to the project to create the add-in's user interface. Double-click **Home.html** to open this file in a Visual Studio editor window. Examine the layout of HTML elements inside the **body** element. 
 
 	````html
 	<body>
@@ -149,13 +149,13 @@ In this lab you will get hands-on experience developing an Office Word Add-in, u
 		</div>
 		<div id="content-main">
 			<div class="padding">
-				<!-- your app UI layout goes here -->
+				<!-- your add-in UI layout goes here -->
 			</div>
 		</div>
 	</body>
 	````
 
-18. Update the **content-main** div to match the following HTML layout which adds a set of buttons to the Add-in's layout.
+18. Update the **content-main** div to match the following HTML layout, which adds a set of buttons to the add-in's layout.
 
 	````html
  <div id="content-main">
@@ -193,7 +193,7 @@ In this lab you will get hands-on experience developing an Office Word Add-in, u
 	````
 
 19. Save and close **Home.html**.
-20. Open the CSS file named **Home.css** and add the following CSS rule to ensure all the Add-in's command buttons and select element have a uniform width and spacing.
+20. Open the CSS file named **Home.css** and add the following CSS rule to ensure all the add-in's command buttons and select element have a uniform width and spacing.
 
 	````css
 	#content-main button, #content-main select{
@@ -203,8 +203,8 @@ In this lab you will get hands-on experience developing an Office Word Add-in, u
 	````
 
 21. Save and close **Home.css**.
-21. Right click the StatementOfWork project in the Visual Studio Solution and select **Set as Startup Project**.
-22. Now it's time to test the Add-in using the Visual Studio debugger. Press the **{F5}** key to run the project in the Visual Studio debugger. The debugger should launch Microsoft Word 2016 and you should see your Office Add-in in the task pane on the right side of a new Word document as shown in the following screenshot.
+21. Right-click the StatementOfWork project in the Visual Studio Solution and select **Set as Startup Project**.
+22. Now it's time to test the Add-in using the Visual Studio debugger. Press the **{F5}** key to run the project in the Visual Studio debugger. The debugger should launch Word 2016 and you should see your Office Add-in in the task pane on the right side of a new Word document as shown in the following screenshot.
 
 	![](Images/Fig07.png)
 
