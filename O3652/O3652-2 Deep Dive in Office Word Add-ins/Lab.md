@@ -7,7 +7,7 @@ In this lab, you will get hands-on experience developing a Word add-in by using 
 3. This lab requires you to use multiple starter files or an entire starter project from the GitHub location. You can either download the whole repo as a zip or clone the repo https://github.com/OfficeDev/TrainingContent.git, for those familiar with git.
 
 ## Exercise 1: Creating the Statement of Work Wizard Add-in Project and Hello World!
-*In this exercise, you will create a new Office Add-in project in Visual Studio so that you can begin to write, test and debug a Word Add-in. The user interface of the Office Add-in you will create in this lab will not be very complicated as it will just contain HTML buttons and JavaScript command handlers. You will also code your first  "Hello World!" sample!*
+*In this exercise, you will create a new Office Add-in project in Visual Studio so that you can begin to write, test and debug a Word add-in. The user interface of the Office Add-in you will create in this lab will not be very complicated as it will just contain HTML buttons and JavaScript command handlers. You will also code your first  "Hello World!" sample!*
 
 1. Launch Visual Studio 2015 as an administrator.
 2. From the **File** menu, select the **New Project** command. When the **New Project** dialog appears, select the **Office Add-in** project template from the **Office/SharePoint** template folder as shown below. Name the new project **StatementOfWork** and click **OK** to create the new project.
@@ -26,12 +26,12 @@ In this lab, you will get hands-on experience developing a Word add-in by using 
 
 	![](Images/Fig04.png)
 
-6. In the Solution Explorer, double-click on the node named **StatementOfWorkManifest** to open the Add-in manifest file in the Visual Studio designer. Update the **Display Name** settings in the Add-in manifest from **StatementOfWork** to **Statement of Work Add-In**.
+6. In the Solution Explorer, double-click on the node named **StatementOfWorkManifest** to open the add-in manifest file in the Visual Studio designer. Update the **Display Name** settings in the add-in manifest from **StatementOfWork** to **Statement of Work Add-In**.
 
 	![](Images/Fig05.png)
 
 7. Save and close **StatementOfWorkManifest**.
-8. Over the next few steps, you will walk through the default add-in implementation that Visual Studio generated for you when the Add-in project was created. Begin by looking at the structure of the **AddIn** folder, which has two important files named **app.css** and **app.js**. These files contain CSS styles and JavaScript code to use for the add-in.
+8. Over the next few steps, you will walk through the default add-in implementation that Visual Studio generated for you when the add-in project was created. Begin by looking at the structure of the **AddIn** folder, which has two important files named **app.css** and **app.js**. These files contain CSS styles and JavaScript code to use for the add-in.
 
 	![](Images/Fig06.png)
 
@@ -68,8 +68,8 @@ In this lab, you will get hands-on experience developing a Word add-in by using 
 	})();
 	````
 
-11. Close **app.js** and be sure not to save any changes.
-12. Next you will examine the JavaScript code in **home.js**. Double-click **home.js** to open it in a code editor window. Note that **Home.html** links to **app.js** before it links to **home.js**, which means that JavaScript code written in **Home.js** can access the global **app** object created in **app.js**.
+11. Close **app.js** and be you don't save any changes.
+12. Next, you will examine the JavaScript code in **home.js**. Double-click **home.js** to open it in a code editor window. Note that **Home.html** links to **app.js** before it links to **home.js**, which means that JavaScript code written in **Home.js** can access the global **app** object created in **app.js**.
 13. Walk through the code in **Home.js** and see how it uses a self-executing function to register an event handler on the **Office.initialize** method, which in turn registers a document-ready event handler using jQuery. This allows the add-in to call **app.initialize** and to register an event handler using the **getDataFromSelection** function. 
 
 	````javascript 
@@ -98,7 +98,7 @@ In this lab, you will get hands-on experience developing a Word add-in by using 
 	})();
 	````
 
-14. Delete the **getDataFromSelection** function from **Home.js** and also remove the line of code that binds the event handler to the button with the id of **get-data-from-selection** so that your code matches the following code listing.
+14. Delete the **getDataFromSelection** function from **Home.js** and also remove the line of code that binds the event handler to the button with the id of **get-data-from-selection**, so that your code matches the following code listing.
 
 	````javascript
 	(function () {
@@ -204,13 +204,13 @@ In this lab, you will get hands-on experience developing a Word add-in by using 
 
 21. Save and close **Home.css**.
 21. Right-click the StatementOfWork project in the Visual Studio Solution and select **Set as Startup Project**.
-22. Now it's time to test the Add-in using the Visual Studio debugger. Press the **{F5}** key to run the project in the Visual Studio debugger. The debugger should launch Word 2016 and you should see your Office Add-in in the task pane on the right side of a new Word document as shown in the following screenshot.
+22. Now it's time to test the add-in using the Visual Studio debugger. Press the **{F5}** key to run the project in the Visual Studio debugger. The debugger should launch Word 2016 and you should see your Office Add-in in the task pane on the right side of a new Word document, as shown in the following screenshot.
 
 	![](Images/Fig07.png)
 
-23. Close Microsoft Word to terminate your debugging session and return to Visual Studio.
+23. Close Word to terminate your debugging session and return to Visual Studio.
 24. Return to the source file named **Home.js** or open it if it is not already open.
-25. Create a function named **onaddContentHellowWorld** and add the following call to **body.insertText**. This method is replacing the entire body of the document with the "Hello World!" string (note that instead of "replace" the method can also insert at the "start" or "end" of the body). Add also a handler for success and error.
+25. Create a function named **onaddContentHellowWorld** and add the following call to **body.insertText**. This method is replacing the entire body of the document with the "Hello World!" string (note that instead of "replace" the method can also insert at the "start" or "end" of the body). Also add a handler for success and error.
 
 	````javascript
   function onaddContentHellowWorld() {
