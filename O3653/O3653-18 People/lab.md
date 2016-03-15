@@ -49,8 +49,9 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using PeopleGraphWeb.TokenStorage;
 using PeopleGraphWeb.Auth;
+using PeopleGraphWeb.TokenStorage;
+using PeopleGraphWeb.Service;
 ```
 
 3. Add the following helper functions to the PeopleController class:
@@ -184,7 +185,7 @@ using PeopleGraphWeb.Auth;
         public async Task<ActionResult> Details(string id)
         {
             var service = await GetService();
-            return View(service.Me.People.Where(p => p.Id == id).Single());
+            return View(service.Me.People.ByKey(id));
         }
 ```
 
@@ -229,7 +230,7 @@ This will allow the user to enter search strings that will be passed to the sear
         public async Task<ActionResult> RelatedPeople(string id)
         {
             var service = await GetService();
-            return View("Index", service.Users.Where(p => p.Id == id).Single().People);
+            return View("Index", service.User.ByKey(id).People);
         }
 ```
 Notice the code re-uses the index view to display the results so another view is not needed
