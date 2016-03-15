@@ -9,7 +9,7 @@ In this lab, you will create an ASP.NET MVC application that uses the Microsoft 
 ## Prerequisites
 1. Visual Studio 2015 with Update 1
 2. The Graph AAD Auth v1 Started Project template installed
-3. An administrator account for an Office 365 tenant. This is required because you'll be using the client credentials of an Azure application that's configured to request admin-level permissions.
+3. An administrator account for an Office 365 tenant. This is required because you'll be using the client credentials of a pre-registered application that's configured to request admin-level permissions.
 
 ## Step 1: Create a new project using Graph AAD Auth v1 Started Project template
 In this first step, you will create a new ASP.NET MVC project using the
@@ -25,11 +25,10 @@ In this first step, you will create a new ASP.NET MVC project using the
 
 ## Step 2: Implement user search bar using the Microsoft Graph SDK
 
-1. Create a new controller: Right click on the **Controller** folder and select **Add**, **Controller**. Select **MVC 5 Controller - Empty**, click **Add** and then name the new controller **UserSearchController**.
-2. Create an associated view by right clicking the function **Index()**, **Add View**, and click **Add**. The view is created at **Views\UserSearch\Index.cshtml**.
-3. In **UserSearchController.cs**, replace the auto-generated **using** directives with
-4. 
-    ```csharp
+2. Create a new controller: Right click on the **Controller** folder and select **Add**, **Controller**. Select **MVC 5 Controller - Empty**, click **Add** and then name the new controller **UserSearchController**.
+3. Create an associated view by right clicking the function **Index()**, **Add View**, and click **Add**. The view is created at **Views\UserSearch\Index.cshtml**.
+4. In **UserSearchController.cs**, replace the auto-generated **using** directives with
+    ```c#
     using System;
     using System.IO;
     using System.Collections.Generic;
@@ -43,7 +42,7 @@ In this first step, you will create a new ASP.NET MVC project using the
     ```
 4. In **UserSearchController.cs**, insert code into the **UserSearchController** class to intialize a **GraphServiceClient**, later used to make our calls to Microsoft Graph. The **GraphServiceClient** is initialized by obtaining an access token through the `GetUserAccessToken` helper function.
 
-    ```csharp
+    ```c#
     public class UserSearchController : Controller
     {
         public static string appId = ConfigurationManager.AppSettings["ida:AppId"];
@@ -116,7 +115,7 @@ In this first step, you will create a new ASP.NET MVC project using the
     }
     ```
 
-7. Replace the contents of **Views\UserSearch\Index.cshtml** with the following code. This renders a search bar and a table to display the results.
+6. Replace the contents of **Views\UserSearch\Index.cshtml** with the following code. This renders a search bar and a table to display the results.
 
     ```xml
     @using Microsoft.Graph
@@ -150,7 +149,7 @@ In this first step, you will create a new ASP.NET MVC project using the
 
     </table>
     ```
-8. Add the following code to **Views\Shared\\_Layout.cshtml**, directly under the line ``` <li>@Html.ActionLink("Contact", "Contact", "Home")</li>``` to add a link to the navbar at the top of the page.
+7. Add the following code to **Views\Shared\\_Layout.cshtml**, directly under the line ``` <li>@Html.ActionLink("Contact", "Contact", "Home")</li>``` to add a link to the navbar at the top of the page.
 
     ```xml
     @if (Request.IsAuthenticated)
@@ -163,8 +162,8 @@ In this first step, you will create a new ASP.NET MVC project using the
 
 ## Step 3: Create the detailed user profile page
 In this step, we'll enable selecting a user from the user search results table, for whom we'll show more details.
-
 1. Right click the folder **Models**, **Add**, **Class**, and name it **Profile.cs**. Replace the contents of this class with the following.
+
     ```csharp
     using Microsoft.Graph;
     using System;
@@ -178,13 +177,12 @@ In this step, we'll enable selecting a user from the user search results table, 
         }
     }
     ```
-2. Add an **onclick** event to the table row element in **Views\UserSearch\Index.cshtml** to navigate to a different page when the table row is clicked.
 
+2. Add an **onclick** event to the table row element in **Views\UserSearch\Index.cshtml** to navigate to a different page when the table row is clicked.
     ```xml
     <tr onclick="location.href = '@(Url.Action("ShowProfile", "UserSearch", new { userId = user.Id }))'">
     ```
-3. Add the following directive in **UserSearchController.cs** to use the model we just created
-
+3. Add the following directive in **UserSearchController.cs** to use the model we just created:
     ```csharp
     using PeoplePicker.Models;
     ```
@@ -196,30 +194,22 @@ In this step, we'll enable selecting a user from the user search results table, 
         var client = GetGraphServiceClient();
         Profile profile = new Profile();
 
-        try
-        {
+        try {
             // Graph query for user details by userId
             profile.user = await client.Users[userId].Request().GetAsync();
             profile.photo = "";
-            try
-            {
-                // Graph query for user photo by userId
-                var photo = await client.Users[userId].Photo.Content.Request().GetAsync();
 
-                if (photo != null)
-                {
-                    // Convert to MemoryStream for ease of rendering
-                    using (MemoryStream stream = (MemoryStream)photo)
-                    {
-                        string toBase64Photo = Convert.ToBase64String(stream.ToArray());
-                        profile.photo = "data:image/jpeg;base64, " + toBase64Photo;
-                    }
-                }
-            }
-            catch (ServiceException)
+            // Graph query for user photo by userId
+            var photo = await client.Users[userId].Photo.Content.Request().GetAsync();
+
+            if (photo != null)
             {
-                // If this user has no profile picture, return the profile with the empty photo
-                return View(profile);
+                // Convert to MemoryStream for ease of rendering
+                using (MemoryStream stream = (MemoryStream)photo)
+                {
+                    string toBase64Photo = Convert.ToBase64String(stream.ToArray());
+                    profile.photo = "data:image/jpeg;base64, " + toBase64Photo;
+                }
             }
         }
         catch (Exception)
@@ -230,7 +220,7 @@ In this step, we'll enable selecting a user from the user search results table, 
         return View(profile);
     }
     ```
-5. Create a new view under **Views\UserSearch** and name it **ShowProfile.cshtml**. Replace the contents of this file with the following.
+4. Create a new view under **Views\UserSearch** and name it **ShowProfile.cshtml**. Replace the contents of this file with the following.
     ```xml
     @model PeoplePicker.Models.Profile
     @{
@@ -301,7 +291,7 @@ In this step, we'll enable selecting a user from the user search results table, 
     </table>
     ```
 
-6. Hit F5 to compile and try out the new ShowProfile page. Search for users and click on a user to see their details.
+5. Hit F5 to compile and try out the new ShowProfile page. Search for users and click on a user to see their details.
 
 ***
 Hooray! Congratulations on creating your PeoplePicker app! You have created an MVC application that uses Microsoft Graph to search and view users in your tenant.
