@@ -14,7 +14,9 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.AccessControl;
 using System.Threading.Tasks;
+using Microsoft.Graph;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
+
 
 namespace GraphWebhooks.Controllers
 {
@@ -94,37 +96,35 @@ namespace GraphWebhooks.Controllers
         public async Task GetChangedMessagesAsync(IEnumerable<Notification> notifications)
         {
             List<Message> messages = new List<Message>();
-            string serviceRootUrl = "https://graph.microsoft.com/v1.0/";
 
             // Get an access token and add it to the client.
             string authority = string.Format(ConfigurationManager.AppSettings["ida:AADInstance"], "common", "");
             AuthenticationContext authContext = new AuthenticationContext(authority);
             ClientCredential credential = new ClientCredential(ConfigurationManager.AppSettings["ida:AppId"], ConfigurationManager.AppSettings["ida:AppSecret"]);
 
-
-
-            HttpClient client = new HttpClient();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
             foreach (var notification in notifications)
             {
+                if (notification.ResourceData.ODataType != "#Microsoft.Graph.Message")
+                    continue;
+
                 var subscriptionParams = (Tuple<string, string>)HttpRuntime.Cache.Get("subscriptionId_" + notification.SubscriptionId);
                 string refreshToken = subscriptionParams.Item2;
                 AuthenticationResult authResult = await authContext.AcquireTokenByRefreshTokenAsync(refreshToken, credential, "https://graph.microsoft.com");
 
-                // Send the 'GET' request.
-                HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, serviceRootUrl + notification.Resource);
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authResult.AccessToken);
-                HttpResponseMessage response = await client.SendAsync(request).ConfigureAwait(continueOnCapturedContext: false);
-
-                // Get the messages from the JSON response.
-                if (response.IsSuccessStatusCode)
+                using (var graphClient = new GraphServiceClient(new DelegateAuthenticationProvider(requestMessage =>
                 {
-                    string stringResult = await response.Content.ReadAsStringAsync();
-                    var type = notification.ResourceData.ODataType;
-                    if (type == "#Microsoft.Graph.Message")
+                    requestMessage.Headers.Authorization = new AuthenticationHeaderValue("bearer", authResult.AccessToken);
+                    return Task.FromResult(0);
+                })))
+                {
+                    var request = new MessageRequest(graphClient.BaseUrl + "/" + notification.Resource, graphClient, null);
+                    try
                     {
-                        messages.Add(JsonConvert.DeserializeObject<Message>(stringResult));
+                        messages.Add(await request.GetAsync());
+                    }
+                    catch (Exception)
+                    {
+                        continue;
                     }
                 }
             }

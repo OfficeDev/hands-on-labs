@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNet.SignalR;
-using GraphWebhooks.Models;
+using Microsoft.Graph;
 
 
 namespace GraphWebhooks.SignalR
