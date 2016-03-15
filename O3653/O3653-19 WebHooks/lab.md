@@ -35,6 +35,8 @@ A webhooks subscription allows a client app to receive notifications about mail,
 Install-Package Microsoft.AspNet.SignalR
    ```
 
+TEMP STEP? Install the Microsoft Graph SDK Nuget packages.
+
 ### Configure authorization
 This application uses SignalR, which doesn't support ASP.NET session state. So you'll need to reconfigure the **AuthenticationContext** to use the default token cache instead of the **SessionTokenCache** that's provided in the starter template. However, production applications should implement a custom token cache that derives from the ADAL **TokenCache** class. 
 
