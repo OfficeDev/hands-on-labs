@@ -457,7 +457,70 @@ function onaddContentStartingSOW() {
 ## Exercise 4: Using Search and inserting Content Controls
 *In this exercise you will continue working on the Visual Studio solution for the StatementOfWork Add-in you created on in the previous steps. You will extend the Add-in's capabilities by adding JavaScript code to search for content in the document and add content controls. Content controls are a key building block in Word development and enables developers to insert 'placeholders' in the document that can be later identified and replaced with different content. This excercise is cummulative and assumes you completed  Excercise 2.*
 
-1. A common scenario in Word development is reusing documents to create new ones. A "Statement of Work" (SOW) is a very common example of this, by replacing a few fields an existing SOW may be completly reusable. To illustrate that point, we will implement a simple example on how a template can be created. 
+1. A common scenario in Word development is reusing documents to create new ones. A "Statement of Work" (SOW) is a very good example of this. By replacing a few fields an existing SOW may be a completely new SOW instance. To illustrate that point, we will implement a simple example on how a template can be created. 
+
+2. Go back to Visual Studio, make sure you are using the StatementOfWord project.
+
+3. In the solution Explorer, double click on **Home.js** to open this JavaScript file.
+4. Add the following code to the **onSearchAndTempletize** function:
+
+	````javascript
+function onSearchAndTempletize() {
+        // on this method i actually want to create kind of a template. will start by searching "Contoso". then i will wrap each instance with a content control
+        // i will also change the format of each search instance...
+
+        Word.run(function (ctx) {
+            var results = ctx.document.body.search("Contoso");
+            ctx.load(results);
+            // we need to sync to get the search results/
+            return ctx.sync()
+            .then(function () {
+                //once we have the results we navigate thorugh each occurence an change a few thinks, as well as wrapping with a content control.
+                for (var i = 0; i < results.items.length; i++) {
+                    results.items[i].font.color = "#FF0000"    // Change color to Red
+                    results.items[i].font.highlightColor = "#FFFF00";
+                    results.items[i].font.bold = true;
+                    var cc = results.items[i].insertContentControl();
+                    cc.tag = "customer";  // this is an important piece of code, later on the excercise i will retrieve all the content controls with this tag and replace the content.
+                    cc.title = "Customer Name";
+                }
+                return ctx.sync()  // OK ready! lets send it to the host for processing :)
+            })
+            .then(function () {
+                app.showNotification("Task Complete!");
+            })
+            .catch(function (myError) {
+                app.showNotification("Error", myError.message);
+            })
+        });
+
+
+    } 
+	````
+	
+
+4. Note that the code is searching for "Contoso", the search method returns a collection of ranges matching the search criteria, the code iterates through that collection and wraps each instance with a content control. Note that you are adding each content control a tag with a "customer" title, this is important as we will use this information in the next excercise to replace the content of all the content controls with this tag with a new customer. .  
+
+5. Test your work by pressing F5 to start a debug session and then click the **Step 1: Starting SOW** button. After the starting document gets inserted click on the  **Step 3: Search and Templetize!** button to try your code. Each "Contoso" instance should be wrapped with a content control and with a yellow highlight For visibility purposes we are also adding a red font color and yellow highlight to each search result instance. Your document should look like this after you click on Step 1 and Step 3 buttons:
+
+	![](Images/Fig13.png) 
+	
+Make sure to select any of the 'Contoso' search instances and verify they were tagged as 'customer'. To check this make sure that the Developer tab in Word's ribbon is activated. Go to File->Options->Customize Ribbon  and make sure in the right panel the 'Developer' is selected.
+
+        ![](Images/Fig14.png)
+
+Then, while having the cursor within any 'Contoso' instance, click on the developer tab and then on 'Properties'. you will see each content control has the 'customer' tag
+
+        ![](Images/Fig15.png)
+
+5. Congratulations! In this exercise you learned how to use the search API and how to insert and tagged content controls, as well as changing formatting attributes, lets continue with Excercise 5!
+
+
+
+## Exercise 5: Changing content of tagged Content Controls!
+*In this exercise you will continue working on the Visual Studio solution for the StatementOfWork Add-in you created on in the previous steps. You will extend the Add-in's capabilities by adding JavaScript code to search for content in the document and add content controls. Content controls are a key building block in Word development and enables developers to insert 'placeholders' in the document that can be later identified and replaced with different content. This excercise is cummulative and assumes you completed  Excercise 2.*
+
+1. A common scenario in Word development is reusing documents to create new ones. A "Statement of Work" (SOW) is a very good example of this. By replacing a few fields an existing SOW may be a completely new SOW instance. To illustrate that point, we will implement a simple example on how a template can be created. 
 
 2. Go back to Visual Studio, make sure you are using the StatementOfWord project.
 
@@ -507,9 +570,6 @@ function onSearchAndTempletize() {
 	
 
 5. Congratulations! In this exercise you learned how to navigate through the inline pictures on a document and learned how to replace images!, lets continue with Excercise 4!
-
-
-Congratulations! You've now written a Word Add-in that uses the new Word v2 JavaScript API.
 
 
 
