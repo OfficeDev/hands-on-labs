@@ -8,8 +8,8 @@ This lab requires that you have the Yeoman generator for Office add-ins installe
 ## Exercise 1: Create an add-in with the Yeoman generator
 
 1. Open a terminal/command prompt.
-1. Navigate to the x folder.
-1. Create a new folder with the command `mkdir addinname` and navigate into that folder.
+1. Navigate to the C:\lab\ folder on Windows or the /usr/ directory on Mac.
+1. Create a new folder for your add-in project with the command `mkdir addinname` and navigate into that folder.
 1. Run the Office yeoman generator by entering the command `yo office`.
 1. Provide the following information about your add-in:
   * Name of the add-in: myHelloWorldAddin
