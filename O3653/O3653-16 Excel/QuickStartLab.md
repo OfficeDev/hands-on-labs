@@ -4,7 +4,7 @@ The purpose of this lab is to show step-by-step instruction for reading writing 
 
 * [Lab instructions](#lab-instructions)
     * [Create a new project](#create-a-new-project)
-    * [Add ToDo.xlsx file to new Assets folder](#Add-ToDo.xlsx-file-to-new-Assets-folder)
+    * [Add ToDo file to new Assets folder](#Add-ToDo-file-to-new-Assets-folder)
     * [Use Excel REST API](#use-excel-rest-api)
         * [Add new controllers](#add-new-controllers)
         * [Add model](#add-model)
@@ -36,7 +36,7 @@ for calling the Graph API.
 ![](images/webconfig1.JPG)   
 ![](images/webconfig2.JPG)
 
-### Add ToDo.xlsx file to new Assets folder
+### Add ToDo file to new Assets folder
 
 Add an *Assets* folder to your project, drop the ToDo.xlsx file included in this lab into that new folder, and add the file to your project.
 
