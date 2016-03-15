@@ -41,19 +41,19 @@ for calling the Graph API.
 
     ![](images/01-02-NewApplicationRegistration.png)
 
-```xml
-<configuration>
-  <appSettings>
-    <!-- ... -->
-    <add key="ida:AppId" value="paste application id here" />
-    <add key="ida:AppSecret" value="paste application password here" />
-    <!-- ... -->
-    <!-- Specify scopes in this value. Multiple values should be comma separated. -->
-    <add key="ida:AppScopes" value="https://graph.microsoft.com/user.read,https://graph.microsoft.com/files.readwrite" />
-  </appSettings>
-  <!-- ... -->
-</configuration>
-```
+    ```xml
+    <configuration>
+      <appSettings>
+        <!-- ... -->
+        <add key="ida:AppId" value="paste application id here" />
+        <add key="ida:AppSecret" value="paste application password here" />
+        <!-- ... -->
+        <!-- Specify scopes in this value. Multiple values should be comma separated. -->
+        <add key="ida:AppScopes" value="https://graph.microsoft.com/user.read,https://graph.microsoft.com/files.readwrite" />
+      </appSettings>
+      <!-- ... -->
+    </configuration>
+    ```
 3. Add a redirect URL to enable testing on your localhost.
    1. Right click on **GraphFilesWeb** and click on **Properties** to open the project properties.
    2. Click on **Web** in the left navigation.
@@ -89,113 +89,113 @@ or OneDrive.
 
 3. **Add** the following reference to the top of the `FilesController` class.
 
-```csharp
-using System.Configuration;
-using System.Threading.Tasks;
-using Microsoft.Graph;
-using GraphFilesWeb.Auth;
-using GraphFilesWeb.TokenStorage;
-```
+    ```csharp
+    using System.Configuration;
+    using System.Threading.Tasks;
+    using Microsoft.Graph;
+    using GraphFilesWeb.Auth;
+    using GraphFilesWeb.TokenStorage;
+    ```
 
 4. Add the following code to the `FilesController` class to initialize a new
    **GraphServiceClient** and generate an access token for the Graph API:
 
-```csharp
-private GraphServiceClient GetGraphServiceClient()
-{
-    string userObjId = System.Security.Claims.ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
-    SessionTokenCache tokenCache = new SessionTokenCache(userObjId, HttpContext);
-
-    string authority = string.Format(ConfigurationManager.AppSettings["ida:AADInstance"], "common", "");
-
-    AuthHelper authHelper = new AuthHelper(
-        authority,
-        ConfigurationManager.AppSettings["ida:AppId"],
-        ConfigurationManager.AppSettings["ida:AppSecret"],
-        tokenCache);
-
-    // Request an accessToken and provide the original redirect URL from sign-in
-    GraphServiceClient client = new GraphServiceClient(new DelegateAuthenticationProvider(async (request) =>
+    ```csharp
+    private GraphServiceClient GetGraphServiceClient()
     {
-        string accessToken = await authHelper.GetUserAccessToken(Url.Action("Index", "Home", null, Request.Url.Scheme));
-        request.Headers.TryAddWithoutValidation("Authorization", "Bearer " + accessToken);
-    }));
+        string userObjId = System.Security.Claims.ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
+        SessionTokenCache tokenCache = new SessionTokenCache(userObjId, HttpContext);
 
-    return client;
-}
-```
+        string authority = string.Format(ConfigurationManager.AppSettings["ida:AADInstance"], "common", "");
+
+        AuthHelper authHelper = new AuthHelper(
+            authority,
+            ConfigurationManager.AppSettings["ida:AppId"],
+            ConfigurationManager.AppSettings["ida:AppSecret"],
+            tokenCache);
+
+        // Request an accessToken and provide the original redirect URL from sign-in
+        GraphServiceClient client = new GraphServiceClient(new DelegateAuthenticationProvider(async (request) =>
+        {
+            string accessToken = await authHelper.GetUserAccessToken(Url.Action("Index", "Home", null, Request.Url.Scheme));
+            request.Headers.TryAddWithoutValidation("Authorization", "Bearer " + accessToken);
+        }));
+
+        return client;
+    }
+    ```
 
 5. Add the following code to the `FilesController` class to return the view of items
    in the root of the user's OneDrive.
 
-```csharp
-[Authorize]
-public async Task<ActionResult> Index(int? pageSize, string nextLink)
-{
-    var client = GetGraphServiceClient();
-
-    pageSize = pageSize ?? 25;
-
-    IChildrenCollectionRequest request = client.Me.Drive.Root.Children.Request().Top(pageSize.Value);
-    if (nextLink != null)
+    ```csharp
+    [Authorize]
+    public async Task<ActionResult> Index(int? pageSize, string nextLink)
     {
-        request = new ChildrenCollectionRequest(nextLink, client, null);
-    }
+        var client = GetGraphServiceClient();
 
-    var results = await request.GetAsync();
-    if (null != results.NextPageRequest)
-    {
-        ViewBag.NextLink = results.NextPageRequest.GetHttpRequestMessage().RequestUri;
-    }
-    else
-    {
-        ViewBag.NextLink = null;
-    }
+        pageSize = pageSize ?? 25;
 
-    return View(results);
-}
-```
+        IChildrenCollectionRequest request = client.Me.Drive.Root.Children.Request().Top(pageSize.Value);
+        if (nextLink != null)
+        {
+            request = new ChildrenCollectionRequest(nextLink, client, null);
+        }
+
+        var results = await request.GetAsync();
+        if (null != results.NextPageRequest)
+        {
+            ViewBag.NextLink = results.NextPageRequest.GetHttpRequestMessage().RequestUri;
+        }
+        else
+        {
+            ViewBag.NextLink = null;
+        }
+
+        return View(results);
+    }
+    ```
 
 6. Add the following code to the `FilesController` to delete a file from the user's OneDrive:
 
-```csharp
-[Authorize]
-public async Task<ActionResult> Delete(string itemId, string etag)
-{
-    var client = GetGraphServiceClient();
+    ```csharp
+    [Authorize]
+    public async Task<ActionResult> Delete(string itemId, string etag)
+    {
+        var client = GetGraphServiceClient();
 
-    // Build a request and set the If-Match header with the etag
-    var request = client.Me.Drive.Items[itemId].Request(new List<Option> { new HeaderOption("If-Match", etag) });
+        // Build a request and set the If-Match header with the etag
+        var request = client.Me.Drive.Items[itemId].Request(new List<Option> { new HeaderOption("If-Match", etag) });
 
-    // Submit the delete request
-    await request.DeleteAsync();
+        // Submit the delete request
+        await request.DeleteAsync();
 
-    return Redirect("/Files");
-}
-```
+        return Redirect("/Files");
+    }
+    ```
 
 7. Add the following code to the `FilesController` to upload a new file to the user's OneDrive:
 
-```csharp
-[Authorize]
-public async Task<ActionResult> Upload()
-{
-    var client = GetGraphServiceClient();
-
-    foreach (string key in Request.Files)
+    ```csharp
+    [Authorize]
+    public async Task<ActionResult> Upload()
     {
-        var fileInRequest = Request.Files[key];
-        if (fileInRequest != null && fileInRequest.ContentLength > 0)
-        {
-            var filename = System.IO.Path.GetFileName(fileInRequest.FileName);
-            var request = client.Me.Drive.Root.Children[filename].Content.Request();
-            var uploadedFile = await request.PutAsync<DriveItem>(fileInRequest.InputStream);
-        }
-    }
+        var client = GetGraphServiceClient();
 
-    return Redirect("/Files");
-}
-```
+        foreach (string key in Request.Files)
+        {
+            var fileInRequest = Request.Files[key];
+            if (fileInRequest != null && fileInRequest.ContentLength > 0)
+            {
+                var filename = System.IO.Path.GetFileName(fileInRequest.FileName);
+                var request = client.Me.Drive.Root.Children[filename].Content.Request();
+                var uploadedFile = await request.PutAsync<DriveItem>(fileInRequest.InputStream);
+            }
+        }
+
+        return Redirect("/Files");
+    }
+    ```
 
 ### Create the files view
 
@@ -207,26 +207,26 @@ to an MVC view that will display the contents of the OneDrive folder selected.
     1. Locate the part of the file that includes a few links at the top of the
        page. It should look similar to the following code:
 
-```asp
-  <ul class="nav navbar-nav">
-      <li>@Html.ActionLink("Home", "Index", "Home")</li>
-      <li>@Html.ActionLink("About", "About", "Home")</li>
-      <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-      <li>@Html.ActionLink("Graph API", "Graph", "Home")</li>
-  </ul>
-```
+    ```asp
+      <ul class="nav navbar-nav">
+          <li>@Html.ActionLink("Home", "Index", "Home")</li>
+          <li>@Html.ActionLink("About", "About", "Home")</li>
+          <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+          <li>@Html.ActionLink("Graph API", "Graph", "Home")</li>
+      </ul>
+    ```
 
     2. Update that navigation to replace the "Graph API" link with "OneDrive Files"
        and connect this to the controller you just created.
 
-```asp
-  <ul class="nav navbar-nav">
-      <li>@Html.ActionLink("Home", "Index", "Home")</li>
-      <li>@Html.ActionLink("About", "About", "Home")</li>
-      <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-      <li>@Html.ActionLink("OneDrive Files", "Index", "Files")</li>
-  </ul>
-```
+    ```asp
+      <ul class="nav navbar-nav">
+          <li>@Html.ActionLink("Home", "Index", "Home")</li>
+          <li>@Html.ActionLink("About", "About", "Home")</li>
+          <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+          <li>@Html.ActionLink("OneDrive Files", "Index", "Files")</li>
+      </ul>
+    ```
 
 3. Create a new **View** for OneDrive Files:
    1. Right click on the **Views** folder in **GraphFilesWeb** and select
@@ -237,62 +237,62 @@ to an MVC view that will display the contents of the OneDrive folder selected.
 
 4. **Replace** all of the code in the **Files/Index.cshtml** with the following:
 
-```asp
-  @model IEnumerable<Microsoft.Graph.DriveItem>
+    ```asp
+      @model IEnumerable<Microsoft.Graph.DriveItem>
 
-  @{ ViewBag.Title = "My Files"; }
+      @{ ViewBag.Title = "My Files"; }
 
-  <h2>My Files</h2>
+      <h2>My Files</h2>
 
-  <div class="row" style="margin-top:50px;">
-      <div class="col-sm-12">
-          <div class="table-responsive">
-              <table id="filesTable" class="table table-striped table-bordered">
-                  <thead>
-                      <tr>
-                          <th></th>
-                          <th>ID</th>
-                          <th>Name</th>
-                          <th>Created</th>
-                          <th>Modified</th>
-                      </tr>
-                  </thead>
-                  <tbody>
-                      @foreach (var file in Model)
-                      {
+      <div class="row" style="margin-top:50px;">
+          <div class="col-sm-12">
+              <div class="table-responsive">
+                  <table id="filesTable" class="table table-striped table-bordered">
+                      <thead>
                           <tr>
-                              <td>
-                                  @{
-  //Place delete control here
-                                  }
-                              </td>
-                              <td>
-                                  @file.Id
-                              </td>
-                              <td>
-                                  <a href="@file.WebUrl">@file.Name</a>
-                              </td>
-                              <td>
-                                  @file.CreatedDateTime
-                              </td>
-                              <td>
-                                  @file.LastModifiedDateTime
-                              </td>
+                              <th></th>
+                              <th>ID</th>
+                              <th>Name</th>
+                              <th>Created</th>
+                              <th>Modified</th>
                           </tr>
+                      </thead>
+                      <tbody>
+                          @foreach (var file in Model)
+                          {
+                              <tr>
+                                  <td>
+                                      @{
+      //Place delete control here
                                       }
-                  </tbody>
-              </table>
-          </div>
-          <div class="btn btn-group-sm">
-              @{
-                  //Place Paging controls here
-              }
-          </div>
+                                  </td>
+                                  <td>
+                                      @file.Id
+                                  </td>
+                                  <td>
+                                      <a href="@file.WebUrl">@file.Name</a>
+                                  </td>
+                                  <td>
+                                      @file.CreatedDateTime
+                                  </td>
+                                  <td>
+                                      @file.LastModifiedDateTime
+                                  </td>
+                              </tr>
+                                          }
+                      </tbody>
+                  </table>
+              </div>
+              <div class="btn btn-group-sm">
+                  @{
+                      //Place Paging controls here
+                  }
+              </div>
 
-          // Place upload controls here
+              // Place upload controls here
+          </div>
       </div>
-  </div>
-```
+    ```
 
 5. In **Visual Studio**, hit **F5** to begin debugging.
 6. When prompted, log in with your Office 365 Account.
@@ -303,17 +303,17 @@ to an MVC view that will display the contents of the OneDrive folder selected.
 ### Paging through the results
 1. **Add** the following code under the comment `Place Paging controls here` in **Index.cshtml**
 
-```csharp
-Dictionary<string, object> attributes2 = new Dictionary<string, object>();
-attributes2.Add("class", "btn btn-default");
+    ```csharp
+    Dictionary<string, object> attributes2 = new Dictionary<string, object>();
+    attributes2.Add("class", "btn btn-default");
 
-if (null != ViewBag.NextLink)
-{
-  RouteValueDictionary routeValues3 = new RouteValueDictionary();
-  routeValues3.Add("nextLink", ViewBag.NextLink);
-  @Html.ActionLink("Next Page", "Index", "Files", routeValues3, attributes2);
-}
-```
+    if (null != ViewBag.NextLink)
+    {
+      RouteValueDictionary routeValues3 = new RouteValueDictionary();
+      routeValues3.Add("nextLink", ViewBag.NextLink);
+      @Html.ActionLink("Next Page", "Index", "Files", routeValues3, attributes2);
+    }
+    ```
 2. Press **F5** to start debugging.
 3. Click the next button to page through results. Use the browser's back button to return to previous pages.
 
@@ -322,17 +322,17 @@ if (null != ViewBag.NextLink)
 1. Add the following code to the bottom of the **Index.cshtml** file to create
    an upload control.
 
-```asp
- <div class="row" style="margin-top:50px;">
-     <div class="col-sm-12">
-         @using (Html.BeginForm("Upload", "Files", FormMethod.Post, new { enctype = "multipart/form-data" }))
-         {
-             <input type="file" id="file" name="file" class="btn btn-default" />
-             <input type="submit" id="submit" name="submit" value="Upload" class="btn btn-default" />
-         }
+    ```asp
+     <div class="row" style="margin-top:50px;">
+         <div class="col-sm-12">
+             @using (Html.BeginForm("Upload", "Files", FormMethod.Post, new { enctype = "multipart/form-data" }))
+             {
+                 <input type="file" id="file" name="file" class="btn btn-default" />
+                 <input type="submit" id="submit" name="submit" value="Upload" class="btn btn-default" />
+             }
+         </div>
      </div>
- </div>
-```
+    ```
 
 2. Press **F5** to begin debugging.
 3. Test uploading a new file and ensure it appears in the folder list.
@@ -342,18 +342,18 @@ if (null != ViewBag.NextLink)
 1. In the **Index.cshtml** file under **Views/Files** folder, **add** the
    following code under the comment `Place delete control here`.
 
-```csharp
-    Dictionary<string, object> attributes1 = new Dictionary<string, object>();
-    attributes1.Add("class", "btn btn-warning");
+  ```csharp
+      Dictionary<string, object> attributes1 = new Dictionary<string, object>();
+      attributes1.Add("class", "btn btn-warning");
 
-    RouteValueDictionary routeValues1 = new RouteValueDictionary();
-    routeValues1.Add("itemId", file.Id);
-    routeValues1.Add("etag", file.eTag);
-    @Html.ActionLink("X", "Delete", "Files", routeValues1, attributes1);
-```
+      RouteValueDictionary routeValues1 = new RouteValueDictionary();
+      routeValues1.Add("itemId", file.Id);
+      routeValues1.Add("etag", file.eTag);
+      @Html.ActionLink("X", "Delete", "Files", routeValues1, attributes1);
+  ```
 
 2. Press **F5** to begin debugging.
 3. Test the delete functionality in the application by deleting a file.
 
-Congratulations! In this exercise you have created an MVC application that uses
+**Congratulations!** In this exercise you have created an MVC application that uses
 Microsoft Graph to view and manage files in OneDrive!
