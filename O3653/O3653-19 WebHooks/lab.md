@@ -1,9 +1,9 @@
 # Get notified when data changes through Microsoft Graph Webhooks
 
-## TODO  
+<!-- TODO  
 - changes from beta -> v1.0 path  
 - changes to JSON Attributes on model for subscriptionExpirationDateTime -> expirationDateTime and subscriptionId -> id
-- change Notification.subscriptionExpirationDateTime (217617 currently returns as string) to DateTimeOffset - GAJ ??? 
+- change Notification.subscriptionExpirationDateTime (217617 currently returns as string) to DateTimeOffset -->
 
 ## What You'll Learn
 In this lab, you'll create an ASP.NET MVC application that subscribes for Microsoft Graph webhooks and receives change notifications. You'll use the Microsoft Graph API to create a subscription, and you'll create a public endpoint that receives change notifications. 
@@ -475,8 +475,8 @@ In this step you'll create a view for the app start page and a view that display
     </div>
    ```
 
-## Step 7: Create the Notification and Message models
-In this step you'll create models that represent Notification and Message objects. 
+## Step 7: Create the Notification model
+In this step you'll create a model that represents a Notification object. 
 
 ### Create the Notification model
 
@@ -543,47 +543,6 @@ using Newtonsoft.Json;
     }
   ```
 
-### Create the Message model
-
-1. Right-click the **Models** folder and choose **Add/Class**. 
-
-1. Name the model **Message.cs** and click **Add**.
-
-1. Add the following **using** statement.
-
-  ```c#
-using Newtonsoft.Json;
-  ```
-
-1. Replace the **Message** class with the following code. This defines the properties of a Message object that will be displayed in the Notification view. 
-
-  ```c# 
-    // An Outlook mail message.
-    public class Message
-    {
-        [JsonProperty(PropertyName = "id")]
-        public string Id { get; set; }
-
-        [JsonProperty(PropertyName = "subject")]
-        public string Subject { get; set; }
-
-        [JsonProperty(PropertyName = "bodyPreview")]
-        public string BodyPreview { get; set; }
-
-        [JsonProperty(PropertyName = "createdDateTime")]
-        public DateTimeOffset CreatedDateTime { get; set; }
-
-        [JsonProperty(PropertyName = "isRead")]
-        public Boolean IsRead { get; set; }
-
-        [JsonProperty(PropertyName = "conversationId")]
-        public string ConversationId { get; set; }
-
-        [JsonProperty(PropertyName = "changeKey")]
-        public string ChangeKey { get; set; }
-    }
-  ```
-
 ## Step 8: Create the Notification controller
 In this step you'll create a controller that exposes the notification endpoint. 
 
@@ -600,6 +559,7 @@ In this step you'll create a controller that exposes the notification endpoint.
   ```c#
 using GraphWebhooks.Models;
 using GraphWebhooks.SignalR;
+using Microsoft.Graph;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -691,41 +651,43 @@ using System.Threading.Tasks;
 
 1. Add the **GetChangedMessagesAsync** method to the **NotificationController** class. This queries Microsoft Graph for the changed messages.
 
+   > NOTE: This method uses the new Microsoft Graph SDK to access the Outlook message. 
+
    ```c#
-    // Get information about the changed messages and send to browser via SignalR.
+    // Get information about the changed messages and send to browser via SignalR
     // A production application would typically queue a background job for reliability.
     public async Task GetChangedMessagesAsync(IEnumerable<Notification> notifications)
     {
         List<Message> messages = new List<Message>();
-        string serviceRootUrl = "https://graph.microsoft.com/v1.0/";
 
         // Get an access token and add it to the client.
         string authority = string.Format(ConfigurationManager.AppSettings["ida:AADInstance"], "common", "");
         AuthenticationContext authContext = new AuthenticationContext(authority);
         ClientCredential credential = new ClientCredential(ConfigurationManager.AppSettings["ida:AppId"], ConfigurationManager.AppSettings["ida:AppSecret"]);
 
-        HttpClient client = new HttpClient();
-        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
         foreach (var notification in notifications)
         {
+            if (notification.ResourceData.ODataType != "#Microsoft.Graph.Message")
+                continue;
+
             var subscriptionParams = (Tuple<string, string>)HttpRuntime.Cache.Get("subscriptionId_" + notification.SubscriptionId);
             string refreshToken = subscriptionParams.Item2;
             AuthenticationResult authResult = await authContext.AcquireTokenByRefreshTokenAsync(refreshToken, credential, "https://graph.microsoft.com");
 
-            // Send the 'GET' request.
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, serviceRootUrl + notification.Resource);
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authResult.AccessToken);
-            HttpResponseMessage response = await client.SendAsync(request).ConfigureAwait(continueOnCapturedContext: false);
-
-            // Get the messages from the JSON response.
-            if (response.IsSuccessStatusCode)
+            using (var graphClient = new GraphServiceClient(new DelegateAuthenticationProvider(requestMessage =>
             {
-                string stringResult = await response.Content.ReadAsStringAsync();
-                var type = notification.ResourceData.ODataType;
-                if (type == "#Microsoft.Graph.Message")
+                requestMessage.Headers.Authorization = new AuthenticationHeaderValue("bearer", authResult.AccessToken);
+                return Task.FromResult(0);
+            })))
+            {
+                var request = new MessageRequest(graphClient.BaseUrl + "/" + notification.Resource, graphClient, null);
+                try
                 {
-                    messages.Add(JsonConvert.DeserializeObject<Message>(stringResult));
+                    messages.Add(await request.GetAsync());
+                }
+                catch (Exception)
+                {
+                    continue;
                 }
             }
         }
@@ -754,7 +716,7 @@ This app uses SignalR to notify the client to refresh its view.
 1. In **NotificationService**, add the following **using** statement:
 
    ```c#
-using GraphWebhooks.Models;
+using Microsoft.Graph;
    ```
 
 1. Replace the **NotificationService** class with the following code.
@@ -793,7 +755,7 @@ In this step you'll create a view that displays some properties of the changed m
 1. In the **Notification.cshtml** file that's created, replace the content with the following code:
 
    ```html
-@model GraphWebhooks.Models.Message
+@model Microsoft.Graph.Message
 
 @{
     ViewBag.Title = "Notification";
