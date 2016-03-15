@@ -1093,7 +1093,8 @@ After adding each task, the app shows the updated task listing. If the newly add
 A sample list tasks are shown below.  
 ![](images/app5.JPG)
 
-Click on the `Charts' link to see the breakdown of tasks using a pie chart created and downloaded (as image) using the Excel API. 
+Click on the `Charts' link to see the breakdown of tasks using a pie chart created and downloaded (as image) using the Excel API.
+ 
 ![](images/app6a.JPG)
 
 ![](images/app6.JPG)
