@@ -12,21 +12,21 @@ with an ASP.NET MVC application.
 ## Exercise 1: Create a new project using Azure Active Directory v2 authentication
 
 In this first step, you will create a new ASP.NET MVC project using the
-**Graph AAD Auth v2 Start Project** template, register a new application
-in the developer portal, and log in to your app and generate access tokens
+**Graph AAD Auth v2 Starter Project** template, register a new application
+in the developer portal, and log on to your app and generate access tokens
 for calling the Graph API.
 
-1. Launch Visual Studio 2015 and select **New**, **Project**.
+1. Launch Visual Studio 2015 and select **New** > **Project**.
    1. Search the installed templates for **Graph** and select the
       **Graph AAD Auth v2 Starter Project** template.
    2. Name the new project **GraphFilesWeb** and click **OK**.
-   3. Open the **Web.config** file and find the **appSettings** element. This is where you will need to add your appId and app secret you will generate in the next step.
+   3. Open the **Web.config** file and find the **appSettings** element. This is where you will need to add the appId and app secret you will generate in the next step.
 2. Launch the [Application Registration Portal](https://apps.dev.microsoft.com)
    to register a new application.
-      1. Sign into the portal using your Office 365 username and password.
+      1. Sign in to the portal using your Office 365 user name and password.
       2. Click **Add an App** and type **Graph Files Quick Start** for the application name.
       3. Copy the **Application Id** and paste it into the value for **ida:AppId** in your project's **web.config** file.
-      3. Under **Application Secrets** click **Generate New Password** to create a new client secret for your app.
+      3. Under **Application Secrets**, click **Generate New Password** to create a new client secret for your app.
       4. Copy the displayed app password and paste it into the value for **ida:AppSecret** in your project's **web.config** file.
       5. Modify the **ida:AppScopes** value to include the required **https://graph.microsoft.com/files.readwrite** scope.
 
@@ -44,33 +44,33 @@ for calling the Graph API.
 </configuration>
 ```
 3. Add a redirect URL to enable testing on your localhost.
-   1. Right click on **GraphFilesWeb** and click on **Properties** to open the project properties.
-   2. Click on **Web** in the left navigation.
+   1. Right-click **GraphFilesWeb** and click **Properties** to open the project properties.
+   2. Click **Web** in the left navigation.
    3. Copy the **Project Url** value.
    4. Back on the Application Registration Portal page, click **Add Platform** and then **Web**.
    5. Paste the value of **Project Url** into the **Redirect URIs** field.
    6. Scroll to the bottom of the page and click **Save**.
 
 4. Press F5 to compile and launch your new application in the default browser.
-   1. Once the Graph and AAD v2 Auth Endpoint Starter page appears, click **Sign in** and login to your Office 365 account.
+   1. When the Graph and AAD v2 Auth Endpoint Starter page appears, click **Sign in** and log on to your Office 365 account.
    2. Review the permissions the application is requesting, and click **Accept**.
-   3. Now that you are signed into your application, exercise 1 is complete!
+   3. Now that you are signed in to your application, exercise 1 is complete!
 
 ## Exercise 2: Access OneDrive for Business files through Microsoft Graph SDK
 
 In this exercise, you will build on exercise 1 to connect to the Microsoft Graph
-SDK can perform CRUD operations associated with the files in OneDrive for Business
+SDK and perform CRUD operations associated with the files in OneDrive for Business
 or OneDrive.
 
 ### Create the files controller and use the Graph SDK
 
-1. Add a reference to the Microsoft Graph SDK to your project
-  1. In the **Solution Explorer** right click on the **GraphFilesWeb** project and select **Manage NuGet Packages...**.
+1. Add a reference to the Microsoft Graph SDK to your project.
+  1. In the **Solution Explorer**, right-click the **GraphFilesWeb** project and select **Manage NuGet Packages...**.
   2. Click **Browse** and search for **Microsoft.Graph**.
   3. Select the Microsoft Graph SDK and click **Install**.
 
 2. Create a new controller to process the requests for files and send them to Graph API.
-  1. Find the **Controllers** folder under **GraphFilesWeb**, right click on it and select **Add** then **Controller**.
+  1. Find the **Controllers** folder under **GraphFilesWeb**, right-click it and select **Add** then **Controller**.
   2. Select **MVC 5 Controller - Empty** and click **Add**.
   3. Change the name of the controller to **FilesController** and click **Add**.
 
@@ -143,7 +143,7 @@ public async Task<ActionResult> Index(int? pageSize, string nextLink)
 }
 ```
 
-6. Add the following code to the `FilesController` to delete a file from the user's OneDrive:
+6. Add the following code to the `FilesController` to delete a file from the user's OneDrive.
 
 ```csharp
 [Authorize]
@@ -161,7 +161,7 @@ public async Task<ActionResult> Delete(string itemId, string etag)
 }
 ```
 
-7. Add the following code to the `FilesController` to upload a new file to the user's OneDrive:
+7. Add the following code to the `FilesController` to upload a new file to the user's OneDrive.
 
 ```csharp
 [Authorize]
@@ -216,13 +216,13 @@ to an MVC view that will display the contents of the OneDrive folder selected.
 ```
 
 3. Create a new **View** for OneDrive Files:
-   1. Right click on the **Views** folder in **GraphFilesWeb** and select
+   1. Right-click the **Views** folder in **GraphFilesWeb** and select
       **Add** then **New Folder**.
    2. Name the folder **Files**.
-   3. Right click on the new folder **Files** and select **Add** then **New Item**.
-   4. Select **MVC View Page** and change the filename **Index.cshtml** and click **Add**.
+   3. Right-click the new folder **Files** and select **Add** > **New Item**.
+   4. Select **MVC View Page**, change the file name **Index.cshtml**, and click **Add**.
 
-6. **Replace** all of the code in the **Files/Index.cshtml** with the following:
+6. **Replace** all the code in the **Files/Index.cshtml** with the following:
 
 ```asp
   @model IEnumerable<Microsoft.Graph.DriveItem>
@@ -282,7 +282,7 @@ to an MVC view that will display the contents of the OneDrive folder selected.
 ```
 
 7. In **Visual Studio**, hit **F5** to begin debugging.
-8. When prompted, log in with your Office 365 Account.
+8. When prompted, log on with your Office 365 account.
 9. Click the link **OneDrive Files** on the top of the home page.
 10. Verify that your application displays files from the user's OneDrive.
 
@@ -291,7 +291,7 @@ to an MVC view that will display the contents of the OneDrive folder selected.
 11. Stop debugging. You've connected your app to OneDrive files through Graph API!
 
 ### Paging through the results
-1. **Add** the following code under the comment `Place Paging controls here` in **Index.cshtml**
+1. **Add** the following code under the comment `Place Paging controls here` in **Index.cshtml**.
 
 ```csharp
 Dictionary<string, object> attributes2 = new Dictionary<string, object>();
@@ -305,7 +305,7 @@ if (null != ViewBag.NextLink)
 }
 ```
 2. Press **F5** to start debugging.
-3. Click the next button to page through results. Use the browser's back button to return to previous pages.
+3. Click the **Next** button to page through results. Use the browser's back button to return to previous pages.
 
 ### Uploading a file
 
