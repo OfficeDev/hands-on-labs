@@ -42,7 +42,7 @@ Add an *Assets* folder to your project, drop the ToDo.xlsx file included in this
 
 ![](images/ToDoworkbook.JPG)
 
-### Use Excel REST API.
+### Use Excel REST API
 
 Let's create a MVC web application that allows us to create and manage to-do list by storing the content into an Excel file. 
 The high level functions performed by the application includes: 
