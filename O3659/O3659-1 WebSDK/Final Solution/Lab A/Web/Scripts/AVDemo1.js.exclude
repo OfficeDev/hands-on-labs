@@ -1,0 +1,75 @@
+﻿$(function () {
+    $('#startAudio').click(startAudio);
+    var SkypeWebApp, SkypeApi;
+    Skype.initialize({ apiKey: config.apiKey }, function (api) {
+        SkypeWebApp = new api.application({
+            settings: {
+                supportsText: true,
+                supportsHtml: false,
+                supportsMessaging: true,
+                supportsAudio: true,
+                supportsVideo: true,
+                supportsSharing: false,
+            }
+        });
+        SkypeApi = api;
+
+        SkypeWebApp.signInManager.state.changed(function (state) {
+            console.log("Skype Client state changed to: " + state);
+        });
+
+        var options =
+     {
+         "auth": null,
+         "client_id": "98267106-694b-4df2-8e06-fbbafd8a90e7",
+         "origins": ["https://webdir.online.lync.com/autodiscover/autodiscoverservice.svc/root"],
+         "cors": true,
+         "version": 'secondonlineapp/1.0.0.0',
+         "redirect_uri": "/9c967f6b-a846-4df2-b43d-5167e47d81e1/oauth2/token/index.html",
+     };
+        SkypeWebApp.signInManager.signIn(options).then(function () {
+            console.log('signed in');
+        });
+    });
+
+    function findPerson() {
+        var sip = "sip:marysmith@danewman.onmicrosoft.com";
+        var searchQuery = SkypeWebApp.personsAndGroupsManager.createPersonSearchQuery();
+        searchQuery.text(sip);
+        searchQuery.limit(1);
+        searchQuery.getMore().then(function (results) {
+            results.forEach(function (item) {
+                return item;
+            });
+        });
+        //return searchQuery.getMore().then(function (results) {
+        //    console.log(results[0].result);
+        //    return results[0].result;
+        //});
+    }
+    function startCovnersation(person) {
+        console.log(person);
+        var conversation = SkypeWebApp.conversationsManager.createConversation();
+        var par = conversation.createParticipant(person);
+        conversation.participants.add(par);
+        SkypeWebApp.conversationsManager.conversations.add(conversation);
+        //conversation.chatService.start();
+        conversation.audioService.start();
+        console.log('audio service started');
+        conversation.selfParticipant.audio.state.changed(function (newState) {
+            console.log(newState);
+            if (newState == 'Notified') {
+                if (confirm('accept audio?')) {
+                    conversation.audioService.accept();
+                }
+                else {
+                    conversation.audioService.reject();
+                }
+            }
+        });
+    }
+    function startAudio() {
+        var person = findPerson();
+        startCovnersation(person);
+    }
+})();

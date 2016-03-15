@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <script src="Scripts/jquery-2.2.1.min.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script src="https://swx.cdn.skype.com/shared/v/latest/SkypeBootstrap.min.js"></script>
+    <script src="Scripts/config.js"></script>
+    <script src="Scripts/chat-window.js"></script>
+    <link rel="stylesheet" type="text/css" href="Content/Styles.css" />
+</head>
+<body style="background: #000f56;">
+    <div class="avplaceholders" id="AVContent" style="width: 100%; height: 70%;">
+        <div id="render-self-window" style="width:400px; height: 400px;"></div>
+        <!--<div id="AVWindowSelfView">
+            <label class="avWindowDisplayName" id="AVWindowSelfName"></label>
+        </div>-->
+        <div id="render-participant-window" style="width:400px; height: 400px;"></div>
+        <!--<div id="AVWindowContactView">
+            <label class="avWindowDisplayName" id="AVWindowContactName"></label>
+        </div>-->
+    </div>
+    <div id="BottomControls" style="width: 100%; height: 20%; text-align: center;">
+        <button id="AVChatMute"></button>
+        <button id="AVChatVideo"></button>
+        <button id="AVChatClose"></button>
+    </div>
+</body>
+</html>

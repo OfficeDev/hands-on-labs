@@ -1,0 +1,42 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OfficeAddIn", "OfficeAddIn\OfficeAddIn.csproj", "{F6899AFB-8905-40C5-B51D-C08CA72B6A6A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OfficeAddInWeb", "OfficeAddInWeb\OfficeAddInWeb.csproj", "{5F64EA34-4296-49A1-A47D-B44F4D603914}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F6899AFB-8905-40C5-B51D-C08CA72B6A6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6899AFB-8905-40C5-B51D-C08CA72B6A6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6899AFB-8905-40C5-B51D-C08CA72B6A6A}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{F6899AFB-8905-40C5-B51D-C08CA72B6A6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6899AFB-8905-40C5-B51D-C08CA72B6A6A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6899AFB-8905-40C5-B51D-C08CA72B6A6A}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{5F64EA34-4296-49A1-A47D-B44F4D603914}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F64EA34-4296-49A1-A47D-B44F4D603914}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F64EA34-4296-49A1-A47D-B44F4D603914}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F64EA34-4296-49A1-A47D-B44F4D603914}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 3
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://tfs2013.claritycon.com/tfs/defaultcollection2013
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = OfficeAddIn\\OfficeAddIn.csproj
+		SccProjectName1 = OfficeAddIn
+		SccLocalPath1 = OfficeAddIn
+		SccProjectUniqueName2 = OfficeAddInWeb\\OfficeAddInWeb.csproj
+		SccProjectName2 = OfficeAddInWeb
+		SccLocalPath2 = OfficeAddInWeb
+	EndGlobalSection
+EndGlobal

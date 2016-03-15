@@ -1,0 +1,326 @@
+﻿body {
+    font-family: 'Segoe UI';
+}
+
+.no-close .ui-dialog-titlebar-close {
+  display: none;
+}
+
+.ui-button-text-icon-primary .ui-button-text, .ui-button-text-icons .ui-button-text{
+    padding: 0 0 0 0;
+}
+
+.ui-dialog .ui-dialog-buttonpane
+{
+    padding: 0 0 0 0;
+}
+
+.ui-dialog .ui-dialog-buttonpane button {
+    margin: 2px 5px 0px 5px;
+}
+
+.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset {
+    text-align: center;
+    float: none;
+}
+
+.ui-state-default,
+.ui-widget-content .ui-state-default,
+.ui-widget-header .ui-state-default {
+	background: none;
+    margin-left: 10px;
+}
+
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+    border: none;
+}
+
+.ui-button-icon-only .ui-icon, .ui-button-text-icon-primary .ui-icon, .ui-button-text-icon-secondary .ui-icon, .ui-button-text-icons .ui-icon, .ui-button-icons-only .ui-icon{
+    position: relative;
+    top: 100%;
+    margin-left: 0px;
+    margin-top: 0px;
+    left: auto;
+}
+
+.ui-button .ui-icon-call {
+    background-image: url(../Images/call.png);
+    background-size: 40px 40px;
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    height: 40px;
+    width: 40px;
+    border-image:none;
+    border:none;
+}
+
+.ui-button .ui-icon-chat {
+    background-image: url(../Images/chat.png);
+    background-size: 40px 40px;
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    height: 40px;
+    width: 40px;
+    border-image:none;
+    border:none;
+}
+
+.ui-button .ui-icon-video {
+    background-image: url(../Images/video.png);
+    background-size: 40px 40px;
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    height: 40px;
+    width: 40px;
+    border-image:none;
+    border:none;
+}
+
+.ui-button .ui-icon-end-call {
+    background-image: url(../Images/end-chat.png);
+    background-size: 40px 40px;
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    height: 40px;
+    width: 40px;
+    border-image:none;
+    border:none;
+}
+
+.ui-button .ui-icon-mute-call {
+    background-image: url(../Images/fabrikam_skypeControl_mic.png);
+    background-size: 40px 40px;
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    height: 40px;
+    width: 40px;
+    border-image:none;
+    border:none;
+}
+
+.ui-widget-overlay {
+    background: #333;
+    opacity: .8;
+}
+
+#UserAvatar {
+    height: 75px;
+    width: auto;
+}
+
+.contactListAvatar {
+    width: 40px;
+    height: 40px;
+}
+
+.contactName, .contactPresence {
+    font-size: .85em;
+}
+
+.contact {
+    margin-top: 2px;
+    background-color: #cbcbcb;
+    padding-left: 5px;
+    margin-left: 2px;
+}
+
+#UserContent {
+    padding-left: 5px;
+    background-color: #00aff0;
+    color: #fff;
+    text-shadow: 1px 1px 2px #000;
+    margin-left: 2px;
+}
+
+#MessageArea {
+    min-height: 350px;
+    overflow: auto;
+}
+
+#TextArea {
+    min-height: 80px;
+    border-top: 1px solid #808080;
+    border-bottom: 1px solid #808080;
+}
+
+#ChatControlsArea {
+    text-align: center;
+    height: 40px;
+}
+
+#ChatControlsArea img {
+    margin-top: 5px;
+    margin-left: 5px;
+    height: 30px;
+    width: auto;
+}
+
+#ChatCall, #ChatVideo, #ChatClose {
+    width: 30px;
+    height: 30px;
+    border: none;
+    margin: 5px;
+}
+
+#ChatCall {
+    background: url(../Images/call.png) no-repeat;
+    background-size: 30px 30px;
+}
+
+#ChatVideo {
+    background: url(../Images/video.png) no-repeat;
+    background-size: 30px 30px;
+}
+
+#ChatClose {
+    background: url(../Images/end-chat.png) no-repeat;
+    background-size: 30px 30px;
+}
+
+#AVChatCall, #AVChatVideo, #AVChatClose {
+    width: 50px;
+    height: 50px;
+    border: none;
+    margin: 5px;
+}
+
+#AVChatCall {
+    background: url(../Images/call.png) no-repeat;
+    background-size: 50px 50px;
+}
+
+#AVChatVideo {
+    background: url(../Images/video.png) no-repeat;
+    background-size: 50px 50px;
+}
+
+#AVChatClose {
+    background: url(../Images/end-chat.png) no-repeat;
+    background-size: 50px 50px;
+}
+
+#AVWindow {
+    background: #000;
+}
+
+#AVWindowSelfView, #AVWindowContactView, #AnonAVWindowSelfView, #AnonAVWindowContactView {
+    width: 400px;
+    background-size: 400px auto;
+    background-repeat: no-repeat;
+    margin: 5px;
+}
+
+#AVWindowSelfView, #AnonAVWindowSelfView {
+    background-image: url(../Images/default.png);
+}
+
+#AVWindowContactView, #AnonAVWindowContactView {
+    background-image: url(../Images/default.png);
+}
+
+.avWindowDisplayName
+{
+    position:relative; 
+    top: 335px; 
+    left: 5px; 
+    color: #333;
+    font-size: .85em;
+}
+
+#SkypeForBusinessLogo {
+    height: 80px;
+    width: auto;
+    float: right;
+}
+
+#SkypeContent {
+    border-left: 1px solid #808080;
+    border-bottom: 1px solid #808080;
+    min-height: 800px;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+#UserPresence {
+    font-family: 'Segoe UI';
+    background-color: #00aff0;
+    color: white;
+    border-color: white;
+    border-radius: 3px;
+}
+
+/*Anonymoose chat stuff*/
+#ChatWindow {
+    
+}
+
+#AnonMessages {
+    width: 100%;
+    height: 70%;
+    background: #eee;
+    margin-bottom: 3px;
+    overflow: auto;
+}
+
+#AnonChatInput {
+    background: #ccc;
+    width:100%;
+    height: 20%;
+}
+
+#AnonChatEntry {
+    height: 80%;
+    width: 85%;
+    margin: 5px;
+}
+
+.sent, .received {
+    border-radius: 3px;
+    clear: both;
+    margin: 5px;
+    padding: 3px;
+}
+
+.sent {
+    background: #00aff0;
+    float: left;
+}
+
+.received {
+    background: #08cede;
+    float: right;
+}
+
+#AnonChatSend {
+    width: 80px;
+    height: 80px;
+    position: absolute;
+    right: 30px;
+    bottom: 70px;
+}
+
+#AnonChatCall, #AnonChatVideo, #AnonChatClose {
+    min-height: 40px;
+    min-width: 40px;
+    border: none;
+    margin: 5px;
+}
+
+#AnonChatCall {
+    background: url(../Images/call.png);
+    background-size: 40px 40px;
+}
+
+#AnonChatVideo {
+    background: url(../Images/video.png);
+    background-size: 40px 40px;
+}
+
+#AnonChatClose {
+    background: url(../Images/end-chat.png);
+    background-size: 40px 40px;
+}
+
+#AnonChatControlsArea {
+    text-align: center;
+}

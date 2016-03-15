@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <title></title>
+    <script src="../../Scripts/jquery-1.9.1.js" type="text/javascript"></script>
+    <script src="https://swx.cdn.skype.com/shared/v/latest/SkypeBootstrap.min.js"></script>
+    <link href="../../Content/Office.css" rel="stylesheet" type="text/css" />
+    <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js" type="text/javascript"></script>
+
+    <link href="../App.css" rel="stylesheet" type="text/css" />
+    <script src="../App.js" type="text/javascript"></script>
+
+    <link href="Content/Home.css" rel="stylesheet" type="text/css" />
+    <script src="Scripts/Config.js" type="text/javascript"></script>
+    <script src="Scripts/Login.js" type="text/javascript"></script>
+</head>
+<body>
+    <input type="hidden" id="accessToken" />
+    <div id="content-header">
+        <div class="padding signIn">
+            <h1>Hands on Lab</h1>
+        </div>
+    </div>
+    <div id="content-main">
+        <div class="padding signIn">
+            <p>
+                <button id="signinbtn-email">Sign into Skype</button>
+            </p>
+
+        </div>       
+    </div>
+    <div id="content-loading" style="display:none;">
+        <div id="loading" class="padding">
+            <p><span>Loading...</span></p>
+            <p><img src="Images/loading.gif" /></p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,64 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <title></title>
+    <script src="../../Scripts/jquery-1.9.1.js" type="text/javascript"></script>
+    <script src="https://swx.cdn.skype.com/shared/v/latest/SkypeBootstrap.min.js"></script>
+    <link href="../../Content/Office.css" rel="stylesheet" type="text/css" />
+    <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js" type="text/javascript"></script>
+
+    <link href="../App.css" rel="stylesheet" type="text/css" />
+    <script src="../App.js" type="text/javascript"></script>
+
+    <link href="Content/Home.css" rel="stylesheet" type="text/css" />
+    <script src="Scripts/Config.js" type="text/javascript"></script>
+    <script src="Scripts/Home.js" type="text/javascript"></script>
+</head>
+<body>
+    <input type="hidden" id="accessToken" />
+    <div id="content-header">
+        <div class="padding signIn">
+            <h1>Hands on Lab</h1>
+            <div class="logo">
+                <img src="Images/skype-logo.jpg" style="position:absolute; top:0; right:0; height:120px;" width="120px;" />
+            </div>
+        </div>
+        <div class="padding loggedIn" style="display:none;">
+            <img src="Images/skype-logo.jpg" style="position:absolute; top:0; right:0; height:60px;" width="60px;" />
+        </div>
+    </div>
+    <div id="content-main">
+        <div class="padding signIn">
+            <p>
+                <button id="signinbtn-email" class="skype-button">Sign into Skype</button>
+            </p>
+
+        </div>
+        <div class="padding loggedIn contact-info" style="display:none;">
+            <h4>Contact Info</h4>
+            <div id="contactInfo">
+                <p><img id="selectedPhoto" src="" style="height:30px;width:30px;" />&nbsp;<soan id="selectedName"></soan></p>
+                <p><label>Email:</label><span id="selectedEmail"></span></p>
+                <p><label>Presence:</label><img id="selectedPresenceIcon" style="height:10px;width:10px;" />&nbsp;<span id="selectedStatus"></span></p>
+                <input type="hidden" id="selectedSIP" />
+                <p class="anchor-p">
+                    <a id="selectedChat" href="#" class="chat-button" style="display:inline-block"></a>
+                </p>
+            </div>
+        </div>
+        <div class="padding" id="conversation" style="display:none;">
+            <div class="conversation-header">
+                <a id="selectedVideo" href="#" class="video-button" style="display:inline-block"></a>
+                <a id="selectedCall" href="#" class="call-button" style="display:inline-block"></a>
+                <a id="closeChat" href="#" class="end-chat-button" style="display:inline-block"></a>
+            </div>
+            <div id="conversations"></div>
+        </div>
+    </div>
+    <div id="content-loading" style="display:none;">
+       
+    </div>
+</body>
+</html>

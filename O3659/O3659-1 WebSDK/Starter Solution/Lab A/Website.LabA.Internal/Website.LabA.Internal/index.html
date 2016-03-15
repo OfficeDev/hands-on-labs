@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+<head>
+    <title>Skype Web SDK Samples Preview</title>
+    <link href="style/site.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="right-slider">
+        <div class="messenger">
+            <div class="modal"></div>
+        </div>
+    </div>
+    <a href="javascript:void(0);" class="slider-arrow show">&laquo;</a>
+
+    <div class="container">
+        <div class="navigation-panel">
+            <div class="tabs">
+                <div class="tab active" onclick="navigation.goTo('index'); navigation.setActiveTab(this);"><p>Home</p></div>
+                <div class="tab" onclick="navigation.goTo('page1'); navigation.setActiveTab(this);"><p>Page 1</p></div>
+                <div class="tab" onclick="navigation.goTo('page2'); navigation.setActiveTab(this);"><p>Page 2</p></div>
+            </div>
+        </div>
+        <div class="content"></div>
+    </div>
+
+    <script src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-1.10.2.min.js"></script>
+    <script src="config.js"></script>
+    <script src="scripts/site.js"></script>
+    <script src="index.js"></script>
+    <script src="scripts/messenger/messenger-controller.js"></script>
+</body>
+</html>

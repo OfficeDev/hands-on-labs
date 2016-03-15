@@ -1,0 +1,107 @@
+﻿//TODO Functions here
+function launchChat() {
+    $('#AnonChatWindow').dialog({
+        modal: true,
+        dialogClass: "no-close",
+        draggable: false,
+        resizable: false,
+        closeOnEscape: false,
+        height: 600,
+        width: 800
+    });
+    $('[aria-describedby="AnonChatWindow"]').css('margin-top', '10px');
+    $('[aria-describedby="AnonChatWindow"] > .ui-widget-header').css('display', 'none');
+    $('#AnonChatWindow').html($('#AnonMessageWindow').html());
+}
+
+function sendMessage() {
+    var messageArea = $('[aria-describedby="AnonChatWindow"] #AnonMessages');
+    var chatText = $('[aria-describedby="AnonChatWindow"] #AnonChatEntry').val();
+    if (chatText.trim() != '') {
+        messageArea.append('<p class="sent">' + chatText + '</p>');
+        messageArea.animate({ scrollTop: messageArea.prop("scrollHeight") - messageArea.height() }, 100);
+        $('[aria-describedby="AnonChatWindow"] #AnonChatEntry').val('');
+        $('[aria-describedby="AnonChatWindow"] #AnonChatEntry').focus();
+    }
+}
+
+function receiveMessage(input) {
+    //this is where we'll append the received message from the support user.
+    //TODO: Un-bind this from the send-button click. This is just for demoing.
+    var messageArea = $('[aria-describedby="AnonChatWindow"] #AnonMessages');
+    var chatText = $('[aria-describedby="AnonChatWindow"] #AnonChatEntry').val();
+    if (chatText.trim() != '') {
+        messageArea.append('<p class="received">' + chatText + '</p>');
+        messageArea.animate({ scrollTop: messageArea.prop("scrollHeight") - messageArea.height() }, 100);
+        $('[aria-describedby="AnonChatWindow"] #AnonChatEntry').val('');
+        $('[aria-describedby="AnonChatWindow"] #AnonChatEntry').focus();
+    }
+}
+var apiManager;
+var skypeClient;
+//OnReady:
+$(function () {
+
+    console.log('initialize skype');
+    Skype.initialize({
+        apiKey: config.apiKey
+    }, function (api) {
+        apiManager = api;
+        skypeClient = new api.application({
+            settings: {
+                supportsText: true,
+                supportsHtml: false,
+                supportsMessaging: true,
+                supportsAudio: true,
+                supportsVideo: true,
+                supportsSharing: false
+            }
+        });
+        skypeClient.signInManager.state.changed(function (state) {
+            console.log(state);
+        });
+        
+        var options = {
+            version: 'secondonlineapp/1.0.0',
+            name: 'Anon User',
+            meeting: 'sip:davidberg@danewman.onmicrosoft.com;gruu;opaque=app:conf:focus:id:3PPLN2N7',
+            client_id: '98267106-694b-4df2-8e06-fbbafd8a90e7',
+            //meeting: 'sip:David@danewman.onmicrosoft.com;gruu;opaque=app:conf:focus:id:MXO4S3SS',
+            //origins: ["https://webdir.online.lync.com/autodiscover/autodiscoverservice.svc/root"],
+            //xmscwt: false
+        };
+        console.log(options);
+        skypeClient.signInManager.signIn(options).then(function () {
+            console.log('signed in');
+        },
+        function (error) {
+            console.log(error);
+        });
+    });
+
+    launchChat();
+
+    //listener on chat send button
+    $('[aria-describedby="AnonChatWindow"]').on('click', '#AnonChatSend', function () {
+        receiveMessage();
+    });
+
+    //listener on enter key when text area is focused
+    $('[aria-describedby="AnonChatWindow"]').on('focus', '#AnonChatEntry', function () {
+        $(this).keypress(function (event) {
+            var keyCode = (event.keyCode ? event.keyCode : event.which);
+            if (keyCode == '13') {
+                sendMessage();
+                return false;
+            }
+            return;
+        });
+    });
+
+    //TODO: listeners for the chat controls
+    //Audio
+
+    //Video
+
+    //End Chat
+});

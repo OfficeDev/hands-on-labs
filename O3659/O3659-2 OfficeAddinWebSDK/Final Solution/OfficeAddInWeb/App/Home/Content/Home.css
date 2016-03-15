@@ -1,0 +1,52 @@
+﻿/* Page-specific styling */
+.anchor-p{
+    display:inline-block;
+}
+#content-loading{
+    background: #fff;
+    position: fixed;
+    top: 150px; /* Same value as #content-header's height */
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: auto; /* Enable scrollbars within main content section */
+    text-align: center;
+}
+.conversation-header{
+    text-align: center;
+}
+.call-button{
+    background: url(../Images/call.png) no-repeat center;
+    display:block;
+    height:40px;
+    width:40px;
+}
+.chat-button{
+    background: url(../Images/chat.png) no-repeat center;
+        display:block;
+    height:40px;
+    width:40px;
+}
+.video-button{
+    background: url(../Images/video.png) no-repeat center;
+        display:block;
+    height:40px;
+    width:40px;
+}
+.end-chat-button{
+    background: url(../Images/end-chat.png) no-repeat center;
+        display:block;
+    height:40px;
+    width:40px;
+}
+.skype-button{
+    background-color: #00AFF0; 
+    color: white;
+    font-family:'Segoe UI';
+}
+.skype-button:hover:enabled{
+    background-color: #00AFF0; 
+    color: white;
+     font-family:'Segoe UI';
+}
+

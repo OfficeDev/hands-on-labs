@@ -1,0 +1,481 @@
+﻿html, body
+{
+    height: 100%;
+    font-family: 'Segoe UI';
+}
+
+.container{
+  display: block;    
+  width: calc(100% - 10px);
+}
+
+.button{
+    cursor: pointer;
+    padding: 2pt 5pt;
+    display: inline-block;
+    height: 23px;
+    font-size: 16px;
+    background-color: rgb(16,158,222);
+    color: #ffffff;
+    margin-top: 2px;
+}
+
+.navigation-panel{
+    width: 100%;
+    height: 50px;
+    border-bottom: 5px solid #00bfff ;
+}
+
+.navigation-panel .tabs{
+    height: 100%;
+}
+
+.navigation-panel .tabs .tab{
+    float: left;
+    width: 100px;
+    height: 100%;
+    cursor: pointer;
+    border-top-left-radius: 1em;
+    border-top-right-radius: 1em;
+}
+
+.navigation-panel .tabs .tab:hover{
+    background-color: #d6f5ff;
+}
+
+.navigation-panel .tabs .tab p{
+    text-align: center;
+    margin-top: 10px;
+    font-weight: bold;
+    color: #00bfff;
+}
+
+.navigation-panel .tabs .active{
+    background-color: #00bfff ;
+    pointer-events: none;
+}
+
+.navigation-panel .tabs .active p{
+    color: white;
+}
+
+.modal {
+  display: none;
+  z-index: 1000;
+  height: 100%;
+  width: 100%;
+  background: rgba(255, 255, 255, .65) 50% 50% url('../images/loading.gif') no-repeat;
+}
+
+.right-slider {
+  width:400px;
+  height:100%;
+  background: #00bfff;
+  position:fixed;
+  right:-390px;
+
+}
+
+.slider-arrow {
+  padding: 5px;
+  width: 10px;
+  background: #00bfff;
+  font: 400 12px Arial, Helvetica, sans-serif;
+  color: #000;
+  text-decoration: none;
+  position: fixed;
+  right: 0px;
+}
+
+.messenger{
+  margin-left: 10px;
+  height: 100%;
+}
+
+.chat-header{
+  width: 100%;
+  height: 50px;
+  background: #00bfff;
+}
+
+.chat-header .tittle{
+  width: 100px;
+  float:  left;
+  margin-left: 60px;
+  margin-top: 10px;
+}
+
+.chat-header .skype-logo{
+  float: left;
+  width: 40px;
+  height: 40px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.chat-header .title{
+  padding-top: 10px;
+  padding-right: 40px;
+}
+
+.chat-header .title h1{
+  font-size: 10px;
+  color: white;
+  text-align: center;
+}
+
+.user-info{
+    padding-top:20px;
+    background-color: #e4eef2;
+    color: #333;
+}
+
+.user-info .user-avatar{
+  float: left;
+  margin-right: 5px;
+  border-radius: 24px;
+  width: 48px;
+  height: 48px;
+}
+
+.user-info .user-avatar img{
+  border-radius: 24px;
+  width: 48px;
+  height: 48px;
+}
+
+.user-info .user-name{
+  font-weight: strong;
+  font-size: 15px;
+}
+
+.user-status-dropdown {
+  cursor: pointer;
+  font-size: 12px;
+  padding: 5px;
+}
+
+.user-status-dropdown:hover {
+  background: #BBE2F2;
+}
+
+.user-info .user-location{
+  font-size: 12px;
+}
+
+.user-status-dropdown-panel {
+    position: absolute;
+    display: none;
+    background:  #BBE2F2;
+    min-width: 100px;
+    padding: 10px;
+    z-index: 10000;
+}
+
+.user-status-dropdown-panel span {
+    vertical-align: middle;
+    margin-left: 8px;
+    margin-top: 3px;
+    display: inline-block;
+}
+
+.user-status-dropdown-panel > div {
+    height: 23px;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.user-status-dropdown-panel > div:hover {
+    background: #12A5F4;
+}
+
+.user-avatar {
+    padding: 5px;
+}
+
+.user-presence {
+    width: 13px;
+    height: 13px;
+    border-radius: 14px;
+}
+
+.presence-Online{
+    background: #7FBA00;
+    border: 2px solid #7FBA00;
+}
+
+.presence-Unknown{
+    background: white;
+    border: 2px solid #aaa;
+}
+
+.presence-Offline{
+    background: white;
+    border: 2px solid #7FBA00;
+}
+
+.presence-IdleOnline{
+    background: white;
+    border: 2px solid #7FBA00;
+}
+
+.presence-Away{
+    background: #f8a103;
+    border: 2px solid #f8a103;
+}
+
+.presence-Busy{
+    background: #f2300d;
+    border: 2px solid #f2300d;
+}
+
+
+.user-presence-border {
+    background: white;
+    border: 3px solid white;
+    width: 17px;
+    height: 17px;
+    border-radius: 15px;
+    position: relative;
+    top: 38px;
+    left: 38px;
+}
+
+.chat-navigation {
+    background-color: #e4eef2;
+}
+
+.chat-content{
+  background-color: white;
+  height:calc(100% - 180px);
+}
+
+.chat-tab {
+    display: block;
+    float: left;
+    width: 175px;
+    text-align: center;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.chat-tab:hover {
+    background: #BBE2F2;
+}
+
+.chat-content h1{
+  font-weight: strong;
+  font-size: 16px;
+}
+
+.contact-list .contacts-title {
+    display: block;
+    padding: 10px;
+    text-align: center;
+    background: #e4eef2;
+    font-size: 15px;
+}
+
+.contact-list .contact{
+  width:100%;
+  height:50px;
+  background-color: white;
+}
+
+.contact-list .contact .contact-avatar{
+    float: left;
+    height: 100%;
+    width: 48px;
+    margin-right: 5px;
+    padding: 8px;
+    padding-top: 0px;
+}
+
+.contact-list .contact .contact-avatar img {
+  border-radius: 24px;
+  width: 48px;
+  height: 48px;
+}
+
+.contact-list .contact .contact-info{
+    display: block;
+    height: 50px;
+    padding: 8px;
+    cursor: pointer;
+}
+
+.contact-list .contact .contact-info:hover{
+  background-color: #BBE2F2;
+}
+
+.contact-list .contact .contact-info .contact-name{
+  font-weight: strong;
+  font-size: 15px;
+}
+
+.contact-list .contact .contact-info .contact-status{
+  font-size: 12px;
+}
+
+.contact-presence {    
+    width: 13px;
+    height: 13px;
+    border-radius: 14px;
+}
+
+.contact-presence-border {
+    background: white;
+    border: 3px solid white;
+    width: 17px;
+    height: 17px;
+    border-radius: 15px;
+    position: relative;
+    top: 34px;
+    left: 38px;
+}
+
+.chat-window{
+    width: 100%;
+    height: 100%;
+    background: white;
+}
+
+.clear {
+    clear: both;
+}
+
+.messanger {
+    height: 80%;
+}
+
+.chat-window .control{
+    float:left;
+    width:35px;
+    height:35px;
+    margin-left: 5px;
+
+}
+
+.chat-window .control a img{
+    width:35px;
+    height:35px;
+}
+
+.chat-window .control-wrapper{
+   width: 130px;
+   height: 35px;
+   margin-left:auto;
+   margin-right:auto;
+   padding-bottom: 10px;
+   padding-top:10px;
+}
+
+.chat-window .chat-area{
+    height:calc(100% - 60px);
+}
+
+/*CONTACT CARD*/
+
+.contact-card .header-info{
+    width: 100%;
+    height: 120px;
+}
+
+.contact-card .avatar-container{
+    float:left;
+    width: 140px;
+    height: 120px;
+    background-color: cadetblue;
+}
+
+.contact-card .avatar-container .avatar-status {
+    width: 16px;
+    height: 116px;
+    float: left;
+}
+
+.contact-card .avatar-container .avatar {
+    width: 120px;
+    height: 120px;
+    float: right;
+}
+
+.contact-card .general-container{
+    height: 120px;
+    float: left;
+    margin: 0px 0px 0px 20px;
+}
+
+.contact-card .general-container .full-name{
+    
+}
+
+.contact-card .general-container .full-name h1{
+    font-size: 20px;
+}
+
+.contact-card .general-container .presence{
+    
+}
+
+.contact-card .general-container .presence p{
+    font-size: 15px;
+}
+
+.reset-user-presence-location {
+    left: auto !important;
+    top: auto !important;
+    float: left;
+}
+
+.contact-card .contact-controls{
+    width: 190px;
+    height: 60px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.contact-card .contact-control{
+    width: 40px;
+    height: 50px;
+    float: left;
+    margin: 10px 10px;
+    cursor: pointer;
+}
+
+.contact-card .contact-control img{
+    width: 40px;
+    height: 40px;
+}
+
+.contact-card .phone-numbers{
+    width:100%;
+    padding-left: 5px;
+}
+
+.contact-card .phone-numbers h1{
+}
+
+.contact-card .phone-number{
+    margin-left: 10px;
+}
+
+.contact-card .phone-number p{
+    
+}
+
+.contact-card .emails{
+    width:100%;
+    padding-left: 5px;
+}
+
+.contact-card .emails h1{
+}
+
+.contact-card .email{
+    margin-left: 10px;
+}
+
+.contact-card .email p{
+    
+}
