@@ -503,9 +503,12 @@ function onSearchAndTempletize() {
 
 5. Test your work by pressing F5 to start a debug session and then click the **Step 1: Starting SOW** button. After the starting document gets inserted click on the  **Step 3: Search and Templetize!** button to try your code. Each "Contoso" instance should be wrapped with a content control and with a yellow highlight For visibility purposes we are also adding a red font color and yellow highlight to each search result instance. Your document should look like this after you click on Step 1 and Step 3 buttons:
 
+
 	![](Images/Fig13.png) 
 	
-Make sure to select any of the 'Contoso' search instances and verify they were tagged as 'customer'. To check this make sure that the Developer tab in Word's ribbon is activated. Go to File->Options->Customize Ribbon  and make sure in the right panel the 'Developer' is selected.
+
+
+9. Make sure to select any of the 'Contoso' search instances and verify they were tagged as 'customer'. To check this make sure that the Developer tab in Word's ribbon is activated. Go to File->Options->Customize Ribbon  and make sure in the right panel the 'Developer' is selected.
 Then, while having the cursor within any 'Contoso' instance, click on the developer tab and then on 'Properties'. you will see each content control has the 'customer' tag
 
 5. Congratulations! In this exercise you learned how to use the search API and how to insert and tagged content controls, as well as changing formatting attributes, lets continue with Excercise 5!
