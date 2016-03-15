@@ -3,8 +3,9 @@
 The purpose of this lab is to show step-by-step instruction for reading writing into an Excel document stored in your OneDrive Business using new Excel REST APIs. We'll use Visual Studio MVC project to showcase the interaction. 
 
 * [Lab instructions](#lab-instructions)
-    * [Create a new project](#1-create-a-new-project)
-    * [Use Excel REST API](#2-use-excel-rest-api)
+    * [Create a new project](#create-a-new-project)
+    * [Add ToDo.xlsx file to new Assets folder](#Add-ToDo.xlsx-file-to-new-Assets-folder)
+    * [Use Excel REST API](#use-excel-rest-api)
         * [Add new controllers](#add-new-controllers)
         * [Add model](#add-model)
         * [Update Shared folder](#update-shared-folder)
