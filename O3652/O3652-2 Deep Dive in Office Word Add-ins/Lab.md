@@ -284,11 +284,11 @@ In this lab, you will get hands-on experience developing a Word add-in by using 
 
 	![](Images/Fig08.png)
 
-30. You have now successfully run and tested the Add-in and its JavaScript logic using the Visual Studio debugger. Close Microsoft Word to stop the debugging session and return to Visual Studio.
+30. You have now successfully run and tested the add-in and its JavaScript logic using the Visual Studio debugger. Close Microsoft Word to stop the debugging session and return to Visual Studio.
 
 ## Exercise 2: Using OOXML to insert a starting Document
 
-*In this exercise you will continue working on the Visual Studio solution for the StatementOfWork add-in you created in the previous exercise. You will add additional JavaScript code to create a starting document using Office Open XML (OOXML).*
+*In this exercise, you will continue working on the Visual Studio solution for the StatementOfWork add-in you created in the previous exercise. You will add additional JavaScript code to create a starting document using Office Open XML (OOXML).*
  
 1. In Visual Studio, make sure you have the **StatementOfWork** project open.
 2. In the Solution Explorer, double click on **Home.js** to open this JavaScript file in an editor window. 
@@ -303,7 +303,7 @@ In this lab, you will get hands-on experience developing a Word add-in by using 
             return context.sync()
 
         }).then(function () {
-            // if evertything was succesful, we sent an ok...
+            // if everything was succesful, we sent an ok...
             app.showNotification("Task Complete!");
         })
           .catch(function (myError) {
@@ -397,12 +397,12 @@ function onaddContentStartingSOW() {
 	![](Images/Fig12.png)
 	
 
-7. You have now finished Exercise 2 and it is time to move on to exercise 3. Don't feel overhelmed with the OOXML file you inserted, if you want to master how to handle OOXML we recommend you to read [this](https://msdn.microsoft.com/en-us/library/office/dn423225.aspx) article.
+7. You have now finished Exercise 2 and it is time to move on to Exercise 3. Don't feel overhelmed with the OOXML file you inserted; if you want to master how to handle OOXML we recommend you to read [this](https://msdn.microsoft.com/en-us/library/office/dn423225.aspx) article.
 
 ## Exercise 3: Learning how to handle inline Pictures in Word by replacing an existing image in the document.
-*In this exercise you will continue working on the Visual Studio solution for the StatementOfWork add-in you created on in the previous exercise. You will extend the add-in's capabilities by adding JavaScript code to replace an image in the  active Word document by using the inlinePicture object members. This excercise is cummulative and assumes you completed  Excercise 2.*
+*In this exercise you will continue working on the Visual Studio solution for the StatementOfWork add-in you created on in the previous exercise. You will extend the add-in's capabilities by adding JavaScript code to replace an image in the  active Word document by using the inlinePicture object members. This exercise is cummulative and assumes you completed Exercise 2.*
 
-1. Please note how the inserted SOW has a badly formatted picture **highlighted in red below**. This is intentional and you will fix this image on this excercise.
+1. Please note how the inserted SOW has a badly formatted picture **highlighted in red below**. This is intentional and you will fix this image in this exercise.
 
 	![](Images/Fig11.png)
 
@@ -410,7 +410,7 @@ function onaddContentStartingSOW() {
 
 2. Go back to Visual Studio, make sure you are using the StatementOfWord project.
 
-3. In the solution Explorer, double click on **Home.js** to open this JavaScript file.
+3. In the Solution Explorer, double-click on **Home.js** to open this JavaScript file.
 4. Add the following code to the **onFixPicture** function:
 
 	````javascript
@@ -447,28 +447,28 @@ function onaddContentStartingSOW() {
 	````
 	
 
-4. Note that the code is checking the if the host (Word) actually supports the 1.2 requirements set, this is important to check because in order to replave an image the  **inlinePicture.insertInlinePictureFromBase64** method is needed and this was shipped as part of the 1.2 requirement set. Note that by traversing the **inlinePictures collection**, we get the first image and then we are replacing it with the correct one.
+4. Note that the code is checking if the host (Word) actually supports the 1.2 requirements set. This is important to check because in order to replace an image, the  **inlinePicture.insertInlinePictureFromBase64** method is needed and this was shipped as part of the 1.2 requirement set. Note that by traversing the **inlinePictures collection**, we get the first image and then we are replacing it with the correct one.
 5. Test your work by pressing F5 to start a debug session and then click the **Step 1: Starting SOW** button. After the document gets inserted click on the  **Step 2: Fix Picture!** button to try your code. The image should be replaced and the document should look like this:
 
 	![](Images/Fig10.png) 
 
 
-5. Congratulations! In this exercise you learned how to navigate through the inline pictures on a document and learned how to replace images!, lets continue with Excercise 4!
+5. Congratulations! In this exercise, you learned how to navigate through the inline pictures on a document and learned how to replace images! Let's continue with Exercise 4!
 
 ## Exercise 4: Using Search and inserting Content Controls
-*In this exercise you will continue working on the Visual Studio solution for the StatementOfWork add-in you created on in the previous steps. You will extend the add-in's capabilities by adding JavaScript code to search for content in the document and add content controls. Content controls are a key building block in Word development and enables developers to insert 'placeholders' in the document that can be later identified and replaced with different content. This excercise is cummulative and assumes you completed  Excercise 2.*
+*In this exercise, you will continue working on the Visual Studio solution for the StatementOfWork add-in you created on in the previous steps. You will extend the add-in's capabilities by adding JavaScript code to search for content in the document and add content controls. Content controls are a key building block in Word development and enables developers to insert 'placeholders' in the document that can be later identified and replaced with different content. This exercise is cummulative and assumes you completed  Exercise 2.*
 
-1. A common scenario in Word development is reusing documents to create new ones. A "Statement of Work" (SOW) is a very good example of this. By replacing a few fields an existing SOW may be a completely new SOW instance. To illustrate that point, we will implement a simple example on how a template can be created. 
+1. A common scenario in Word development is reusing documents to create new ones. A "Statement of Work" (SOW) is a very good example of this. By replacing a few fields, an existing SOW may be a completely new SOW instance. To illustrate that point, we will implement a simple example on how a template can be created. 
 
 2. Go back to Visual Studio, make sure you are using the StatementOfWord project.
 
-3. In the solution Explorer, double click on **Home.js** to open this JavaScript file.
+3. In the Solution Explorer, double-click on **Home.js** to open this JavaScript file.
 4. Add the following code to the **onSearchAndTempletize** function:
 
 	````javascript
 function onSearchAndTempletize() {
-        // on this method i actually want to create kind of a template. will start by searching "Contoso". then i will wrap each instance with a content control
-        // i will also change the format of each search instance...
+        // on this method I actually want to create kind of a template. Will start by searching "Contoso". Then I will wrap each instance with a content control
+        // I will also change the format of each search instance...
 
         Word.run(function (ctx) {
             var results = ctx.document.body.search("Contoso");
@@ -476,13 +476,13 @@ function onSearchAndTempletize() {
             // we need to sync to get the search results/
             return ctx.sync()
             .then(function () {
-                //once we have the results we navigate thorugh each occurence an change a few thinks, as well as wrapping with a content control.
+                //once we have the results we navigate through each occurrence and change a few things, as well as wrapping with a content control.
                 for (var i = 0; i < results.items.length; i++) {
                     results.items[i].font.color = "#FF0000"    // Change color to Red
                     results.items[i].font.highlightColor = "#FFFF00";
                     results.items[i].font.bold = true;
                     var cc = results.items[i].insertContentControl();
-                    cc.tag = "customer";  // this is an important piece of code, later on the excercise i will retrieve all the content controls with this tag and replace the content.
+                    cc.tag = "customer";  // this is an important piece of code, later on the exercise I will retrieve all the content controls with this tag and replace the content.
                     cc.title = "Customer Name";
                 }
                 return ctx.sync()  // OK ready! lets send it to the host for processing :)
@@ -500,37 +500,37 @@ function onSearchAndTempletize() {
 	````
 	
 
-4. Note that the code is searching for "Contoso", the search method returns a collection of ranges matching the search criteria, the code iterates through that collection and wraps each instance with a content control. Note that you are adding each content control a tag with a "customer" title, this is important as we will use this information in the next excercise to replace the content of all the content controls with this tag with a new customer. .  
+4. Note that the code is searching for "Contoso", the search method returns a collection of ranges matching the search criteria, the code iterates through that collection and wraps each instance with a content control. Note that you are adding each content control a tag with a "customer" title, this is important as we will use this information in the next exercise to replace the content of all the content controls with this tag with a new customer.  
 
-5. Test your work by pressing F5 to start a debug session and then click the **Step 1: Starting SOW** button. After the starting document gets inserted click on the  **Step 3: Search and Templetize!** button to try your code. Each "Contoso" instance should be wrapped with a content control and with a yellow highlight For visibility purposes we are also adding a red font color and yellow highlight to each search result instance. Your document should look like this after you click on Step 1 and Step 3 buttons:
+5. Test your work by pressing F5 to start a debug session and then click the **Step 1: Starting SOW** button. After the starting document gets inserted, click on the  **Step 3: Search and Templetize!** button to try your code. Each "Contoso" instance should be wrapped with a content control and with a yellow highlight. For visibility purposes we are also adding a red font color and yellow highlight to each search result instance. Your document should look like this after you click on the Step 1 and Step 3 buttons:
 
 
 	![](Images/Fig13.png) 
 	
 
 
-9. Make sure to select any of the 'Contoso' search instances and verify they were tagged as 'customer'. To check this make sure that the Developer tab in Word's ribbon is activated. Go to File->Options->Customize Ribbon  and make sure in the right panel the 'Developer' is selected.
+9. Make sure to select any of the 'Contoso' search instances and verify they were tagged as 'customer'. To check this make sure that the Developer tab in the Word ribbon is activated. Go to File->Options->Customize Ribbon  and make sure in the right panel that 'Developer' is selected.
 
 	![](Images/Fig14.png) 
 
 
-10. Then, while having the cursor within any 'Contoso' instance, click on the developer tab and then on 'Properties'. you will see each content control has the 'customer' tag
+10. Then, while having the cursor within any 'Contoso' instance, click on the Developer tab and then on 'Properties'. You will see each content control has the 'customer' tag.
 
 	![](Images/Fig15.png) 
 
 
-5. Congratulations! In this exercise you learned how to use the search API and how to insert and tagged content controls, as well as changing formatting attributes, lets continue with Excercise 5!
+5. Congratulations! In this exercise you learned how to use the search API and how to insert and tagged content controls, as well as changing formatting attributes. Let's continue with Exercise 5!
 
 
 
 ## Exercise 5: Changing content of tagged Content Controls!
-*In this exercise you will continue working on the Visual Studio solution for the StatementOfWork add-in you created on in the previous steps. You will extend the add-in's capabilities by adding JavaScript code to replace content in tagged content controls. Content controls are a key building block in Word development and enables developers to insert 'placeholders' in the document that can be later identified and replaced with different content. This excercise is cummulative and assumes you completed  Excercises 2 and 4.*
+*In this exercise, you will continue working on the Visual Studio solution for the StatementOfWork add-in you created in the previous steps. You will extend the add-in's capabilities by adding JavaScript code to replace content in tagged content controls. Content controls are a key building block in Word development and enable developers to insert 'placeholders' in the document that can be later identified and replaced with different content. This exercise is cummulative and assumes you completed  Exercises 2 and 4.*
 
-1. A common scenario in Word development is reusing documents to create new ones. A "Statement of Work" (SOW) is a very good example of this. By replacing a few fields an existing SOW may be a completely new SOW instance. To illustrate that point, now that we created a template in the previous excercise, we will now change all content controls tagged as 'customer' with 'Fabrikam'. Note that this can very well come from data stored in an external system, like a CRM, ERP, etc. The idea is to generate a new instance of a document with a new customer. 
+1. A common scenario in Word development is reusing documents to create new ones. A "Statement of Work" (SOW) is a very good example of this. By replacing a few fields an existing SOW may be a completely new SOW instance. To illustrate that point, now that we created a template in the previous exercise, we will now change all content controls tagged as 'customer' with 'Fabrikam'. Note that this can very well come from data stored in an external system, like a CRM, ERP, etc. The idea is to generate a new instance of a document with a new customer. 
 
 2. Go back to Visual Studio, make sure you are using the StatementOfWord project.
 
-3. In the solution Explorer, double click on **Home.js** to open this JavaScript file.
+3. In the Solution Explorer, double click on **Home.js** to open this JavaScript file.
 4. Add the following code to the **onaddChangeCustomer** function:
 
 	````javascript
@@ -557,22 +557,22 @@ Word.run(function (ctx) {
 
 4. Note that the code is first getting all the content controls tagged as 'customer', then iterates each of the ocurrences and changes the content and the formatting information.
 
-5. Test your work by pressing F5 to start a debug session and then click the **Step 1: Starting SOW** button. After the document gets inserted click on the  **Step 3: Search and Templetize!** to create a template. Now try your code by clicking on **Step 4: Replace Customer!** Each "Contoso" instance should be replaced with 'Fabrikam' and look like the following image:
+5. Test your work by pressing F5 to start a debug session and then click the **Step 1: Starting SOW** button. After the document gets inserted, click on the  **Step 3: Search and Templetize!** to create a template. Now try your code by clicking on **Step 4: Replace Customer!** Each "Contoso" instance should be replaced with 'Fabrikam' and look like the following image:
 
 	![](Images/Fig16.png) 
 	
 
-5. Congratulations! In this exercise you learned how to get content controls by its tag and replace their content!, lets continue with Excercise 6!
+5. Congratulations! In this exercise you learned how to get content controls by its tag and replace their content! Let's continue with Exercise 6!
 
 
 ## Exercise 6: Reusing content by inserting other Word documents!
-*In this exercise you will continue working on the Visual Studio solution for the StatementOfWork add-in you created on in the previous steps. You will extend the add-in's capabilities by adding JavaScript code to insert and existing Word (docx) file at the end of the current document. This excercise is cummulative and assumes you completed  Excercise 2.*
+*In this exercise, you will continue working on the Visual Studio solution for the StatementOfWork add-in you created in the previous steps. You will extend the add-in's capabilities by adding JavaScript code to insert an existing Word (docx) file at the end of the current document. This exercise is cummulative and assumes you completed  Exercise 2.*
 
-1. A common scenario in Word development is reusing documents by  inserting them into new ones. On this excercise we will add an existing Word File into a content control with a commonly used a table of costs for the statement of work (reusing content from other documents). 
+1. A common scenario in Word development is reusing documents by  inserting them into new ones. In this exercise, we will add an existing Word File into a content control with a commonly used table of costs for the statement of work (reusing content from other documents). 
 
 2. Go back to Visual Studio, make sure you are using the StatementOfWord project.
 
-3. In the solution Explorer, double click on **Home.js** to open this JavaScript file.
+3. In the Solution Explorer, double click on **Home.js** to open this JavaScript file.
 4. Add the following code to the **onaaddReuseContent** function:
 
 	````javascript
@@ -592,7 +592,7 @@ Word.run(function (ctx) {
              })
         }
         else {
-            //if you reach this code it means that the Word executing this code does not yet support the 1.2 requirement set. in this case you can also insert a paragraph and then insert the document on the paragraph.
+            //if you reach this code it means that the Word executing this code does not yet support the 1.2 requirement set. In this case you can also insert a paragraph and then insert the document on the paragraph.
 
             app.showNotification("Error. This functionality requires Word with at least January update!! (check  builds 6568+)");
 
@@ -602,14 +602,14 @@ Word.run(function (ctx) {
 	````
 	
 
-4. Note that the code is getting a sample docx file encoded as base64 (which is the format the insertFile method expects), then iterates each of the ocurrences and changes the content and the formatting information. Note that in the interest of time, the code is calling a method inserted on Excercise 2: **getDocumentAsBase64**  to simulate creating a base64 encoded based on an existing docx file.
+4. Note that the code is getting a sample docx file encoded as base64 (which is the format the insertFile method expects), then iterates each of the ocurrences and changes the content and the formatting information. Note that in the interest of time, the code is calling a method inserted on Exercise 2: **getDocumentAsBase64**  to simulate creating a base64 encoded based on an existing docx file.
 
-5. Test your work by pressing F5 to start a debug session and then click the **Step 1: Starting SOW** button. After the document gets inserted try your code by clicking  on the  **Step 5: Reuse Content!** insert the file at the end of the document. Now try your code by clicking on **Step 4: Replace Customer!** Each "Contoso" instance should be replaced with 'Fabrikam' and look like the following image:
+5. Test your work by pressing F5 to start a debug session and then click the **Step 1: Starting SOW** button. After the document gets inserted, try your code by clicking  on the  **Step 5: Reuse Content!** to insert the file at the end of the document. Now try your code by clicking on **Step 4: Replace Customer!**. Each "Contoso" instance should be replaced with 'Fabrikam' and look like the following image:
 
 	![](Images/Fig17.png) 
 	
 
-5. Congratulations! In this exercise you learned how to insert existing Word (docx) files into a document!, lets continue with Excercise 8!
+5. Congratulations! In this exercise, you learned how to insert existing Word (docx) files into a document! Let's continue with Exercise 8!
 
 
 # From now on, this lab is using the PREVIEW APIs for the Word JavaScript API 1.3 requirement set.
