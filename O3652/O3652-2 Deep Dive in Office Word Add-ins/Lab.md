@@ -509,7 +509,11 @@ function onSearchAndTempletize() {
 
 
 9. Make sure to select any of the 'Contoso' search instances and verify they were tagged as 'customer'. To check this make sure that the Developer tab in Word's ribbon is activated. Go to File->Options->Customize Ribbon  and make sure in the right panel the 'Developer' is selected.
-Then, while having the cursor within any 'Contoso' instance, click on the developer tab and then on 'Properties'. you will see each content control has the 'customer' tag
+
+	![](Images/Fig13.png) 
+
+
+10. Then, while having the cursor within any 'Contoso' instance, click on the developer tab and then on 'Properties'. you will see each content control has the 'customer' tag
 
 5. Congratulations! In this exercise you learned how to use the search API and how to insert and tagged content controls, as well as changing formatting attributes, lets continue with Excercise 5!
 
