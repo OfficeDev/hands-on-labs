@@ -33,7 +33,7 @@ In this lab you will get hands-on experience developing an Excel add-in with Sky
 7.  On the top navigation, click the **Insert** tab and select **My Add-ins**.
 8.  In the **Developer Add-in** section, click on your application name.
 
-	![image](Screenshots/Add-in.PNG)
+	![image](Screenshots/Add-in.png)
 
 9.  The add in should now appear in the right task pane.  Click close and save your excel file.
 6.  Navigate to [https://msdn.microsoft.com/en-us/office/office365/howto/add-common-consent-manually] in order to create your application in Azure and attain your **Client ID**.  Note this ID as it will be used later in the lab.
@@ -473,7 +473,7 @@ In order for other users in your organization to take advantage of the add-in yo
 1. Right click on the **ExcelAddIn** App for Office project and select Publish.
 2. In the **Current Profile** drop down, select **New**.
 
-	![image](Screenshots/publish_setup.PNG)
+	![image](Screenshots/publish_setup.png)
 
 3. Select **Import publishing profile** and browse to the downloaded Azure Publish Profile from the pre-requisites.  Click Finish.
 
