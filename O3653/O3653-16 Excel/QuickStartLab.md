@@ -9,6 +9,7 @@ The purpose of this lab is to show step-by-step instruction for reading writing 
         * [Add model](#add-model)
         * [Update Shared folder](#update-shared-folder)
         * [Create Helpers](#create-helpers)                            
+    * [Run project](#run-project)
 * [Overview of Excel API](#overview-of-excel-api)
 
 ## Lab instructions 
@@ -1070,6 +1071,34 @@ namespace Microsoft_Graph_ExcelRest_ToDo
 * `GetToDoItems` retrieves all the tasks entered in the tasks table. 
 * `CreateToDoItem` creates a new task entered in the user interface.   
 * `getChartImage` downloads the chart with analysis data.
+
+### Run project
+
+Once above updates are made, run the project (F5 or Press Run Project button). Preferably use private browser mode to experience the full application flow. 
+
+The application launches on your local host and shows the starter page. 
+![](images/app1.JPG)
+
+Proceed to sign-in and authorize the app. Once authorized, the application shows the greeting page with menu options. Click on the `ToDoList` link from the top menu bar.    
+![](images/app2.JPG)
+
+The app uploads `ToDoList.xlsx` and displays task listing page. Since there are no tasks added yet, you will see blank listing.  
+![](images/app3.JPG)
+
+Click on the `Add new` link to create a new task. Add few tasks with various stages of status. 
+![](images/app4.JPG)
+
+After adding each task, the app shows the updated task listing. If the newly added task is not updated, click the `Refresh` link after few moments. 
+
+A sample list tasks are shown below.  
+![](images/app5.JPG)
+
+Click on the `Charts' link to see the breakdown of tasks using a pie chart created and downloaded (as image) using the Excel API. 
+![](images/app6a.JPG)
+
+![](images/app6.JPG)
+
+As a last step, you can login to the OneDrive Business account and open the `ToDoList.xlsx` in the browser to see the updates made by the app. ** Do not open the file using the Excel desktop application as it will result in edit conflict for future updates made using the app **. 
 
 
 ## Overview of Excel API
