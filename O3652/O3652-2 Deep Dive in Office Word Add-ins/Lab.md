@@ -231,7 +231,7 @@ In this lab, you will get hands-on experience developing a Word add-in by using 
     }
 	````
 
-26. Finally, add a line of jQuery code into the Add-in initialization logic to bind the click event of the **addContentHellowWorld** button to the **onaddContentHellowWorld** function.
+26. Finally, add a line of jQuery code into the add-in initialization logic to bind the click event of the **addContentHellowWorld** button to the **onaddContentHellowWorld** function.
 
 	````javascript
 	Office.initialize = function (reason) {
@@ -280,14 +280,15 @@ In this lab, you will get hands-on experience developing a Word add-in by using 
 	````
 
 28. Save your changes to **Home.js**.
-29. Now test the functionality of the Add-in. Press the **{F5}** key to begin a debugging session and click the **Hello World** button. You should see that "Hello World" has been added into the cursor position of the Word document.
+29. Now test the functionality of the add-in. Press the **{F5}** key to begin a debugging session and click the **Hello World** button. You should see that "Hello World" has been added into the cursor position of the Word document.
 
 	![](Images/Fig08.png)
 
 30. You have now successfully run and tested the Add-in and its JavaScript logic using the Visual Studio debugger. Close Microsoft Word to stop the debugging session and return to Visual Studio.
 
-## Exercise 2: Using OOXML to insert a starting Document.
-*In this exercise you will continue working on the Visual Studio solution for the StatementOfWork Add-in you created in the previous exercise. You will add additional JavaScript code to create a starting document using Office Open XML (OOXML). *
+## Exercise 2: Using OOXML to insert a starting Document
+
+*In this exercise you will continue working on the Visual Studio solution for the StatementOfWork add-in you created in the previous exercise. You will add additional JavaScript code to create a starting document using Office Open XML (OOXML).*
  
 1. In Visual Studio, make sure you have the **StatementOfWork** project open.
 2. In the Solution Explorer, double click on **Home.js** to open this JavaScript file in an editor window. 
@@ -396,10 +397,10 @@ function onaddContentStartingSOW() {
 	![](Images/Fig12.png)
 	
 
-7. You have now finished exercise 2 and it is time to move on to exercise 3. Don't feel overhelmed with the OOXML file you inserted, if you want to master how to handle OOXML we recommend you to read [this](https://msdn.microsoft.com/en-us/library/office/dn423225.aspx) article.
+7. You have now finished Exercise 2 and it is time to move on to exercise 3. Don't feel overhelmed with the OOXML file you inserted, if you want to master how to handle OOXML we recommend you to read [this](https://msdn.microsoft.com/en-us/library/office/dn423225.aspx) article.
 
 ## Exercise 3: Learning how to handle inline Pictures in Word by replacing an existing image in the document.
-*In this exercise you will continue working on the Visual Studio solution for the StatementOfWork Add-in you created on in the previous exercise. You will extend the Add-in's capabilities by adding JavaScript code to replace an image in the  active Word document by using the inlinePicture object members. This excercise is cummulative and assumes you completed  Excercise 2.*
+*In this exercise you will continue working on the Visual Studio solution for the StatementOfWork add-in you created on in the previous exercise. You will extend the add-in's capabilities by adding JavaScript code to replace an image in the  active Word document by using the inlinePicture object members. This excercise is cummulative and assumes you completed  Excercise 2.*
 
 1. Please note how the inserted SOW has a badly formatted picture **highlighted in red below**. This is intentional and you will fix this image on this excercise.
 
@@ -455,7 +456,7 @@ function onaddContentStartingSOW() {
 5. Congratulations! In this exercise you learned how to navigate through the inline pictures on a document and learned how to replace images!, lets continue with Excercise 4!
 
 ## Exercise 4: Using Search and inserting Content Controls
-*In this exercise you will continue working on the Visual Studio solution for the StatementOfWork Add-in you created on in the previous steps. You will extend the Add-in's capabilities by adding JavaScript code to search for content in the document and add content controls. Content controls are a key building block in Word development and enables developers to insert 'placeholders' in the document that can be later identified and replaced with different content. This excercise is cummulative and assumes you completed  Excercise 2.*
+*In this exercise you will continue working on the Visual Studio solution for the StatementOfWork add-in you created on in the previous steps. You will extend the add-in's capabilities by adding JavaScript code to search for content in the document and add content controls. Content controls are a key building block in Word development and enables developers to insert 'placeholders' in the document that can be later identified and replaced with different content. This excercise is cummulative and assumes you completed  Excercise 2.*
 
 1. A common scenario in Word development is reusing documents to create new ones. A "Statement of Work" (SOW) is a very good example of this. By replacing a few fields an existing SOW may be a completely new SOW instance. To illustrate that point, we will implement a simple example on how a template can be created. 
 
@@ -523,7 +524,7 @@ function onSearchAndTempletize() {
 
 
 ## Exercise 5: Changing content of tagged Content Controls!
-*In this exercise you will continue working on the Visual Studio solution for the StatementOfWork Add-in you created on in the previous steps. You will extend the Add-in's capabilities by adding JavaScript code to replace content in tagged content controls. Content controls are a key building block in Word development and enables developers to insert 'placeholders' in the document that can be later identified and replaced with different content. This excercise is cummulative and assumes you completed  Excercises 2 and 4.*
+*In this exercise you will continue working on the Visual Studio solution for the StatementOfWork add-in you created on in the previous steps. You will extend the add-in's capabilities by adding JavaScript code to replace content in tagged content controls. Content controls are a key building block in Word development and enables developers to insert 'placeholders' in the document that can be later identified and replaced with different content. This excercise is cummulative and assumes you completed  Excercises 2 and 4.*
 
 1. A common scenario in Word development is reusing documents to create new ones. A "Statement of Work" (SOW) is a very good example of this. By replacing a few fields an existing SOW may be a completely new SOW instance. To illustrate that point, now that we created a template in the previous excercise, we will now change all content controls tagged as 'customer' with 'Fabrikam'. Note that this can very well come from data stored in an external system, like a CRM, ERP, etc. The idea is to generate a new instance of a document with a new customer. 
 
@@ -565,7 +566,7 @@ Word.run(function (ctx) {
 
 
 ## Exercise 6: Reusing content by inserting other Word documents!
-*In this exercise you will continue working on the Visual Studio solution for the StatementOfWork Add-in you created on in the previous steps. You will extend the Add-in's capabilities by adding JavaScript code to insert and existing Word (docx) file at the end of the current document. This excercise is cummulative and assumes you completed  Excercise 2.*
+*In this exercise you will continue working on the Visual Studio solution for the StatementOfWork add-in you created on in the previous steps. You will extend the add-in's capabilities by adding JavaScript code to insert and existing Word (docx) file at the end of the current document. This excercise is cummulative and assumes you completed  Excercise 2.*
 
 1. A common scenario in Word development is reusing documents by  inserting them into new ones. On this excercise we will add an existing Word File into a content control with a commonly used a table of costs for the statement of work (reusing content from other documents). 
 
