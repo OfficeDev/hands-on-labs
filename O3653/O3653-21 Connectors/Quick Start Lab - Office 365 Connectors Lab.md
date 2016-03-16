@@ -1,8 +1,7 @@
 # Learn how to build Office 365 Connectors using Webhooks
 Office 365 Connectors are a great way to get useful information and content into your Office 365 Group. Any user can connect their group to services like Trello, Bing News, Twitter, etc., and get notified of the group's activity in that service. From tracking a team's progress in Trello, to following important hashtags in Twitter, Office 365 Connectors make it easier for an Office 365 group to stay in sync and get more done. Developers can build connectors through incoming webhooks to generate rich connector cards.   Connector cards can be short text-based messages, or use "sections" to display rich or specially-formatted information. Outlook takes care of all the UX for you and renders the message automatically. When more content is added to the payload, the card scales gracefully. 
 
-In this lab, you will use tools like Postman (or Fiddler) to post messages to Office 365 Groups using incoming webhooks. 
-To illustrate using a real world scenario, you will also build an application that receives Github notifications from your favorite repos and post them as connector messages to your Office 365 group. 
+In this lab, you will learn how to post messages to Office 365 Groups using incoming webhooks.  To illustrate using a real world scenario, you will also build an application that receives Github notifications from your favorite repos and post them as connector messages to your Office 365 group. 
 
 
 **Pre-requisites**
@@ -10,7 +9,7 @@ To illustrate using a real world scenario, you will also build an application th
 
  1. You must have an Office 365 tenant and Microsoft Azure subscription to complete this lab. If you do not have one, the lab for O3651-7 Setting up your Developer environment in Office 365 shows you how to obtain a trial.
  
- 2. For Exercise 1, use tools like Fiddler, Postman or curl to post a JSON payload to the group's webhook URL. This exercise will use Postman to post JSON message. You may also use the Connector playground sandbox  to complete this exercise
+ 2. For Exercise 1, use tools like Fiddler, Postman or curl to post a JSON payload to the group's webhook URL. This exercise will use www.Hurl.it to post JSON message. You may also use the Connector playground sandbox  to complete this exercise
  
  3. For Exercise 2, you must have Visual Studio 2015 with Update 1 installed. 
 
@@ -38,15 +37,24 @@ If you don’t have an Office 365 Group, this is how you create one
 	
 3. Copy the generated URL and save it someplace as you will need it later.  Select Done to create the incoming webhook.
 	
-4. Launch the Postman application, copy and paste the incoming webhook URL (from the previous step) into the POST text field. Select body (raw) and application/json for payload
-	
-5. Copy and paste the sample payload below into the body of Postman and select the Send button
- 
-6. Review the connector card message in the Group inbox that was sent using the incoming webhook 
+4. Open a new browser tab and navigate to https://www.hurl.it, which is an in-browser web request composer similar to what Fiddler offers.
 
-7. Optional: change the JSON card format to further customize the layout, buttons & colors.  For e.g. under potential actions, rename the button or change the target URL
+5. When the page loads, add the following details:
 
-8. To learn more about the connector card format, visit https://dev.outlook.com/Connectors/GetStarted
+	Operation: POST
+	Destination Address: webhook URL from Step 3
+	Headers: Content-Type: application/json
+	Body: { "text": "<PASTE THE SAMPLE JSON PAYLOAD HERE" }
+
+	Copy and paste the sample JSON payload (see below these instructions) 
+
+7. Accept the Captcha and click the Launch Request button. 
+
+8. Go back to your Office 365 Group. Review the connector card message in the Group inbox that was sent using the incoming webhook 
+
+9. Optional: change the JSON card format to further customize the layout, buttons & colors.  For e.g. under potential actions, rename the button or change the target URL
+
+10. To learn more about the connector card format, visit https://dev.outlook.com/Connectors/GetStarted
 	
 	
 Sample Connector Card Message JSON Payload
