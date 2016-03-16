@@ -146,7 +146,7 @@ SDK and work with Office 365 and Outlook Calendar
 
 ### Work with EventList
 
-1. Add the following code to the `CalenderController` class to get all events in your mailbox.
+1. **Replace** the existing `Index()` method with the following code code in the `CalenderController` class to get all events in your mailbox.
 
   ```csharp
   // GET: /Calendar?pageSize=<size>&nextLink=<link>
