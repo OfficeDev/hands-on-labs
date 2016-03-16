@@ -9,11 +9,6 @@ Business, and Office Groups, by accessing the **drive** property of a user or
 group entity. You can navigate the hierarchy of a drive by path or by enumerating
 the contents of folders and files.
 
-## Prerequisites
-* Visual Studio 2015 with Update 1 installed.
-* **Graph AAD Auth v2 Starter Project** template installed.
-* An account in an Office 365 tenant.
-
 ## Exercise 1: Create a new project using Azure Active Directory v2 authentication
 
 In this first step, you will create a new ASP.NET MVC project using the
@@ -233,7 +228,7 @@ to an MVC view that will display the contents of the OneDrive folder selected.
       **Add** then **New Folder**.
    2. Name the folder **Files**.
    3. Right-click the new folder **Files** and select **Add** > **New Item**.
-   4. Select **MVC View Page**, change the file name **Index.cshtml**, and click **Add**.
+   4. Select **MVC 5 View Page (Razor)**, change the file name **Index.cshtml**, and click **Add**.
 
 4. **Replace** all of the code in the **Files/Index.cshtml** with the following:
 
