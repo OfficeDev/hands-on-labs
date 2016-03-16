@@ -1,13 +1,7 @@
 #Skype for Business Online Web SDK
 
-Note to internal bug bash participants:  The Skype for Business Online APIs currently have a private Allowed List of ClientIDs and tenants (will be removed some time next week before //build).  That just means you will need to use a specific tenant and ClientID to test out this lab.  Please use the following:
-
-Tenant: danewman.onmicrosoft.com
-ClientID for app: 98267106-694b-4df2-8e06-fbbafd8a90e7
-Log in to webpage with user: david@danewman.onmicrosoft.com 07Apples
-Log in to Skype for Business Client with user auburys@danewman.onmicrosoft.com 07Apples
-
 In this lab you will get hands-on experience developing a website with Skype for Business integration.  The sample website will allow an Office 365 user to perform the following from within their website:
+
 1.  Sign into Skype for Business.
 2.  View own presence and set status.
 3.  View contact list and other user presence.
@@ -16,11 +10,10 @@ In this lab you will get hands-on experience developing a website with Skype for
 6.  Escalate conversation to Audio/Video.
 
 >**Prerequisites:** Before beginning the lab, the following items will be needed:
+>
 >1.  Visual Studio 2013 and above.
 >2.  At least (2) Office 365 user credentials.
 >3.  Each user has the other user added to his or her contacts.
->4.  A web application created in Azure to host the add-in [https://azure.microsoft.com/en-us/documentation/articles/web-sites-dotnet-get-started/]
->5.  Publish profile settings from the Azure web application [https://msdn.microsoft.com/en-us/library/dn385850(v=nav.70).aspx]
 >6.  Skype for Business Web Plug-in [Download Here](need url).
 
 ##Setting up the code
@@ -43,7 +36,7 @@ This section will instruct a user on how to add code to your website in order to
     apiKey: 'a42fcebd-5b43-4b89-a065-74450fb91255', // SDK DF
     apiKeyCC: '9c967f6b-a846-4df2-b43d-5167e47d81e1', // SDK+CC DF
     clientId: '98267106-694b-4df2-8e06-fbbafd8a90e7',
-    authLink: 'https://login.windows.net/common/oauth2/authorize?response_type=token',
+    authLink: 'https://login.microsoftonline.com/common/oauth2/authorize?response_type=token',
     authResource: 'https://webdir.online.lync.com',
     redirect_uri: 'https://secondonlineapp.azurewebsites.net',
 };
@@ -52,7 +45,7 @@ This section will instruct a user on how to add code to your website in order to
 
     ```javascript
      function showSkypeLogin() {
-        location.assign('https://login.windows.net/common/oauth2/authorize?response_type=token' +
+        location.assign('https://login.microsoftonline.com/common/oauth2/authorize?response_type=token' +
                 '&client_id=' + config.clientId+
                 '&redirect_uri=' + config.redirect_uri+
                 '&resource=https://webdir.online.lync.com');
@@ -250,49 +243,42 @@ This section will outline how to render the Conversation Control and use it's ch
     $('#ChatWindow').hide();
     $('#ChatControlsArea').hide();
     $('#ContactList').show();
-}	
+}
 	```
     This method cycles through each open conversation and removes it from the conversations collection.
 
-##Connecting with Audio and Video
+##Connecting with Audio and Video (Preview)
 The Skype for Business web SDK supports the ability for users to connect via audio and video chats using the Skype for Business Web plug-in.
 
 1.  To start an audio chat, copy the following methods into `chat-window.js`:
 
 	```javascript
-        function startConversation(sip) {
+	function startConversation(sip) {
         var person;
-        console.log('looking up based on sip');
         GetContactFromName(sip).then(function (results) {
             results.forEach(function (result) {
                 person = result.result;
             });
-
-            console.log('person created: ' + person);
+            console.log('Creating conversation');
             var conversation = SkypeWebApp.conversationsManager.createConversation();
-            console.log('conversation created');
+            console.log('Creating participant');
             var convParticipant = conversation.createParticipant(person)
-            console.log('participant created: ' + convParticipant);
+            console.log('Participant: ' + person.displayName());
+            console.log('Subscribing to participant');
+            subscribeToParticipant(convParticipant);
+            console.log('Adding participant to conversation');
             conversation.participants.add(convParticipant);
-            console.log('participant added');
+            console.log('Adding conversation to conversationManager');
             SkypeWebApp.conversationsManager.conversations.add(conversation);
-            console.log('converation added to conversations manager');
-            console.log('conversation at this point: ' + conversation);
-            conversation.videoService.start();
-            conversation.selfParticipant.video.state.changed(function (newState) {
-                if (newState == 'Connected') {
-                    conversation.selfParticipant.video.channels(0).stream.source.sink.container.set(document.getElementById("render-self-window"));
-                    conversation.selfParticipant.video.channels(0).isStarted.set(true);
-                    convParticipant.video.state.changed(function (state) {
-                    if (state == 'Connected') {
-                            console.log("The remote participant video has connected");
-                            convParticipant.video.channels(0).stream.source.sink.container.set(document.getElementById("render-participant-window"));
-                            convParticipant.video.channels(0).isStarted.set(true);
-                            console.log("The remote participant sink set has completed");
-                        }
-                    });
+            console.log('wait_1 (5 seconds) beginning');
+            setTimeout(function () {
+                console.log('wait_1 finished');
+                if (audioOnly == "true") {
+                    conversation.audioService.start();
+                } else {
+                    conversation.videoService.start();
                 }
-            });
+            }, 5000);
         });
     }
 
@@ -300,53 +286,14 @@ The Skype for Business web SDK supports the ability for users to connect via aud
         var query = SkypeWebApp.personsAndGroupsManager.createPersonSearchQuery();
         query.text(contactSIP);
         query.limit(1);
-        console.log('returning search results');
         return query.getMore();
-    }
-
-    //wire to click event
-    function startAudioChat(sip) {
-        var conversation = startConversation(sip);
-    }
-
-    //wire to click event
-    function startVideoChat(sip) {
-        var conversation = startConversation(sip);
-        conversation.videoService.start();
     }
 
     ```
     The **startConversation(sip)** method will create a conversation object with the sip value of the contact provided.  This method will also start the audio service and start listening for audio service related events such as connected and disconnected.
-    The **startAudiotChat(sip)** and **startVideoChat(sip)** methods start a conversation with the selected user and start the audio and video services respectively.
     The **GetContactFromName(contactSIP)** method retrieves a person object from the SDK which is needed to create a conversation.
-
-2.  Copy the following methods into `chat-window.js`:
-
-	```javascript
-    function renderVideoService(conversation) {
-        var container = '#chat-area';
-
-        //open self camera
-        var selfChannel = conversation.selfParticipant.video.channels(0);
-        selfChannel.stream.source.sink.container.set(document.getElementById("render-self-window"));
-
-        //open participant camera stream
-        console.log(conversation.participants());
-        var participant = conversation.participants(0);
-        var participantChannel = participant.video.channels(0);
-        participantChannel.stream.source.sink.container.set(document.getElementById("render-participant-window"));
-
-        conversation.audioService.start();
-        conversation.chatService.start();
-    }
-
-    function renderAudioService(conversation) {
-        conversation.audioService.start();
-    }```
-    The **renderVideoService(conversation)** method starts and displays your own camera image as well as displays the connected user camera feed as well.
-    The **renderAudioService(conversation)** method starts the audio service.
     
-3.  In order to listen for incoming audio or video invitations, the following method needs to be created in `chat-window.js`:
+2.  In order to listen for incoming audio or video invitations, the following method needs to be created in `chat-window.js`:
 
 	```javascript
     function subscribeToChatEvents() {
@@ -358,7 +305,6 @@ The Skype for Business web SDK supports the ability for users to connect via aud
                 }
                 else if (newState == 'Connected') {
                     console.log("Connected to Audio service");
-                    renderAudioService(conversation);
                 }
                 else if (newState == "Disconnected") {
                     console.log("Disconnected from audio service");
@@ -371,7 +317,13 @@ The Skype for Business web SDK supports the ability for users to connect via aud
                 }
                 else if (newState == 'Connected') {
                     console.log("Connected to Video service");
-                    renderVideoService(conversation);
+                    console.log('wait_2 (5 seconds) beginning');
+                    setTimeout(function () {
+                        console.log('wait_2 finished');
+                        conversation.selfParticipant.video.channels(0).stream.source.sink.container.set(document.getElementById("render-self-window"));
+                        conversation.selfParticipant.video.channels(0).isStarted.set(true);
+                        escalated = true;
+                    }, 5000);
                 }
                 else if (newState == "Disconnected") {
                     console.log("Disconnected from video service");
@@ -382,17 +334,32 @@ The Skype for Business web SDK supports the ability for users to connect via aud
     ```
     This method will listen to incoming notifications for audio or video chat requests and start the respective service.
 
+3. In order to listen to the added participant in the conversation, the following method needs to  be added in `chat-  window.js`
+
+	```javascript
+        function subscribeToParticipant(participant) {
+        participant.video.state.changed(function (newState, reason, oldState) {
+            console.log('participant video state changed');
+            if (newState == 'Connected') {
+                console.log("The remote participant video has connected");
+                participant.video.channels(0).stream.source.sink.container.set(document.getElementById("render-participant-window"));
+                participant.video.channels(0).isStarted.set(true);
+                console.log("The remote participant sink set has completed");
+            }
+        });
+    }
+    ```
+    This allows us to specifically monitor the state of the participant video stream state, and render the participant video when appropriate.
 4.  The last method to add to the `chat-window.js` file is **endConversation()**:
 
 	```javascript
-     function endConversation(conversation) {
-        //stop all services
-        SkypeWebApp.conversationsManager.conversations.added(function (conversation) {
-            conversation.videoService.stop();
-            conversation.audioService.stop();
-            conversation.chatService.stop();
-            SkypeWebApp.conversationsManager.conversations.remove(conversation);
-        });
+    function endConversation(conversation) {
+        conversation.videoService.stop();
+        conversation.audioService.stop();
+        conversation.chatService.stop();
+        conversation.leave();
+        SkypeWebApp.conversationsManager.conversations.remove(conversation);
+        location.assign('/Home.html');
     }
     ```
     This method stops all audio, video and chat services as well as removes the conversation from the conversationManager.

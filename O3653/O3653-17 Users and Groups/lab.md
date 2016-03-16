@@ -1,10 +1,7 @@
-### TODO
-1. Nuget package installation directions needed? Currently there is no mention of Nuget packages in this doc. If package isn't installed, **GraphServiceClient** will not be defined. (Dan) I think you need to find the nuget using Manage Nuget Packages. Or we can put the nuget on the machine and have VS configured with the correct package source location.
-
-# Lab 17: Microsoft Graph People Picker
+# Lab 17: Using Microsoft Graph to manage groups and users
 
 ## What you'll learn
-In this lab, you will create an ASP.NET MVC application that uses the Microsoft Graph client SDK to create a people picker. It will search for users in your tenant's directory and show their profile information, including their picture.
+In this lab, you will create an ASP.NET MVC application that uses the Microsoft Graph client SDK to create a basic group manangement experience. It will search for groups in your tenant's directory, show their members, and get more member details including photo. In a bonus excercise you can also learn how to add more users to a group (through a people picker) and remove users from a group.
 
 ## Prerequisites
 1. Visual Studio 2015 with Update 1
@@ -18,110 +15,149 @@ In this first step, you will create a new ASP.NET MVC project using the
 1. Open Visual Studio 2015 and select **File/New/Project**.
 2. Search the installed templates for **Graph** and select the
       **Graph AAD Auth v1 Starter Project** template. This starter project template scaffolds some auth infrastructure for you, so that you can focus on calling the Microsoft Graph.
-3. Name the new project **PeoplePicker** and click **OK**.
+3. Name the new project **GraphUsersGroups** and click **OK**.
 > NOTE: Make sure you use the exact same name that is specified in these instructions for your Visual Studio project. Otherwise, your namespace name will differ from the one in these instructions and your code will not compile.
     ![](images/VSProject.JPG)
-4. Your new application is ready to go! *Required*: hit F5 to to restore the NuGet packages required by the project. This will compile and launch your new application in the default browser.  You can sign in to the app using the O365 tenant administrator account provided to you.
+4. Your new application is ready to go! 
+> *Required*: Press **F5** to to restore the NuGet packages required by the project. This will compile and launch your new application in the default browser.  You can sign in to the app using the O365 tenant administrator account provided to you.
 
-## Step 2: Implement user search bar using the Microsoft Graph SDK
+## Step 2: Implement group search bar and view group memberships using the Microsoft Graph SDK
 
-2. Create a new controller: Right click on the **Controller** folder and select **Add**, **Controller**. Select **MVC 5 Controller - Empty**, click **Add** and then name the new controller **UserSearchController**.
-3. Create an associated view by right clicking the function **Index()**, **Add View**, and click **Add**. The view is created at **Views\UserSearch\Index.cshtml**.
-4. In **UserSearchController.cs**, replace the auto-generated **using** directives with
+1. Add a reference to the Microsoft Graph SDK to your project
+    1. In the Solution Explorer right click on the **GraphUsersGroups** project and select **Manage NuGet Packages...**
+    2. Click Browse and search for Microsoft.Graph.
+    3. Select the Microsoft Graph SDK and click Install.
+2. Create a new controller: Right click on the **Controller** folder and select **Add**, **Controller**. Select **MVC 5 Controller - Empty**, click **Add** and then name the new controller **GroupSearchController**.
+3. Create an associated view by right clicking the function **Index()**, **Add View**, and click **Add**. The view is created at **Views\GroupSearch\Index.cshtml**.
+4. In **GroupSearchController.cs**, replace the auto-generated **using** directives with
     ```c#
     using System;
-    using System.IO;
     using System.Collections.Generic;
-    using System.Configuration;
     using System.Web.Mvc;
+    using System.Configuration;
+    using System.Web.Routing;
     using System.Threading.Tasks;
     using System.Security.Claims;
     using Microsoft.Graph;
-    using PeoplePicker.TokenStorage;
-    using PeoplePicker.Auth;
+    using GraphUsersGroups.TokenStorage;
+    using GraphUsersGroups.Auth;
     ```
-4. In **UserSearchController.cs**, insert code into the **UserSearchController** class to intialize a **GraphServiceClient**, later used to make our calls to Microsoft Graph. The **GraphServiceClient** is initialized by obtaining an access token through the `GetUserAccessToken` helper function.
+4. In **GroupSearchController.cs**, insert code into the **GroupSearchController** class to intialize a **GraphServiceClient**, later used to make our calls to Microsoft Graph. The **GraphServiceClient** is initialized by obtaining an access token through the `GetUserAccessToken` helper function.
 
     ```c#
-    public class UserSearchController : Controller
-    {
-        public static string appId = ConfigurationManager.AppSettings["ida:AppId"];
-        public static string appSecret = ConfigurationManager.AppSettings["ida:AppSecret"];
-        public static string aadInstance = ConfigurationManager.AppSettings["ida:AADInstance"];
+    public static string appId = ConfigurationManager.AppSettings["ida:AppId"];
+    public static string appSecret = ConfigurationManager.AppSettings["ida:AppSecret"];
+    public static string aadInstance = ConfigurationManager.AppSettings["ida:AADInstance"];
 
-        private GraphServiceClient GetGraphServiceClient()
+    private GraphServiceClient GetGraphServiceClient()
+    {
+        string userObjId = ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
+        string tenantID = ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/tenantid").Value;
+        string authority = string.Format(aadInstance, tenantID, "");
+        SessionTokenCache tokenCache = new SessionTokenCache(userObjId, HttpContext);
+
+        // Create an authHelper using the the app Id and secret and the token cache
+        AuthHelper authHelper = new AuthHelper(authority,appId,appSecret,tokenCache);
+
+        // Request an accessToken and provide the original redirect URL from sign-in
+        GraphServiceClient client = new GraphServiceClient(new DelegateAuthenticationProvider(async (request) =>
         {
-            string userObjId = ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
-            string tenantID = ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/tenantid").Value;
-            string authority = string.Format(aadInstance, tenantID, "");
-            SessionTokenCache tokenCache = new SessionTokenCache(userObjId, HttpContext);
+            string accessToken = await authHelper.GetUserAccessToken(Url.Action("Index", "Home", null, Request.Url.Scheme));
+            request.Headers.TryAddWithoutValidation("Authorization", "Bearer " + accessToken);
+        }));
 
-            // Create an authHelper using the the app Id and secret and the token cache
-            AuthHelper authHelper = new AuthHelper(authority,appId,appSecret,tokenCache);
+        return client;
+    }
+    ```
+5. In **GroupSearchController.cs**, insert code into the **Index()** function to render the view the first time the page loads.
 
-            // Request an accessToken and provide the original redirect URL from sign-in
-            GraphServiceClient client = new GraphServiceClient(new DelegateAuthenticationProvider(async (request) =>
-            {
-                string accessToken = await authHelper.GetUserAccessToken(Url.Action("Index", "Home", null, Request.Url.Scheme));
-                request.Headers.TryAddWithoutValidation("Authorization", "Bearer " + accessToken);
-            }));
-
-            return client;
+    ```csharp
+        // GET: GroupSearch
+        public ActionResult Index()
+        {
+            // Return an empty list of groups when the page first loads
+            List<Group> groups = new List<Group>();
+            return View(groups);
         }
-    }
-    ```
-5. In **UserSearchController.cs**, insert code into the **Index()** function to render the view the first time the page loads.
-
-    ```csharp
-    public ActionResult Index()
-    {
-        // Return an empty list of people when the page first loads
-        List<User> people = new List<User>();
-        return View(people);
-    }
     ```
 
-6. In the same file, add the following function to make the Graph query for users. The view passes a **searchString** and this function builds the query and returns the results to the view.
+6. In the same file, add the following function to make the Graph query for groups. The view passes a **searchString** and this function builds the query and returns the results to the view.
 
     ```csharp
-    [HttpPost]
-    public async Task<ActionResult> Index(FormCollection fc, string searchString)
+        [HttpPost]
+        public async Task<ActionResult> Index(FormCollection fc, string searchString)
+        {
+            // Search for users with name or mail that includes searchString
+            var client = GetGraphServiceClient();
+
+            List<Group> groups = new List<Group>();
+
+            // Graph query for groups, filtering by displayName, mail and mailNickname
+            // Only query for displayName, userPrincipalName, id of matching users through select
+            try
+            {
+                var result = await client.Groups.Request().Top(10).Filter("startswith(displayName,'" + searchString +
+                "') or startswith(mail,'" + searchString +
+                "') or startswith(mailNickname,'" + searchString + "')").Select("displayName,description,id").GetAsync();
+
+                // Add users to the list and return to the view
+                foreach (Group _group in result)
+                {
+                    groups.Add(_group);
+                }
+            }
+            catch (Exception)
+            {
+                return View("Error");
+            }
+            return View(groups);
+        }
+    ```
+
+6. Finally in the same file, add the following function that will make a query to Graph to get the members of the selected group.  Initially this won't feature any paging, but will get the first 10 members.  We'll add paging later.
+    ```csharp
+    [Authorize]
+    // GET group members and page through the results (10 at a time)
+    public async Task<ActionResult> GroupMembers(string groupId, string nextLink)
     {
-        // Search for users with name or mail that includes searchString
+        // Show the profile of a user after a user is clicked from the search
         var client = GetGraphServiceClient();
+        List<User> userMembers = new List<User>();
+        IMembersCollectionWithReferencesPage members = new MembersCollectionWithReferencesPage();
+        IMembersCollectionWithReferencesRequest membersRequest = null;
 
-        List<User> people = new List<User>();
+        try
+        {
 
-        // Graph query for users, filtering by displayName, givenName, surname, UPN, mail, and mailNickname
-        // Only query for displayName, userPrincipalName, id of matching users through select
-        try {
-            var result = await client.Users.Request().Top(7).Filter("startswith(displayName,'" + searchString +
-            "') or startswith(givenName,'" + searchString +
-            "') or startswith(surname,'" + searchString +
-            "') or startswith(userPrincipalName,'" + searchString +
-            "') or startswith(mail,'" + searchString +
-            "') or startswith(mailNickname,'" + searchString + "')").Select("displayName,userPrincipalName,id").GetAsync();
+            if (groupId != null)
+            {
+                var group = await client.Groups[groupId].Request().Select("displayName,id").GetAsync();
+                ViewBag.groupId = groupId;
+                ViewBag.groupName = group.DisplayName;
+                membersRequest = client.Groups[groupId].Members.Request().Top(10);
+            }
+            members = await membersRequest.GetAsync();
 
-            // Add users to the list and return to the view
-            foreach (User u in result) {
-                people.Add(u);
+            foreach (DirectoryObject d in members.CurrentPage)
+            {
+                User u = d as User;
+                userMembers.Add(u);
             }
         }
-        catch(Exception)
+        catch (Exception)
         {
-            return View("Error");
+            // no users?
         }
-        return View(people);
+        return View(userMembers);
     }
-    ```
-
-6. Replace the contents of **Views\UserSearch\Index.cshtml** with the following code. This renders a search bar and a table to display the results.
+        ```
+6. Replace the contents of **Views\GroupSearch\Index.cshtml** with the following code. This renders a search bar and a table to display the group results.
 
     ```xml
     @using Microsoft.Graph
-    @model List<User>
+    @model List<Group>
     @{
-        ViewBag.Title = "User search";
+        ViewBag.Title = "Find a group";
     }
     <h2>@ViewBag.Title</h2>
 
@@ -135,14 +171,14 @@ In this first step, you will create a new ASP.NET MVC project using the
         </div>
     }
     <table class="table table-bordered table-striped table-hover">
-        @foreach (var user in Model)
+        @foreach (var group in Model)
         {
-            <tr>
+            <tr onclick="location.href = '@(Url.Action("GroupMembers", "GroupSearch", new { groupId = group.Id, nextLink = "" }))'" >
                 <td>
-                    @Html.DisplayFor(modelItem => user.DisplayName)
+                    @Html.DisplayFor(modelItem => group.DisplayName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => user.UserPrincipalName)
+                    @Html.DisplayFor(modelItem => group.Description)
                 </td>
             </tr>
         }
@@ -154,40 +190,139 @@ In this first step, you will create a new ASP.NET MVC project using the
     ```xml
     @if (Request.IsAuthenticated)
     {
-    <li>@Html.ActionLink("User Search", "Index", "UserSearch")</li>
+    <li>@Html.ActionLink("Group Management", "Index", "GroupSearch")</li>
     }
     ```
+8. Finally let's create a new view to display the group memberships of a selected group. Right click on **Views\GroupSearch**, select **Add** and **View**, click **Add** and name it **GroupMembers**. Replace the contents of this file with the following.   NOTE also that we have some placeholders for further functionality that we'll add later.
 
-8. Hit F5 to build your app! First sign in, then explore the navbar **User search** link. Search for users by complete or incomplete name or email. Try typing *a* and hitting the search button :)
+    ```xml
+    @using Microsoft.Graph
+    @model List<User>
+    @{
+        ViewBag.Title = "Manage Group Memberships";
+    }
+    <h2>@ViewBag.Title for @ViewBag.groupName</h2>
 
-## Step 3: Create the detailed user profile page
-In this step, we'll enable selecting a user from the user search results table, for whom we'll show more details.
-1. Right click the folder **Models**, **Add**, **Class**, and name it **Profile.cs**. Replace the contents of this class with the following.
+    @* Add new members here *@ 
+
+    <div class="row" style="margin-top:50px;">
+        <div class="col-sm-12">
+            <div class="table-responsive">
+                <table id="membersTable" class="table table-bordered table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>User Principal Name</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var user in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => user.DisplayName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => user.UserPrincipalName)
+                                <td>
+                                    @* Add a remove button here *@
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="btn btn-group-sm">
+                @* Add a next page button here (paging) *@
+            </div>     
+        </div>
+    </div>
+    ```
+
+8. Press **F5** to debug your app! First sign in, then explore the navbar **Group Management** link. Search for groups by complete or incomplete name or email. Try typing *a* and hitting the search button :). Then click on a group to expand its group memberships.  You should see something like this:
+    
+    ![](images/GroupMembership.JPG)
+    
+## Step 3: Paged members and a detailed user profile page
+In this step, we'll enable selecting a user from the group members search results table, for whom we'll show more details.  We'll also add in paging and a new button to allow you to page through the results. 
+1. Go back to the **GroupSearchController** and find the **GroupMembers** function. Find the `members = await membersRequest.GetAsync();` line, and replace with following code.  This will manage the next link paging.
+    ```csharp
+    if (nextLink != null)
+    {
+        membersRequest = new MembersCollectionWithReferencesRequest(nextLink, client, null);
+    }
+    members = await membersRequest.GetAsync();
+    if (members.NextPageRequest != null)
+    {
+        ViewBag.NextLink = members.NextPageRequest.GetHttpRequestMessage().RequestUri;
+    }
+    else
+    {
+        ViewBag.NextLink = null;
+    }
+    ```
+2. Next create a new controller for user functionality. Right-click on the **Controllers** folder and select **Add**, **Controller**. Select **MVC 5 Controller - Empty**, click **Add** and then name the new controller **UserSearchController**. 
+
+3. Right click the folder **Models**, **Add**, **Class**, and name it **Profile.cs**. Replace the contents of this class with the following.
 
     ```csharp
     using Microsoft.Graph;
     using System;
 
-    namespace PeoplePicker.Models
+    public class Profile
     {
-        public class Profile
-        {
-            public String photo { get; set; }
-            public User user { get; set; }
-        }
+        public String photo { get; set; }
+        public User user { get; set; }
+    }
+
+    public class GroupModel
+    {
+        public static String groupId { get; set; }
     }
     ```
+3. Replace the existing `using` directives in **UserSearchController.cs** with the following:
+    ```csharp
+    using System;
+    using System.IO;
+    using System.Collections.Generic;
+    using System.Configuration;
+    using System.Web.Mvc;
+    using System.Threading.Tasks;
+    using System.Security.Claims;
+    using Microsoft.Graph;
+    using GraphUsersGroups.TokenStorage;
+    using GraphUsersGroups.Auth;
+    ```
+4. Add the following code to **UserSearchController.cs**. This is like the code we added in **GroupSearchController** to acquire an access token and a function to get more profile information of the selected user and their photo. This is passed to a new view through a Profile object we created earlier.
+    ```csharp
+    public static string appId = ConfigurationManager.AppSettings["ida:AppId"];
+    public static string appSecret = ConfigurationManager.AppSettings["ida:AppSecret"];
+    public static string aadInstance = ConfigurationManager.AppSettings["ida:AADInstance"];
 
-2. Add an **onclick** event to the table row element in **Views\UserSearch\Index.cshtml** to navigate to a different page when the table row is clicked.
-    ```xml
-    <tr onclick="location.href = '@(Url.Action("ShowProfile", "UserSearch", new { userId = user.Id }))'">
-    ```
-3. Add the following directive in **UserSearchController.cs** to use the model we just created:
-    ```csharp
-    using PeoplePicker.Models;
-    ```
-4. Add the following function to **UserSearchController.cs**. This function is passed a userId from the user selected in the table, and builds the query to get the full profile information of the user and their photo. This is passed to a new view through a Profile object.
-    ```csharp
+    private GraphServiceClient GetGraphServiceClient()
+    {
+        string userObjId = ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
+        string tenantID = ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/tenantid").Value;
+        string authority = string.Format(aadInstance, tenantID, "");
+        SessionTokenCache tokenCache = new SessionTokenCache(userObjId, HttpContext);
+
+        // Create an authHelper using the the app Id and secret and the token cache
+        AuthHelper authHelper = new AuthHelper(
+            authority,
+            appId,
+            appSecret,
+            tokenCache);
+
+        // Request an accessToken and provide the original redirect URL from sign-in
+        GraphServiceClient client = new GraphServiceClient(new DelegateAuthenticationProvider(async (request) =>
+        {
+            string accessToken = await authHelper.GetUserAccessToken(Url.Action("Index", "Home", null, Request.Url.Scheme));
+            request.Headers.TryAddWithoutValidation("Authorization", "Bearer " + accessToken);
+        }));
+
+        return client;
+    }
     public async Task<ActionResult> ShowProfile(string userId)
     {
         // Show the profile of a user after a user is clicked from the search
@@ -214,32 +349,39 @@ In this step, we'll enable selecting a user from the user search results table, 
         }
         catch (Exception)
         {
-            return View("Error");
+            // no photo
+        }
+        finally
+        {
+            
         }
 
         return View(profile);
     }
     ```
-4. Create a new view under **Views\UserSearch** and name it **ShowProfile.cshtml**. Replace the contents of this file with the following.
+4. Create a new view under **Views\UserSearch** and name it **ShowProfile**. This view will display a user profile include their photo, if they have one.  Replace the contents of this file with the following:
     ```xml
-    @model PeoplePicker.Models.Profile
+    @model Profile
     @{
-        ViewBag.Title = "Profile";
+        ViewBag.Title = "User profile details";
     }
 
     <h2>Profile</h2>
 
+    @{if (Model.user.GivenName != null && Model.user.Surname != null)
+        {
+            <h3> @Model.user.GivenName @Model.user.Surname </h3>
+        }
+    }
     @{ if (Model.photo != "")
         {
             <div style="height: 200px">
                 <img src="@Model.photo" alt="Photo" border="0" style="width:auto;max-height: 100%" />
             </div>
         }
-    }
-
-    @{if (Model.user.GivenName != null && Model.user.Surname != null)
+        else
         {
-            <h3> @Model.user.GivenName @Model.user.Surname </h3>
+            <h4> No photo on record </h4>
         }
     }
 
@@ -247,7 +389,8 @@ In this step, we'll enable selecting a user from the user search results table, 
         <tr>
             <td>Display name</td>
             <td>
-                @if (!string.IsNullOrEmpty(Model.user.DisplayName)){
+                @if (!string.IsNullOrEmpty(Model.user.DisplayName))
+                {
                     @Html.DisplayFor(modelItem => Model.user.DisplayName)
                 }
             </td>
@@ -291,7 +434,198 @@ In this step, we'll enable selecting a user from the user search results table, 
     </table>
     ```
 
-5. Hit F5 to compile and try out the new ShowProfile page. Search for users and click on a user to see their details.
+5. Now we need to finish tying this all together.  Go back to the **Views\GroupSearch GroupMembers** view and replace the first `<tr>` under the `foreach` statement with the following. This will allow you to click on a member of a group, and show more details about that user.
+    ```xml
+    <tr onclick="location.href = '@(Url.Action("ShowProfile", "UserSearch", new { userId = user.Id }))'">
+    ``` 
+5. Finally we need to hook up the paging with a next button control in the **GroupMembers** view.  Find the comment that says *Add a next button* and replace with:
+    ```xml
+    @{ 
+    Dictionary<string, object> attributes2 = new Dictionary<string, object>();
+    attributes2.Add("class", "btn btn-default");
+
+    if (null != ViewBag.NextLink)
+    {
+        RouteValueDictionary routeValues3 = new RouteValueDictionary();
+        routeValues3.Add("groupId", "");
+        routeValues3.Add("nextLink", ViewBag.NextLink);
+        @Html.ActionLink("Next Page", "GroupMembers","GroupSearch", routeValues3, attributes2);
+        }
+    }
+    ```
+6. Press **F5** t**o compile and try out the new ShowProfile page. Search for groups, view the members, and page through them and click on a user to see their details.
 
 ***
-Hooray! Congratulations on creating your PeoplePicker app! You have created an MVC application that uses Microsoft Graph to search and view users in your tenant.
+Hooray! Congratulations on creating your GraphUsersGroups app! You have created an MVC application that uses Microsoft Graph to search groups and view users in your tenant. But don't stop here - there's plenty more to explore with the Microsoft Graph.  
+- See this training and more on http://dev.office.com/
+- Learn about and connect to the Microsoft Graph at https://graph.microsoft.io
+- Or try some option bonus exercises below
+
+##Step 4: Optional Bonus!!!
+This step is entirely optional.  Here we'll add code that will allow you to add new users to a group (with a people picker), and buttons that allow you to remove users from a group.
+
+1. Firstly let's add the code to add a member to a group and to remove a member from a group.  We'll add this to our trusty **GroupSearchController**. Each function routes the user back to the GroupMembers view after adding or removing a member. 
+    ```csharp
+    [Authorize]
+    // ADD group member
+    public async Task<ActionResult> AddMember(string id, string groupId)
+    {
+        var client = GetGraphServiceClient();
+
+        // Get the user as a directory object
+        DirectoryObject memberToAdd = await client.DirectoryObjects[id].Request().GetAsync();
+
+        // Build a request to identify a particular member object in the group
+        var request = client.Groups[groupId].Members.References.Request();
+
+        // Submit the add request
+        await request.AddAsync(memberToAdd);
+
+        RouteValueDictionary routeValues = new RouteValueDictionary();
+        routeValues.Add("groupId", groupId);
+        routeValues.Add("nextLink", null);
+        return RedirectToAction("GroupMembers", "GroupSearch", routeValues);
+    }
+    
+    [Authorize]
+    // REMOVE group member
+    public async Task<ActionResult> RemoveMember(string id, string groupId)
+    {
+        var client = GetGraphServiceClient();
+
+        // Build a request to identify a particular member object in the group
+        var request = client.Groups[groupId].Members[id].Reference.Request();
+
+        // Submit the remove request
+        await request.DeleteAsync();
+
+        RouteValueDictionary routeValues = new RouteValueDictionary();
+        routeValues.Add("groupId", groupId);
+        routeValues.Add("nextLink", null);
+        return RedirectToAction("GroupMembers", "GroupSearch", routeValues);
+    }
+    ```
+ 2. We'll also add another function that will route a request to a people picker experience to pick a user to add to the group.
+    ```csharp
+    public async Task<ActionResult> FindUserForGroup(string groupId)
+    {
+
+        RouteValueDictionary routeValues = new RouteValueDictionary();
+        routeValues.Add("groupId", groupId);
+    
+        return RedirectToAction("Index", "UserSearch", routeValues);
+    }
+    ```
+3. For the people picking experience we'll need to create an associated `Index` view opening the **UserSearchController** and right clicking the function **Index()** under **Controllers\UserSearch, **Add View**, and click **Add**. The view is created at **Views\UserSearch\Index.cshtml**.  We'll be updating this later.
+ 
+4. Now we need to add a function to search for a user, based on an input search string.  So in **UserSearchController**...
+    1. Add the following function, that uses the Graph to search for users.
+    ```csharp
+    [HttpPost]
+    public async Task<ActionResult> Index(FormCollection fc, string searchString)
+    {
+        // Search for users with name or mail that includes searchString
+        var client = GetGraphServiceClient();
+
+        List<User> people = new List<User>();
+
+        // Graph query for users, filtering by displayName, givenName, surname, UPN, mail, and mailNickname
+        // Only query for displayName, userPrincipalName, id of matching users through select
+        try
+        {
+            var result = await client.Users.Request().Top(7).Filter("startswith(displayName,'" + searchString +
+            "') or startswith(givenName,'" + searchString +
+            "') or startswith(surname,'" + searchString +
+            "') or startswith(userPrincipalName,'" + searchString +
+            "') or startswith(mail,'" + searchString +
+            "') or startswith(mailNickname,'" + searchString + "')").Select("displayName,userPrincipalName,id").GetAsync();
+
+            // Add users to the list and return to the view
+            foreach (User u in result)
+            {
+                people.Add(u);
+            }
+        }
+        catch (Exception)
+        {
+            return View("Error");
+        }
+        return View(people);
+    }
+    ```
+    2. Next update the existing `Index()` function and replace with:
+    ```csharp
+    // GET: UserSearch
+    public ActionResult Index(string groupId)
+    {
+        // Need to pass the originating groupId to the view
+        GroupModel.groupId = groupId;
+
+        // Return an empty list of people when the page first loads
+        List<User> people = new List<User>();
+        return View(people);
+    }
+    ```
+3. Now we've updated the controller, we need to update the **UserSearch Index** view.  This will light up a view for the people picker. Picking a user from the search results will invoke the AddMember function from above, and add that user to the group, before returning to the **GroupMembers** view.
+    ```xml
+    @using Microsoft.Graph
+    @model List<User>
+    @{
+    ViewBag.Title = "Find a user to add to the group";
+    }
+    <h2>@ViewBag.Title</h2>
+
+    @using (Html.BeginForm())
+    {
+    <div class="input-group">
+        <input type="text" name="searchString" class="form-control" placeholder="Search by name or email...">
+        <span class="input-group-btn">
+            <input type="submit" value="Search" class="btn btn-default" />
+        </span>
+    </div>
+    }
+    <table class="table table-bordered table-striped table-hover">
+    @foreach (var _user in Model)
+    {
+            <tr onclick="location.href = '@(Url.Action("AddMember", "GroupSearch", new { id = _user.Id, groupId = GroupModel.groupId }))'">
+                <td>
+                    @Html.DisplayFor(modelItem => _user.DisplayName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => _user.UserPrincipalName)
+                </td>
+            </tr>
+        }  
+    </table>
+    ```
+4. Finally we need to add buttons for both adding members and removing members to the **GroupMembers** view.
+    1. Add a button for adding members, by replacing the "Add new members here" comment with:
+    ```xml
+    @{
+    Dictionary<string, object> attributes4 = new Dictionary<string, object>();
+    RouteValueDictionary routeValues4= new RouteValueDictionary();
+    routeValues4.Add("groupId", ViewBag.groupId);
+    attributes4.Add("class", "btn btn-default");
+    @Html.ActionLink("Add member", "FindUserForGroup", "GroupSearch", routeValues4, attributes4);
+    }
+    ```
+    2. Add a button on each row in the **membersTable** to enable removal, by replacing the "Add a remove button here" with:
+    ```xml
+    @{ 
+    Dictionary<string, object> attributes1 = new Dictionary<string, object>();
+    attributes1.Add("class", "btn btn-warning");
+
+    RouteValueDictionary routeValues1 = new RouteValueDictionary();
+    routeValues1.Add("id", user.Id);
+    routeValues1.Add("groupId", ViewBag.groupId);
+    @Html.ActionLink("Remove", "RemoveMember", "GroupSearch", routeValues1, attributes1);
+    }
+    ```
+5. And that should do it.  Press **F5** and debug.  You should now see an **Add member** button, that once clicked takes you to a people picking experience.  Choose a user, and then see that you arrive back at the same membership view, but with your new user.  Click on a **Remove** button, and you should see the screen refresh without the removed user.
+
+***
+Congratulations, dedicated quick start developer.  This quick start ends here.  But don't stop here - there's plenty more to explore with the Microsoft Graph.
+
+## Next Steps and Additional Resources:  
+- See this training and more on http://dev.office.com/
+- Learn about and connect to the Microsoft Graph at https://graph.microsoft.io
