@@ -200,13 +200,11 @@ SDK and work with Office 365 and Outlook Calendar
   public async Task<ActionResult> Detail(string eventId)
   {
       var client = GetGraphServiceClient();
-
       var request = client.Me.Events[eventId].Request();
 
       try
       {
           var result = await request.GetAsync();
-
 
           if (result.Body.ContentType.HasValue && result.Body.ContentType == BodyType.html)
           {
@@ -238,7 +236,6 @@ SDK and work with Office 365 and Outlook Calendar
       else
       {
           var client = GetGraphServiceClient();
-
           var request = client.Me.Events.Request();
 
           ItemBody CurrentBody = new ItemBody();
@@ -263,7 +260,7 @@ SDK and work with Office 365 and Outlook Calendar
       }
 
       return RedirectToAction("Index", new { eventId = eventId });
-    }
+  }
   ```
 
 4. Add the following code to the `CalendarController` class to Accept an event.
@@ -275,19 +272,17 @@ SDK and work with Office 365 and Outlook Calendar
   public async Task<ActionResult> Accept(string eventId)
   {
       var client = GetGraphServiceClient();
-
       var request = client.Me.Events[eventId].Accept().Request();
 
       try
       {
           await request.PostAsync();
-  }
-  catch (ServiceException ex)
+      }
+      catch (ServiceException ex)
       {
           TempData["error"] = ex.Error.Message;
           return RedirectToAction("Index", "Error", new { message = ex.Error.Message });
       }
-
       return RedirectToAction("Detail", new { eventId = eventId });
   }
   ```
@@ -301,7 +296,6 @@ SDK and work with Office 365 and Outlook Calendar
   public async Task<ActionResult> Tentative(string eventId)
   {
       var client = GetGraphServiceClient();
-
       var request = client.Me.Events[eventId].TentativelyAccept().Request();
 
       try
@@ -313,7 +307,6 @@ SDK and work with Office 365 and Outlook Calendar
           TempData["error"] = ex.Error.Message;
           return RedirectToAction("Index", "Error", new { message = ex.Error.Message });
       }
-
       return RedirectToAction("Detail", new { eventId = eventId });
   }
   ```
@@ -326,7 +319,6 @@ SDK and work with Office 365 and Outlook Calendar
   public async Task<ActionResult> Decline(string eventId)
   {
       var client = GetGraphServiceClient();
-
       var request = client.Me.Events[eventId].Decline().Request();
 
       try
@@ -338,7 +330,6 @@ SDK and work with Office 365 and Outlook Calendar
           TempData["error"] = ex.Error.Message;
           return RedirectToAction("Index", "Error", new { message = ex.Error.Message });
       }
-
       return RedirectToAction("Index");
   }
   ```
