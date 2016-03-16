@@ -9,7 +9,7 @@ This lab requires that you have the Yeoman generator for Office Add-ins installe
 
 1. Open a terminal/command prompt.
 1. Go to the C:\lab\ folder on Windows or the /usr/ directory on Mac.
-1. Create a new folder for your add-in project with the command `mkdir addinname` and go to that folder.
+1. Create a new folder for your add-in project with the command `mkdir <your-addin-name>` and go to that folder.
 1. Run the Office yeoman generator by entering the command `yo office`.
 1. Provide the following information about your add-in:
   * Name of the add-in: myHelloWorldAddin
@@ -37,12 +37,14 @@ An Office Add-in is just a web app that is displayed within the Office UI and ca
 1. Launch Visual Studio Code.
 2. Open the home.html file found in your-project-folder/app/home/. 
 3. Add the following code after the "Get data from selection" button:
+
  ```
  <button id="test-debug-console">Write to the debug console</button>
  ```
 4. Save the home.html file.
 5. Open the home.js file from the same folder.
 6. Add a click handler for your new button in the Office.initialize function:
+
  ```javascript
  Office.initialize = function(reason){
     jQuery(document).ready(function(){
@@ -54,6 +56,7 @@ An Office Add-in is just a web app that is displayed within the Office UI and ca
   };
  ```
 7. Add the function for the click to perform, which in this case is to write a message to the console:
+
  ```javascript
  function writeToConsole(){
      console.log("You pressed the console logging button!");
