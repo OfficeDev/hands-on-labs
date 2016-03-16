@@ -695,12 +695,11 @@ Word.run(function (ctx) {
 
 ## Exercise 8: Creating and opening a new Word document!
 
-*In this exercise, you will continue working on the Visual Studio solution for the StatementOfWork add-in you created in the previous steps. You will extend the add-in's capabilities by adding JavaScript code to create an open a new Word document . Make sure to have completed Excercise 2 as we need the getDocumentAsBase64 method, we will use that Word document as a Starter*
+*In this exercise, you will continue working on the Visual Studio solution for the StatementOfWork add-in you created in the previous steps. You will extend the add-in's capabilities by adding JavaScript code to create an open a new Word document . Make sure to have completed Excercise 2 as we need the getDocumentAsBase64 method, we will use that Word document as a starter.*
 
 1. Go back to Visual Studio, make sure you are using the StatementOfWord project.
 
-2. Make sure you are using the Preview Office.js CDN.  In the solution explorer double click on  **Home.html** file.
-3. Make sure to be using the preview location of Office.js which **https://appsforoffice.microsoft.com/lib/beta/hosted/office.js**, so your head element should be like: (make sure to comment out the other Office.js reference)
+2. Make sure you are using the Preview Office.js CDN.  In the solution explorer double click on  **Home.html** file. Check the  location of preview  Office.js which **https://appsforoffice.microsoft.com/lib/beta/hosted/office.js**,  your head element should be like: (make sure to comment out the other Office.js reference)
 	````html
 	<head>
     <meta charset="UTF-8" />
