@@ -103,7 +103,7 @@ or OneDrive.
     ```csharp
     private GraphServiceClient GetGraphServiceClient()
     {
-        string userObjId = System.Security.Claims.ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
+        string userObjId = AuthHelper.GetUserId(System.Security.Claims.ClaimsPrincipal.Current);
         SessionTokenCache tokenCache = new SessionTokenCache(userObjId, HttpContext);
 
         string authority = string.Format(ConfigurationManager.AppSettings["ida:AADInstance"], "common", "");
@@ -348,7 +348,7 @@ to an MVC view that will display the contents of the OneDrive folder selected.
 
       RouteValueDictionary routeValues1 = new RouteValueDictionary();
       routeValues1.Add("itemId", file.Id);
-      routeValues1.Add("etag", file.eTag);
+      routeValues1.Add("etag", file.ETag);
       @Html.ActionLink("X", "Delete", "Files", routeValues1, attributes1);
   ```
 
