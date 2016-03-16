@@ -7,7 +7,10 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web;
+using System.Security.Claims;
 using GraphFilesWeb.TokenStorage;
+using Microsoft.Owin.Security;
+using Microsoft.Owin.Security.OpenIdConnect;
 
 namespace GraphFilesWeb.Auth
 {
@@ -59,7 +62,7 @@ namespace GraphFilesWeb.Auth
                 // Set up the HTTP POST request
                 HttpRequestMessage tokenRequest = new HttpRequestMessage(HttpMethod.Post, this.Authority + "/oauth2/v2.0/token");
                 tokenRequest.Content = requestContent;
-                tokenRequest.Headers.UserAgent.Add(new ProductInfoHeaderValue("GraphFilesWeb", "1.0"));
+                tokenRequest.Headers.UserAgent.Add(new ProductInfoHeaderValue("Graph_AAD_Auth_v2_Starter_Project1", "1.0"));
                 tokenRequest.Headers.Add("client-request-id", Guid.NewGuid().ToString());
                 tokenRequest.Headers.Add("return-client-request-id", "true");
 
@@ -90,18 +93,16 @@ namespace GraphFilesWeb.Auth
             }
         }
 
-        public bool HasTokens
-        {
-            get
-            {
-                return null != TokenCache && null != TokenCache.Tokens;
-            }
-        }
-
         public async Task<string> GetUserAccessToken(string redirectUri)
         {
             if (null == TokenCache || null == TokenCache.Tokens)
-                return string.Empty;
+            {
+                HttpContext.Current.Request.GetOwinContext().Authentication.Challenge(
+                  new AuthenticationProperties() { RedirectUri = redirectUri },
+                  OpenIdConnectAuthenticationDefaults.AuthenticationType);
+
+                return null;
+            }
 
             // If the token is expired, use refresh token to obtain
             // a new one before returning
@@ -113,6 +114,22 @@ namespace GraphFilesWeb.Auth
             }
 
             return TokenCache.Tokens.AccessToken;
+        }
+
+        public static string GetUserId(ClaimsPrincipal userPrincipal)
+        {
+            Claim objId = userPrincipal
+              .FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier");
+
+            if (null != objId)
+            {
+                return objId.Value;
+            }
+
+            Claim nameId = userPrincipal
+              .FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier");
+
+            return (null != nameId) ? nameId.Value : string.Empty;
         }
     }
 }

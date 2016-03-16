@@ -10,7 +10,7 @@ In this lab, you will use Microsoft Graph to program against an Office 365 and O
 1. You must have Visual Studio 2015 with Update 1 installed.
 1. You must have the Graph AAD Auth v1 Starter Project template installed.
 
-[//]: # (Remove if doing v1) 
+[//]: # (Remove if doing v1)
 
 ## Exercise 1: Create a new project using Azure Active Directory v2 authentication
 
@@ -58,7 +58,7 @@ for calling the Graph API.
   1. Once the Graph and AAD v2 Auth Endpoint Starter page appears, click **Sign in** and login to your Office 365 account.
   1. Review the permissions the application is requesting, and click **Accept**.
   1. Now that you are signed into your application, exercise 1 is complete!
-   
+
 [//]: # (Remove if doing v2)
 
 ## Exercise 1: Create a new project using Azure Active Directory authentication
@@ -71,32 +71,32 @@ for calling the Graph API.
   1. Search the installed templates for **Graph** and select the
     **Graph AAD Auth v1 Starter Project** template.
   1. Name the new project **MailWebApp** and click **OK**.
-   
+
 1. Press F5 to compile and launch your new application in the default browser.
   1. Once the Graph and AAD Auth Endpoint Starter page appears, click **Sign in** and login to your Office 365 adminsitrator account.
   1. Review the permissions the application is requesting, and click **Accept**.
   1. Now that you are signed into your application, exercise 1 is complete!
-   
+
 ## Exercise 2: Access Mail through Microsoft Graph SDK
 
 In this exercise, you will build on exercise 1 to connect to the Microsoft Graph
 SDK and work with Office 365 and Outlook Mail
 
 ## Working with Mail through Microsoft Graph SDK
-  
+
 ### Create the Mail controller and use the Graph SDK
 
 1. Add a reference to the Microsoft Graph SDK to your project
   1. In the **Solution Explorer** right click on the **MailWebApp** project and select **Manage NuGet Packages...**.
   1. Click **Browse** and search for **Microsoft.Graph**.
   1. Select the Microsoft Graph SDK and click **Install**.
-  
+
 1. Add a reference to the Bootstrap DateTime picker to your project
   1. In the **Solution Explorer** right click on the **MailWebApp** project and select **Manage NuGet Packages...**.
   1. Click **Browse** and search for **Bootstrap.v3.Datetimepicker.CSS**.
   1. Select Bootstrap.v3.Datetimepicker.CSS and click **Install**.
   1. Open the **App_Start/BundleConfig.cs** file and update the bootstrap script and CSS bundles. Replace these lines:
-  
+
     ```csharp
     bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
               "~/Scripts/bootstrap.js",
@@ -106,9 +106,9 @@ SDK and work with Office 365 and Outlook Mail
               "~/Content/bootstrap.css",
               "~/Content/site.css"));
     ```
-    
+
     with:
-    
+
     ```csharp
     bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
               "~/Scripts/bootstrap.js",
@@ -143,7 +143,7 @@ SDK and work with Office 365 and Outlook Mail
   using Newtonsoft.Json;
   using System.IO;
   ```
-  
+
 1. Add the following code to the `MailController` class to initialize a new
    `GraphServiceClient` and generate an access token for the Graph API:
 
@@ -172,9 +172,9 @@ SDK and work with Office 365 and Outlook Mail
     return client;
   }
   ```
-  
+
 ### Work with Mails
-  
+
 1. Add the following code to the `MailController` class to get all mails from your mailbox.
 
   ```csharp
@@ -211,7 +211,7 @@ SDK and work with Office 365 and Outlook Mail
             }
 
   ```
-  
+
 1. Add the following code to the `MailController` class to display details of a mail.
 
   ```csharp
@@ -234,7 +234,7 @@ SDK and work with Office 365 and Outlook Mail
                         result.Body.Content = textStr;
                     }
                 }
-                    
+
                 return View(result);
             }
             catch (ServiceException ex)
@@ -243,7 +243,7 @@ SDK and work with Office 365 and Outlook Mail
             }
         }
   ```
-  
+
 1. Add the following code to the `MailController` class to send a new mail.
 
   ```csharp
@@ -289,7 +289,7 @@ SDK and work with Office 365 and Outlook Mail
             return RedirectToAction("Index", new { messageId = messageId });
         }
   ```
-  
+
 1. Add the following code to the `MailController` class to reply to a mail.
 
   ```csharp
@@ -299,7 +299,7 @@ SDK and work with Office 365 and Outlook Mail
         public async Task<ActionResult> Reply(string messageId, string comment)
         {
             var client = GetGraphServiceClient();
-                
+
             var request = client.Me.Messages[messageId].Reply(comment).Request();
 
             try
@@ -314,7 +314,7 @@ SDK and work with Office 365 and Outlook Mail
             return RedirectToAction("Detail", new { messageId = messageId });
         }
   ```
-  
+
 1. Add the following code to the `MailController` class to reply all to a mail.
 
   ```csharp
@@ -339,7 +339,7 @@ SDK and work with Office 365 and Outlook Mail
             return RedirectToAction("Detail", new { messageId = messageId });
         }
   ```
-  
+
   1. Add the following code to the `MailController` class to forward a mail.
 
   ```csharp
@@ -368,7 +368,7 @@ SDK and work with Office 365 and Outlook Mail
             return RedirectToAction("Detail", new { messageId = messageId });
         }
   ```
-  
+
 ### Create the MailList view
 
 In this section you'll wire up the Controller you created in the previous section
@@ -404,7 +404,7 @@ to an MVC view that will display all your mails and allow you to send a new mail
       **Add** then **New Item**.
   1. Select **MVC View Page** and change the filename **Index.cshtml** and click **Add**.
   1. **Replace** all of the code in the **Mail/Index.cshtml** with the following:
-  
+
   ```asp
 @model IEnumerable<Microsoft.Graph.Message>
 @{ ViewBag.Title = "Index"; }
@@ -520,13 +520,13 @@ $(function () {
     </div>
 </div>
   ```
-  
+
 1. Create a new **View** for mail detail.
   1. Expand the **Views** folder in **MailWebApp**. Right-click **Mail** and select
       **Add** then **New Item**.
   1. Select **MVC View Page** and change the filename **Detail.cshtml** and click **Add**.
   1. **Replace** all of the code in the **Mail/Detail.cshtml** with the following:
-  
+
   ```asp
 @model Microsoft.Graph.Message
 @{ ViewBag.Title = "Detail"; }

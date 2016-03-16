@@ -13,6 +13,7 @@ using Microsoft.Owin.Security.OpenIdConnect;
 using Microsoft.IdentityModel.Protocols;
 using GraphFilesWeb.TokenStorage;
 using GraphFilesWeb.Auth;
+using System.Security.Claims;
 
 [assembly: OwinStartup(typeof(GraphFilesWeb.Startup))]
 
@@ -36,21 +37,38 @@ namespace GraphFilesWeb
             app.UseOpenIdConnectAuthentication(
               new OpenIdConnectAuthenticationOptions
               {
-            // The `Authority` represents the v2.0 endpoint - https://login.microsoftonline.com/common/v2.0
-            // The `Scope` describes the permissions that your app will need.
-            // See https://azure.microsoft.com/documentation/articles/active-directory-v2-scopes/
-            // The 'ResponseType' indicates that we want an authorization code and an ID token
-            // In a real application you could use issuer validation for additional checks, like making
-            // sure the user's organization has signed up for your app, for instance.
+                  // The `Authority` represents the v2.0 endpoint - https://login.microsoftonline.com/common/v2.0
+                  // The `Scope` describes the permissions that your app will need.  
+                  // See https://azure.microsoft.com/documentation/articles/active-directory-v2-scopes/
+                  // The 'ResponseType' indicates that we want an authorization code and an ID token 
+                  // In a real application you could use issuer validation for additional checks, like making 
+                  // sure the user's organization has signed up for your app, for instance.
 
-            ClientId = appId,
+                  ClientId = appId,
                   Authority = string.Format(CultureInfo.InvariantCulture, aadInstance, "common", "/v2.0"),
                   Scope = "openid offline_access profile " + string.Join(" ", scopes),
                   ResponseType = "code id_token",
+                  RedirectUri = "http://localhost:21942/",
                   PostLogoutRedirectUri = "/",
                   TokenValidationParameters = new TokenValidationParameters
                   {
-                      ValidateIssuer = false,
+                      // For demo purposes only, see below
+                      ValidateIssuer = false
+
+                      // In a real multitenant app, you would add logic to determine whether the
+                      // issuer was from an authorized tenant
+                      //ValidateIssuer = true,
+                      //IssuerValidator = (issuer, token, tvp) =>
+                      //{
+                      //  if (MyCustomTenantValidation(issuer))
+                      //  {
+                      //    return issuer;
+                      //  }
+                      //  else
+                      //  {
+                      //    throw new SecurityTokenInvalidIssuerException("Invalid issuer");
+                      //  }
+                      //}
                   },
                   Notifications = new OpenIdConnectAuthenticationNotifications
                   {
@@ -72,8 +90,9 @@ namespace GraphFilesWeb
         private async Task OnAuthorizationCodeReceived(AuthorizationCodeReceivedNotification notification)
         {
             // Get the user's object id (used to name the token cache)
-            string userObjId = notification.AuthenticationTicket.Identity
-              .FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
+            // Get the user's object id (used to name the token cache)
+            ClaimsPrincipal principal = new ClaimsPrincipal(notification.AuthenticationTicket.Identity);
+            string userObjId = AuthHelper.GetUserId(principal);
 
             // Create a token cache
             HttpContextBase httpContext = notification.OwinContext.Get<HttpContextBase>(typeof(HttpContextBase).FullName);
@@ -87,5 +106,6 @@ namespace GraphFilesWeb
             var response = await authHelper.GetTokensFromAuthority("authorization_code", notification.Code,
               notification.Request.Uri.ToString());
         }
+
     }
 }

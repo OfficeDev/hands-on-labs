@@ -16,7 +16,7 @@ namespace GraphFilesWeb.Controllers
 
         private GraphServiceClient GetGraphServiceClient()
         {
-            string userObjId = System.Security.Claims.ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
+            string userObjId = AuthHelper.GetUserId(System.Security.Claims.ClaimsPrincipal.Current);
             SessionTokenCache tokenCache = new SessionTokenCache(userObjId, HttpContext);
 
             string authority = string.Format(ConfigurationManager.AppSettings["ida:AADInstance"], "common", "");
