@@ -357,7 +357,7 @@ In this exercise, you will create an Excel add-in that uses the Excel JavaScript
 
 ###Test the Add-in
 1. 	Now deploy the Excel add-in to the local Excel client:
-  1. Select the **Excel16Api** project within the **Solution Explorer** tool window.
+  1. Select the **ExcelWebAddIn1** project within the **Solution Explorer** tool window.
   1. Within the **Properties** window, set the **Start Action** selector to **Office Desktop Client** and press **F5** to start the project.
   1. Visual Studio will launch the Excel desktop client and create a new Excel workbook.
 1. 	Enter a name for a new worksheet and click the button **Add a New Worksheet**. 
