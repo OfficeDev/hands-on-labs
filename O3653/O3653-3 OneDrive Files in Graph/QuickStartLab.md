@@ -28,7 +28,7 @@ for calling the Graph API.
    3. Open the **Web.config** file and find the **appSettings** element. This is
       where you will need to add your appId and app secret you will generate in the next step.
 
-    ![](images/01-1-CreateProject.png)
+    ![Create Project Dialog](images/01-1-CreateProject.png)
 
 2. Launch the [Application Registration Portal](https://apps.dev.microsoft.com)
    to register a new application.
@@ -39,7 +39,7 @@ for calling the Graph API.
       4. Copy the displayed app password and paste it into the value for **ida:AppSecret** in your project's **web.config** file.
       5. Modify the **ida:AppScopes** value to include the required **https://graph.microsoft.com/files.readwrite** scope.
 
-    ![](images/01-02-NewApplicationRegistration.png)
+    ![App registration portal](images/01-02-NewApplicationRegistration.png)
 
     ```xml
     <configuration>
@@ -62,7 +62,7 @@ for calling the Graph API.
    5. Paste the value of **Project Url** into the **Redirect URIs** field.
    6. Scroll to the bottom of the page and click **Save**.
 
-    ![](images/01-03-AddRedirect.png)
+    ![Configure redirect URL for application](images/01-03-AddRedirect.png)
 
 4. Press F5 to compile and launch your new application in the default browser.
    1. Once the Graph and AAD v2 Auth Endpoint Starter page appears, click **Sign in** and login to your Office 365 account.
