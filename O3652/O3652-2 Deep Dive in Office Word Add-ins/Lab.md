@@ -693,3 +693,74 @@ Word.run(function (ctx) {
 
 5. Congratulations! In this exercise, you learned how to split a paragraph into multiple ranges and traversing the ranges collection! Let's continue with Exercise 8!
 
+## Exercise 8: Creating and opening a new Word document!
+
+*In this exercise, you will continue working on the Visual Studio solution for the StatementOfWork add-in you created in the previous steps. You will extend the add-in's capabilities by adding JavaScript code to create an open a new Word document . Make sure to have completed Excercise 2 as we need the getDocumentAsBase64 method, we will use that Word document as a Starter*
+
+1. Go back to Visual Studio, make sure you are using the StatementOfWord project.
+
+2. Make sure you are using the Preview Office.js CDN.  In the solution explorer double click on  **Home.html** file.
+3. Make sure to be using the preview location of Office.js which **https://appsforoffice.microsoft.com/lib/beta/hosted/office.js**, so your head element should be like: (make sure to comment out the other Office.js reference)
+	````html
+	<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <title></title>
+    <script src="../../Scripts/jquery-1.9.1.js" type="text/javascript"></script>
+
+    <link href="../../Content/Office.css" rel="stylesheet" type="text/css" />
+
+    
+   <!-- <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js" type="text/javascript"></script>  -->
+        <script src="https://appsforoffice.microsoft.com/lib/beta/hosted/office.js" type="text/javascript"></script>   
+
+    <!-- To enable offline debugging using a local reference to Office.js, use:                        -->
+    <!-- <script src="../../Scripts/Office/MicrosoftAjax.js" type="text/javascript"></script>  -->
+    <!-- <script src="../../Scripts/Office/1/office.js" type="text/javascript"></script>  -->
+
+    <link href="../App.css" rel="stylesheet" type="text/css" />
+    <script src="../App.js" type="text/javascript"></script>
+
+    <link href="Home.css" rel="stylesheet" type="text/css" />
+    <script src="Home.js" type="text/javascript"></script>
+	</head>
+	````
+
+3. Now lets add some code to create and open a new document. In the Solution Explorer, double click on **Home.js** to open this JavaScript file.
+4. Add the following code to the **onaddOpenDoc** function:
+
+	````javascript
+    Word.run(function (context) {
+            var myNewDoc = context.application.createDoc(getDocumentAsBase64());
+            context.load(myNewDoc);
+
+            return context.sync()
+                .then(function () {
+                    var myParagraph = myNewDoc.body.insertParagraph("Hello World This is a new Document!!!", "end");
+                    myParagraph.font.bold = true;
+                    myParagraph.font.name = "Courier new";
+                  
+                    myNewDoc.open();
+                    context.sync();
+                }).catch(function (myError) {
+                    //otherwise we handle the exception here!
+                    app.showNotification("Error", myError.message);
+                })
+
+        }).catch(function (myError) { app.showNotification("Error", myError.message); });
+
+	````
+	
+
+4. This code basically creating a new document, using an existing doc (base64 encoded) as a starting doc (this doc is optional). Then we are adding a few more content to that document by using the API and finally opening the document. (Note that after the document is opened, no other operations can be send to it).
+
+5. Test your work by pressing F5 to start a debug session and then click the **Step 7: Create a New Document** button. You will see that a new document is created and opened !
+
+	![](Images/Fig19.png) 
+	
+
+5. Congratulations! In this exercise, you learned how to create and open new Word documents!
+
+
+Congratulations on finishing the New Word APIs Lab!!
+
