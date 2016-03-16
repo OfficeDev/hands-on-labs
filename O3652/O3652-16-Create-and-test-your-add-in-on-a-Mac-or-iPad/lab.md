@@ -34,10 +34,10 @@ In this lab, you will learn how to create a sample add-in on the Mac and then si
 ## Exercise 3: Debug HelloWorld add-in using VorlonJS
 *In this exercise, we'll use Vorlon.js to debug your add-in on the Mac.*
 
-1. Install by typing **sudo npm I –g vorlon** in Terminal.
-2. Type **sudo vorlon** in Terminal to start the VorlonJS server.
+1. Install by typing `sudo npm I –g vorlon` in Terminal.
+2. Type `sudo vorlon` in Terminal to start the VorlonJS server.
 3. To verify that Vorlon server is up and running, type http://localhost:1337 in a browser. You should see the VorlonJS start page.
-4. Copy the **<script .... ></script>** tag on that page and paste it into the <header> tag. 
+4. Copy the `<script .... ></script>` tag on that page and paste it into the `<header>` tag. 
 5. Launch Excel and start your add-in.
 6. You should now see the client connection on the Vorlon server page at http://localhost:1337.
 7. Click on the client connect link to view the Vorlon debugger UI. You can now use the Dom Explorer and Obj. Explorer tabs to view/edit the source code on your add-in.
