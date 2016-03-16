@@ -1,6 +1,6 @@
 # Excel REST API 
 
-The purpose of this lab is to show step-by-step instruction for reading writing into an Excel document stored in your OneDrive Business using new Excel REST APIs. We'll use Visual Studio MVC project to showcase the interaction. 
+The purpose of this lab is to show step-by-step instructions for reading and writing into an Excel document stored in your OneDrive Business using new Excel REST APIs. We'll use Visual Studio MVC project to showcase the interaction. 
 
 * [Lab instructions](#lab-instructions)
     * [Create a new project](#create-a-new-project)
@@ -38,7 +38,9 @@ for calling the Graph API.
 
 ### Add ToDo file 
 
-Add an *Assets* folder to your project, drop the ToDo.xlsx file included in this lab into that new folder, and add the file to your project.
+For the purpose of this demo, we will use an empty Excel file to store the tasks and create charts. In real apps, you could upload a new file using OneDrive API or target an existing file that contains needed data. 
+
+In your project, add an *Assets* folder to your project, drop the empty ToDo.xlsx file included in this lab into that new folder, and add the file to your project. Note that the app looks for a file named ToDo.xlsx to upload as part of setup.
 
 ![](images/ToDoworkbook.JPG)
 
