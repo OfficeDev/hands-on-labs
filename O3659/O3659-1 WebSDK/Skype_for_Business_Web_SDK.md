@@ -9,10 +9,10 @@ Log in to Skype for Business Client with user auburys@danewman.onmicrosoft.com 0
 
 In this lab you will get hands-on experience developing a website with Skype for Business integration.  The sample website will allow an Office 365 user to perform the following from within their website:
 1.  Sign into Skype for Business.
-2.  View own presence and set status.
+2.  View their own presence and set status.
 3.  View contact list and other user presence.
 4.  View contact cards.
-5.  Chat with O365 users using the conversation control.
+5.  Chat with Office 365 users using the conversation control.
 6.  Escalate conversation to Audio/Video.
 
 >**Prerequisites:** Before beginning the lab, the following items will be needed:
@@ -24,15 +24,15 @@ In this lab you will get hands-on experience developing a website with Skype for
 >6.  Skype for Business Web Plug-in [Download Here](need url).
 
 ##Setting up the code
-1.  Open Visual Studio and click **File->Open->Project/Solution**.
+1.  Open Visual Studio and click **File>Open->Project/Solution**.
 2.  Navigate to `C:\\Projects\Build2016\LabA\LabAWeb.sln`.
 3.  Navigate to [https://msdn.microsoft.com/en-us/office/office365/howto/add-common-consent-manually] to create your application in Azure and attain your **Client ID**.  Note this ID as it will be used later in the lab.
 4.  Add your http://localhost address to your RedirectURI list in Azure.
 5.  Add the same address as above /Home.html.
-7.  Hit **F5** or **the Start Button** in Visual Studio.  The website should launch in Internet Explorer.
+7.  Press **F5** or **the Start Button** in Visual Studio.  The website should open in Internet Explorer.
 
 ##Signing into Skype for Business
-This section will instruct a user on how to add code to your website in order to connect to Skype for Business Online.
+This section will instruct a user on how to add code to your website to connect to Skype for Business Online.
 
 1.  Copy the Client ID from above and paste into `Scripts\Config.js`replacing the text after **clientId:**.
 2.  Replace the **redirectURL** with the localhost value from step 4 in the "Setting up the code" section above. 
@@ -180,7 +180,7 @@ This section will outline how to retrieve Skype for Business contacts and displa
 	The **getSelectedEmployeeInfo()** method creates the contact list and displays contact related information.  This method also subscribes to the contact presence and will update the UI accordingly.
 
 ##Chatting with Conversation Control
-This section will outline how to render the Conversation Control and use it's chat functionality.  In addition to starting a conversation, this section will also instruct the developer on how to listen for incoming chat notifications.
+This section will outline how to render the Conversation Control and use its chat functionality.  In addition to starting a conversation, this section will also instruct the developer on how to listen for incoming chat notifications.
 
 1.  Copy the **startConversation()** method into `Home.js`:
 
@@ -202,7 +202,7 @@ This section will outline how to render the Conversation Control and use it's ch
     monitor('start conversation', promise);
 }
 	```
-	The sip of the target user must be retrieved and placed into a string array.  A container must be provided so the conversation control knows where to paint the control to.  In this example, we create a div with the SIP set to the container ID and append it as a child to the #conversations DIV.
+	The SIP of the target user must be retrieved and placed into a string array.  A container must be provided so the conversation control knows where to paint the control to.  In this example, we create a div with the SIP set to the container ID and append it as a child to the #conversations DIV.
 
 2.  Copy the **conversationHandler()** method into `Home.js`:
 
@@ -232,7 +232,7 @@ This section will outline how to render the Conversation Control and use it's ch
     ```
     This method uses the **conversationsManager** to listen for incoming notifications for chat requests.  If another user starts a conversation with the logged-in user, this method will pick up the notification and render the conversation control in the same way that starting a conversation occurred in the previous step.
 
-3.  In order to end a conversation, place the following method into the `Home.js` file:
+3.  To end a conversation, place the following method into the `Home.js` file:
 
 	```javascript
     function endConversation() {
@@ -316,7 +316,7 @@ The Skype for Business web SDK supports the ability for users to connect via aud
     }
 
     ```
-    The **startConversation(sip)** method will create a conversation object with the sip value of the contact provided.  This method will also start the audio service and start listening for audio service related events such as connected and disconnected.
+    The **startConversation(sip)** method will create a conversation object with the SIP value of the contact provided.  This method will also start the audio service and start listening for audio service related events such as connected and disconnected.
     The **startAudiotChat(sip)** and **startVideoChat(sip)** methods start a conversation with the selected user and start the audio and video services respectively.
     The **GetContactFromName(contactSIP)** method retrieves a person object from the SDK which is needed to create a conversation.
 
@@ -346,7 +346,7 @@ The Skype for Business web SDK supports the ability for users to connect via aud
     The **renderVideoService(conversation)** method starts and displays your own camera image as well as displays the connected user camera feed as well.
     The **renderAudioService(conversation)** method starts the audio service.
     
-3.  In order to listen for incoming audio or video invitations, the following method needs to be created in `chat-window.js`:
+3.  To listen for incoming audio or video invitations, the following method needs to be created in `chat-window.js`:
 
 	```javascript
     function subscribeToChatEvents() {
@@ -395,5 +395,5 @@ The Skype for Business web SDK supports the ability for users to connect via aud
         });
     }
     ```
-    This method stops all audio, video and chat services as well as removes the conversation from the conversationManager.
+    This method stops all audio, video, and chat services as well as removes the conversation from the conversationManager.
     
