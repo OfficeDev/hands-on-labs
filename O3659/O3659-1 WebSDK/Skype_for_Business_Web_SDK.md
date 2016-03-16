@@ -250,7 +250,8 @@ This section will outline how to render the Conversation Control and use it's ch
     $('#ChatWindow').hide();
     $('#ChatControlsArea').hide();
     $('#ContactList').show();
-}
+}	
+	```
     This method cycles through each open conversation and removes it from the conversations collection.
 
 ##Connecting with Audio and Video

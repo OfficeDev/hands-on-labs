@@ -6,36 +6,36 @@ In this lab, you will use Microsoft Graph to program against an Office 365 mailb
 1. You must have Visual Studio 2015 with Update 1 installed.
 
 ## Exercise 1: Create an ASP.NET MVC5 Application
-In this exercise, you will create the ASP.NET MVC5 application and register it with Azure active Directory.
+In this exercise, you will create the ASP.NET MVC5 application and register it with Azure Active Directory.
 
 1. Launch **Visual Studio 2015** as an administrator. 
-1. In Visual Studio select **File/New/Project**.
+1. In Visual Studio, select **File > New > Project**.
 1. In the **New Project** dialog, select **Templates/Visual C#/Web** and click **ASP.NET Web Application**. Name the new project **Office365Mail** and then click **OK**.  
     
     ![](Images/01.png)
     > NOTE: You need sign up for your Azure subscription.
     
-1. In the **New ASP.NET Project** dialog, click **MVC** and then click **Change Authentication**.
-1. Select **Work And School Accounts**, check **Read directory data** and click **OK**.
+1. In the **New ASP.NET Project** dialog, click **MVC**, and then click **Change Authentication**.
+1. Select **Work And School Accounts**, check **Read directory data**, and click **OK**.
 
 	![](Images/02.png)
 
-1. Once the **New ASP.NET Project** dialog appears like the following screenshot, click **OK**. 
+1. When the **New ASP.NET Project** dialog appears like the following screenshot, click **OK**. 
 
 	![](Images/03.png)
     
-1. At this point you can test the authentication flow for your application.
-  1. In Visual Studio, press **F5**. The browser will automatically launch taking you to the HTTPS start page for the web application.
+1. At this point, you can test the authentication flow for your application.
+  1. In Visual Studio, press **F5**. The browser will automatically launch, taking you to the HTTPS start page for the web application.
 
-   > **Note:** If you receive an error that indicates ASP.NET could not connect to the SQL database, please see the [SQL Server Database Connection Error Resolution document](../../SQL-DB-Connection-Error-Resolution.md) to quickly resolve the issue. 
+   > **Note:** If you receive an error that indicates that ASP.NET could not connect to the SQL database, see the [SQL Server Database Connection Error Resolution document](../../SQL-DB-Connection-Error-Resolution.md) to quickly resolve the issue. 
 
   1. To sign in, click the **Sign In** link in the upper-right corner.
-  1. Login using your **Organizational Account**.
-  1. Upon a successful login, since this will be the first time you have logged into this app, Azure AD will present you with the common consent dialog that looks similar to the following image:
+  1. Log on using your **Organizational Account**.
+  1. Upon a successful logon, because this will be the first time you have logged on to this app, Azure AD will present you with the common consent dialog, which looks similar to the following image:
 
     ![](Images/ConsentDialog.png)
   1. Click **OK** to approve the app's permission request on your data in Office 365.
-  1. You will then be redirected back to your web application. However notice in the upper right corner, it now shows your email address & the **Sign Out** link.
+  1. You will then be redirected back to your web application. However, notice in the upper right corner, it now shows your email address and the **Sign Out** link.
 
 Congratulations... at this point your app is configured with Azure AD and leverages OpenID Connect and OWIN to facilitate the authentication process!
 
@@ -52,7 +52,7 @@ Congratulations... at this point your app is configured with Azure AD and levera
 8. Click the **Add Application** button.
 9. In the **Permissions to other applications** dialog, click the **PLUS** icon next to the **Microsoft Graph** option.
 10. Click the **Check mark** icon in the lower right corner.
-11. For the new **Microsoft Graph** application permission entry, select the **Delegated Permissions** dropdown on the same line and then select the following permissions:
+11. For the new **Microsoft Graph** application permission entry, select the **Delegated Permissions** drop-down on the same line and then select the following permissions:
     * **Read and write access to user mail**
     * **Send mail as a user**
 12. Click the **Save** button at the bottom of the page.
@@ -491,10 +491,10 @@ In this exercise, you will code the **MailController** of the MVC application to
     3. Test the new view.
        1. In **Visual Studio**, hit **F5** to begin debugging.
 
-	    > **Note:** If you receive an error that indicates ASP.NET could not connect to the SQL database, please see the [SQL Server Database Connection Error Resolution document](../../SQL-DB-Connection-Error-Resolution.md) to quickly resolve the issue. 
+	    > **Note:** If you receive an error that indicates ASP.NET could not connect to the SQL database, see the [SQL Server Database Connection Error Resolution document](../../SQL-DB-Connection-Error-Resolution.md) to quickly resolve the issue. 
 
-       2. When prompted, log in with your **Organizational Account**.
-       3. Once the application has initialized and displays the home page, click the **Messages** menu option and verify that your application displays Mail from your Office 365 account.  
+       2. When prompted, log on with your **Organizational Account**.
+       3. When the application has initialized and displays the home page, click the **Messages** menu option and verify that your application displays Mail from your Office 365 account.  
          ![](Images/10.png)
        4. Close the browser window, terminate the debugging session, and return to Visual Studio.
 
@@ -510,11 +510,11 @@ In this exercise, you will code the **MailController** of the MVC application to
      }
      ```
   2. Update the view to display the message detail.
-    1. Within the `MailController` class, right click the `View()` at the end of the `Details` method and select **Add View**.
+    1. Within the `MailController` class, right-click the `View()` at the end of the `Details` method and select **Add View**.
     2. Within the **Add View** dialog, set the following values:
       1. View Name: **Details**.
       2. Template: **Empty (without model)**.
-         Leave all other fields blank & unchecked.
+         Leave all other fields blank and unchecked.
       3. Click **Add**.<br/>
       4. Within the **Views/Mail/Details.cshtml** file, delete all the code in the file and replace it with the following code:
          
@@ -559,9 +559,9 @@ In this exercise, you will code the **MailController** of the MVC application to
   3. Test the new view:
      1. In **Visual Studio**, press **F5** to begin debugging.
 
-	  > **Note:** If you receive an error that indicates ASP.NET could not connect to the SQL database, please see the [SQL Server Database Connection Error Resolution document](../../SQL-DB-Connection-Error-Resolution.md) to quickly resolve the issue. 
+	  > **Note:** If you receive an error that indicates that ASP.NET could not connect to the SQL database, see the [SQL Server Database Connection Error Resolution document](../../SQL-DB-Connection-Error-Resolution.md) to resolve the issue. 
 
-     2. When prompted, log in with your **Organizational Account**.
+     2. When prompted, log on with your **Organizational Account**.
      3. On the **Messages** list, click the **Details** menu option.  
         ![](Images/11.png)
      4. Close the browser window, terminate the debugging session, and return to Visual Studio.
@@ -584,14 +584,14 @@ In this exercise, you will code the **MailController** of the MVC application to
   2. Test **Delete** function:
     1. In **Visual Studio**, press **F5** to begin debugging.
 
-	 > **Note:** If you receive an error that indicates ASP.NET could not connect to the SQL database, please see the [SQL Server Database Connection Error Resolution document](../../SQL-DB-Connection-Error-Resolution.md) to quickly resolve the issue. 
+	 > **Note:** If you receive an error that indicates ASP.NET could not connect to the SQL database, see the [SQL Server Database Connection Error Resolution document](../../SQL-DB-Connection-Error-Resolution.md) to resolve the issue. 
 
-    2. When prompted, log in with your **Organizational Account**.
+    2. When prompted, log on with your **Organizational Account**.
     3. On the **Messages** list, the message can be deleted by clicking the **Delete** menu option.
     4. Close the browser window, terminate the debugging session, and return to Visual Studio.
 
 8. Add a route handler and views to handle sending messages:
-  1. In the **MailController.cs** file, add an action method named **Send** using the following code to create a new event. Notice how you are adding two items, when the create form is requested (the `HttpGet` option) and one for when the form is submitted (the `HttpPost` option).
+  1. In the **MailController.cs** file, add an action method named **Send** using the following code to create a new event. Notice how you are adding two items, one for when the create form is requested (the `HttpGet` option) and one for when the form is submitted (the `HttpPost` option).
 
     ```c#
     [HttpGet]
@@ -612,7 +612,7 @@ In this exercise, you will code the **MailController** of the MVC application to
     ```
 
   2. Update the view to send the message.
-    1. Within the `MailController` class, right click the `Send()` at the end of the `Send` method and select **Add View**.
+    1. Within the `MailController` class, right-click the `Send()` at the end of the `Send` method and select **Add View**.
     2. Within the **Add View** dialog, set the following values:
       1. View Name: **Send**.
       2. Template: **Empty (without model)**.
@@ -689,9 +689,9 @@ In this exercise, you will code the **MailController** of the MVC application to
   3. Test **Send** view:
      1. In **Visual Studio**, press **F5** to begin debugging.
 
-	  > **Note:** If you receive an error that indicates ASP.NET could not connect to the SQL database, please see the [SQL Server Database Connection Error Resolution document](../../SQL-DB-Connection-Error-Resolution.md) to quickly resolve the issue. 
+	  > **Note:** If you receive an error that indicates ASP.NET could not connect to the SQL database, see the [SQL Server Database Connection Error Resolution document](../../SQL-DB-Connection-Error-Resolution.md) to resolve the issue. 
 
-     2. When prompted, log in with your **Organizational Account**.
+     2. When prompted, log on with your **Organizational Account**.
      3. In the **Messages** list, create a new message by clicking the **Create New Message** menu option.
         ![](Images/12.png)
      4. Fill the form out, and click the **Create** button to send the message.

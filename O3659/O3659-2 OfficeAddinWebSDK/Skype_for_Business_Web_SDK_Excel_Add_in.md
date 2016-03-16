@@ -10,10 +10,10 @@ Log in to Skype for Business Client with user auburys@danewman.onmicrosoft.com 0
 
 In this lab you will get hands-on experience developing an Excel add-in with Skype for Business integration.  The sample add-in will allow an Office 365 user to perform the following from within Excel:
 1.  Sign into Skype for Business.
-2.  See other O365 user contact information and presence.
-3.  Chat with O365 users.
-4.  Launch Skype for Business client to escalate to audio/video.
-5.  Publish add-in to the O365 tenant app store.
+2.  See other Office 365 user contact information and presence.
+3.  Chat with Office 365 users.
+4.  Start Skype for Business client to escalate to audio/video.
+5.  Publish add-in to the Office 365 tenant app store.
 
 >**Prerequisites:** Before beginning the lab, the following items will be needed:
 >1.  Visual Studio 2013 and above.
@@ -24,24 +24,24 @@ In this lab you will get hands-on experience developing an Excel add-in with Sky
 >6.  Publish profile settings from the Azure web application [https://msdn.microsoft.com/en-us/library/dn385850(v=nav.70).aspx]
 
 ##Setting up the code
-1.  Open Visual Studio and click **File->Open->Project/Solution**.
+1.  Open Visual Studio and click **File>Open>Project/Solution**.
 2.  Navigate to `C:\\Projects\SkypeO365\ExcelAddIn\ExcelAddIn.sln`.
-3.  Right click on the ExcelAddIn App for Office project and Select **Add->Existing Item**.
-4.  Browse to `C:\\ExcelTemplates\TestExcel.xlsx` and hit OK.
-5.  Click on th ExcelAddIn App for Office project.  In the properties window, set the Start Document to **TestExcel.xlsx**.
-6.  Hit **F5** or **the Start Button** in Visual Studio.  The Excel sheet should appear.
+3.  Right-click the ExcelAddIn App for Office project and Select **Add>Existing Item**.
+4.  Browse to `C:\\ExcelTemplates\TestExcel.xlsx` and click OK.
+5.  Click the ExcelAddIn App for Office project.  In the properties window, set the Start Document to **TestExcel.xlsx**.
+6.  Press **F5** or **the Start Button** in Visual Studio.  The Excel sheet should appear.
 7.  On the top navigation, click the **Insert** tab and select **My Add-ins**.
-8.  In the **Developer Add-in** section, click on your application name.
+8.  In the **Developer Add-in** section, click your application name.
 
-	![image](screenshots/Add-in.png)
+	![image](Screenshots/Add-in.png)
 
-9.  The add in should now appear in the right task pane.  Click close and save your excel file.
-6.  Navigate to [https://msdn.microsoft.com/en-us/office/office365/howto/add-common-consent-manually] in order to create your application in Azure and attain your **Client ID**.  Note this ID as it will be used later in the lab.
+9.  The add in should now appear in the right task pane.  Click close and save your Excel file.
+6.  Navigate to [https://msdn.microsoft.com/en-us/office/office365/howto/add-common-consent-manually] to create your application in Azure and attain your **Client ID**.  Note this ID as it will be used later in the lab.
 7.  Add your http://localhost address to your RedirectURI's in Azure.  
-8.  Double click on the ExcelAddIn App for Office project.
+8.  Double-click on the ExcelAddIn App for Office project.
 9.  Set the Display name to **Skype for Business Excel Add In**
-8.  Hit **F5** or **the Start Button** in Visual Studio.  The Excel sheet should appear:
-    ![image](Screenshots/launch_excel.png)
+8.  Press **F5** or **the Start Button** in Visual Studio.  The Excel sheet should appear:
+    ![image](Screenshots/launch_excel.PNG)
 
 ##Signing into Skype for Business
 This section will instruct a user on how to add code to your application in order to connect to Skype for Business.
@@ -70,7 +70,7 @@ This section will instruct a user on how to add code to your application in orde
         location.assign(url);
     }
 ```
-This method will be responsible for displaying the standard azure authentication page.  On successful username/password submission, the azure login will re-direct the user to the specified URI (**redirect_uri**) from the **showSkypeLogin()** query string.
+This method will display the standard azure authentication page.  On successful username/password submission, the Azure login will redirect the user to the specified URI (**redirect_uri**) from the **showSkypeLogin()** query string.
 
 6.  Add the sign in button click event:
 ```javascript
@@ -81,8 +81,8 @@ This method will be responsible for displaying the standard azure authentication
 }
 ```
 
-7.  Hit F5 or the "Start Debug" button in visual studio to test bringing up the azure authentication page.  You should see the following view in the add-in pane:
-![image](Screenshots/azure_login.png)
+7.  Press F5 or the "Start Debug" button in Visual Studio to test bringing up the Azure authentication page.  You should see the following view in the add-in pane:
+![image](Screenshots/azure_login.PNG)
 Close the Excel sheet.
 
 8.  Create the following **pageLoading()** function to display the Skype Loading gif:
@@ -124,7 +124,7 @@ Close the Excel sheet.
     });
     }
     ```
-This access token will be used to authenticate the user when attempting to sign into Skype for Business.
+This access token will authenticate the user when attempting to sign into Skype for Business.
 
 11.  Add the Skype initialization code to your **$(document).ready()** function
 
@@ -169,7 +169,7 @@ function setPresenceIcon(state) {
         }
     }
 ```
-The **setPresenceIcon(state)** method will return the image path to represent the presence returned from the Skype for Business Online SDK when you subscribe to your own presence.  Later on, this same method can be used to display other user presence as well.
+The **setPresenceIcon(state)** method will return the image path to represent the presence returned from the Skype for Business Online SDK when you subscribe to your own presence.  Later, this same method can be used to display other user presence as well.
 ```javascript
  function showContacts() {
         $('.signIn').hide();
@@ -204,19 +204,19 @@ The **showContacts()** method will hide your loading gif and display the logged 
         }
     }
 ```
-The **signIn()** method will take the access_token value returned from the user's successful azure login and pair it along with your clientId in order to authenticate the user's access to the Skype for Business Online SDK features.  On successful login, the user will be displayed with the logged in user name, email, and presence.  Also appearing, will be a section used later on for displaying other Skype user information in a section called **Contact Info**.
+The **signIn()** method will take the access_token value returned from the user's successful Azure login and pair it along with your clientId to authenticate the user's access to the Skype for Business Online SDK features.  On successful login, the user will be displayed with the logged in user name, email, and presence.  Also appearing, will be a section used later on for displaying other Skype user information in a section called **Contact Info**.
 
-13.  Hit F5 or Start Debugging.
+13.  Press F5 or Start Debugging.
 14.  Click the "Sign into Skype" button and provide your credentials.  After submitting the credentials, you should see the Skype "Loading" animated gif and then be presented with the following screen:
-![image](Screenshots/login_success_blank.png).
+![image](Screenshots/login_success_blank.PNG).
 
 ##Setting up Excel Data
 
-In this section the user will setup Excel data and create an excel function to using the Office 365 javascript API to read the Excel data.
+In this section the user will setup Excel data and create an excel function to using the Office 365 JavaScript API to read the Excel data.
 
-1. Double click on `TestExcel.xlsx`
+1. Double-click `TestExcel.xlsx`
 2. In **Column A**, add an existing user's email per row that has been setup for this demo.
-3. Hit Ctrl+S to save the file and then close.
+3. Press Ctrl+S to save the file and then close.
 4. Open the Home.js file.
 5. Create the following methods in the `Home.js` file:
 
@@ -233,7 +233,7 @@ In this section the user will setup Excel data and create an excel function to u
         }
     ```
 
-    The **excelClickHandler(eventArgs)** method handles the **DcoumentSelectionChanged** event from the Office 365 javascript API.  The selected data will return a text value representing the text in the highlighted field in the spread sheet.
+    The **excelClickHandler(eventArgs)** method handles the **DcoumentSelectionChanged** event from the Office 365 javascript API.  The selected data will return a text value representing the text in the highlighted field in the spreadsheet.
 
     ```javascript
      Office.context.document.addHandlerAsync("documentSelectionChanged", excelClickHandler, function (result) {
@@ -340,7 +340,7 @@ Now that the functionality for getting selected information from Excel is setup,
 5. Run the code and login.
 6. Once you are logged in, select an Excel cell with an email address.  Watch the right task pane updated with the selected user contact information:
 
-	![image](screenshots/contact_card.png)
+	![image](Screenshots/contact_card.PNG)
 
 7. If you select another user, you will see the contact info update again in the task pane.
 
@@ -446,14 +446,14 @@ A new feature in the Skype for Business Online SDK is the Conversation Control. 
     
     Add the **conversationHandler()** method to the **showContacts** method so the application will listen for incoming messages as soon as the user is logged in.
     
-4. Hit F5 or Start Debug to start the application.
+4. Press F5 or Start Debug to start the application.
 5. Open the Skype for Business desktop client and login with another user.
 6. In the Excel Add-in, click on that user in Excel.
 7. Once you see the user information, click the chat icon
-8. Type a message and hit Enter.
+8. Type a message and press Enter.
 9. Type a message in the Skype for Business Client and type enter.  You should see your first chat interaction.
 
-	![image](screenshots/conversation.png)
+	![image](Screenshots/conversation.PNG)
     
 10. Close the chat by clicking the red phone button.
 11. Select another user in Excel, click the chat icon, and then click the video icon.
@@ -464,38 +464,38 @@ A new feature in the Skype for Business Online SDK is the Conversation Control. 
     $('#selectedCall').attr('href', 'Callto:' + sip);
     $('#selectedVideo').attr('href', 'Callto:' +sip);
     ```
-    **#selectedCall** and **#selectedVideo** are both anchor tags on the `Home.html` page.  What the code above is doing is adding a **Callto:sip:yourperson@example.com** to the anchor tag.  When clicking on these links, the callto is a command that launches the Skype for Business Client with a message directed to the sip specified in the command.  This is very similar to a **mailto:** command that will launch a users default email client from a web page.
+    **#selectedCall** and **#selectedVideo** are both anchor tags on the `Home.html` page.  What the code above is doing is adding a **Callto:sip:yourperson@example.com** to the anchor tag.  When clicking on these links, the callto is a command that launches the Skype for Business Client with a message directed to the sip specified in the command.  This is similar to a **mailto:** command that will start a users default email client from a web page.
 
 ##Publishing the Add-in
 
-In order for other users in your organization to take advantage of the add-in you've just created, the add-in must be published to your tenants O365 App Store.  This section will guide the user on how to test the application in a browser and then publish it for others to use.
+For other users in your organization to use the add-in you've just created, the add-in must be published to your tenants Office 365 App Store.  This section will guide the user on how to test the application in a browser and then publish it for others to use.
 
-1. Right click on the **ExcelAddIn** App for Office project and select Publish.
+1. Right-click on the **ExcelAddIn** App for Office project and select Publish.
 2. In the **Current Profile** drop down, select **New**.
 
-	![image](screenshots/publish_setup.png)
+	![image](Screenshots/publish_setup.png)
 
 3. Select **Import publishing profile** and browse to the downloaded Azure Publish Profile from the pre-requisites.  Click Finish.
 
-	![image](screenshots/publish_path.png)
+	![image](Screenshots/publish_path.PNG)
 
-4. Double click the ExcelAddinManifest file and make sure the source location is set to `https://[yourwebsitedomain]/App/Home/Home.html`
-5. Add your O365 tenant domain to the AppDomains list on the ExcelAddInManifest -> App Domains tab.
+4. Double-click the ExcelAddinManifest file and make sure the source location is set to `https://[yourwebsitedomain]/App/Home/Home.html`
+5. Add your O365 tenant domain to the AppDomains list on the ExcelAddInManifest>App Domains tab.
 
-	![image](screenshots/allowed_domains.png)
+	![image](Screenshots/allowed_domains.PNG)
 
 6. On the Publish screen, click the **Package the app** option.
 
-	![image](screenshots/package_app.png)
+	![image](Screenshots/package_app.PNG)
 
 7. Next, click the **Deploy your web project** button on the Publish screen.
 
-	![image](screenshots/deploy.png)
+	![image](Screenshots/deploy.PNG)
 
 8. Use the Web Deploy Option and follow the wizard.
-9. Follow the steps at this link to publish your add-in to the add-in catalog [https://msdn.microsoft.com/en-us/library/office/fp123515.aspx]
+9. Follow the steps at this link to publish your add-in to the app catalog [https://msdn.microsoft.com/en-us/library/office/fp123515.aspx]
 
 10. Login to the Office 365 portal [https://portal.officeppe.com].
 11. Open a new Excel document.
 12. On the Insert Tab, select **Add-ins**
-13. Select the Add-in you just created.  You should now be able to use your add-in in your Office 365 environment.
+13. Select the Add-in you just created.  You should now be able to use your add-in in Office 365.

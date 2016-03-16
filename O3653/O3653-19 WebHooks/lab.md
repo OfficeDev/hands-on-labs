@@ -25,7 +25,7 @@ A webhooks subscription allows a client app to receive notifications about mail,
     
    > NOTE: Make sure you use the exact same name that is specified in these instructions for your Visual Studio project. Otherwise, your namespace name will differ from the one in these instructions and your code will not compile.
  
-    ![](images/VSProject.png)
+    ![Creating the project in Visual Studio](images/VSProject.png)
 
 1. Build the solution (**Build/Build Solution**) to restore the NuGet packages required by the project. This should remove all of the solution's initial red squigglies.
 
@@ -94,7 +94,7 @@ You must expose a public HTTPS endpoint to create a subscription and receive not
 
 1. Copy the **URL** port number from the **Properties** window.  If the **Properties** window isn't showing, choose **View/Properties Window**. 
 
-	![](images/PortNumber.png)
+	![URL port number in the Properties window](images/PortNumber.png)
 
 1. [Download ngrok](https://ngrok.com/download) for Windows.  
 
@@ -106,11 +106,11 @@ You must expose a public HTTPS endpoint to create a subscription and receive not
 ngrok http <port-number> -host-header=localhost:<port-number>
    ```
 
-	![](images/ngrok1.PNG)
+	![Running the command in ngrok](images/ngrok1.PNG)
 
 1. Copy the HTTPS URL that's shown in the console. 
 
-	![](images/ngrok2.PNG)
+	![The HTTPS URL in the ngrok console](images/ngrok2.PNG)
 
 1. In Visual Studio, open the Web.config file in the root directory of the project. Insert the following key in the **appSettings** section, replacing the *ENTER_YOUR_PROXY_URL* placeholder value with the URL you just copied.
 

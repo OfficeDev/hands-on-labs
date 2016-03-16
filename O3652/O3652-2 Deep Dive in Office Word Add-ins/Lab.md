@@ -1,43 +1,43 @@
 # Deep Dive into Office Word Add-ins (using 1.2 and 1.3 Requirement Sets)
-In this lab you will get hands-on experience developing an Office Word Add-in, using the 1.3 requirement set of the Word JavaScript API.
+In this lab, you will get hands-on experience developing a Word add-in by using the 1.3 requirement set of the Word JavaScript API.
 
 **Prerequisites:**
 1. You must have Visual Studio 2015 & Update 1 installed.
-2. You must have Office 2016 Preview installed which you can obtain from here: https://products.office.com/en-us/office-2016-preview. Make sure you are using the January Fork release (6741).
-3. This lab requires you to use multiple starter files or an entire starter project from the GitHub location. You can either download the whole repo as a zip or clone the repo https://github.com/OfficeDev/TrainingContent.git for those familiar with git.
+2. You must have Office 2016 Preview installed, which you can obtain here: https://products.office.com/en-us/office-2016-preview. Make sure you are using the January Fork release (6741).
+3. This lab requires you to use multiple starter files or an entire starter project from the GitHub location. You can either download the whole repo as a zip or clone the repo https://github.com/OfficeDev/TrainingContent.git, for those familiar with git.
 
 ## Exercise 1: Creating the Statement of Work Wizard Add-in Project and Hello World!
-*In this exercise you will create a new Office Add-in project in Visual Studio so that you can begin to write, test and debug an Office Word Add-in. The user interface of the Office Add-in you will create in this lab will not be very complicated as it will just contain HTML buttons and JavaScript command handlers. You will also code your first  "Hello World!" sample!*
+*In this exercise, you will create a new Office Add-in project in Visual Studio so that you can begin to write, test and debug a Word add-in. The user interface of the Office Add-in you will create in this lab will not be very complicated as it will just contain HTML buttons and JavaScript command handlers. You will also code your first  "Hello World!" sample!*
 
 1. Launch Visual Studio 2015 as an administrator.
-2. From the **File** menu select the **New Project** command. When the **New Project** dialog appears, select the **Office Add-in** project template from the **Office/SharePoint** template folder as shown below. Name the new project **StatementOfWork** and click **OK** to create the new project.
+2. From the **File** menu, select the **New Project** command. When the **New Project** dialog appears, select the **Office Add-in** project template from the **Office/SharePoint** template folder as shown below. Name the new project **StatementOfWork** and click **OK** to create the new project.
 
 	![](Images/Fig01.png)
 
-3. When you create a new Office Add-in project, Visual Studio prompts you with the **Choose the Add-in type** page of the **Create Office Add-in** dialog. This is the point where you select the type of Office Add-in you want to create. Leave the default setting with the radio button titled **Task pane** and select **Next** to continue.
+3. When you create a new Office Add-in project, Visual Studio prompts you with the **Choose the Add-in type** page of the **Create Office Add-in** dialog. This is the point where you select the type of Office Add-in you want to create. Leave the default setting with the radio button titled **Task pane** selected, and select **Next** to continue.
 
 	![](Images/Fig02.png)
 
-4. On the **Choose the host applications** page of the **Create Office Add-in** dialog, uncheck all the Office applications except for **Word** and then click **Finish** to create the new Visual Studio solution. 
+4. On the **Choose the host applications** page of the **Create Office Add-in** dialog, uncheck all the Office applications except for **Word**, and then click **Finish** to create the new Visual Studio solution. 
 
 	![](Images/Fig03.png)
 
-5. Take a look at the structure of the new Visual Studio solution once it has been created. At a high-level, the new solution has been created using two Visual Studio projects named **StatementOfWork** and **StatementOfWorkWeb**. You should also observe that the top project contains a top-level manifest for the Add-in named **StatementOfWorkManifest** which contains a single file named **StatementOfWork.xml**.
+5. Take a look at the structure of the new Visual Studio solution after it has been created. At a high-level, the new solution has been created using two Visual Studio projects named **StatementOfWork** and **StatementOfWorkWeb**. You should also observe that the top project contains a top-level manifest for the add-in named **StatementOfWorkManifest**, which contains a single file named **StatementOfWork.xml**.
 
 	![](Images/Fig04.png)
 
-6. In the Solution Explorer, double-click on the node named **StatementOfWorkManifest** to open the Add-in manifest file in the Visual Studio designer. Update the **Display Name** settings in the Add-in manifest from **StatementOfWork** to **Statement of Work Add-In**.
+6. In the Solution Explorer, double-click on the node named **StatementOfWorkManifest** to open the add-in manifest file in the Visual Studio designer. Update the **Display Name** settings in the add-in manifest from **StatementOfWork** to **Statement of Work Add-In**.
 
 	![](Images/Fig05.png)
 
 7. Save and close **StatementOfWorkManifest**.
-8. Over the next few steps you will walk through the default Add-in implementation that Visual Studio generated for you when the Add-in project was created. Begin by looking at the structure of the **AddIn** folder which has two important files named **app.css** and **app.js** which contain CSS styles and JavaScript code which is to be used on an app-wide basis.
+8. Over the next few steps, you will walk through the default add-in implementation that Visual Studio generated for you when the add-in project was created. Begin by looking at the structure of the **AddIn** folder, which has two important files named **app.css** and **app.js**. These files contain CSS styles and JavaScript code to use for the add-in.
 
 	![](Images/Fig06.png)
 
-9. You can see that inside the **AddIn** folder there is a child folder named **Home** which contains three files named **Home.html**, **Home.css** and **Home.js**. Note that the Add-in project is currently configured to use **Home.html** as the Add-in's start page and that **Home.html** is linked to both **Home.css** and **Home.js**.
+9. You can see that inside the **AddIn** folder there is a child folder named **Home**, which contains three files named **Home.html**, **Home.css** and **Home.js**. Note that the add-in project is currently configured to use **Home.html** as the add-in's start page and that **Home.html** is linked to both **Home.css** and **Home.js**.
  
-10. Double-click on **app.js** to open it in a code editor window. you should be able to see that the code creates a global variable named **app** based on the JavaScript *Closure* pattern. The global **app** object defines a method named **initialize** but it does not execute this method. 
+10. Double-click **app.js** to open it in a code editor window. You should be able to see that the code creates a global variable named **app** based on the JavaScript *Closure* pattern. The global **app** object defines a method named **initialize** but it does not execute this method. 
 
 	````javascript 
 	var app = (function () {
@@ -68,9 +68,9 @@ In this lab you will get hands-on experience developing an Office Word Add-in, u
 	})();
 	````
 
-11. Close **app.js** and be sure not to save any changes.
-12. Next you will examine the JavaScript code in **home.js**. Double-click on **home.js** to open it in a code editor window. Note that **Home.html** links to **app.js** before it links to **home.js** which means that JavaScript code written in **Home.js** can access the global **app** object created in **app.js**.
-13. Walk through the code in **Home.js** and see how it uses a self-executing function to register an event handler on the **Office.initialize** method which in turn registers a document-ready event handler using jQuery. This allows the Add-in to call **app.initialize** and to register an event handler using the **getDataFromSelection** function. 
+11. Close **app.js** and be you don't save any changes.
+12. Next, you will examine the JavaScript code in **home.js**. Double-click **home.js** to open it in a code editor window. Note that **Home.html** links to **app.js** before it links to **home.js**, which means that JavaScript code written in **Home.js** can access the global **app** object created in **app.js**.
+13. Walk through the code in **Home.js** and see how it uses a self-executing function to register an event handler on the **Office.initialize** method, which in turn registers a document-ready event handler using jQuery. This allows the add-in to call **app.initialize** and to register an event handler using the **getDataFromSelection** function. 
 
 	````javascript 
 	(function () {
@@ -98,7 +98,7 @@ In this lab you will get hands-on experience developing an Office Word Add-in, u
 	})();
 	````
 
-14. Delete the **getDataFromSelection** function from **Home.js** and also remove the line of code that binds the event handler to the button with the id of **get-data-from-selection** so your code matches the following code listing.
+14. Delete the **getDataFromSelection** function from **Home.js** and also remove the line of code that binds the event handler to the button with the id of **get-data-from-selection**, so that your code matches the following code listing.
 
 	````javascript
 	(function () {
@@ -115,7 +115,7 @@ In this lab you will get hands-on experience developing an Office Word Add-in, u
 	})(); 
 	````
 15. Save your changes to **Home.js**. You will return to this source file after you have added your HTML layout to **Home.html**.
-16. Now it's time to examine the HTML that has been added to the project to create the Add-in's user interface. Double-click **Home.html** to open this file in a Visual Studio editor window. Examine the layout of HTML elements inside the body element. 
+16. Now it's time to examine the HTML that has been added to the project to create the add-in's user interface. Double-click **Home.html** to open this file in a Visual Studio editor window. Examine the layout of HTML elements inside the **body** element. 
 
 	````html
 	<body>
@@ -149,13 +149,13 @@ In this lab you will get hands-on experience developing an Office Word Add-in, u
 		</div>
 		<div id="content-main">
 			<div class="padding">
-				<!-- your app UI layout goes here -->
+				<!-- your add-in UI layout goes here -->
 			</div>
 		</div>
 	</body>
 	````
 
-18. Update the **content-main** div to match the following HTML layout which adds a set of buttons to the Add-in's layout.
+18. Update the **content-main** div to match the following HTML layout, which adds a set of buttons to the add-in's layout.
 
 	````html
  <div id="content-main">
@@ -193,7 +193,7 @@ In this lab you will get hands-on experience developing an Office Word Add-in, u
 	````
 
 19. Save and close **Home.html**.
-20. Open the CSS file named **Home.css** and add the following CSS rule to ensure all the Add-in's command buttons and select element have a uniform width and spacing.
+20. Open the CSS file named **Home.css** and add the following CSS rule to ensure all the add-in's command buttons and select element have a uniform width and spacing.
 
 	````css
 	#content-main button, #content-main select{
@@ -203,14 +203,14 @@ In this lab you will get hands-on experience developing an Office Word Add-in, u
 	````
 
 21. Save and close **Home.css**.
-21. Right click the StatementOfWork project in the Visual Studio Solution and select **Set as Startup Project**.
-22. Now it's time to test the Add-in using the Visual Studio debugger. Press the **{F5}** key to run the project in the Visual Studio debugger. The debugger should launch Microsoft Word 2016 and you should see your Office Add-in in the task pane on the right side of a new Word document as shown in the following screenshot.
+21. Right-click the StatementOfWork project in the Visual Studio Solution and select **Set as Startup Project**.
+22. Now it's time to test the add-in using the Visual Studio debugger. Press the **{F5}** key to run the project in the Visual Studio debugger. The debugger should launch Word 2016 and you should see your Office Add-in in the task pane on the right side of a new Word document, as shown in the following screenshot.
 
 	![](Images/Fig07.png)
 
-23. Close Microsoft Word to terminate your debugging session and return to Visual Studio.
+23. Close Word to terminate your debugging session and return to Visual Studio.
 24. Return to the source file named **Home.js** or open it if it is not already open.
-25. Create a function named **onaddContentHellowWorld** and add the following call to **body.insertText**. This method is replacing the entire body of the document with the "Hello World!" string (note that instead of "replace" the method can also insert at the "start" or "end" of the body). Add also a handler for success and error.
+25. Create a function named **onaddContentHellowWorld** and add the following call to **body.insertText**. This method is replacing the entire body of the document with the "Hello World!" string (note that instead of "replace" the method can also insert at the "start" or "end" of the body). Also add a handler for success and error.
 
 	````javascript
   function onaddContentHellowWorld() {
@@ -231,7 +231,7 @@ In this lab you will get hands-on experience developing an Office Word Add-in, u
     }
 	````
 
-26. Finally, add a line of jQuery code into the Add-in initialization logic to bind the click event of the **addContentHellowWorld** button to the **onaddContentHellowWorld** function.
+26. Finally, add a line of jQuery code into the add-in initialization logic to bind the click event of the **addContentHellowWorld** button to the **onaddContentHellowWorld** function.
 
 	````javascript
 	Office.initialize = function (reason) {
@@ -280,14 +280,15 @@ In this lab you will get hands-on experience developing an Office Word Add-in, u
 	````
 
 28. Save your changes to **Home.js**.
-29. Now test the functionality of the Add-in. Press the **{F5}** key to begin a debugging session and click the **Hello World** button. You should see that "Hello World" has been added into the cursor position of the Word document.
+29. Now test the functionality of the add-in. Press the **{F5}** key to begin a debugging session and click the **Hello World** button. You should see that "Hello World" has been added into the cursor position of the Word document.
 
 	![](Images/Fig08.png)
 
-30. You have now successfully run and tested the Add-in and its JavaScript logic using the Visual Studio debugger. Close Microsoft Word to stop the debugging session and return to Visual Studio.
+30. You have now successfully run and tested the add-in and its JavaScript logic using the Visual Studio debugger. Close Microsoft Word to stop the debugging session and return to Visual Studio.
 
-## Exercise 2: Using OOXML to insert a starting Document.
-*In this exercise you will continue working on the Visual Studio solution for the StatementOfWork Add-in you created in the previous exercise. You will add additional JavaScript code to create a starting document using Office Open XML (OOXML). *
+## Exercise 2: Using OOXML to insert a starting Document
+
+*In this exercise, you will continue working on the Visual Studio solution for the StatementOfWork add-in you created in the previous exercise. You will add additional JavaScript code to create a starting document using Office Open XML (OOXML).*
  
 1. In Visual Studio, make sure you have the **StatementOfWork** project open.
 2. In the Solution Explorer, double click on **Home.js** to open this JavaScript file in an editor window. 
@@ -302,7 +303,7 @@ In this lab you will get hands-on experience developing an Office Word Add-in, u
             return context.sync()
 
         }).then(function () {
-            // if evertything was succesful, we sent an ok...
+            // if everything was succesful, we sent an ok...
             app.showNotification("Task Complete!");
         })
           .catch(function (myError) {
@@ -396,12 +397,12 @@ function onaddContentStartingSOW() {
 	![](Images/Fig12.png)
 	
 
-7. You have now finished exercise 2 and it is time to move on to exercise 3. Don't feel overhelmed with the OOXML file you inserted, if you want to master how to handle OOXML we recommend you to read [this](https://msdn.microsoft.com/en-us/library/office/dn423225.aspx) article.
+7. You have now finished Exercise 2 and it is time to move on to Exercise 3. Don't feel overhelmed with the OOXML file you inserted; if you want to master how to handle OOXML we recommend you to read [this](https://msdn.microsoft.com/en-us/library/office/dn423225.aspx) article.
 
 ## Exercise 3: Learning how to handle inline Pictures in Word by replacing an existing image in the document.
-*In this exercise you will continue working on the Visual Studio solution for the StatementOfWork Add-in you created on in the previous exercise. You will extend the Add-in's capabilities by adding JavaScript code to replace an image in the  active Word document by using the inlinePicture object members. This excercise is cummulative and assumes you completed  Excercise 2.*
+*In this exercise you will continue working on the Visual Studio solution for the StatementOfWork add-in you created on in the previous exercise. You will extend the add-in's capabilities by adding JavaScript code to replace an image in the  active Word document by using the inlinePicture object members. This exercise is cummulative and assumes you completed Exercise 2.*
 
-1. Please note how the inserted SOW has a badly formatted picture **highlighted in red below**. This is intentional and you will fix this image on this excercise.
+1. Please note how the inserted SOW has a badly formatted picture **highlighted in red below**. This is intentional and you will fix this image in this exercise.
 
 	![](Images/Fig11.png)
 
@@ -409,7 +410,7 @@ function onaddContentStartingSOW() {
 
 2. Go back to Visual Studio, make sure you are using the StatementOfWord project.
 
-3. In the solution Explorer, double click on **Home.js** to open this JavaScript file.
+3. In the Solution Explorer, double-click on **Home.js** to open this JavaScript file.
 4. Add the following code to the **onFixPicture** function:
 
 	````javascript
@@ -446,28 +447,28 @@ function onaddContentStartingSOW() {
 	````
 	
 
-4. Note that the code is checking the if the host (Word) actually supports the 1.2 requirements set, this is important to check because in order to replave an image the  **inlinePicture.insertInlinePictureFromBase64** method is needed and this was shipped as part of the 1.2 requirement set. Note that by traversing the **inlinePictures collection**, we get the first image and then we are replacing it with the correct one.
+4. Note that the code is checking if the host (Word) actually supports the 1.2 requirements set. This is important to check because in order to replace an image, the  **inlinePicture.insertInlinePictureFromBase64** method is needed and this was shipped as part of the 1.2 requirement set. Note that by traversing the **inlinePictures collection**, we get the first image and then we are replacing it with the correct one.
 5. Test your work by pressing F5 to start a debug session and then click the **Step 1: Starting SOW** button. After the document gets inserted click on the  **Step 2: Fix Picture!** button to try your code. The image should be replaced and the document should look like this:
 
 	![](Images/Fig10.png) 
 
 
-5. Congratulations! In this exercise you learned how to navigate through the inline pictures on a document and learned how to replace images!, lets continue with Excercise 4!
+5. Congratulations! In this exercise, you learned how to navigate through the inline pictures on a document and learned how to replace images! Let's continue with Exercise 4!
 
 ## Exercise 4: Using Search and inserting Content Controls
-*In this exercise you will continue working on the Visual Studio solution for the StatementOfWork Add-in you created on in the previous steps. You will extend the Add-in's capabilities by adding JavaScript code to search for content in the document and add content controls. Content controls are a key building block in Word development and enables developers to insert 'placeholders' in the document that can be later identified and replaced with different content. This excercise is cummulative and assumes you completed  Excercise 2.*
+*In this exercise, you will continue working on the Visual Studio solution for the StatementOfWork add-in you created on in the previous steps. You will extend the add-in's capabilities by adding JavaScript code to search for content in the document and add content controls. Content controls are a key building block in Word development and enables developers to insert 'placeholders' in the document that can be later identified and replaced with different content. This exercise is cummulative and assumes you completed  Exercise 2.*
 
-1. A common scenario in Word development is reusing documents to create new ones. A "Statement of Work" (SOW) is a very good example of this. By replacing a few fields an existing SOW may be a completely new SOW instance. To illustrate that point, we will implement a simple example on how a template can be created. 
+1. A common scenario in Word development is reusing documents to create new ones. A "Statement of Work" (SOW) is a very good example of this. By replacing a few fields, an existing SOW may be a completely new SOW instance. To illustrate that point, we will implement a simple example on how a template can be created. 
 
 2. Go back to Visual Studio, make sure you are using the StatementOfWord project.
 
-3. In the solution Explorer, double click on **Home.js** to open this JavaScript file.
+3. In the Solution Explorer, double-click on **Home.js** to open this JavaScript file.
 4. Add the following code to the **onSearchAndTempletize** function:
 
 	````javascript
 function onSearchAndTempletize() {
-        // on this method i actually want to create kind of a template. will start by searching "Contoso". then i will wrap each instance with a content control
-        // i will also change the format of each search instance...
+        // on this method I actually want to create kind of a template. Will start by searching "Contoso". Then I will wrap each instance with a content control
+        // I will also change the format of each search instance...
 
         Word.run(function (ctx) {
             var results = ctx.document.body.search("Contoso");
@@ -475,13 +476,13 @@ function onSearchAndTempletize() {
             // we need to sync to get the search results/
             return ctx.sync()
             .then(function () {
-                //once we have the results we navigate thorugh each occurence an change a few thinks, as well as wrapping with a content control.
+                //once we have the results we navigate through each occurrence and change a few things, as well as wrapping with a content control.
                 for (var i = 0; i < results.items.length; i++) {
                     results.items[i].font.color = "#FF0000"    // Change color to Red
                     results.items[i].font.highlightColor = "#FFFF00";
                     results.items[i].font.bold = true;
                     var cc = results.items[i].insertContentControl();
-                    cc.tag = "customer";  // this is an important piece of code, later on the excercise i will retrieve all the content controls with this tag and replace the content.
+                    cc.tag = "customer";  // this is an important piece of code, later on the exercise I will retrieve all the content controls with this tag and replace the content.
                     cc.title = "Customer Name";
                 }
                 return ctx.sync()  // OK ready! lets send it to the host for processing :)
@@ -499,37 +500,37 @@ function onSearchAndTempletize() {
 	````
 	
 
-4. Note that the code is searching for "Contoso", the search method returns a collection of ranges matching the search criteria, the code iterates through that collection and wraps each instance with a content control. Note that you are adding each content control a tag with a "customer" title, this is important as we will use this information in the next excercise to replace the content of all the content controls with this tag with a new customer. .  
+4. Note that the code is searching for "Contoso", the search method returns a collection of ranges matching the search criteria, the code iterates through that collection and wraps each instance with a content control. Note that you are adding each content control a tag with a "customer" title, this is important as we will use this information in the next exercise to replace the content of all the content controls with this tag with a new customer.  
 
-5. Test your work by pressing F5 to start a debug session and then click the **Step 1: Starting SOW** button. After the starting document gets inserted click on the  **Step 3: Search and Templetize!** button to try your code. Each "Contoso" instance should be wrapped with a content control and with a yellow highlight For visibility purposes we are also adding a red font color and yellow highlight to each search result instance. Your document should look like this after you click on Step 1 and Step 3 buttons:
+5. Test your work by pressing F5 to start a debug session and then click the **Step 1: Starting SOW** button. After the starting document gets inserted, click on the  **Step 3: Search and Templetize!** button to try your code. Each "Contoso" instance should be wrapped with a content control and with a yellow highlight. For visibility purposes we are also adding a red font color and yellow highlight to each search result instance. Your document should look like this after you click on the Step 1 and Step 3 buttons:
 
 
 	![](Images/Fig13.png) 
 	
 
 
-9. Make sure to select any of the 'Contoso' search instances and verify they were tagged as 'customer'. To check this make sure that the Developer tab in Word's ribbon is activated. Go to File->Options->Customize Ribbon  and make sure in the right panel the 'Developer' is selected.
+9. Make sure to select any of the 'Contoso' search instances and verify they were tagged as 'customer'. To check this make sure that the Developer tab in the Word ribbon is activated. Go to File->Options->Customize Ribbon  and make sure in the right panel that 'Developer' is selected.
 
 	![](Images/Fig14.png) 
 
 
-10. Then, while having the cursor within any 'Contoso' instance, click on the developer tab and then on 'Properties'. you will see each content control has the 'customer' tag
+10. Then, while having the cursor within any 'Contoso' instance, click on the Developer tab and then on 'Properties'. You will see each content control has the 'customer' tag.
 
 	![](Images/Fig15.png) 
 
 
-5. Congratulations! In this exercise you learned how to use the search API and how to insert and tagged content controls, as well as changing formatting attributes, lets continue with Excercise 5!
+5. Congratulations! In this exercise you learned how to use the search API and how to insert and tagged content controls, as well as changing formatting attributes. Let's continue with Exercise 5!
 
 
 
 ## Exercise 5: Changing content of tagged Content Controls!
-*In this exercise you will continue working on the Visual Studio solution for the StatementOfWork Add-in you created on in the previous steps. You will extend the Add-in's capabilities by adding JavaScript code to replace content in tagged content controls. Content controls are a key building block in Word development and enables developers to insert 'placeholders' in the document that can be later identified and replaced with different content. This excercise is cummulative and assumes you completed  Excercises 2 and 4.*
+*In this exercise, you will continue working on the Visual Studio solution for the StatementOfWork add-in you created in the previous steps. You will extend the add-in's capabilities by adding JavaScript code to replace content in tagged content controls. Content controls are a key building block in Word development and enable developers to insert 'placeholders' in the document that can be later identified and replaced with different content. This exercise is cummulative and assumes you completed  Exercises 2 and 4.*
 
-1. A common scenario in Word development is reusing documents to create new ones. A "Statement of Work" (SOW) is a very good example of this. By replacing a few fields an existing SOW may be a completely new SOW instance. To illustrate that point, now that we created a template in the previous excercise, we will now change all content controls tagged as 'customer' with 'Fabrikam'. Note that this can very well come from data stored in an external system, like a CRM, ERP, etc. The idea is to generate a new instance of a document with a new customer. 
+1. A common scenario in Word development is reusing documents to create new ones. A "Statement of Work" (SOW) is a very good example of this. By replacing a few fields an existing SOW may be a completely new SOW instance. To illustrate that point, now that we created a template in the previous exercise, we will now change all content controls tagged as 'customer' with 'Fabrikam'. Note that this can very well come from data stored in an external system, like a CRM, ERP, etc. The idea is to generate a new instance of a document with a new customer. 
 
 2. Go back to Visual Studio, make sure you are using the StatementOfWord project.
 
-3. In the solution Explorer, double click on **Home.js** to open this JavaScript file.
+3. In the Solution Explorer, double click on **Home.js** to open this JavaScript file.
 4. Add the following code to the **onaddChangeCustomer** function:
 
 	````javascript
@@ -556,22 +557,22 @@ Word.run(function (ctx) {
 
 4. Note that the code is first getting all the content controls tagged as 'customer', then iterates each of the ocurrences and changes the content and the formatting information.
 
-5. Test your work by pressing F5 to start a debug session and then click the **Step 1: Starting SOW** button. After the document gets inserted click on the  **Step 3: Search and Templetize!** to create a template. Now try your code by clicking on **Step 4: Replace Customer!** Each "Contoso" instance should be replaced with 'Fabrikam' and look like the following image:
+5. Test your work by pressing F5 to start a debug session and then click the **Step 1: Starting SOW** button. After the document gets inserted, click on the  **Step 3: Search and Templetize!** to create a template. Now try your code by clicking on **Step 4: Replace Customer!** Each "Contoso" instance should be replaced with 'Fabrikam' and look like the following image:
 
 	![](Images/Fig16.png) 
 	
 
-5. Congratulations! In this exercise you learned how to get content controls by its tag and replace their content!, lets continue with Excercise 6!
+5. Congratulations! In this exercise you learned how to get content controls by its tag and replace their content! Let's continue with Exercise 6!
 
 
 ## Exercise 6: Reusing content by inserting other Word documents!
-*In this exercise you will continue working on the Visual Studio solution for the StatementOfWork Add-in you created on in the previous steps. You will extend the Add-in's capabilities by adding JavaScript code to insert and existing Word (docx) file at the end of the current document. This excercise is cummulative and assumes you completed  Excercise 2.*
+*In this exercise, you will continue working on the Visual Studio solution for the StatementOfWork add-in you created in the previous steps. You will extend the add-in's capabilities by adding JavaScript code to insert an existing Word (docx) file at the end of the current document. This exercise is cummulative and assumes you completed  Exercise 2.*
 
-1. A common scenario in Word development is reusing documents by  inserting them into new ones. On this excercise we will add an existing Word File into a content control with a commonly used a table of costs for the statement of work (reusing content from other documents). 
+1. A common scenario in Word development is reusing documents by  inserting them into new ones. In this exercise, we will add an existing Word File into a content control with a commonly used table of costs for the statement of work (reusing content from other documents). 
 
 2. Go back to Visual Studio, make sure you are using the StatementOfWord project.
 
-3. In the solution Explorer, double click on **Home.js** to open this JavaScript file.
+3. In the Solution Explorer, double click on **Home.js** to open this JavaScript file.
 4. Add the following code to the **onaaddReuseContent** function:
 
 	````javascript
@@ -591,7 +592,7 @@ Word.run(function (ctx) {
              })
         }
         else {
-            //if you reach this code it means that the Word executing this code does not yet support the 1.2 requirement set. in this case you can also insert a paragraph and then insert the document on the paragraph.
+            //if you reach this code it means that the Word executing this code does not yet support the 1.2 requirement set. In this case you can also insert a paragraph and then insert the document on the paragraph.
 
             app.showNotification("Error. This functionality requires Word with at least January update!! (check  builds 6568+)");
 
@@ -601,16 +602,164 @@ Word.run(function (ctx) {
 	````
 	
 
-4. Note that the code is getting a sample docx file encoded as base64 (which is the format the insertFile method expects), then iterates each of the ocurrences and changes the content and the formatting information. Note that in the interest of time, the code is calling a method inserted on Excercise 2: **getDocumentAsBase64**  to simulate creating a base64 encoded based on an existing docx file.
+4. Note that the code is getting a sample docx file encoded as base64 (which is the format the insertFile method expects), then iterates each of the ocurrences and changes the content and the formatting information. Note that in the interest of time, the code is calling a method inserted on Exercise 2: **getDocumentAsBase64**  to simulate creating a base64 encoded based on an existing docx file.
 
-5. Test your work by pressing F5 to start a debug session and then click the **Step 1: Starting SOW** button. After the document gets inserted try your code by clicking  on the  **Step 5: Reuse Content!** insert the file at the end of the document. Now try your code by clicking on **Step 4: Replace Customer!** Each "Contoso" instance should be replaced with 'Fabrikam' and look like the following image:
+5. Test your work by pressing F5 to start a debug session and then click the **Step 1: Starting SOW** button. After the document gets inserted, try your code by clicking  on the  **Step 5: Reuse Content!** to insert the file at the end of the document. Now try your code by clicking on **Step 4: Replace Customer!**. Each "Contoso" instance should be replaced with 'Fabrikam' and look like the following image:
 
 	![](Images/Fig17.png) 
 	
 
-5. Congratulations! In this exercise you learned how to insert existing Word (docx) files into a document!, lets continue with Excercise 8!
+5. Congratulations! In this exercise, you learned how to insert existing Word (docx) files into a document! Let's continue with Exercise 7!
 
 
-# From now on, this lab is using the PREVIEW APIs for the Word JavaScript API 1.3 requirement set.
+# From now on, this lab is using the PREVIEW APIs for the Word JavaScript API 1.3 requirement set, currently supported as preview!
 
+## Exercise 7: Granular access to ranges!
+
+*In this exercise, you will continue working on the Visual Studio solution for the StatementOfWork add-in you created in the previous steps. You will extend the add-in's capabilities by adding JavaScript code to iterate through the words in a paragraph by using the range manipulation functionalities available in the API. This exercise is cummulative and assumes you completed  Exercise 2.*
+
+1. Go back to Visual Studio, make sure you are using the StatementOfWord project.
+
+2. In the solution explorer double click on  **Home.html** file.
+3. Make sure to be using the preview location of Office.js which **https://appsforoffice.microsoft.com/lib/beta/hosted/office.js**, so your head element should be like: (make sure to comment out the other Office.js reference)
+	````html
+	<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <title></title>
+    <script src="../../Scripts/jquery-1.9.1.js" type="text/javascript"></script>
+
+    <link href="../../Content/Office.css" rel="stylesheet" type="text/css" />
+
+    
+   <!-- <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js" type="text/javascript"></script>  -->
+        <script src="https://appsforoffice.microsoft.com/lib/beta/hosted/office.js" type="text/javascript"></script>   
+
+    <!-- To enable offline debugging using a local reference to Office.js, use:                        -->
+    <!-- <script src="../../Scripts/Office/MicrosoftAjax.js" type="text/javascript"></script>  -->
+    <!-- <script src="../../Scripts/Office/1/office.js" type="text/javascript"></script>  -->
+
+    <link href="../App.css" rel="stylesheet" type="text/css" />
+    <script src="../App.js" type="text/javascript"></script>
+
+    <link href="Home.css" rel="stylesheet" type="text/css" />
+    <script src="Home.js" type="text/javascript"></script>
+	</head>
+	````
+
+3. Now lets add some code to highlight word by word the 3rd paragraph. In the Solution Explorer, double click on **Home.js** to open this JavaScript file.
+4. Add the following code to the **onaddHighlights** function:
+
+	````javascript
+    Word.run(function (ctx) {
+            var myParagraphs = ctx.document.body.paragraphs;
+            ctx.load(myParagraphs);
+            return ctx.sync()
+                            .then(function () {
+                                var myWords = myParagraphs.items[3].splitTextRanges([" "], false, false);
+                                ctx.load(myWords, { expand: 'font' });
+                                ctx.sync().then(function () {
+
+                                    var i = 0;
+                                    var originalSize = myWords.items[i].font.size;
+                                    ctx.sync();
+
+                                    function delayCallback() {
+                                        if (i < myWords.items.length) {
+                                            if (i >= 1)
+                                                myWords.items[i - 1].font.highlightColor = "#FFFFFF";
+                                            myWords.items[i].font.highlightColor = "#FFFF00";
+                                            myWords.items[i].font.size = originalSize * 1.30;
+                                            i++;
+                                            return ctx.sync().then(function () { setTimeout(delayCallback, 100) });
+                                        }
+                                    };
+
+                                    delayCallback();
+                                });
+                            })
+
+        }).catch(function (myError) {
+        });
+	````
+	
+
+4. This code sample is implementing both highlight and increase the font size word by word of the last paragraph of the document. SO once we have a handle of that paragrpah we are using the *splitTextRanges* methods to get, as a collection of ranges, each word (by spacifying a space (" ") delimiter. once we have the Range collection we are traversining it in order to hichlight word by word.
+
+5. Test your work by pressing F5 to start a debug session and then click the **Step 1: Starting SOW** button. After the starting document gets inserted, try your code by clicking  on the  **Step 6: Highlight Word by Word!** to start the animation. Notice how each word will get highlighted in the last paragraph!
+
+	![](Images/Fig18.png) 
+	
+
+5. Congratulations! In this exercise, you learned how to split a paragraph into multiple ranges and traversing the ranges collection! Let's continue with Exercise 8!
+
+## Exercise 8: Creating and opening a new Word document!
+
+*In this exercise, you will continue working on the Visual Studio solution for the StatementOfWork add-in you created in the previous steps. You will extend the add-in's capabilities by adding JavaScript code to create an open a new Word document . Make sure to have completed Excercise 2 as we need the getDocumentAsBase64 method, we will use that Word document as a starter.*
+
+1. Go back to Visual Studio, make sure you are using the StatementOfWord project.
+
+2. Make sure you are using the Preview Office.js CDN.  In the solution explorer double click on  **Home.html** file. Check the  location of preview  Office.js which **https://appsforoffice.microsoft.com/lib/beta/hosted/office.js**,  your head element should be like: (make sure to comment out the other Office.js reference)
+	````html
+	<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <title></title>
+    <script src="../../Scripts/jquery-1.9.1.js" type="text/javascript"></script>
+
+    <link href="../../Content/Office.css" rel="stylesheet" type="text/css" />
+
+    
+   <!-- <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js" type="text/javascript"></script>  -->
+        <script src="https://appsforoffice.microsoft.com/lib/beta/hosted/office.js" type="text/javascript"></script>   
+
+    <!-- To enable offline debugging using a local reference to Office.js, use:                        -->
+    <!-- <script src="../../Scripts/Office/MicrosoftAjax.js" type="text/javascript"></script>  -->
+    <!-- <script src="../../Scripts/Office/1/office.js" type="text/javascript"></script>  -->
+
+    <link href="../App.css" rel="stylesheet" type="text/css" />
+    <script src="../App.js" type="text/javascript"></script>
+
+    <link href="Home.css" rel="stylesheet" type="text/css" />
+    <script src="Home.js" type="text/javascript"></script>
+	</head>
+	````
+
+3. Now lets add some code to create and open a new document. In the Solution Explorer, double click on **Home.js** to open this JavaScript file.
+4. Add the following code to the **onaddOpenDoc** function:
+
+	````javascript
+    Word.run(function (context) {
+            var myNewDoc = context.application.createDoc(getDocumentAsBase64());
+            context.load(myNewDoc);
+
+            return context.sync()
+                .then(function () {
+                    var myParagraph = myNewDoc.body.insertParagraph("Hello World This is a new Document!!!", "end");
+                    myParagraph.font.bold = true;
+                    myParagraph.font.name = "Courier new";
+                  
+                    myNewDoc.open();
+                    context.sync();
+                }).catch(function (myError) {
+                    //otherwise we handle the exception here!
+                    app.showNotification("Error", myError.message);
+                })
+
+        }).catch(function (myError) { app.showNotification("Error", myError.message); });
+
+	````
+	
+
+4. This code basically creates a new document, using an existing doc (base64 encoded) as a starting doc (this doc is optional). Then adds a paragraph at the end of the document by using the API and finally opens the document. (Note that after the document is opened, no other operations can be send to it).
+
+5. Test your work by pressing F5 to start a debug session and then click the **Step 7: Create a New Document** button. You will see that a new document is created and opened !
+
+	![](Images/Fig19.png) 
+	
+
+5. Congratulations! In this exercise, you learned how to create and open new Word documents!
+
+
+Congratulations on finishing the New Word APIs Lab!!
 

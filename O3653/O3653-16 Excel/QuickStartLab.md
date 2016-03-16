@@ -1,10 +1,11 @@
 # Excel REST API 
 
-The purpose of this lab is to show step-by-step instruction for reading writing into an Excel document stored in your OneDrive Business using new Excel REST APIs. We'll use Visual Studio MVC project to showcase the interaction. 
+The purpose of this lab is to show step-by-step instructions for reading and writing into an Excel document stored in your OneDrive Business using new Excel REST APIs. We'll use Visual Studio MVC project to showcase the interaction. 
 
 * [Lab instructions](#lab-instructions)
-    * [Create a new project](#1-create-a-new-project)
-    * [Use Excel REST API](#2-use-excel-rest-api)
+    * [Create a new project](#create-a-new-project)
+    * [Add ToDo file](#add-todo-file)
+    * [Use Excel REST API](#use-excel-rest-api)
         * [Add new controllers](#add-new-controllers)
         * [Add model](#add-model)
         * [Update Shared folder](#update-shared-folder)
@@ -15,7 +16,13 @@ The purpose of this lab is to show step-by-step instruction for reading writing 
 
 ## Lab instructions 
 
-### 1: Create a new project 
+#### Prerequisites
+
+* You must have an Office 365 tenant to complete this lab. If you do not have one, the lab for O3651-7 Setting up your Developer environment in Office 365 shows you how to obtain a trial.
+* You must have Visual Studio 2015 with Update 1 installed.
+* You must have the Graph AAD Auth v2 Starter Project template installed.
+
+### Create a new project 
 
 In this first step, you will create a new ASP.NET MVC project using the **Graph AAD Auth v1 Starter Project** template and log in to your app and generate access tokens
 for calling the Graph API.
@@ -35,7 +42,15 @@ for calling the Graph API.
 ![](images/webconfig1.JPG)   
 ![](images/webconfig2.JPG)
 
-### 2: Use Excel REST API.
+### Add ToDo file 
+
+For the purpose of this demo, we will use an empty Excel file to store the tasks and create charts. In real apps, you could upload a new file using OneDrive API or target an existing file that contains needed data. 
+
+In your project, add an *Assets* folder to your project, drop the empty ToDo.xlsx file included in this lab into that new folder, and add the file to your project. Note that the app looks for a file named ToDo.xlsx to upload as part of setup.
+
+![](images/ToDoworkbook.JPG)
+
+### Use Excel REST API
 
 Let's create a MVC web application that allows us to create and manage to-do list by storing the content into an Excel file. 
 The high level functions performed by the application includes: 
