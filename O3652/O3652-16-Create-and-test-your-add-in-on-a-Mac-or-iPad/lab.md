@@ -40,7 +40,10 @@ In this lab, you will learn how to create a sample add-in on the Mac and then si
 4. Copy the **<script .... ></script>** tag on that page and paste it into the <header> tag. 
 5. Launch Excel and start your add-in.
 6. You should now see the client connection on the Vorlon server page at http://localhost:1337.
+7. Click on the client connect link to view the Vorlon debugger UI. You can now use the Dom Explorer and Obj. Explorer tabs to view/edit the source code on your add-in.
 
+**Optional**
+Install the office.js plug-in for Vorlon and use it to test Office APIs from this blog post: http://blogs.msdn.com/b/mim/archive/2016/02/18/vorlonjs-plugin-for-debugging-office-addin.aspx
 
 
 
