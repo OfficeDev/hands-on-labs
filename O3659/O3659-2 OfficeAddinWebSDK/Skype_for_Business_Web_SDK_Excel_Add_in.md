@@ -10,10 +10,10 @@ Log in to Skype for Business Client with user auburys@danewman.onmicrosoft.com 0
 
 In this lab you will get hands-on experience developing an Excel add-in with Skype for Business integration.  The sample add-in will allow an Office 365 user to perform the following from within Excel:
 1.  Sign into Skype for Business.
-2.  See other O365 user contact information and presence.
-3.  Chat with O365 users.
-4.  Launch Skype for Business client to escalate to audio/video.
-5.  Publish add-in to the O365 tenant app store.
+2.  See other Office 365 user contact information and presence.
+3.  Chat with Office 365 users.
+4.  Start Skype for Business client to escalate to audio/video.
+5.  Publish add-in to the Office 365 tenant app store.
 
 >**Prerequisites:** Before beginning the lab, the following items will be needed:
 >1.  Visual Studio 2013 and above.
@@ -29,16 +29,16 @@ In this lab you will get hands-on experience developing an Excel add-in with Sky
 3.  Right-click the ExcelAddIn App for Office project and Select **Add>Existing Item**.
 4.  Browse to `C:\\ExcelTemplates\TestExcel.xlsx` and click OK.
 5.  Click the ExcelAddIn App for Office project.  In the properties window, set the Start Document to **TestExcel.xlsx**.
-6.  Hit **F5** or **the Start Button** in Visual Studio.  The Excel sheet should appear.
+6.  Press **F5** or **the Start Button** in Visual Studio.  The Excel sheet should appear.
 7.  On the top navigation, click the **Insert** tab and select **My Add-ins**.
 8.  In the **Developer Add-in** section, click your application name.
 
 	![image](Screenshots/Add-in.png)
 
-9.  The add in should now appear in the right task pane.  Click close and save your excel file.
-6.  Navigate to [https://msdn.microsoft.com/en-us/office/office365/howto/add-common-consent-manually] in order to create your application in Azure and attain your **Client ID**.  Note this ID as it will be used later in the lab.
+9.  The add in should now appear in the right task pane.  Click close and save your Excel file.
+6.  Navigate to [https://msdn.microsoft.com/en-us/office/office365/howto/add-common-consent-manually] to create your application in Azure and attain your **Client ID**.  Note this ID as it will be used later in the lab.
 7.  Add your http://localhost address to your RedirectURI's in Azure.  
-8.  Double click on the ExcelAddIn App for Office project.
+8.  Double-click on the ExcelAddIn App for Office project.
 9.  Set the Display name to **Skype for Business Excel Add In**
 8.  Press **F5** or **the Start Button** in Visual Studio.  The Excel sheet should appear:
     ![image](Screenshots/launch_excel.PNG)
@@ -70,7 +70,7 @@ This section will instruct a user on how to add code to your application in orde
         location.assign(url);
     }
 ```
-This method will be responsible for displaying the standard azure authentication page.  On successful username/password submission, the azure login will re-direct the user to the specified URI (**redirect_uri**) from the **showSkypeLogin()** query string.
+This method will display the standard azure authentication page.  On successful username/password submission, the Azure login will redirect the user to the specified URI (**redirect_uri**) from the **showSkypeLogin()** query string.
 
 6.  Add the sign in button click event:
 ```javascript
@@ -124,7 +124,7 @@ Close the Excel sheet.
     });
     }
     ```
-This access token will be used to authenticate the user when attempting to sign into Skype for Business.
+This access token will authenticate the user when attempting to sign into Skype for Business.
 
 11.  Add the Skype initialization code to your **$(document).ready()** function
 
@@ -204,7 +204,7 @@ The **showContacts()** method will hide your loading gif and display the logged 
         }
     }
 ```
-The **signIn()** method will take the access_token value returned from the user's successful Azure login and pair it along with your clientId in order to authenticate the user's access to the Skype for Business Online SDK features.  On successful login, the user will be displayed with the logged in user name, email, and presence.  Also appearing, will be a section used later on for displaying other Skype user information in a section called **Contact Info**.
+The **signIn()** method will take the access_token value returned from the user's successful Azure login and pair it along with your clientId to authenticate the user's access to the Skype for Business Online SDK features.  On successful login, the user will be displayed with the logged in user name, email, and presence.  Also appearing, will be a section used later on for displaying other Skype user information in a section called **Contact Info**.
 
 13.  Press F5 or Start Debugging.
 14.  Click the "Sign into Skype" button and provide your credentials.  After submitting the credentials, you should see the Skype "Loading" animated gif and then be presented with the following screen:
@@ -212,9 +212,9 @@ The **signIn()** method will take the access_token value returned from the user'
 
 ##Setting up Excel Data
 
-In this section the user will setup Excel data and create an excel function to using the Office 365 javascript API to read the Excel data.
+In this section the user will setup Excel data and create an excel function to using the Office 365 JavaScript API to read the Excel data.
 
-1. Double click `TestExcel.xlsx`
+1. Double-click `TestExcel.xlsx`
 2. In **Column A**, add an existing user's email per row that has been setup for this demo.
 3. Press Ctrl+S to save the file and then close.
 4. Open the Home.js file.
@@ -233,7 +233,7 @@ In this section the user will setup Excel data and create an excel function to u
         }
     ```
 
-    The **excelClickHandler(eventArgs)** method handles the **DcoumentSelectionChanged** event from the Office 365 javascript API.  The selected data will return a text value representing the text in the highlighted field in the spread sheet.
+    The **excelClickHandler(eventArgs)** method handles the **DcoumentSelectionChanged** event from the Office 365 javascript API.  The selected data will return a text value representing the text in the highlighted field in the spreadsheet.
 
     ```javascript
      Office.context.document.addHandlerAsync("documentSelectionChanged", excelClickHandler, function (result) {
