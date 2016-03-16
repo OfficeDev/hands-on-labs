@@ -1,5 +1,5 @@
 # Learn how to build Office 365 Connectors using Webhooks
-Office 365 Connectors are a great way to get useful information and content into your Office 365 Group. Any user can connect their group to services like Trello, Bing News, Twitter, etc., and get notified of the group's activity in that service. From tracking a team's progress in Trello, to following important hashtags in Twitter, Office 365 Connectors make it easier for an Office 365 group to stay in sync and get more done. Developers can build connectors through incoming webhooks to generate rich connector cards.   Connector cards can be short text-based messages, or use "sections" to display rich or specially-formatted information. Outlook takes care of all the UX for you and renders the message automatically. When more content is added to the payload, the card scales gracefully. 
+Office 365 Connectors are a great way to get useful information and content into your Office 365 Group. From tracking a team's progress in Trello, to following important hashtags in Twitter, Office 365 Connectors make it easier for an Office 365 group to stay in sync with the content they care about and get more done. Developers can build connectors through incoming webhooks to generate rich connector cards.   Connector cards can be short text-based messages, or use "sections" to display rich or specially-formatted information. Outlook takes care of all the UX for you and renders the message automatically. When more content is added to the payload, the card scales gracefully. 
 
 In this lab, you will learn how to post messages to Office 365 Groups using incoming webhooks.  To illustrate using a real world scenario, you will also build an application that receives Github notifications from your favorite repos and post them as connector messages to your Office 365 group. 
 
@@ -109,7 +109,7 @@ Sample Connector Card Message JSON Payload
 	    }
 	  ]
 	}
-	
+	
 
 **Exercise 2: Build an ASP.net application to receive incoming notifications from Github service and post them as connector card messages in Office 365 groups**
 ------------------------------------------------------------------------
@@ -183,7 +183,7 @@ Sample Connector Card Message JSON Payload
 		}
 	
 	
-9. In the same GitHubWebHookHandler.cs file, find the string variable groupWebHookURL.  Copy and paste the Office 365 group webhook URL that you previously got from Exercise #1. 
+9. In the same GitHubWebHookHandler.cs file, find the string variable groupWebHookURL.  Copy and paste the Office 365 group webhook URL that you previously got from Exercise #1 (step 3)
 
 10. Build your project.  Right click on the project and select "Publish".  
 	
@@ -193,7 +193,13 @@ Sample Connector Card Message JSON Payload
 	
 	c. Click Publish to publish the webapp to Azure websites. This will launch a browser and take you to the Azure websites hosting your web application (e.g. http://mywebhookspreview.azurewebsites.net) Copy this URL.
 	
-		Note: If you don’t have an Azure subscription, you can get it free by signing up @ https://tryappservice.azure.com/ This allows you to host you web application on Azure for up to 24 hours, no credit card  required.   Choose **Web App** as the app type, then click **Next**.  Change the language dropdown to **C#**, then choose **ASP.NET Empty Site** and click **Create**.  Choose to download publishing profile.  When using Visual Studio to publish your project, choose the import option to import the publishing profile, follow the same a, b and c steps above
+		Note: If you don’t have an Azure subscription, you can get it free by signing up @ https://tryappservice.azure.com/
+		This allows you to host you web application on Azure for up to 24 hours, no credit card  required.   
+		Choose **Web App** as the app type, then click **Next**.  
+		Change the language dropdown to **C#**, then choose **ASP.NET Empty Site** and click **Create**.  
+		Choose to download publishing profile.  
+		When using Visual Studio to publish your project, choose the import option to import the publishing profile, 
+		follow the same a, b and c steps above to create the webapp
 	
 11. Go to github.com. Create a new github repo (unless you already have one for testing purposes). Navigate to the repo. Click on settings. Select webhooks & Services on the left side. Click on the "Add webhook" buttonAppend "/api/webhooks/incoming/Github" to the  URL of your azure web application (e.g. http://mywebhookspreview.azurewebsites.net/api/webhooks/incoming/Github)You will receive notifications from Github service at this URL.  
 
@@ -205,4 +211,7 @@ Sample Connector Card Message JSON Payload
 
 15. Create a new issue for your repo. This will trigger the incoming webhook in your ASP.net application. You should now receive connector card messages for new github issues in your Office 365 group inbox.
 
-**Congratulations,** on completing this exercise! Try building your own connector and submit it to Office 365. Customize the card message experience to show your own brand and style, and the sender avatar will show your logo (instead of "incoming webhook"). Check out dev.outlook.com/connectors for more developer information, code samples and instructions for submitting and listing your connector in the Office 365 Connectors catalog.
+**Congratulations,** on completing this exercise! Try building your own connector and submit it to Office 365. Customize the card message experience to show your own brand and style, and the sender avatar will show your logo (instead of "incoming webhook"). 
+Check out dev.outlook.com/connectors for more developer information, code samples and instructions for submitting and listing your connector in the Office 365 Connectors catalog.
+
+
