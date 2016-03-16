@@ -751,7 +751,7 @@ Word.run(function (ctx) {
 	````
 	
 
-4. This code basically creating a new document, using an existing doc (base64 encoded) as a starting doc (this doc is optional). Then we are adding a few more content to that document by using the API and finally opening the document. (Note that after the document is opened, no other operations can be send to it).
+4. This code basically creates a new document, using an existing doc (base64 encoded) as a starting doc (this doc is optional). Then adds a paragraph at the end of the document by using the API and finally opens the document. (Note that after the document is opened, no other operations can be send to it).
 
 5. Test your work by pressing F5 to start a debug session and then click the **Step 7: Create a New Document** button. You will see that a new document is created and opened !
 
