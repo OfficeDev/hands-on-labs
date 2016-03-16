@@ -21,7 +21,7 @@ for calling the Graph API.
   3. Copy the **Application Id** and paste it into the value for **ida:AppId** in your project's **web.config** file.
   4. Under **Application Secrets** click **Generate New Password** to create a new client secret for your app.
   5. Copy the displayed app password and paste it into the value for **ida:AppSecret** in your project's **web.config** file.
-  6. Modify the **ida:AppScopes** value to include the required `https://outlook.office.com/calendars.readwrite`  scopes.
+  6. Modify the **ida:AppScopes** value to include the required `https://graph.microsoft.com/calendars.readwrite` scope.
 
   ```xml
   <configuration>
@@ -206,6 +206,7 @@ SDK and work with Office 365 and Outlook Calendar
       try
       {
           var result = await request.GetAsync();
+
 
           if (result.Body.ContentType.HasValue && result.Body.ContentType == BodyType.html)
           {
