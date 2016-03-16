@@ -4,6 +4,8 @@ using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OpenIdConnect;
 using GraphFilesWeb.TokenStorage;
+using GraphFilesWeb.Auth;
+using System.Security.Claims;
 
 namespace GraphFilesWeb.Controllers
 {
@@ -25,8 +27,7 @@ namespace GraphFilesWeb.Controllers
             if (Request.IsAuthenticated)
             {
                 // Get the user's token cache and clear it
-                string userObjId = System.Security.Claims.ClaimsPrincipal.Current
-                  .FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
+                string userObjId = AuthHelper.GetUserId(ClaimsPrincipal.Current);
 
                 SessionTokenCache tokenCache = new SessionTokenCache(userObjId, HttpContext);
                 tokenCache.Clear();
