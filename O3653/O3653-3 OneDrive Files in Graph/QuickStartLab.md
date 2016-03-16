@@ -63,6 +63,7 @@ for calling the Graph API.
    1. When the Graph and AAD v2 Auth Endpoint Starter page appears, click **Sign in** and log on to your Office 365 account.
    2. Review the permissions the application is requesting, and click **Accept**.
    3. Now that you are signed in to your application, exercise 1 is complete!
+   4. Make sure to stop debugging before continuing to exercise 2.
 
 ## Exercise 2: Access OneDrive for Business files through Microsoft Graph SDK
 
@@ -76,6 +77,7 @@ or OneDrive.
   1. In the **Solution Explorer**, right-click the **GraphFilesWeb** project and select **Manage NuGet Packages...**.
   2. Click **Browse** and search for **Microsoft.Graph**.
   3. Select the Microsoft Graph SDK and click **Install**.
+  4. Click **I Accept** when prompted to accept the license agreement for the Microsoft Graph SDK.
 
 2. Create a new controller to process the requests for files and send them to Graph API.
   1. Find the **Controllers** folder under **GraphFilesWeb**, right-click it and select **Add** then **Controller**.
