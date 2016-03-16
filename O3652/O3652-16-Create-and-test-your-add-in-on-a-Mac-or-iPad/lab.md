@@ -24,7 +24,8 @@ In this lab, you will learn how to create a sample add-in on the Mac and then si
 ## Exercise 2: Sideload an add-in into Excel for Mac
 *In this exercise, we'll go through the process of sideloading an add-in on Excel for Mac.*
 
-1. Open Terminal [shortcut on the desktop] and type `cd ~/Library/Containers/com.microsoft.Excel/Data/Documents/wef`.
+1. Open Terminal [shortcut on the desktop] and type 
+    cd ~/Library/Containers/com.microsoft.Excel/Data/Documents/wef
 2. You might have to create the wef folder if it doesn't already exist.
 3. Type `open .` to open Finder
 4. Copy the `manifest-myHelloWorldAddin.xml` file from the root of the sample project folder to this folder.
