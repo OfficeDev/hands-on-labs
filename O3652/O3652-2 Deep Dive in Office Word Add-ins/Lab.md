@@ -609,9 +609,80 @@ Word.run(function (ctx) {
 	![](Images/Fig17.png) 
 	
 
-5. Congratulations! In this exercise, you learned how to insert existing Word (docx) files into a document! Let's continue with Exercise 8!
+5. Congratulations! In this exercise, you learned how to insert existing Word (docx) files into a document! Let's continue with Exercise 7!
 
 
-# From now on, this lab is using the PREVIEW APIs for the Word JavaScript API 1.3 requirement set.
+# From now on, this lab is using the PREVIEW APIs for the Word JavaScript API 1.3 requirement set, currently supported as preview!
 
+## Exercise 7: Granular access to ranges!
+
+*In this exercise, you will continue working on the Visual Studio solution for the StatementOfWork add-in you created in the previous steps. You will extend the add-in's capabilities by adding JavaScript code to iterate through the words in a paragraph by using the range manipulation functionalities available in the API. This exercise is cummulative and assumes you completed  Exercise 2.*
+
+1. Go back to Visual Studio, make sure you are using the StatementOfWord project.
+
+2. In the solution explorer double click on  **Home.html** file.
+3. Make sure to be using the preview location of Office.js which **https://appsforoffice.microsoft.com/lib/beta/hosted/office.js**, so your head element should be like: (make sure to comment out the other Office.js reference)
+	````html
+	<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <title></title>
+    <script src="../../Scripts/jquery-1.9.1.js" type="text/javascript"></script>
+
+    <link href="../../Content/Office.css" rel="stylesheet" type="text/css" />
+
+    
+   <!-- <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js" type="text/javascript"></script>  -->
+        <script src="https://appsforoffice.microsoft.com/lib/beta/hosted/office.js" type="text/javascript"></script>   
+
+    <!-- To enable offline debugging using a local reference to Office.js, use:                        -->
+    <!-- <script src="../../Scripts/Office/MicrosoftAjax.js" type="text/javascript"></script>  -->
+    <!-- <script src="../../Scripts/Office/1/office.js" type="text/javascript"></script>  -->
+
+    <link href="../App.css" rel="stylesheet" type="text/css" />
+    <script src="../App.js" type="text/javascript"></script>
+
+    <link href="Home.css" rel="stylesheet" type="text/css" />
+    <script src="Home.js" type="text/javascript"></script>
+	</head>
+	````
+
+3. In the Solution Explorer, double click on **Home.js** to open this JavaScript file.
+4. Add the following code to the **onaaddReuseContent** function:
+
+	````javascript
+ if (Office.context.requirements.isSetSupported("WordApi", "1.2")) { 
+ // this functionality is included in the 1.2 requirement set, so we need to verify if it exists.
+            Word.run(function (context) {
+                var newParagraph = context.document.body.insertParagraph("Costs", "end");
+                newParagraph.style = "Heading 1";
+                context.document.body.insertParagraph("", "end");
+                var myBase64File = getDocumentAsBase64(); // gets a docx file as base64
+                context.document.body.insertFileFromBase64(myBase64File, "end");
+                return context.sync();
+            })
+             .catch(function (myError) {
+                 //otherwise we handle the exception here!
+                 app.showNotification("Error", myError.message);
+             })
+        }
+        else {
+            //if you reach this code it means that the Word executing this code does not yet support the 1.2 requirement set. In this case you can also insert a paragraph and then insert the document on the paragraph.
+
+            app.showNotification("Error. This functionality requires Word with at least January update!! (check  builds 6568+)");
+
+        }
+
+    } 
+	````
+	
+
+4. Note that the code is getting a sample docx file encoded as base64 (which is the format the insertFile method expects), then iterates each of the ocurrences and changes the content and the formatting information. Note that in the interest of time, the code is calling a method inserted on Exercise 2: **getDocumentAsBase64**  to simulate creating a base64 encoded based on an existing docx file.
+
+5. Test your work by pressing F5 to start a debug session and then click the **Step 1: Starting SOW** button. After the document gets inserted, try your code by clicking  on the  **Step 5: Reuse Content!** to insert the file at the end of the document. Now try your code by clicking on **Step 4: Replace Customer!**. Each "Contoso" instance should be replaced with 'Fabrikam' and look like the following image:
+
+	![](Images/Fig17.png) 
+	
+
+5. Congratulations! In this exercise, you learned how to insert existing Word (docx) files into a document! Let's continue with Exercise 7!
 
