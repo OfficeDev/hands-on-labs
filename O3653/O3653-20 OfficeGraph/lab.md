@@ -36,13 +36,13 @@ In this first exercise, you will create a new ASP.NET MVC project using the
    
 ## Exercise 2: Add a reference to the Graph API beta namespace
 
-1. Right-click the project and select **add item**
-   1. Select Visual C# -> Code -> Odata Client
-   2. Name the file Graph.tt and click Add
+1. Right-click the project and select **Add item**.
+   1. Select **Visual C# -> Code -> Odata Client**.
+   2. Name the file Graph.tt and click **Add**.
 2. Edit the Graph.tt file
-   1. Edit MetadataDocumentUri to be "https://graph.microsoft.com/beta/$metadata"
-   2. Edit NamespacePrefix to be "OfficeGraphLab.Service"
-3. Build the project
+   1. Edit **MetadataDocumentUri** to be "https://graph.microsoft.com/beta/$metadata"
+   2. Edit **NamespacePrefix** to be "OfficeGraphLab.Service"
+3. Click **Build -> Build solution** the project
 
 ## Exercise 3: Change the page layout
 In this exercise, you will extend the page layout so that it displays a new link leading to Insights in the header.
@@ -151,43 +151,44 @@ In this exercise, you will code the **TrendingController** of the MVC applicatio
 Now that we have a controller, all we need to see your trending documents is a view that displays them!
 
 ## Exercise 4: Code the MVC application that displays documents trending around you
-1. Create a view to display the trending documents.
-    1. Within the `TrendingController` class, right click the first `View()` method at the end of the `Index()` action and select **Add View**.
-    2. Within the **Add View** dialog, set the following values:
+1. Create a view to display trending documents.
+   1. Within the `TrendingController` class, right click the first `View()` method at the end of the `Index()` action and select **Add View**.
+   2. Within the **Add View** dialog, set the following values:
       1. View Name: **Index**.
-      3. Template: **Empty (without model)**.
+      2. Template: **Empty (without model)**.
         
         > Leave all other fields blank & unchecked.
       
-      4. Click **Add**.
-    3. Within the **Views/Trending/Index.cshtml** file, delete all the code in the file and replace it with the following code:
+      3. Click **Add**.
+ 3. Within the **Views/Trending/Index.cshtml** file, delete all the code in the file and replace it with the following code:
       
-        ````html
-        @model IEnumerable<OfficeGraphLab.Service.DriveItem>
-        @{
-            ViewBag.Title = "Trending Documents";
-        }
-        <h2>Trending Documents</h2>
-        <table class="table">
+      ````html
+      @model IEnumerable<OfficeGraphLab.Service.DriveItem>
+      @{
+         ViewBag.Title = "Trending Documents";
+      }
+      <h2>Trending Documents</h2>
+      <table class="table">
+      <tr>
+         <th>
+            @Html.DisplayName("Document Name");
+         </th>
+         <th>
+            @Html.DisplayName("Last modified by");
+         </th>
+      </tr>
+
+         @foreach (var item in Model)
+         {
             <tr>
-                <th>
-                    @Html.DisplayName("Document Name");
-                </th>
-                <th></th>
+               <td>
+                  @Html.DisplayFor(modelItem => item.Name)
+                  @Html.DisplayFor(modelItem => item.LastModifiedBy)
+               </td>
             </tr>
-
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Name)
-                        @Html.DisplayFor(modelItem => item.LastModifiedBy)
-                    </td>
-                </tr>
-            }
-        </table>
-
-        ````  
+         }
+      </table>
+      ````  
 1. Test the new view:
   1. In **Visual Studio**, hit **F5** to start the application.
   2. Once the application is loaded click the **Insights** link in the top menu bar.
@@ -209,42 +210,43 @@ While viewing your trending documents is interesting, retrieving them for other 
     }
     ````
     > When developing your own web application,  you'd most likely want to create a new controller for this action. Keeping the action in one controller is OK for the purpose of our demo, though.
-2. Within the `TrendingDocumentsController` class, right click the `View(service.Users)` at the end of the `Users()` action method  that you just created and select **Add View**.
-  1. In the **Add View** dialog, set the following options on the dialog and click **Add**.
+
+1. Create a view to display users.    
+   1. Within the `TrendingController` class, right click the `View(service.Users)` at the end of the `Users()` action method  that you just created and select **Add View**.
+   2. In the **Add View** dialog, set the following options on the dialog and click **Add**.
       1. View Name: **Insights**.
       2. Template: **Empty (without model)**.
         
         > Leave all other fields blank & unchecked.
       
       3. Click **Add**.
-3. Within the **Views/Trending/Users.cshtml** file, delete all the code in the file and replace it with the following code:
-    ````html
-    @model IEnumerable<OfficeGraphLab.Service.User>
-    @{
-        ViewBag.Title = "Users";
-    }
-    <h2>Users</h2>
-    <table class="table">
-        <tr>
-            <th>
-                @Html.DisplayName("User Name")
-            </th>
-            <th></th>
-        </tr>
+2. Within the **Views/Trending/Users.cshtml** file, delete all the code in the file and replace it with the following code:
+   ````html
+   @model IEnumerable<OfficeGraphLab.Service.User>
+   @{
+      ViewBag.Title = "Users";
+   }
+   <h2>Users</h2>
+   <table class="table">
+      <tr>
+         <th>
+            @Html.DisplayName("User Name")
+         </th>
+      </tr>
 
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DisplayName)
-                    @Html.DisplayFor(modelItem => item.Mail)
-                </td>
-                <td>
-                    @Html.ActionLink("See Trending Documents", "Index", new { userId = item.Id })
-                </td>
-            </tr>
-        }
-    </table>
+      @foreach (var item in Model)
+      {
+         <tr>
+            <td>
+               @Html.DisplayFor(modelItem => item.DisplayName)
+               @Html.DisplayFor(modelItem => item.Mail)
+            </td>
+            <td>
+               @Html.ActionLink("See Trending Documents", "Index", new { userId = item.Id })
+            </td>
+         </tr>
+      }
+   </table>
   ````
        
 1. Test the new view:
@@ -255,4 +257,4 @@ While viewing your trending documents is interesting, retrieving them for other 
   5. You will see a number of documents trending for the current user.
   6. Close the browser window, terminate the debugging session and return to Visual Studio.
 
-Congratulations! You have created an MVC application that displays documents trending around users! Stay tuned for our new, riched Trending API. Released in a few weeks!
+Congratulations! You have created an MVC application that displays documents trending around users! Stay tuned for our new, richer Trending API. Released in a few weeks!
