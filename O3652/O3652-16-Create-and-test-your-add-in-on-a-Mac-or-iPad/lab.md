@@ -27,7 +27,7 @@ In this lab, you will learn how to create a sample add-in on the Mac and then si
 1. Open Terminal [shortcut on the desktop] and type `cd ~/Library/Containers/com.microsoft.Excel/Data/Documents/wef`.
 2. You might have to create the wef folder if it doesn't already exist.
 3. Type `open .` to open Finder
-4. Copy the manifest-myHelloWorldAddin.xml file from the root of the sample project folder to this folder.
+4. Copy the `manifest-myHelloWorldAddin.xml` file from the root of the sample project folder to this folder.
 5. Launch Excel [shortcut on the desktop].
 6. Go to the Insert tab and click on the My Add-ins drop-down. Click on the HelloWorld Add-in to open it Excel.
 
@@ -36,10 +36,10 @@ In this lab, you will learn how to create a sample add-in on the Mac and then si
 
 1. Install by typing `sudo npm I –g vorlon` in Terminal.
 2. Type `sudo vorlon` in Terminal to start the VorlonJS server.
-3. To verify that Vorlon server is up and running, type http://localhost:1337 in a browser. You should see the VorlonJS start page.
+3. To verify that Vorlon server is up and running, type `http://localhost:1337` in a browser. You should see the VorlonJS start page.
 4. Copy the `<script .... ></script>` tag on that page and paste it into the `<header>` tag. 
 5. Launch Excel and start your add-in.
-6. You should now see the client connection on the Vorlon server page at http://localhost:1337.
+6. You should now see the client connection on the Vorlon server page at `http://localhost:1337`.
 7. Click on the client connect link to view the Vorlon debugger UI. You can now use the Dom Explorer and Obj. Explorer tabs to view/edit the source code on your add-in.
 
 **Optional**
