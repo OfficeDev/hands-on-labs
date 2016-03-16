@@ -647,42 +647,49 @@ Word.run(function (ctx) {
 	</head>
 	````
 
-3. In the Solution Explorer, double click on **Home.js** to open this JavaScript file.
-4. Add the following code to the **onaaddReuseContent** function:
+3. Now lets add some code to highlight word by word the 3rd paragraph. In the Solution Explorer, double click on **Home.js** to open this JavaScript file.
+4. Add the following code to the **onaddHighlights** function:
 
 	````javascript
- if (Office.context.requirements.isSetSupported("WordApi", "1.2")) { 
- // this functionality is included in the 1.2 requirement set, so we need to verify if it exists.
-            Word.run(function (context) {
-                var newParagraph = context.document.body.insertParagraph("Costs", "end");
-                newParagraph.style = "Heading 1";
-                context.document.body.insertParagraph("", "end");
-                var myBase64File = getDocumentAsBase64(); // gets a docx file as base64
-                context.document.body.insertFileFromBase64(myBase64File, "end");
-                return context.sync();
-            })
-             .catch(function (myError) {
-                 //otherwise we handle the exception here!
-                 app.showNotification("Error", myError.message);
-             })
-        }
-        else {
-            //if you reach this code it means that the Word executing this code does not yet support the 1.2 requirement set. In this case you can also insert a paragraph and then insert the document on the paragraph.
+    Word.run(function (ctx) {
+            var myParagraphs = ctx.document.body.paragraphs;
+            ctx.load(myParagraphs);
+            return ctx.sync()
+                            .then(function () {
+                                var myWords = myParagraphs.items[3].splitTextRanges([" "], false, false);
+                                ctx.load(myWords, { expand: 'font' });
+                                ctx.sync().then(function () {
 
-            app.showNotification("Error. This functionality requires Word with at least January update!! (check  builds 6568+)");
+                                    var i = 0;
+                                    var originalSize = myWords.items[i].font.size;
+                                    ctx.sync();
 
-        }
+                                    function delayCallback() {
+                                        if (i < myWords.items.length) {
+                                            if (i >= 1)
+                                                myWords.items[i - 1].font.highlightColor = "#FFFFFF";
+                                            myWords.items[i].font.highlightColor = "#FFFF00";
+                                            myWords.items[i].font.size = originalSize * 1.30;
+                                            i++;
+                                            return ctx.sync().then(function () { setTimeout(delayCallback, 100) });
+                                        }
+                                    };
 
-    } 
+                                    delayCallback();
+                                });
+                            })
+
+        }).catch(function (myError) {
+        });
 	````
 	
 
-4. Note that the code is getting a sample docx file encoded as base64 (which is the format the insertFile method expects), then iterates each of the ocurrences and changes the content and the formatting information. Note that in the interest of time, the code is calling a method inserted on Exercise 2: **getDocumentAsBase64**  to simulate creating a base64 encoded based on an existing docx file.
+4. This code sample is implementing both highlight and increase the font size word by word of the last paragraph of the document. SO once we have a handle of that paragrpah we are using the *splitTextRanges* methods to get, as a collection of ranges, each word (by spacifying a space (" ") delimiter. once we have the Range collection we are traversining it in order to hichlight word by word.
 
-5. Test your work by pressing F5 to start a debug session and then click the **Step 1: Starting SOW** button. After the document gets inserted, try your code by clicking  on the  **Step 5: Reuse Content!** to insert the file at the end of the document. Now try your code by clicking on **Step 4: Replace Customer!**. Each "Contoso" instance should be replaced with 'Fabrikam' and look like the following image:
+5. Test your work by pressing F5 to start a debug session and then click the **Step 1: Starting SOW** button. After the starting document gets inserted, try your code by clicking  on the  **Step 6: Highlight Word by Word!** to start the animation. Notice how each word will get highlighted in the last paragraph!
 
-	![](Images/Fig17.png) 
+	![](Images/Fig18.png) 
 	
 
-5. Congratulations! In this exercise, you learned how to insert existing Word (docx) files into a document! Let's continue with Exercise 7!
+5. Congratulations! In this exercise, you learned how to split a paragraph into multiple ranges and traversing the ranges collection! Let's continue with Exercise 8!
 
