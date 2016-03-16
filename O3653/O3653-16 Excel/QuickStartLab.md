@@ -16,6 +16,12 @@ The purpose of this lab is to show step-by-step instructions for reading and wri
 
 ## Lab instructions 
 
+#### Prerequisites
+
+* You must have an Office 365 tenant to complete this lab. If you do not have one, the lab for O3651-7 Setting up your Developer environment in Office 365 shows you how to obtain a trial.
+* You must have Visual Studio 2015 with Update 1 installed.
+* You must have the Graph AAD Auth v2 Starter Project template installed.
+
 ### Create a new project 
 
 In this first step, you will create a new ASP.NET MVC project using the **Graph AAD Auth v1 Starter Project** template and log in to your app and generate access tokens
