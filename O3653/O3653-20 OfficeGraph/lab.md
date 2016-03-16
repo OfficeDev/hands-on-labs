@@ -150,7 +150,7 @@ In this exercise, you will code the **TrendingController** of the MVC applicatio
 
 Now that we have a controller, all we need to see your trending documents is a view that displays them!
 
-## Exercise 4: Code the MVC application that displays documents trending around you
+## Exercise 5: Code the MVC application that displays documents trending around you
 1. Create a view to display trending documents.
    1. Within the `TrendingController` class, right click the first `View()` method at the end of the `Index()` action and select **Add View**.
    2. Within the **Add View** dialog, set the following values:
@@ -197,7 +197,7 @@ Now that we have a controller, all we need to see your trending documents is a v
   
 While viewing your trending documents is interesting, retrieving them for other users in your Office 365 accounts is even better! Let's make sure that we can retrieve trending documents for other users too.
 
-## Exercise 5: Make the MVC application display documents trending around other users
+## Exercise 6: Make the MVC application display documents trending around other users
 1. Add a route handler and view to handle displaying documents trending around a specific user:
   1. In the **TrendingController.cs** file, add an action method named **Users** with the following code:
 
