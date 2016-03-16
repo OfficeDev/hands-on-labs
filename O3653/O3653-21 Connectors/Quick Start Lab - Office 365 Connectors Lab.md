@@ -40,21 +40,25 @@ If you don’t have an Office 365 Group, this is how you create one
 4. Open a new browser tab and navigate to https://www.hurl.it, which is an in-browser web request composer similar to what Fiddler offers.
 
 5. When the page loads, add the following details:
+	- **Operation**: **POST**
+	- **Destination Address**: **webhook URL** from **Step 3**
+	- **Headers**: **Content-Type: application/json** 
+	- **Body**: **{ "text": "Hello from Build 2016" }**
+	- **Copy and paste the sample JSON payload (see below these instructions)**
 
-	Operation: POST
-	Destination Address: webhook URL from Step 3
-	Headers: Content-Type: application/json
-	Body: { "text": "<PASTE THE SAMPLE JSON PAYLOAD HERE" }
+	![Manual Webhook](http://i.imgur.com/vV8FKeD.png)
+	
 
-	Copy and paste the sample JSON payload (see below these instructions) 
+6. Accept the Captcha and click the Launch Request button. You should get a confirmation screen that looks similar to the following.
 
-7. Accept the Captcha and click the Launch Request button. 
+	![Webhook Manual Confirmation](http://i.imgur.com/LjEi7m6.png)
 
-8. Go back to your Office 365 Group. Review the connector card message in the Group inbox that was sent using the incoming webhook 
 
-9. Optional: change the JSON card format to further customize the layout, buttons & colors.  For e.g. under potential actions, rename the button or change the target URL
+7. Go back to your Office 365 Group. Review the connector card message in the Group inbox that was sent using the incoming webhook 
 
-10. To learn more about the connector card format, visit https://dev.outlook.com/Connectors/GetStarted
+8. Optional: change the JSON card format to further customize the layout, buttons & colors.  For e.g. under potential actions, rename the button or change the target URL
+
+9. To learn more about the connector card format, visit https://dev.outlook.com/Connectors/GetStarted
 	
 	
 Sample Connector Card Message JSON Payload
