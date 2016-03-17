@@ -9,7 +9,7 @@ In this lab, you will learn how to post messages to Office 365 Groups using inco
 
  1. You must have an Office 365 tenant and Microsoft Azure subscription to complete this lab. If you do not have one, the lab for O3651-7 Setting up your Developer environment in Office 365 shows you how to obtain a trial.
  
- 2. For Exercise 1, use tools like Fiddler, Postman or curl to post a JSON payload to the group's webhook URL. This exercise will use www.Hurl.it to post JSON message. You may also use the Connector playground sandbox  to complete this exercise
+ 2. For Exercise 1, use tools like Fiddler, Postman or Curl to post a JSON payload to the group's webhook URL. This exercise will use www.Hurl.it to post JSON message. You may also use the Connector sandbox to complete this exercise.
  
  3. For Exercise 2, you must have Visual Studio 2015 with Update 1 installed. 
 
@@ -17,25 +17,25 @@ In this lab, you will learn how to post messages to Office 365 Groups using inco
 **Environment Prep**
 ---------
 
-If you don’t have an Office 365 Group, this is how you create one
+If you don’t have an Office 365 Group, this is how you create one:
 
-1. Sign in to Outlook Web App @ http://Outlook.Office.com using your Office 365 administrator or user credentials
+1. Sign in to Outlook Web App @ http://Outlook.Office.com using your Office 365 administrator or user credentials.
 
-2. Browse to the Groups and click the "+" button to create a new Office 365 group. Give a name for the group, and you may keep it public
+2. Browse to the Groups and click the **plus (+)** button to create a new Office 365 group. Give a name for the group, and you may keep it public.
 
-3. Click Connectors on the menu bar. See the list of available connectors that you can set up for this group.
+3. Click **Connectors** on the menu bar. See the list of available connectors that you can set up for this group.
 	
 
-**
+
 
 **Exercise 1: Post a Connector Card message (JSON) to the Group**
 -------------------------------------------------------------
 
-1. Go to your office 365 Group. Click Connectors on the menu bar, find and expand the Incoming web hook configuration. 
+1. Go to your Office 365 Group. Click **Connectors** on the menu bar, find and expand the Incoming web hook configuration. 
 	
-2. Click Add to create a new configuration, provide a name and click create. This will generate a webhook URL for the group.  
+2. Click **Add** to create a new configuration, provide a name and click **Create**. This will generate a webhook URL for the group.  
 	
-3. Copy the generated URL and save it someplace as you will need it later.  Select Done to create the incoming webhook.
+3. Copy the generated URL and save it-as you will need it later. Select **Done** to create the incoming webhook.
 	
 4. Open a new browser tab and navigate to https://www.hurl.it, which is an in-browser web request composer similar to what Fiddler offers.
 
@@ -49,16 +49,16 @@ If you don’t have an Office 365 Group, this is how you create one
 	![Manual Webhook](http://i.imgur.com/vV8FKeD.png)
 	
 
-6. Accept the Captcha and click the Launch Request button. You should get a confirmation screen that looks similar to the following.
+6. Accept the Captcha and click the **Launch Request** button. You should get a confirmation screen that looks similar to the following.
 
 	![Webhook Manual Confirmation](http://i.imgur.com/LjEi7m6.png)
 
 
-7. Go back to your Office 365 Group. Review the connector card message in the Group inbox that was sent using the incoming webhook 
+7. Go back to your Office 365 Group. Review the connector card message in the Group inbox that was sent using the incoming webhook. 
 
-8. Optional: change the JSON card format to further customize the layout, buttons & colors.  For e.g. under potential actions, rename the button or change the target URL
+8. Optional: Change the JSON card format to further customize the layout, buttons, and colors.  For example, under potential actions, rename the button or change the target URL.
 
-9. To learn more about the connector card format, visit https://dev.outlook.com/Connectors/GetStarted
+9. To learn more about the connector card format, visit https://dev.outlook.com/Connectors/GetStarted.
 	
 	
 Sample Connector Card Message JSON Payload
@@ -114,15 +114,15 @@ Sample Connector Card Message JSON Payload
 **Exercise 2: Build an ASP.net application to receive incoming notifications from Github service and post them as connector card messages in Office 365 groups**
 ------------------------------------------------------------------------
 	
-1. Launch Visual Studio 2015 and select New, Project. Select the ASP.net Web application template.  Provide a name for your project. Select empty for the ASP.net type and select the Web API checkbox. This will automatically pull down the necessary nugets for you.
+1. Start Visual Studio 2015 and select **New>Project**. Select the ASP.net Web application template. Provide a project name. Select **empty** for the ASP.net type and select the Web API checkbox. This will pull down the necessary nugets for you.
 
-2. Right click on the project, select "Add" -> "Connected Service". Select ASP.net on the left side of the dialog and select the ASP.net Webhooks. Click the configure button. This will generate code into your project so you can host and receive webhooks.
+2. Right-click on the project, select **Add>Connected Service**. Select ASP.net on the left side of the dialog and select the ASP.net Webhooks. Click the **Configure** button. This will generate code into your project, so you can host and receive webhooks.
 
-3. Select Github in the "Enable incoming webhooks" dialog. You need to provide a secret for your GitHub application. Let's generate a new secret. Go to sha1-online.com and generate a new SHA key. Copy this key into your clipboard and also save it in notepad temporarily. Paste this secret into Github text box in Visual Studio.
+3. Select Github in the **Enable incoming webhooks** dialog box. Provide a secret for your GitHub application. Let's generate a new secret. Go to sha1-online.com and generate a new SHA key. Copy this key into your clipboard and also save it in Notepad temporarily. Paste this secret into Github text box in Visual Studio.
 
-4. Visual studio will install the packages for Github webhook receivers and generate all the necessary code in your project. Verify the GitHub secret is present in the Web.config file of your project, by looking under app settings for the key listed as `"MS_WebHookReceiverSecret_GitHub".` 
+4. Visual studio will install the packages for Github webhook receivers and generate all the necessary code in your project. Verify the GitHub secret is present in the Web.config file of your project by looking under app settings for the key listed as `"MS_WebHookReceiverSecret_GitHub".` 
 
-5. Open the global.asax file. You need to initialize the webhook receiver. Add a line of code for `GlobalConifguration.Configure(WebhookConfig.Register)`  in the Application_Start function. 
+5. Open the global.asax file. Initialize the webhook receiver. Add a line of code for `GlobalConifguration.Configure(WebhookConfig.Register)`  in the Application_Start function. 
 
 		protected void Application_Start()
 	        {
@@ -132,9 +132,9 @@ Sample Connector Card Message JSON Payload
 	        
 6. Find the "Completed Projects" folder under lab "O3653-21". You will find this folder in the same Github repo location that host the instructions for this exercise.  You will need to copy a few files from this already completed projects folder in order to complete this exercise.
 
-7. Find all the Swift*.cs files under the Models folder in "Completed Projects". Copy these files to the Models folder in your Visual Studio project.  Right click on the Models folder, select Add -> "Existing item" and add these files into your Visual studio project.  Do the same for GithubIssueEvent.cs, ConnectorCard.cs and add them to your visual studio project. 
+7. Find all the Swift\*.cs files under the Models folder in "Completed Projects". Copy these files to the Models folder in your Visual Studio project.  Right-click the Models folder, select **Add>Existing** item and add these files into your Visual Studio project. Do the same for GithubIssueEvent.cs, ConnectorCard.cs and add them to your Visual Studio project. 
 
-8. Open the GitHubWebHookHandler.cs file under WebHandlers folder in your visual studio project.  Replace the existing code in this file with the code listed here below. Fix the namespace (see curly braces), so it continues to bear the same name as your Visual studio project
+8. Open the GitHubWebHookHandler.cs file under WebHandlers folder in your Visual Studio project.  Replace the existing code in this file with the code listed below. Fix the namespace (see curly braces), so it continues to bear the same name as your Visual Studio project.
 
 		using Microsoft.AspNet.WebHooks;
 		using Newtonsoft.Json.Linq;
@@ -151,15 +151,15 @@ Sample Connector Card Message JSON Payload
 		    public class GitHubWebHookHandler : WebHookHandler
 		    {
 
-		        // TODO: Copy and paste the group webhook URL here
+		        // TODO: Copy and paste the group webhook URL here.
 		        public const string groupWebHookURL = @"paste the Office 365 Group webhook URL here";
 
 		        public override Task ExecuteAsync(string receiver, WebHookHandlerContext context)
 		        {
-		        // make sure we're only processing the intended type of hook
+		        // Be sure we're only processing the intended type of hook.
 		        if("GitHub".Equals(receiver, System.StringComparison.CurrentCultureIgnoreCase))
 		        {
-		                // todo: replace this placeholder functionality with your own code
+		                // TODO: Replace this placeholder functionality with your own code.
 		                string action = context.Actions.First();
 		                JObject incoming = context.GetDataOrDefault<JObject>();
 		                string connectorCardPayload = ConnectorCard.ConvertGithubJsonToConnectorCard(incoming.ToString());
@@ -183,35 +183,35 @@ Sample Connector Card Message JSON Payload
 		}
 	
 	
-9. In the same GitHubWebHookHandler.cs file, find the string variable groupWebHookURL.  Copy and paste the Office 365 group webhook URL that you previously got from Exercise #1 (step 3)
+9. In the same GitHubWebHookHandler.cs file, find the string variable groupWebHookURL.  Copy and paste the Office 365 group webhook URL that you previously got from Exercise #1 (Step 3).
 
-10. Build your project.  Right click on the project and select "Publish".  
+10. Build your project.  Right-click the project and select **Publish**.  
 	
 	a. Select the Microsoft Azure Web Apps option and sign in to your Azure subscription (if needed). 
 	
-	b. Create a new web app.  Choose a web app name and app service plan location. Click Create.  Select  "Settings" on the left side, choose the Debug configuration (so you can debug your web application in Visual Studio) and select all the checkboxes under file publish options. 
+	b. Create a new web app.  Choose a web app name and app service plan location. Click **Create**.  Select  "Settings" on the left side, choose the Debug configuration (so you can debug your web application in Visual Studio) and select all the checkboxes under file publish options. 
 	
-	c. Click Publish to publish the webapp to Azure websites. This will launch a browser and take you to the Azure websites hosting your web application (e.g. http://mywebhookspreview.azurewebsites.net) Copy this URL.
+	c. Click **Publish** to publish the webapp to Azure websites. This will open a browser and take you to the Azure websites hosting your web application (for example, http://mywebhookspreview.azurewebsites.net) Copy this URL.
 	
-		Note: If you don’t have an Azure subscription, you can get it free by signing up @ https://tryappservice.azure.com/
-		This allows you to host you web application on Azure for up to 24 hours, no credit card  required.   
+		Note: If you don’t have an Azure subscription, get one free by signing up @ https://tryappservice.azure.com/
+		This allows you to host you web application on Azure for up to 24 hours, no credit card required.   
 		Choose **Web App** as the app type, then click **Next**.  
 		Change the language dropdown to **C#**, then choose **ASP.NET Empty Site** and click **Create**.  
 		Choose to download publishing profile.  
 		When using Visual Studio to publish your project, choose the import option to import the publishing profile, 
-		follow the same a, b and c steps above to create the webapp
+		follow the same a, b, and c steps above to create the webapp.
 	
-11. Go to github.com. Create a new github repo (unless you already have one for testing purposes). Navigate to the repo. Click on settings. Select webhooks & Services on the left side. Click on the "Add webhook" buttonAppend "/api/webhooks/incoming/Github" to the  URL of your azure web application (e.g. http://mywebhookspreview.azurewebsites.net/api/webhooks/incoming/Github)You will receive notifications from Github service at this URL.  
+11. Go to github.com. Create a new github repo (unless you already have one for testing purposes). Navigate to the repo. Click  **Settings**. Select Webhooks & Services on the left side. Click the **Add webhook** buttonAppend "/api/webhooks/incoming/Github" to the URL of your Azure web application (for example, http://mywebhookspreview.azurewebsites.net/api/webhooks/incoming/Github)You will receive notifications from Github service at this URL.  
 
-12. For the secret, enter the SHA1 key you got from the earlier step
+12. For the secret, enter the SHA1 key you got earlier.
 
-13. Under "Which events would you like to trigger this webhook", select "Let me select individual events". Select the "Issues" checkbox. You will receive notification only when issues are created, assigned, labelled or closed.For this exercise, we will focus on the experience for issue creation.  Click "Update webhook" button to save your Github webhook configuration
+13. Under "Which events would you like to trigger this webhook", select "Let me select individual events". Select the "Issues" checkbox. You will receive notification only when issues are created, assigned, labelled, or closed.For this exercise, we will focus on the experience for issue creation.  Click the **Update webhook** button to save your Github webhook configuration.
 
-14. Optional: to debug the incoming webhook from Github service, place a breakpoint on the ExecuteAsync function of the GithubWebhookHandler.cs file of your Visual Studio project. To do this, open server explorer in Visual Studio, find and right click your web application under App service, and attach the debugger. 
+14. Optional: To debug the incoming webhook from Github service, place a breakpoint on the ExecuteAsync function of the GithubWebhookHandler.cs file of your Visual Studio project. To do this, open server explorer in Visual Studio, find and right-click your web application under App service, and attach the debugger. 
 
 15. Create a new issue for your repo. This will trigger the incoming webhook in your ASP.net application. You should now receive connector card messages for new github issues in your Office 365 group inbox.
 
-**Congratulations,** on completing this exercise! Try building your own connector and submit it to Office 365. Customize the card message experience to show your own brand and style, and the sender avatar will show your logo (instead of "incoming webhook"). 
-Check out dev.outlook.com/connectors for more developer information, code samples and instructions for submitting and listing your connector in the Office 365 Connectors catalog.
+**Congratulations on completing this exercise!** Try building your own connector and submit it to Office 365. Customize the card message experience to show your own brand and style, and the sender avatar will show your logo (instead of "incoming webhook"). 
+Check out dev.outlook.com/connectors for more developer information, code samples, and instructions for submitting and listing your connector in the Office 365 Connectors catalog.
 
 
