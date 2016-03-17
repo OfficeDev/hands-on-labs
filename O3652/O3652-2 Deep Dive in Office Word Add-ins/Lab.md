@@ -55,10 +55,10 @@ In this lab, you will get hands-on experience developing a Word add-in by using 
 
 
 
-9. You can see that inside the **AddIn** folder there is a child folder named **Home**, which contains three files named **Home.html**, **Home.css** and **Home.js**. Note that the add-in project is currently configured to use **Home.html** as the add-in's start page and that **Home.html** is linked to both **Home.css** and **Home.js**.
+9. There are important references included in the **Home.html** header. One for our Office.js library **<script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js" type="text/javascript"></script>**, and also to the Office UI Fabric components. Note there is also a reference to **Home.js** script on this page, which implements the logic of the add-in.
  
 
-12. Next, you will examine the JavaScript code in **home.js**. Double-click **home.js** to open it in a code editor window. Note that **Home.html** links to **app.js** before it links to **home.js**, which means that JavaScript code written in **Home.js** can access the global **app** object created in **app.js**.
+12. Lets examine the JavaScript code in **home.js**. Double-click **home.js** to open it in a code editor window. Note that **Home.html** links to **app.js** before it links to **home.js**, which means that JavaScript code written in **Home.js** can access the global **app** object created in **app.js**.
 13. Walk through the code in **Home.js** and see how it uses a self-executing function to register an event handler on the **Office.initialize** method, which in turn registers a document-ready event handler using jQuery. This allows the add-in to call **app.initialize** and to register an event handler using the **getDataFromSelection** function. 
 
 	````javascript 
