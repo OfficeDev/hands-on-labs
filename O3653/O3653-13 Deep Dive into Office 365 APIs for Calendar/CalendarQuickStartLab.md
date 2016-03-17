@@ -1,14 +1,7 @@
-# Microsoft Graph for Calendar
-In this lab, you will use Microsoft Graph to program against an Office 365 and Outlook mailbox with an ASP.NET MVC application.
+# Connect to calendar with the Microsoft Graph, find my next meeting and launch the Skype online meeting experience
+Learn how to use Microsoft Graph to build context centered applications, find your the next meeting and launch the Skype online meeting experience.
 
 [//]: # (Change which template based on if using converged auth)
-
-## Prerequisites
-1. You must have an Office 365 tenant and Microsoft Azure subscription to
-   complete this lab. If you do not have one, the lab for **O3651-7 Setting up
-   your Developer environment in Office 365** shows you how to obtain a trial.
-1. You must have Visual Studio 2015 with Update 1 installed.
-1. You must have the Graph AAD Auth v1 Starter Project template installed.
 
 [//]: # (Remove if doing v1) 
 
@@ -22,7 +15,7 @@ for calling the Graph API.
 1. Launch Visual Studio 2015 and select **New**, **Project**.
   1. Search the installed templates for **Graph** and select the
     **Graph AAD Auth v2 Starter Project** template.
-  1. Name the new project **CalendarWebApp** and click **OK**.
+  1. Name the new project **QuickStartCalendarWebApp** and click **OK**.
   1. Open the **Web.config** file and find the **appSettings** element. This is where you will need to add your appId and app secret you will generate in the next step.
 1. Launch the [Application Registration Portal](https://apps.dev.microsoft.com)
    to register a new application.
@@ -31,7 +24,7 @@ for calling the Graph API.
   1. Copy the **Application Id** and paste it into the value for **ida:AppId** in your project's **web.config** file.
   1. Under **Application Secrets** click **Generate New Password** to create a new client secret for your app.
   1. Copy the displayed app password and paste it into the value for **ida:AppSecret** in your project's **web.config** file.
-  1. Modify the **ida:AppScopes** value to include the required `https://outlook.office.com/calendars.readwrite`  scopes.
+  1. Modify the **ida:AppScopes** value to include the required `https://graph.microsoft.com/calendars.readwrite`  scopes.
 
   ```xml
   <configuration>
@@ -41,13 +34,13 @@ for calling the Graph API.
       <add key="ida:AppSecret" value="paste application password here" />
       <!-- ... -->
       <!-- Specify scopes in this value. Multiple values should be comma separated. -->
-      <add key="ida:AppScopes" value="//outlook.office.com/calendars.readwrite" />
+      <add key="ida:AppScopes" value="//graph.microsoft.com/calendars.readwrite" />
     </appSettings>
     <!-- ... -->
   </configuration>
   ```
 1. Add a redirect URL to enable testing on your localhost.
-  1. Right click on **CalendarWebApp** and click on **Properties** to open the project properties.
+  1. Right click on **QuickStartCalendarWebApp** and click on **Properties** to open the project properties.
   1. Click on **Web** in the left navigation.
   1. Copy the **Project Url** value.
   1. Back on the Application Registration Portal page, click **Add Platform** and then **Web**.
@@ -61,22 +54,6 @@ for calling the Graph API.
    
 [//]: # (Remove if doing v2)
 
-## Exercise 1: Create a new project using Azure Active Directory authentication
-
-In this first step, you will create a new ASP.NET MVC project using the
-**Graph AAD Auth v1 Starter Project** template and log in to your app and generate access tokens
-for calling the Graph API.
-
-1. Launch Visual Studio 2015 and select **New**, **Project**.
-  1. Search the installed templates for **Graph** and select the
-    **Graph AAD Auth v1 Starter Project** template.
-  1. Name the new project **CalendarWebApp** and click **OK**.
-   
-1. Press F5 to compile and launch your new application in the default browser.
-  1. Once the Graph and AAD Auth Endpoint Starter page appears, click **Sign in** and login to your Office 365 adminsitrator account.
-  1. Review the permissions the application is requesting, and click **Accept**.
-  1. Now that you are signed into your application, exercise 1 is complete!
-   
 ## Exercise 2: Access Calendar through Microsoft Graph SDK
 
 In this exercise, you will build on exercise 1 to connect to the Microsoft Graph
@@ -87,12 +64,12 @@ SDK and work with Office 365 and Outlook Calendar
 ### Create the Calendar controller and use the Graph SDK
 
 1. Add a reference to the Microsoft Graph SDK to your project
-  1. In the **Solution Explorer** right click on the **CalendarWebApp** project and select **Manage NuGet Packages...**.
+  1. In the **Solution Explorer** right click on the **QuickStartCalendarWebApp** project and select **Manage NuGet Packages...**.
   1. Click **Browse** and search for **Microsoft.Graph**.
   1. Select the Microsoft Graph SDK and click **Install**.
   
 1. Add a reference to the Bootstrap DateTime picker to your project
-  1. In the **Solution Explorer** right click on the **CalendarWebApp** project and select **Manage NuGet Packages...**.
+  1. In the **Solution Explorer** right click on the **QuickStartCalendarWebApp** project and select **Manage NuGet Packages...**.
   1. Click **Browse** and search for **Bootstrap.v3.Datetimepicker.CSS**.
   1. Select Bootstrap.v3.Datetimepicker.CSS and click **Install**.
   1. Open the **App_Start/BundleConfig.cs** file and update the bootstrap script and CSS bundles. Replace these lines:
@@ -123,7 +100,7 @@ SDK and work with Office 365 and Outlook Calendar
     ```
 
 1. Create a new controller to process the requests for files and send them to Graph API.
-  1. Find the **Controllers** folder under **CalendarWebApp**, right click on it and select **Add** then **Controller**.
+  1. Find the **Controllers** folder under **QuickStartCalendarWebApp**, right click on it and select **Add** then **Controller**.
   1. Select **MVC 5 Controller - Empty** and click **Add**.
   1. Change the name of the controller to **CalendarController** and click **Add**.
 
@@ -406,7 +383,7 @@ to an MVC view that will display the events in your calendar and allow you to ad
     </ul>
   ```
 1. Create a new **View** for CalendarList.
-  1. Expand the **Views** folder in **CalendarWebApp**. Right-click **Calendar** and select
+  1. Expand the **Views** folder in **QuickStartCalendarWebApp**. Right-click **Calendar** and select
       **Add** then **New Item**.
   1. Select **MVC View Page** and change the filename **Index.cshtml** and click **Add**.
   1. **Replace** all of the code in the **Calendar/Index.cshtml** with the following:
@@ -530,7 +507,7 @@ $(function () {
   ```
   
 1. Create a new **View** to get event details and either Accept or TentativelyAccept or Decline it.
-  1. Expand the **Views** folder in **CalendarWebApp**. Right-click **Calendar** and select
+  1. Expand the **Views** folder in **QuickStartCalendarWebApp**. Right-click **Calendar** and select
       **Add** then **New Item**.
   1. Select **MVC View Page** and change the filename **Detail.cshtml** and click **Add**.
   1. **Replace** all of the code in the **Calendar/Detail.cshtml** with the following:
