@@ -1,13 +1,13 @@
 # Microsoft Graph to manage groups and users
 
-In this lab, you will create an ASP.NET MVC application that uses the Microsoft Graph client SDK to create a basic group manangement experience. It will search for groups in your tenant's directory, show their members, and get more member details including photo. In a bonus excercise you can also learn how to add more users to a group (through a people picker) and remove users from a group.
+In this lab, you will create an ASP.NET MVC application that uses the Microsoft Graph client SDK to create a basic group manangement experience. It will search for groups in your tenant's directory, show their members, and get member details such as their photo. In a bonus excercise, you will learn how to add more users to a group (through a people picker) and remove users from a group.
 
 ## Prerequisites
 1. An administrator account for an Office 365 tenant. This is required because you'll be using the client credentials of a pre-registered application that's configured to request admin-level permissions.
 
-## Exercise 1: Create a new project using Graph AAD Auth v1 Started Project template
+## Exercise 1: Create a new project using Graph AAD Auth v1 Starter Project template
 In this first step, you will create a new ASP.NET MVC project using the
-**Graph AAD Auth v1 Start Project** template.
+**Graph AAD Auth v1 Starter Project** template.
 
 1. Open Visual Studio 2015 and select **File/New/Project**.
 2. Search the installed templates for **Graph** and select the
@@ -24,7 +24,9 @@ In this first step, you will create a new ASP.NET MVC project using the
     1. In the Solution Explorer right click on the **GraphUsersGroups** project and select **Manage NuGet Packages...**
     2. Click Browse and search for Microsoft.Graph.
     3. Select the Microsoft Graph SDK and click Install.
-2. Create a new controller: Right click on the **Controller** folder and select **Add**, **Controller**. Select **MVC 5 Controller - Empty**, click **Add** and then name the new controller **GroupSearchController**.
+2. Create a new controller
+    1. Right click on the **Controller** folder and select **Add**, **Controller**.
+    2. Select **MVC 5 Controller - Empty**, click **Add** and then name the new controller **GroupSearchController**.
 3. Create an associated view by right clicking the function **Index()**, **Add View**, and click **Add**. The view is created at **Views\GroupSearch\Index.cshtml**.
 4. In **GroupSearchController.cs**, replace the auto-generated **using** directives with
     ```c#
@@ -111,7 +113,7 @@ In this first step, you will create a new ASP.NET MVC project using the
         }
     ```
 
-6. Finally in the same file, add the following function that will make a query to Graph to get the members of the selected group.  Initially this won't feature any paging, but will get the first 10 members.  We'll add paging later.
+6. In the same file, add the following function that will make a query to Graph to get the members of the selected group. Initially this won't feature any paging, but will get the first 10 members. We'll add paging later.
     ```csharp
     [Authorize]
     // GET group members and page through the results (10 at a time)
@@ -190,7 +192,7 @@ In this first step, you will create a new ASP.NET MVC project using the
     <li>@Html.ActionLink("Group Management", "Index", "GroupSearch")</li>
     }
     ```
-8. Finally let's create a new view to display the group memberships of a selected group. Right click on **Views\GroupSearch**, select **Add** and **View**, click **Add** and name it **GroupMembers**. Replace the contents of this file with the following.   NOTE also that we have some placeholders for further functionality that we'll add later.
+8. Finally, let's create a new view to display the group memberships of a selected group. Right click on **Views\GroupSearch**, select **Add** and **View**, click **Add** and name it **GroupMembers**. Replace the contents of this file with the following.  Note that we have some placeholders for further functionality that we'll add later.
 
     ```xml
     @using Microsoft.Graph
@@ -237,7 +239,7 @@ In this first step, you will create a new ASP.NET MVC project using the
     </div>
     ```
 
-8. Press **F5** to debug your app! First sign in, then explore the navbar **Group Management** link. Search for groups by complete or incomplete name or email. Try typing *a* and hitting the search button :). Then click on a group to expand its group memberships.  You should see something like this:
+8. Press **F5** to debug your app! First sign in, then explore the navbar **Group Management** link. Search for groups by complete or incomplete name or email. Try typing *a* and hitting the search button. Then click on a group to expand its group memberships. You should see something like this:
     
     ![](images/GroupMembership.JPG)
     
@@ -259,7 +261,7 @@ In this step, we'll enable selecting a user from the group members search result
         ViewBag.NextLink = null;
     }
     ```
-2. Next create a new controller for user functionality. Right-click on the **Controllers** folder and select **Add**, **Controller**. Select **MVC 5 Controller - Empty**, click **Add** and then name the new controller **UserSearchController**. 
+2. Create a new controller for user functionality. Right-click on the **Controllers** folder and select **Add**, **Controller**. Select **MVC 5 Controller - Empty**, click **Add** and then name the new controller **UserSearchController**. 
 
 3. Right click the folder **Models**, **Add**, **Class**, and name it **Profile.cs**. Replace the contents of this class with the following.
 
@@ -435,7 +437,7 @@ In this step, we'll enable selecting a user from the group members search result
     ```xml
     <tr onclick="location.href = '@(Url.Action("ShowProfile", "UserSearch", new { userId = user.Id }))'">
     ``` 
-5. Finally we need to hook up the paging with a next button control in the **GroupMembers** view.  Find the comment that says *Add a next button* and replace with:
+5. Finally, we need to hook up the paging with a next button control in the **GroupMembers** view.  Find the comment that says *Add a next button* and replace with:
     ```xml
     @{ 
     Dictionary<string, object> attributes2 = new Dictionary<string, object>();
@@ -450,7 +452,7 @@ In this step, we'll enable selecting a user from the group members search result
         }
     }
     ```
-6. Press **F5** t**o compile and try out the new ShowProfile page. Search for groups, view the members, and page through them and click on a user to see their details.
+6. Press **F5** to compile and try out the new ShowProfile page. Search for groups, view the members, and page through them and click on a user to see their details.
 
 ***
 Hooray! Congratulations on creating your GraphUsersGroups app! You have created an MVC application that uses Microsoft Graph to search groups and view users in your tenant. But don't stop here - there's plenty more to explore with the Microsoft Graph.  
@@ -458,8 +460,8 @@ Hooray! Congratulations on creating your GraphUsersGroups app! You have created 
 - Learn about and connect to the Microsoft Graph at https://graph.microsoft.io
 - Or try some option bonus exercises below
 
-## Exercise 4: Optional Bonus!!!
-This step is entirely optional.  Here we'll add code that will allow you to add new users to a group (with a people picker), and buttons that allow you to remove users from a group.
+## Exercise 4: Optional Bonus
+This step is entirely optional. Here we'll add code that will allow you to add new users to a group (with a people picker), and buttons that allow you to remove users from a group.
 
 1. Firstly let's add the code to add a member to a group and to remove a member from a group.  We'll add this to our trusty **GroupSearchController**. Each function routes the user back to the GroupMembers view after adding or removing a member. 
     ```csharp
@@ -513,9 +515,9 @@ This step is entirely optional.  Here we'll add code that will allow you to add 
         return RedirectToAction("Index", "UserSearch", routeValues);
     }
     ```
-3. For the people picking experience we'll need to create an associated `Index` view opening the **UserSearchController** and right clicking the function **Index()** under **Controllers\UserSearch, **Add View**, and click **Add**. The view is created at **Views\UserSearch\Index.cshtml**.  We'll be updating this later.
+3. For the people picking experience we'll need to create an associated `Index` view opening the **UserSearchController** and right clicking the function **Index()** under **Controllers\UserSearch, **Add View**, and click **Add**. The view is created at **Views\UserSearch\Index.cshtml**. We'll be updating this later.
  
-4. Now we need to add a function to search for a user, based on an input search string.  So in **UserSearchController**...
+4. Now we need to add a function to search for a user, based on an input search string. So in **UserSearchController**...
     1. Add the following function, that uses the Graph to search for users.
     ```csharp
     [HttpPost]
@@ -550,7 +552,7 @@ This step is entirely optional.  Here we'll add code that will allow you to add 
         return View(people);
     }
     ```
-    2. Next update the existing `Index()` function and replace with:
+    2. Update the existing `Index()` function and replace with:
     ```csharp
     // GET: UserSearch
     public ActionResult Index(string groupId)
@@ -618,10 +620,10 @@ This step is entirely optional.  Here we'll add code that will allow you to add 
     @Html.ActionLink("Remove", "RemoveMember", "GroupSearch", routeValues1, attributes1);
     }
     ```
-5. And that should do it.  Press **F5** and debug.  You should now see an **Add member** button, that once clicked takes you to a people picking experience.  Choose a user, and then see that you arrive back at the same membership view, but with your new user.  Click on a **Remove** button, and you should see the screen refresh without the removed user.
+5. And that should do it. Press **F5** and debug. You should now see an **Add member** button, that once clicked takes you to a people picking experience. Choose a user, and then see that you arrive back at the same membership view, but with your new user. Click on a **Remove** button, and you should see the screen refresh without the removed user.
 
 ***
-Congratulations, dedicated quick start developer.  This quick start ends here.  But don't stop here - there's plenty more to explore with the Microsoft Graph.
+Congratulations, dedicated quick start developer. This quick start ends here. But don't stop here - there's plenty more to explore with the Microsoft Graph.
 
 ## Next Steps and Additional Resources:  
 - See this training and more on http://dev.office.com/
