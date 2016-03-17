@@ -6,9 +6,10 @@ In this lab, you will get hands-on experience developing a Word add-in by using 
 2. You must have Office 2016 Preview installed, which you can obtain here: https://products.office.com/en-us/office-2016-preview. Make sure you are using the January Fork release (6741).
 3. This lab requires you to use multiple starter files or an entire starter project from the GitHub location. You can either download the whole repo as a zip or clone the repo https://github.com/OfficeDev/TrainingContent.git, for those familiar with git.
 
-## Exercise 1: Creating the Statement of Work Wizard Add-in Project and Hello World!
+##Exercise 1:Creating the Statement of Work Wizard Add-in Project and Hello World!
 *In this exercise, you will create a new Office Add-in project in Visual Studio so that you can begin to write, test and debug a Word add-in. The user interface of the Office Add-in you will create in this lab will not be very complicated as it will just contain HTML buttons and JavaScript command handlers. You will also code your first  "Hello World!" sample!*
 
+###Part 1: Create a basic Add-in
 1. Launch Visual Studio 2015 as an administrator.
 2. From the **File** menu, select the **New Project** command. When the **New Project** dialog appears, select the Word Add-in under Web Add-ins in the **Office/SharePoint** template folder as shown below. Name the new project **StatementOfWork** and click **OK** to create the new project.
 
@@ -17,13 +18,77 @@ In this lab, you will get hands-on experience developing a Word add-in by using 
 
 5. Take a look at the structure of the new Visual Studio solution after it has been created. At a high-level, the new solution has been created using two Visual Studio projects named **StatementOfWork** and **StatementOfWorkWeb**. You should also observe that the top project contains a top-level manifest for the add-in named **StatementOfWorkManifest**, which contains a single file named **StatementOfWork.xml**.
 
-	![](Images/Fig04.png)
+	![](Images/StatementOfWorkManifest.PNG)
 
-6. In the Solution Explorer, double-click on the node named **StatementOfWorkManifest** to open the add-in manifest file in the Visual Studio designer. Browse through the file and note the different options you can set for your Add-in, such as provider, version, Display Name, also note at the end for the definition of Add-in Commands.  Update the **Display Name** settings in the add-in manifest from **StatementOfWork** to **Statement of Work Add-In**, and also change the description to **Lab to learn the Word JavaScript API.**. Your manifest should look like this one:
+6. In the Solution Explorer, double-click on the node named **StatementOfWorkManifest** to open the add-in manifest file in the Visual Studio designer.   
+7. Browse through the file and note the different options you can set for your Add-in, such as provider, version, Display Name.
 
-	![](Images/Fig05.png)
+8. Now, find the XML block that looks like this. Take a minute and read through it as it describes how add-ins can integrate with the Office UI. The example below demonstrates how an add-in can add a button to the Word ribbon's Home tab using Add-in commands. 
 
-7. Save and close **StatementOfWorkManifest**.
+	```XML
+        <!-- PrimaryCommandSurface==Main Office Ribbon. -->
+            <ExtensionPoint xsi:type="PrimaryCommandSurface">
+                <!-- Use OfficeTab to extend an existing Tab. Use CustomTab to create a new tab. -->
+                <OfficeTab id="TabHome">
+                <!-- Ensure you provide a unique id for the group. Recommendation for any IDs is to namespace using your company name. -->
+                <Group id="Contoso.Group1">
+                    <!-- Label for your group. resid must point to a ShortString resource. -->
+                    <Label resid="Contoso.Group1Label" />
+                    <!-- Icons. Required sizes 16,32,80, optional 20, 24, 40, 48, 64. Strongly recommended to provide all sizes for great UX. -->
+                    <!-- Use PNG icons and remember that all URLs on the resources section must use HTTPS. -->
+                    <Icon>
+                    <bt:Image size="16" resid="Contoso.tpicon_16x16" />
+                    <bt:Image size="32" resid="Contoso.tpicon_32x32" />
+                    <bt:Image size="80" resid="Contoso.tpicon_80x80" />
+                    </Icon>
+
+                    <!-- Control. It can be of type "Button" or "Menu". -->
+                    <Control xsi:type="Button" id="Contoso.TaskpaneButton">
+                    <Label resid="Contoso.TaskpaneButton.Label" />
+                    <Supertip>
+                        <!-- ToolTip title. resid must point to a ShortString resource. -->
+                        <Title resid="Contoso.TaskpaneButton.Label" />
+                        <!-- ToolTip description. resid must point to a LongString resource. -->
+                        <Description resid="Contoso.TaskpaneButton.Tooltip" />
+                    </Supertip>
+                    <Icon>
+                        <bt:Image size="16" resid="Contoso.tpicon_16x16" />
+                        <bt:Image size="32" resid="Contoso.tpicon_32x32" />
+                        <bt:Image size="80" resid="Contoso.tpicon_80x80" />
+                    </Icon>
+
+                    <!-- This is what happens when the command is triggered (E.g. click on the Ribbon). Supported actions are ExecuteFuncion or ShowTaskpane. -->
+                    <Action xsi:type="ShowTaskpane">
+                        <TaskpaneId>ButtonId1</TaskpaneId>
+                        <!-- Provide a url resource id for the location that will be displayed on the task pane. -->
+                        <SourceLocation resid="Contoso.Taskpane.Url" />
+                    </Action>
+                    </Control>
+                </Group>
+                </OfficeTab>
+            </ExtensionPoint>
+	```
+    
+9. Let's modify the button to say "Statement of Work" instead of "Show Taskpane". Find the following element in the file.
+
+	```XML
+		<Title resid="Contoso.TaskpaneButton.Label" />
+	```
+10. This indicates that the label of the title is stored in a string resource named **Contoso.TaskpaneButton.Label**.
+11. Scroll down until you find the **ShortString** string resource with that label.
+12. (Optional)Now, set the DefaultValue attribute to *Statement of Work*. Your XML should look like this: 
+
+	```XML
+		<bt:String id="Contoso.TaskpaneButton.Label" DefaultValue="Statement of Work" />
+	```
+        
+13. Press *F5* (or click the "Start" button) to try your changes. You should see you add-in deploy in Word and a button appear on the Home Tab. If you didn't change the label this is what you will see. 
+
+	![Button on Ribbon](Images/Fig03.png)
+
+14. If you did change the label you should see the label you provided. However don't worry if you don't see the label updated, this is a known issue with this build. 
+
+###Part 2: User Word JavaScript APIs
 8. There are other 2 very important files that are part of this project that are on the root of the StatementOfWorkWeb project. One of them is the  **Home.html** page which is opened by default in Visual Studio and represents the add-in's starting page. If not already opened please double click on it, you will see some HTML like this one: 
 
 	````html
@@ -161,9 +226,7 @@ In this lab, you will get hands-on experience developing a Word add-in by using 
 
 19. Save and close **Home.html**.
 
-22. Now it's time to test the add-in using the Visual Studio debugger. Press the **{F5}** key to run the project in the Visual Studio debugger. The debugger should launch Word 2016. NOTE: Once Word is launched, make sure you insert your solution task pane by clicking on the **Show Taskpane** button on the ribbon. (and make sure to repeat this operation each time you F5)
-
-	![](Images/Fig03.png)
+22. Lets try the add-in one more time to see the progress. Press the **{F5}** key to run the project in the Visual Studio debugger. The debugger should launch Word 2016. NOTE: Once Word opens, make sure you launch your add-in by clicking on the **Show Taskpane** button on the ribbon. (and make sure to repeat this operation each time you F5)
 
 23. After you click on this button you should see your Office Add-in in the task pane on the right side of a new Word document, as shown in the following screenshot.
 
