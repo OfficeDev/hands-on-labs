@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <OfficeAppStartDocument>TestPayroll.xlsx</OfficeAppStartDocument>
+    <GeneratedFeatureId>fefb7cd6-d4fe-482a-bcf2-1ae53d00fe85</GeneratedFeatureId>
+    <GeneratedPackageId>f4fcc949-9e8e-4fff-aff5-efb9838baa6a</GeneratedPackageId>
+    <GeneratedModuleId>{d8a1db8e-fa54-4c74-9606-d3f4e92e75f8}</GeneratedModuleId>
+    <GeneratedListId>{e0e2aa15-25de-459c-b529-3626b10ae459}</GeneratedListId>
+    <GeneratedProductId>{a1b4fef9-53e4-4e28-ad64-95e20b4bbb51}</GeneratedProductId>
+    <GeneratedAppVersion>1.0.0.0</GeneratedAppVersion>
+    <GeneratedClientSecret>oIv+fghzU5rT5zyWq0/ZO4NCKmp6RJlD2pPNZVQc/k8=</GeneratedClientSecret>
+    <ProjectView>ProjectFiles</ProjectView>
+  </PropertyGroup>
+</Project>

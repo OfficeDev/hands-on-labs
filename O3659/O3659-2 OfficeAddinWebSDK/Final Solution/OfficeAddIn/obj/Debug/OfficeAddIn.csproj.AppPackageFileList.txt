@@ -1,0 +1,2 @@
+bin\Debug\app.publish\OfficeAppManifests\OfficeAddInManifest.xml
+C:\DEV\Skype Build Demo\Build 2016\POC\OfficeAddIn\OfficeAddIn\bin\Debug\app.publish\OfficeAddIn.app
