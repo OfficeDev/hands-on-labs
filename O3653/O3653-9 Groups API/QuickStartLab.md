@@ -1,4 +1,4 @@
-# Connect to groups, add a member, see the group files and conversations
+# Microsoft Graph to connect to groups, add a member, see the group files and conversations
 In this lab, you will use Microsoft Graph to integrate Groups, its files, conversations and events
 with an ASP.NET MVC application.
 
