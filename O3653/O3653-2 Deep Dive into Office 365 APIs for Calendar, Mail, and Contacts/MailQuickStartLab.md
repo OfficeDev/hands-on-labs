@@ -38,7 +38,7 @@ for calling the Graph API.
   </configuration>
   ```
 1. Add a redirect URL to enable testing on your localhost.
-  1. Right click on **MailWebApp** and click on **Properties** to open the project properties.
+  1. Right click on **QuickStartMailWebApp** and click on **Properties** to open the project properties.
   1. Click on **Web** in the left navigation.
   1. Copy the **Project Url** value.
   1. Back on the Application Registration Portal page, click **Add Platform** and then **Web**.
@@ -61,7 +61,7 @@ for calling the Graph API.
 1. Launch Visual Studio 2015 and select **New**, **Project**.
   1. Search the installed templates for **Graph** and select the
     **Graph AAD Auth v1 Starter Project** template.
-  1. Name the new project **MailWebApp** and click **OK**.
+  1. Name the new project **QuickStartMailWebApp** and click **OK**.
 
 1. Press F5 to compile and launch your new application in the default browser.
   1. Once the Graph and AAD Auth Endpoint Starter page appears, click **Sign in** and login to your Office 365 adminsitrator account.
@@ -78,12 +78,12 @@ SDK and work with Office 365 and Outlook Mail
 ### Create the Mail controller and use the Graph SDK
 
 1. Add a reference to the Microsoft Graph SDK to your project
-  1. In the **Solution Explorer** right click on the **MailWebApp** project and select **Manage NuGet Packages...**.
+  1. In the **Solution Explorer** right click on the **QuickStartMailWebApp** project and select **Manage NuGet Packages...**.
   1. Click **Browse** and search for **Microsoft.Graph**.
   1. Select the Microsoft Graph SDK and click **Install**.
 
 1. Add a reference to the Bootstrap DateTime picker to your project
-  1. In the **Solution Explorer** right click on the **MailWebApp** project and select **Manage NuGet Packages...**.
+  1. In the **Solution Explorer** right click on the **QuickStartMailWebApp** project and select **Manage NuGet Packages...**.
   1. Click **Browse** and search for **Bootstrap.v3.Datetimepicker.CSS**.
   1. Select Bootstrap.v3.Datetimepicker.CSS and click **Install**.
   1. Open the **App_Start/BundleConfig.cs** file and update the bootstrap script and CSS bundles. Replace these lines:
@@ -114,7 +114,7 @@ SDK and work with Office 365 and Outlook Mail
     ```
 
 1. Create a new controller to process the requests for files and send them to Graph API.
-  1. Find the **Controllers** folder under **MailWebApp**, right click on it and select **Add** then **Controller**.
+  1. Find the **Controllers** folder under **QuickStartMailWebApp**, right click on it and select **Add** then **Controller**.
   1. Select **MVC 5 Controller - Empty** and click **Add**.
   1. Change the name of the controller to **MailController** and click **Add**.
 
@@ -129,8 +129,8 @@ SDK and work with Office 365 and Outlook Mail
   using System.Configuration;
   using System.Threading.Tasks;
   using Microsoft.Graph;
-  using MailWebApp.Auth;
-  using MailWebApp.TokenStorage;
+  using QuickStartMailWebApp.Auth;
+  using QuickStartMailWebApp.TokenStorage;
   using Newtonsoft.Json;
   using System.IO;
   ```
@@ -181,6 +181,7 @@ SDK and work with Office 365 and Outlook Mail
             pageSize = pageSize ?? 25;
 
             var client = GetGraphServiceClient();
+
             var request = client.Me.MailFolders.Inbox.Messages.Request().Top(pageSize.Value);
             if (!string.IsNullOrEmpty(nextLink))
             {
@@ -200,15 +201,13 @@ SDK and work with Office 365 and Outlook Mail
             {
                 return RedirectToAction("Index", "Error", new { message = ex.Error.Message });
             }
-
+        }
   ```
 
 1. Add the following code to the `MailController` class to display details of a mail.
 
   ```csharp
-        // GET: Message/Detail?messageId=<id>
-        [Authorize]
-        public async Task<ActionResult> Detail(string messageId)
+       public async Task<ActionResult> Detail(string messageId)
         {
             var client = GetGraphServiceClient();
 
@@ -217,14 +216,8 @@ SDK and work with Office 365 and Outlook Mail
             try
             {
                 var result = await request.GetAsync();
-                if (result.Body.ContentType.HasValue)
-                {
-                    if (result.Body.ContentType == BodyType.html)
-                    {
-                        string textStr = StripHTML(result.Body.Content);
-                        result.Body.Content = textStr;
-                    }
-                }
+
+                TempData[messageId] = result.Body.Content;
 
                 return View(result);
             }
@@ -233,15 +226,16 @@ SDK and work with Office 365 and Outlook Mail
                 return RedirectToAction("Index", "Error", new { message = ex.Error.Message });
             }
         }
+      public async Task<ActionResult> GetMessageBody(string messageId)
+        {
+            return Content(TempData[messageId] as string);
+        }
   ```
 
 1. Add the following code to the `MailController` class to send a new mail.
 
   ```csharp
-        // POST Messages/SendMail
-        [Authorize]
-        [HttpPost]
-        public async Task<ActionResult> SendMail(string messageId, string recipients,  string subject, string body)
+    public async Task<ActionResult> SendMail(string messageId, string recipients, string subject, string body)
         {
             if (string.IsNullOrEmpty(subject) || string.IsNullOrEmpty(recipients))
             {
@@ -249,15 +243,14 @@ SDK and work with Office 365 and Outlook Mail
             }
             else
             {
+                List<Recipient> mailRecipients = new List<Recipient>();
+                if (!buildRecipients(recipients, mailRecipients))
+                {
+                    TempData["error"] = "Please provide valid email addresses";
+                }
                 var client = GetGraphServiceClient();
                 ItemBody CurrentBody = new ItemBody();
                 CurrentBody.Content = (string.IsNullOrEmpty(body) ? "" : body);
-                EmailAddress mailAddress = new EmailAddress();
-                mailAddress.Address = "sarad@tr22rest.onmicrosoft.com";
-                Recipient mailRecipient = new Recipient();
-                mailRecipient.EmailAddress = mailAddress;
-                List<Recipient> mailRecipients = new List<Recipient>();
-                mailRecipients.Add (mailRecipient);
 
                 Message newMessage = new Message()
                 {
@@ -279,15 +272,52 @@ SDK and work with Office 365 and Outlook Mail
 
             return RedirectToAction("Index", new { messageId = messageId });
         }
+        
+               private bool buildRecipients(string strRecipients, List<Recipient> Recipients)
+        {
+            int iSemiColonPos = -1;
+            string strTemp = strRecipients.Trim();
+            string strEmailAddress = null;
+            Recipient recipient = new Recipient();
+
+            while (strTemp.Length != 0)
+            {
+                iSemiColonPos = strTemp.IndexOf(SEMICOLON);
+                if (iSemiColonPos != -1)
+                {
+                    strEmailAddress = strTemp.Substring(0, iSemiColonPos);
+                    strTemp = strTemp.Substring(iSemiColonPos + 1).Trim();
+                }
+                else
+                {
+                    strEmailAddress = strTemp;
+                    strTemp = "";
+                }
+                int iAt = strEmailAddress.IndexOf(AT);
+                int iPeriod = strEmailAddress.LastIndexOf(PERIOD);
+                if ((iAt != -1) && (iPeriod != -1) && (strEmailAddress.LastIndexOf(SPACE) == -1) && (iPeriod > iAt))
+                {
+                    EmailAddress mailAddress = new EmailAddress();
+                    mailAddress.Address = strEmailAddress;
+                    Recipient mailRecipient = new Recipient();
+                    mailRecipient.EmailAddress = mailAddress;
+                    Recipients.Add(mailRecipient);
+                }
+                else
+                {
+                    return false;
+                }
+                strEmailAddress = null;
+
+            }
+            return true;
+        }
   ```
 
 1. Add the following code to the `MailController` class to reply to a mail.
 
   ```csharp
-        // POST Messages/<<ID>>/Reply
-        [Authorize]
-        [HttpPost]
-        public async Task<ActionResult> Reply(string messageId, string comment)
+       public async Task<ActionResult> Reply(string messageId, string comment)
         {
             var client = GetGraphServiceClient();
 
@@ -309,9 +339,6 @@ SDK and work with Office 365 and Outlook Mail
 1. Add the following code to the `MailController` class to reply all to a mail.
 
   ```csharp
-        // POST Messages/<<ID>>/ReplyAll
-        [Authorize]
-        [HttpPost]
         public async Task<ActionResult> ReplyAll(string messageId, string comment)
         {
             var client = GetGraphServiceClient();
@@ -334,30 +361,33 @@ SDK and work with Office 365 and Outlook Mail
   1. Add the following code to the `MailController` class to forward a mail.
 
   ```csharp
-        // POST Messages/<<ID>>/Forward
-        [Authorize]
-        [HttpPost]
-        public async Task<ActionResult> Forward(string messageId, string comment, string recipients)
-        {
-            var client = GetGraphServiceClient();
-            EmailAddress mailAddress = new EmailAddress();
-            mailAddress.Address = "zrinkam@tr22rest.onmicrosoft.com";
-            Recipient mailRecipient = new Recipient();
-            mailRecipient.EmailAddress = mailAddress;
+        // Forward functionality commented out because of a bug with the libraries
+        /*
+                [Authorize]
+                [HttpPost]
+                public async Task<ActionResult> Forward(string messageId, string comment, string recipients)
+                {
+                    var client = GetGraphServiceClient();
+                    EmailAddress mailAddress = new EmailAddress();
+                    mailAddress.Address = "zrinkam@tr22rest.onmicrosoft.com";
+                    Recipient mailRecipient = new Recipient();
+                    mailRecipient.EmailAddress = mailAddress;
 
-            var request = client.Me.Messages[messageId].Forward(comment).Request();
+                    var request = client.Me.Messages[messageId].Forward(comment).Request();
 
-            try
-            {
-                await request.PostAsync();
-            }
-            catch (ServiceException ex)
-            {
-                return RedirectToAction("Index", "Error", new { message = ex.Error.Message });
-            }
+                    try
+                    {
+                        await request.PostAsync();
+                    }
+                    catch (ServiceException ex)
+                    {
+                        return RedirectToAction("Index", "Error", new { message = ex.Error.Message });
+                    }
 
-            return RedirectToAction("Detail", new { messageId = messageId });
-        }
+                    return RedirectToAction("Detail", new { messageId = messageId });
+                }
+
+        */
   ```
 
 ### Create the MailList view
@@ -383,12 +413,12 @@ to an MVC view that will display all your mails and allow you to send a new mail
       and connect this to the MailController you just created.
 
   ```asp
-    <ul class="nav navbar-nav">
-        <li>@Html.ActionLink("Home", "Index", "Home")</li>
-        <li>@Html.ActionLink("About", "About", "Home")</li>
-        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-        <li>@Html.ActionLink("Outlook Mail API", "Index", "Mail")</li>
-    </ul>
+      <ul class="nav navbar-nav">
+          <li>@Html.ActionLink("Home", "Index", "Home")</li>
+          <li>@Html.ActionLink("About", "About", "Home")</li>
+          <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+          <li>@Html.ActionLink("Outlook Mail API", "Index", "Mail")</li>
+      </ul>
   ```
 1. Create a new **View** for MailList.
   1. Expand the **Views** folder in **MailWebApp**. Right-click **Mail** and select
@@ -513,7 +543,7 @@ $(function () {
   ```
 
 1. Create a new **View** for mail detail.
-  1. Expand the **Views** folder in **MailWebApp**. Right-click **Mail** and select
+  1. Expand the **Views** folder in **QuickStartMailWebApp**. Right-click **Mail** and select
       **Add** then **New Item**.
   1. Select **MVC View Page** and change the filename **Detail.cshtml** and click **Add**.
   1. **Replace** all of the code in the **Mail/Detail.cshtml** with the following:
@@ -537,17 +567,52 @@ $(function () {
             <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
         }
 
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <table>
+                    <th>Respond to Message<th>
+                    <tbody>
+                        <tr>
+                            <form class="form-inline" action="/Mail/Reply" method="post">
+                                <td class="auto-style10">
+                                   <input type="text" class="auto-style11" name="comment" id="comment" placeholder="Comment" />
+                                </td>
+
+                                <td class="auto-style3">
+                                    <input type="hidden" name="messageId" value="@Request.Params["messageId"]" />
+                                    <button type="submit" name="Reply" class="btn btn-default">Reply</button>
+                                </td>
+                            </form>
+                        </tr>
+                        <br />
+                        <tr>
+                            <form class="form-inline" action="/Mail/ReplyAll" method="post">
+                                <td class="auto-style10">
+                                    <input type="text" class="auto-style11" name="comment" id="comment" placeholder="Comment" />
+                                </td>
+
+                                <td>
+                                    <input type="hidden" name="messageId" value="@Request.Params["messageId"]" />
+                                    <button type="submit" name="Reply All" class="btn btn-default">Reply All</button>
+                                </td>
+                            </form>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
         <div class="table-responsive">
             <table id="messageTable" class="table table-striped table-bordered">
+                <th class="auto-style12">Details</th>
                 <tbody>
                     <tr>
-                        <td class="auto-style8">From:</td>
+                        <td class="auto-style12">From:</td>
                         <td>
                             @Model.From.EmailAddress.Name
                         </td>
                     </tr>
                     <tr>
-                        <td class="auto-style8">To:</td>
+                        <td class="auto-style12">To:</td>
                         <td>
                             @{
                                 string toRecipients = "";
@@ -561,7 +626,7 @@ $(function () {
                         </td>
                     </tr>
                     <tr>
-                        <td class="auto-style8">Cc:</td>
+                        <td class="auto-style12">Cc:</td>
                         <td>
                             @{
                                 string ccRecipients = "";
@@ -575,7 +640,7 @@ $(function () {
                         </td>
                     </tr>
                     <tr>
-                        <td class="auto-style8">Received:</td>
+                        <td class="auto-style12">Received:</td>
                         <td>
                             @{
                                 if (null != Model.ReceivedDateTime)
@@ -586,7 +651,7 @@ $(function () {
                         </td>
                     </tr>
                     <tr>
-                        <td class="auto-style8">Has Attachments:</td>
+                        <td class="auto-style12">Has Attachments:</td>
                         <td>
                             @{
                                 if (null != Model.HasAttachments)
@@ -597,69 +662,32 @@ $(function () {
                         </td>
                     </tr>
                     <tr>
-                        <td class="auto-style8">Body:</td>
+                        <td class="auto-style12">Web link:</td>
                         <td>
-                            <pre>
-                                @{
-                                    @Model.Body.Content
+                            @{
+                                if (null != Model.WebLink)
+                                {
+                                    <a href="@Model.WebLink">Message OWA link </a>
                                 }
-                            </pre>
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="auto-style12">Body:</td>
+                        <td>
+                            <div>
+                                <iframe id="mailBody" width="800" src="@(string.Format("/Mail/GetMessageBody/?messageId={0}", Model.Id))" class="auto-style9"/>    
+                            </div>
                         </td>
                     </tr>
                     <tr>
                 </tbody>
             </table>
         </div>
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <table>
-                    <tbody>
-                        <tr>
-                            <form class="form-inline" action="/Mail/Reply" method="post">
-                                <td class="auto-style2">
-                                   <input type="text" class="auto-style4" name="comment" id="comment" placeholder="Comment" />
-                                </td>
 
-                                <td class="auto-style3">
-                                    <input type="hidden" name="messageId" value="@Request.Params["messageId"]" />
-                                    <button type="submit" name="Reply" class="btn btn-default">Reply</button>
-                                </td>
-                            </form>
-                        </tr>
-                        <br />
-                        <tr>
-                            <form class="form-inline" action="/Mail/ReplyAll" method="post">
-                                <td class="auto-style1">
-                                    <input type="text" class="auto-style5" name="comment" id="comment" placeholder="Comment" />
-                                </td>
-
-                                <td>
-                                    <input type="hidden" name="messageId" value="@Request.Params["messageId"]" />
-                                    <button type="submit" name="Reply All" class="btn btn-default">Reply All</button>
-                                </td>
-                            </form>
-                        </tr>
-                        <tr>
-                            <form class="form-inline" action="/Mail/Forward" method="post">
-                            <td class="auto-style1">
-                                <input type="text" class="auto-style6" name="recipients" id="recipients" placeholder="To" />
-                            </td>
-                            <td class="auto-style1">
-                                <input type="text" class="auto-style7" name="comment" id="comment" placeholder="Comment" />
-                            </td>
-                            <td>
-                                <input type="hidden" name="messageId" value="@Request.Params["messageId"]" />
-                                <button type="submit" name="Forward" class="btn btn-default">Forward</button>
-                            </td>
-                        </tr>
-                            </form>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
     </div>
 </div>
+
   ```
 
 
