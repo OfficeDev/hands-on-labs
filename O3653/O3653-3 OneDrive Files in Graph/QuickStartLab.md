@@ -230,7 +230,7 @@ to an MVC view that will display the contents of the OneDrive folder selected.
       **Add** then **New Folder**.
    2. Name the folder **Files**.
    3. Right-click the new folder **Files** and select **Add** > **New Item**.
-   4. Select **MVC 5 View Page (Razor)**, change the file name **Index.cshtml**, and click **Add**.
+   4. Select **MVC 5 View Page (Razor)**, change the file name to **Index.cshtml**, and click **Add**.
 
 4. **Replace** all of the code in the **Files/Index.cshtml** with the following:
 
