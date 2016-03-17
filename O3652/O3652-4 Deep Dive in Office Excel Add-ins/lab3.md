@@ -52,6 +52,7 @@ An Office Add-in is just a web app that is displayed within the Office UI and ca
       app.initialize();
 
       jQuery('#get-data-from-selection').click(getDataFromSelection);
+      //Add this line:
       jQuery('#test-debug-console').click(writeToConsole);
     });
   };
