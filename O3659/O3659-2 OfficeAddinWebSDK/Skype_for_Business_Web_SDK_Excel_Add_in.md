@@ -1,6 +1,13 @@
 
 #Skype for Business Office 365 Add-in
 
+Note to internal bug bash participants: The Skype for Business Online APIs currently have a private Allowed List of ClientIDs and tenants (will be removed some time next week before //build). That just means you will need to use a specific tenant and ClientID to test out this lab. Please use the following:
+Tenant: danewman.onmicrosoft.com 
+ClientID for app: 98267106-694b-4df2-8e06-fbbafd8a90e7 
+Log in to webpage with user:david@danewman.onmicrosoft.com 07Apples 
+Log in to Skype for Business Client with userauburys@danewman.onmicrosoft.com 07Apples
+
+
 In this lab you will get hands-on experience developing an Excel add-in with Skype for Business integration.  The sample add-in will allow an Office 365 user to perform the following from within Excel:
 1.  Sign into Skype for Business.
 2.  See other O365 user contact information and presence.
