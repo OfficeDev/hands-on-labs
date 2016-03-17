@@ -311,7 +311,7 @@ In this lab, you will get hands-on experience developing a Word add-in by using 
     } 
 	````
 
-4. Go back to Office.initialize and provide the handlers for each button **click** associating the newly created functions.
+4. Go back to Office.initialize and provide the handlers for each button **click** event associating the buttons with the corresponding newly created functions.
    
 	````javascript
 	 Office.initialize = function (reason) {
