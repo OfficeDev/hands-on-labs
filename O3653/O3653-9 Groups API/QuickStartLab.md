@@ -74,6 +74,7 @@ SDK and work with Office 365 Groups.
   using Microsoft.Graph;
   using GroupsWebApp.Auth;
   using GroupsWebApp.TokenStorage;
+  using System.IO;
   ```
   
 1. Add the following code to the `GroupsController` class to initialize a new
@@ -86,7 +87,10 @@ SDK and work with Office 365 Groups.
       .FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
     SessionTokenCache tokenCache = new SessionTokenCache(userObjId, HttpContext);
 
-    string authority = string.Format(ConfigurationManager.AppSettings["ida:AADInstance"], "common", "");
+    string tenantId = System.Security.Claims.ClaimsPrincipal.Current
+          .FindFirst("http://schemas.microsoft.com/identity/claims/tenantid").Value;
+
+    string authority = string.Format(ConfigurationManager.AppSettings["ida:AADInstance"], tenantId, "");
 
     AuthHelper authHelper = new AuthHelper(
       authority,
@@ -107,7 +111,7 @@ SDK and work with Office 365 Groups.
   
 ### Work with groups
   
-1. Add the following code to the `GroupsController` class to get all Office 365 groups.
+1. Replace the existing `Index` function in the `GroupsController` class with the following code to get all Office 365 groups.
 
   ```csharp
   // GET: Groups
@@ -604,6 +608,21 @@ SDK and work with Office 365 Groups.
 In this section you'll wire up the Controller you created in the previous section
 to an MVC view that will display the organization's groups.
 
+1. Open the **Web.config** file and replace the following line:
+
+  ```xml
+  <compilation debug="true" targetFramework="4.5.2" />
+  ```
+  With:
+  
+  ```xml
+  <compilation debug="true" targetFramework="4.5.2">
+    <assemblies>
+      <add assembly="System.Runtime, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+    </assemblies>
+  </compilation>
+  ```
+  
 1. Locate the **Views/Shared** folder in the project.
 1. Open the **_Layout.cshtml** file found in the **Views/Shared** folder.
   1. Locate the part of the file that includes a few links at the top of the
