@@ -234,7 +234,7 @@ In this exercise, you will create an Excel add-in that uses the Excel JavaScript
         });
     }
 
-			````
+	````
 
 1. Now add functionality to sort data based on transaction date:
 	1. Go back to the `Office.initialize` statement and replace the comment `// TODO-2` with the following jQuery code that creates a click handler for the button that will add a range of unformatted data to the current worksheet:
@@ -270,7 +270,7 @@ In this exercise, you will create an Excel add-in that uses the Excel JavaScript
 	    }
 	````
 
-9. Then we add functionality to filter data. We only want to focus on the transaction in the sub-category of Fuel and Education.
+1. Then we add functionality to filter data. We only want to focus on the transaction in the sub-category of Fuel and Education.
 	1. Go back to the `Office.initialize` statement and replace the comment `// TODO-3` with the following jQuery code that creates a click handler for the button that will add a range of unformatted data to the current worksheet:
 
 	````javascript
@@ -301,7 +301,7 @@ In this exercise, you will create an Excel add-in that uses the Excel JavaScript
 	    }
 	````
 
-10. Next we add functionality to use Excel formulas and charting to generate a report and then protect the report from editing. Here we first create a new sheet named "Summary", then create a summary table with total spendings based on Category. We then add a chart to visualize the data. Finally we protect the sheet from further changes.
+1. Next we add functionality to use Excel formulas and charting to generate a report and then protect the report from editing. Here we first create a new sheet named "Summary", then create a summary table with total spendings based on Category. We then add a chart to visualize the data. Finally we protect the sheet from further changes.
 	1. Go back to the `Office.initialize` statement and replace the comment `// TODO-4` with the following jQuery code that creates a click handler for the button that will add a range of unformatted data to the current worksheet:
 
 	````javascript
@@ -356,7 +356,6 @@ In this exercise, you will create an Excel add-in that uses the Excel JavaScript
 
 
 ###Test the Add-in
-
 1. Now deploy the Excel add-in to the local Excel client: 
 	1. Select the **ExpenseReport** project within the **Solution Explorer** tool window.
 	2. Within the **Properties** window, set the **Start Action** selector to **Office Desktop Client** and press **F5** to start the project.
