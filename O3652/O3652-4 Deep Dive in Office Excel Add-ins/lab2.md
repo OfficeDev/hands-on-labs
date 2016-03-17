@@ -1,8 +1,9 @@
-## Exercise 1: Build an Expense Report with the new Excel JavaScript APIs in Office 2016
+##Build an Expense Report with the new Excel JavaScript APIs in Office 2016
 In this exercise, you will create an Excel add-in that uses the Excel JavaScript API included in Excel 2016. 
 
 > **Note**: For this exercise you must have Excel 2016 Preview, or a later version, installed. Refer to the prerequisites at the beginning of this lab for links on where to obtain Office 2016.
 
+###Part 1: Create a basic add-in
 1. Launch Visual Studio 2015 as administrator.
 1. From the **File** menu select the **New Project** command. When the **New Project** dialog appears, select the **Excel Add-in** project template from the **Office/SharePoint** template folder, as shown below. Name the new project **ExpenseReport** and click **OK** to create the new project.
 	![Screenshot of creating project in Visual Studio](Images/Fig01new.PNG)
@@ -11,7 +12,68 @@ In this exercise, you will create an Excel add-in that uses the Excel JavaScript
 
 	![Screenshot of Choose add-in type dialog](Images/Fig02new.PNG)
 
+6. Open **ExpenseReport.xml**. Now, find the XML block that looks like this. Take a minute and read through it as it describes how add-ins can integrate with the Office UI. The example below demonstrates how an add-in can add a button to the Excel ribbon's Home tab.
 
+	```XML
+        <!-- PrimaryCommandSurface==Main Office Ribbon. -->
+            <ExtensionPoint xsi:type="PrimaryCommandSurface">
+                <!-- Use OfficeTab to extend an existing Tab. Use CustomTab to create a new tab. -->
+                <OfficeTab id="TabHome">
+                <!-- Ensure you provide a unique id for the group. Recommendation for any IDs is to namespace using your company name. -->
+                <Group id="Contoso.Group1">
+                    <!-- Label for your group. resid must point to a ShortString resource. -->
+                    <Label resid="Contoso.Group1Label" />
+                    <!-- Icons. Required sizes 16,32,80, optional 20, 24, 40, 48, 64. Strongly recommended to provide all sizes for great UX. -->
+                    <!-- Use PNG icons and remember that all URLs on the resources section must use HTTPS. -->
+                    <Icon>
+                    <bt:Image size="16" resid="Contoso.tpicon_16x16" />
+                    <bt:Image size="32" resid="Contoso.tpicon_32x32" />
+                    <bt:Image size="80" resid="Contoso.tpicon_80x80" />
+                    </Icon>
+
+                    <!-- Control. It can be of type "Button" or "Menu". -->
+                    <Control xsi:type="Button" id="Contoso.TaskpaneButton">
+                    <Label resid="Contoso.TaskpaneButton.Label" />
+                    <Supertip>
+                        <!-- ToolTip title. resid must point to a ShortString resource. -->
+                        <Title resid="Contoso.TaskpaneButton.Label" />
+                        <!-- ToolTip description. resid must point to a LongString resource. -->
+                        <Description resid="Contoso.TaskpaneButton.Tooltip" />
+                    </Supertip>
+                    <Icon>
+                        <bt:Image size="16" resid="Contoso.tpicon_16x16" />
+                        <bt:Image size="32" resid="Contoso.tpicon_32x32" />
+                        <bt:Image size="80" resid="Contoso.tpicon_80x80" />
+                    </Icon>
+
+                    <!-- This is what happens when the command is triggered (E.g. click on the Ribbon). Supported actions are ExecuteFuncion or ShowTaskpane. -->
+                    <Action xsi:type="ShowTaskpane">
+                        <TaskpaneId>ButtonId1</TaskpaneId>
+                        <!-- Provide a url resource id for the location that will be displayed on the task pane. -->
+                        <SourceLocation resid="Contoso.Taskpane.Url" />
+                    </Action>
+                    </Control>
+                </Group>
+                </OfficeTab>
+            </ExtensionPoint>
+	```
+    
+9. Let's modify the button to say "Expense Report" instead of "Show Taskpane". Find the following element in the file.
+
+	```XML
+		<Title resid="Contoso.TaskpaneButton.Label" />
+	```
+10. This indicates that the label of the title is stored in a string resource named **Contoso.TaskpaneButton.Label**.
+11. Scroll down until you find the **ShortString** string resource with that label.
+12. Now, set the DefaultValue attribute to *Expense Report*. Your XML should look like this: 
+
+	```XML
+		<bt:String id="Contoso.TaskpaneButton.Label" DefaultValue="Expense Report" />
+	```
+        
+13. Press F5 to try your changes. You should see you add-in deploy in Excel and a button appear on the Home Tab. Don't worry if you don't see the label updated, this is a known issue with this build. 
+
+###Part 2: Add Excel JavaScript API code
 1. Reference the Excel JavaScript API in the add-in:
 	1. Locate and open the homepage for the add-in: **Home.html**.
 	1. Immediately after the reference to `Office.js` in the `<head>` portion of the page, add the following script reference to the Excel JavaScript API beta CDN:
@@ -358,7 +420,7 @@ In this exercise, you will create an Excel add-in that uses the Excel JavaScript
 	````
 
 
-###Test the Add-in
+###Part 3: Test the Add-in end to end
 1. Now deploy the Excel add-in to the local Excel client: 
 	1. Select the **ExpenseReport** project within the **Solution Explorer** tool window.
 	2. Within the **Properties** window, set the **Start Action** selector to **Office Desktop Client** and press **F5** to start the project.
@@ -381,5 +443,5 @@ In this exercise, you will create an Excel add-in that uses the Excel JavaScript
 
 	Notice how Excel summarized my transactions with formulas and created a pie chart to visualize my spending.
 
-Congratulations! You've now written an Excel add-in that uses the new Excel JavaScript API.
+**Congratulations! You've now written an Excel add-in that uses the new Excel JavaScript API.**
 
