@@ -19,49 +19,45 @@ In this lab, you will get hands-on experience developing a Word add-in by using 
 
 	![](Images/Fig04.png)
 
-6. In the Solution Explorer, double-click on the node named **StatementOfWorkManifest** to open the add-in manifest file in the Visual Studio designer. Update the **Display Name** settings in the add-in manifest from **StatementOfWork** to **Statement of Work Add-In**.
+6. In the Solution Explorer, double-click on the node named **StatementOfWorkManifest** to open the add-in manifest file in the Visual Studio designer. Browse through the file and note the different options you can set for your Add-in, such as provider, version, Display Name, also note at the end for the definition of Add-in Commands.  Update the **Display Name** settings in the add-in manifest from **StatementOfWork** to **Statement of Work Add-In**, and also change the description to **Lab to learn the Word JavaScript API.**. Your manifest should look like this one:
 
 	![](Images/Fig05.png)
 
 7. Save and close **StatementOfWorkManifest**.
-8. Over the next few steps, you will walk through the default add-in implementation that Visual Studio generated for you when the add-in project was created. Begin by looking at the structure of the **AddIn** folder, which has two important files named **app.css** and **app.js**. These files contain CSS styles and JavaScript code to use for the add-in.
+8. There are other 2 very important files that are part of this project that are on the root of the StatementOfWorkWeb project. One of them is the  **Home.html** page which is opened by default in Visual Studio and represents the add-in's starting page. If not opened please double click on it, you will see some HTML like this one: 
 
-	![](Images/Fig06.png)
+	````html
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <title>Word Addin with Commands Sample</title>
+
+    <script src="/Scripts/jquery-1.9.1.js" type="text/javascript"></script>
+    <script src="/Scripts/FabricUI/MessageBanner.js" type="text/javascript"></script>
+    <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js" type="text/javascript"></script>
+
+    <!-- To enable offline debugging using a local reference to Office.js, use:                        -->
+    <!-- <script src="/Scripts/Office/MicrosoftAjax.js" type="text/javascript"></script>  -->
+    <!-- <script src="/Scripts/Office/1.1/office.js" type="text/javascript"></script>  -->
+
+    <link href="Home.css" rel="stylesheet" type="text/css" />
+    <script src="Home.js" type="text/javascript"></script>
+
+    <!-- For the Office UI Fabric, go to http://aka.ms/office-ui-fabric to learn more. -->
+    <link rel="stylesheet" href="https://appsforoffice.microsoft.com/fabric/2.1.0/fabric.min.css">
+    <link rel="stylesheet" href="https://appsforoffice.microsoft.com/fabric/2.1.0/fabric.components.min.css">
+    
+    <!-- To enable the offline use of Office UI Fabric, use: -->
+    <!-- link rel="stylesheet" href="/Content/fabric.min.css" -->
+    <!-- link rel="stylesheet" href="/Content/fabric.components.min.css" -->
+</head>
+	````
+
+
 
 9. You can see that inside the **AddIn** folder there is a child folder named **Home**, which contains three files named **Home.html**, **Home.css** and **Home.js**. Note that the add-in project is currently configured to use **Home.html** as the add-in's start page and that **Home.html** is linked to both **Home.css** and **Home.js**.
  
-10. Double-click **app.js** to open it in a code editor window. You should be able to see that the code creates a global variable named **app** based on the JavaScript *Closure* pattern. The global **app** object defines a method named **initialize** but it does not execute this method. 
 
-	````javascript 
-	var app = (function () {
-	    "use strict";
-	    var app = {};
-	    // Common initialization function (to be called from each page)
-	    app.initialize = function () {
-	        $('body').append(
-	            '<div id="notification-message">' +
-	                '<div class="padding">' +
-	                    '<div id="notification-message-close"></div>' +
-	                    '<div id="notification-message-header"></div>' +
-	                    '<div id="notification-message-body"></div>' +
-	                '</div>' +
-	            '</div>');
-	        $('#notification-message-close').click(function () {
-	            $('#notification-message').hide();
-	        });
-	        // After initialization, expose a common notification function
-	        app.showNotification = function (header, text) {
-	            $('#notification-message-header').text(header);
-	            $('#notification-message-body').text(text);
-	            $('#notification-message').slideDown('fast');
-	        };
-	    };
-	
-	    return app;
-	})();
-	````
-
-11. Close **app.js** and be you don't save any changes.
 12. Next, you will examine the JavaScript code in **home.js**. Double-click **home.js** to open it in a code editor window. Note that **Home.html** links to **app.js** before it links to **home.js**, which means that JavaScript code written in **Home.js** can access the global **app** object created in **app.js**.
 13. Walk through the code in **Home.js** and see how it uses a self-executing function to register an event handler on the **Office.initialize** method, which in turn registers a document-ready event handler using jQuery. This allows the add-in to call **app.initialize** and to register an event handler using the **getDataFromSelection** function. 
 
