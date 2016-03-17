@@ -270,7 +270,7 @@ In this exercise, you will create an Excel add-in that uses the Excel JavaScript
     }
 ````
 
-1. Then we add functionality to filter data. We only want to focus on the transaction in the sub-category of Fuel and Education.
+9. Then we add functionality to filter data. We only want to focus on the transaction in the sub-category of Fuel and Education.
 	1. Go back to the `Office.initialize` statement and replace the comment `// TODO-3` with the following jQuery code that creates a click handler for the button that will add a range of unformatted data to the current worksheet:
 
 	````javascript
@@ -301,7 +301,7 @@ In this exercise, you will create an Excel add-in that uses the Excel JavaScript
     }
 ````
 
-1. Next we add functionality to use Excel formulas and charting to generate a report and then protect the report from editing. Here we first create a new sheet named "Summary", then create a summary table with total spendings based on Category. We then add a chart to visualize the data. Finally we protect the sheet from further changes.
+10. Next we add functionality to use Excel formulas and charting to generate a report and then protect the report from editing. Here we first create a new sheet named "Summary", then create a summary table with total spendings based on Category. We then add a chart to visualize the data. Finally we protect the sheet from further changes.
 	1. Go back to the `Office.initialize` statement and replace the comment `// TODO-4` with the following jQuery code that creates a click handler for the button that will add a range of unformatted data to the current worksheet:
 
 	````javascript
@@ -360,15 +360,15 @@ In this exercise, you will create an Excel add-in that uses the Excel JavaScript
 	1. Select the **ExpenseReport** project within the **Solution Explorer** tool window.
 	2. Within the **Properties** window, set the **Start Action** selector to **Office Desktop Client** and press **F5** to start the project.
 	3. Visual Studio will launch the Excel desktop client and create a new Excel workbook.
-1. Enter a name for a new worksheet and click the button **Add a New Worksheet**. 
+2. Enter a name for a new worksheet and click the button **Add a New Worksheet**. 
 
 	Notice how Excel creates a new blank worksheet and changes focus to that worksheet.
 
-1. Now, make sure you have a few worksheets in the workbook and then click the button **Add Range of Data**.
+3. Now, make sure you have a few worksheets in the workbook and then click the button **Add Range of Data**.
 
 	Notice how Excel creates a list of all the worksheets starting with cell **A1** in the current worksheet, but it adds a title to the worksheet at the top.
 
-1. Finally, click the button **Add Formatted Data Range**.
+4. Finally, click the button **Add Formatted Data Range**.
 
 	Notice how Excel creates a new table of data in the middle of the worksheet, but the dates and currency values are formatted accordingly.
 
