@@ -5,7 +5,7 @@ In this exercise, you will create an Excel add-in that uses the Excel JavaScript
 
 1. Launch Visual Studio 2015 as administrator.
 1. From the **File** menu select the **New Project** command. When the **New Project** dialog appears, select the **Excel Add-in** project template from the **Office/SharePoint** template folder, as shown below. Name the new project **ExpenseReport** and click **OK** to create the new project.
-2. 	![](Images/Fig01new.PNG)
+	![](Images/Fig01new.PNG)
 
 1. When you create a new Office Add-ins project, Visual Studio prompts you with the **Choose the add-in type** page of the **Create Office Add-in** dialog. This is the point where you select the type of add-in you want to create. Leave the default setting with the radio button titled **Add new functionalities to Excel** and select **Finish** to continue.
 
@@ -14,7 +14,7 @@ In this exercise, you will create an Excel add-in that uses the Excel JavaScript
 
 1. Reference the Excel JavaScript API in the add-in:
 	1. Locate and open the homepage for the add-in: **Home.html**.
-	1. Immediately after the reference to `Office.js` in the `<head>` portion of the page, add the following two script references to the Excel JavaScript API beta CDN:
+	1. Immediately after the reference to `Office.js` in the `<head>` portion of the page, add the following script reference to the Excel JavaScript API beta CDN:
 
 		````html
     <script src="https://appsforoffice.microsoft.com/lib/beta/hosted/office.js"></script>
@@ -356,15 +356,15 @@ In this exercise, you will create an Excel add-in that uses the Excel JavaScript
 
 
 ###Test the Add-in
-1. 	Now deploy the Excel add-in to the local Excel client:
-  1. Select the **ExpenseReport** project within the **Solution Explorer** tool window.
-  1. Within the **Properties** window, set the **Start Action** selector to **Office Desktop Client** and press **F5** to start the project.
-  1. Visual Studio will launch the Excel desktop client and create a new Excel workbook.
-1. 	Enter a name for a new worksheet and click the button **Add a New Worksheet**. 
+1.Now deploy the Excel add-in to the local Excel client: 
+	1. Select the **ExpenseReport** project within the **Solution Explorer** tool window.
+	2. 1. Within the **Properties** window, set the **Start Action** selector to **Office Desktop Client** and press **F5** to start the project.
+	3. 1. Visual Studio will launch the Excel desktop client and create a new Excel workbook.
+1. Enter a name for a new worksheet and click the button **Add a New Worksheet**. 
 
 	Notice how Excel creates a new blank worksheet and changes focus to that worksheet.
 
-1. 	Now, make sure you have a few worksheets in the workbook and then click the button **Add Range of Data**.
+1. Now, make sure you have a few worksheets in the workbook and then click the button **Add Range of Data**.
 
 	Notice how Excel creates a list of all the worksheets starting with cell **A1** in the current worksheet, but it adds a title to the worksheet at the top.
 
