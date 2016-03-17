@@ -14,6 +14,7 @@ In this lab, you will use Microsoft Graph to connect to insights and rich relati
 
 2. You must have the OData v4 Client Code Generator addin installed. 
    1. In Visual Studio go to Tools -> Extensions and Updates, Select "Online" from the left-most treeview then search for "Odata v4 Client Code Generator" and click install
+
 ![](images/1_Odata.PNG) 
    
 
@@ -27,6 +28,7 @@ In this first exercise, you will create a new ASP.NET MVC project using the
       **Graph AAD Auth v1 Starter Project**
    2. Name the new project **OfficeGraphLab**
    3. Click **OK**.
+
 ![](images/2_NewProject.PNG) 
 
 4. Press F5 to launch your new application in the default browser.
@@ -43,6 +45,7 @@ In this first exercise, you will create a new ASP.NET MVC project using the
    1. Edit **MetadataDocumentUri** to be "https://graph.microsoft.com/beta/$metadata"
    2. Edit **NamespacePrefix** to be "OfficeGraphLab.Service"
 3. Click **Build -> Build solution** the project
+
 ![](images/3_Building.PNG) 
 
 ## Exercise 3: Change the page layout
