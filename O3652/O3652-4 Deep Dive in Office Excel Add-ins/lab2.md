@@ -115,21 +115,24 @@ In this exercise, you will create an Excel add-in that uses the Excel JavaScript
     }
 })();
 
-	````
+		````
 
 
 1. Now add a function that will add data:
 	1. Replace the comment `// TODO-1` with the following jQuery code that creates a click event handler on one of the buttons in the `home.html` page you added previously:
 
-			````javascript
+
+		````javascript
 			 $('#insertData').click(insertData);
-			````
+		````
+
 
 	1. Next, add the following function.
 
-			Notice how the code in this function is very different from the code in the previous exercises. The Excel  JavaScript API uses a context (`Excel.run()`) to allow you to batch multiple operations (such as `context.workbook.worksheets.add()`) that will be sent to the hosting Excel client application for processing at one time using the `context.sync()` method:
+		Notice how the code in this function is very different from the code in the previous exercises. The Excel  JavaScript API uses a context (`Excel.run()`) to allow you to batch multiple operations (such as `context.workbook.worksheets.add()`) that will be sent to the hosting Excel client application for processing at one time using the `context.sync()` method:
 
-			````javascript
+
+		````javascript
 		  function insertData() {
         Excel.run(function (ctx) {
 
@@ -234,7 +237,7 @@ In this exercise, you will create an Excel add-in that uses the Excel JavaScript
         });
     }
 
-	````
+		````
 
 1. Now add functionality to sort data based on transaction date:
 	1. Go back to the `Office.initialize` statement and replace the comment `// TODO-2` with the following jQuery code that creates a click handler for the button that will add a range of unformatted data to the current worksheet:
