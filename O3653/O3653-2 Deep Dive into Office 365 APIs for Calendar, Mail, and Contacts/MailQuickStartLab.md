@@ -52,22 +52,6 @@ for calling the Graph API.
 
 [//]: # (Remove if doing v2)
 
-## Exercise 1: Create a new project using Azure Active Directory authentication
-
-In this first step, you will create a new ASP.NET MVC project using the
-**Graph AAD Auth v1 Starter Project** template and log in to your app and generate access tokens
-for calling the Graph API.
-
-1. Launch Visual Studio 2015 and select **New**, **Project**.
-  1. Search the installed templates for **Graph** and select the
-    **Graph AAD Auth v1 Starter Project** template.
-  1. Name the new project **QuickStartMailWebApp** and click **OK**.
-
-1. Press F5 to compile and launch your new application in the default browser.
-  1. Once the Graph and AAD Auth Endpoint Starter page appears, click **Sign in** and login to your Office 365 adminsitrator account.
-  1. Review the permissions the application is requesting, and click **Accept**.
-  1. Now that you are signed into your application, exercise 1 is complete!
-
 ## Exercise 2: Access Mail through Microsoft Graph SDK
 
 In this exercise, you will build on exercise 1 to connect to the Microsoft Graph
