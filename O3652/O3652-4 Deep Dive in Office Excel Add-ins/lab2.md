@@ -115,7 +115,7 @@ In this exercise, you will create an Excel add-in that uses the Excel JavaScript
     }
 })();
 
-		````
+	````
 
 
 1. Now add a function that will add data:
@@ -245,30 +245,30 @@ In this exercise, you will create an Excel add-in that uses the Excel JavaScript
 
 	1. Next, add the following function.
 
-````javascript
-	     function sort() {
-        Excel.run(function (ctx) {
-            var sheet = ctx.workbook.worksheets.getActiveWorksheet();
-
-            // Only Sort the range that has data
-            var sortRange = sheet.getRange("A1:E1").getEntireColumn().getUsedRange();
-            // Apply sorting on the first column and in descending order
-            sortRange.sort.apply([
-            {
-                key: 0,
-                ascending: false,
-            },
-            ]);
-            return ctx.sync().then(function () {
-            })
-        }).catch(function (error) {
-            console.log("Error: " + error);
-            if (error instanceof OfficeExtension.Error) {
-                console.log("Debug info: " + JSON.stringify(error.debugInfo));
-            }
-        });
-    }
-````
+	````javascript
+		     function sort() {
+	        Excel.run(function (ctx) {
+	            var sheet = ctx.workbook.worksheets.getActiveWorksheet();
+	
+	            // Only Sort the range that has data
+	            var sortRange = sheet.getRange("A1:E1").getEntireColumn().getUsedRange();
+	            // Apply sorting on the first column and in descending order
+	            sortRange.sort.apply([
+	            {
+	                key: 0,
+	                ascending: false,
+	            },
+	            ]);
+	            return ctx.sync().then(function () {
+	            })
+	        }).catch(function (error) {
+	            console.log("Error: " + error);
+	            if (error instanceof OfficeExtension.Error) {
+	                console.log("Debug info: " + JSON.stringify(error.debugInfo));
+	            }
+	        });
+	    }
+	````
 
 9. Then we add functionality to filter data. We only want to focus on the transaction in the sub-category of Fuel and Education.
 	1. Go back to the `Office.initialize` statement and replace the comment `// TODO-3` with the following jQuery code that creates a click handler for the button that will add a range of unformatted data to the current worksheet:
@@ -281,25 +281,25 @@ In this exercise, you will create an Excel add-in that uses the Excel JavaScript
 
 		Notice how the code works with ranges in a similar way to the last function, but this one assigns some formats to the range's `numberFormats` property:
 
-````javascript
-    function filter() {
-        Excel.run(function (ctx) {
-            var sheet = ctx.workbook.worksheets.getActiveWorksheet();
-            var table = sheet.tables.getItemAt(0);
-
-            //Apply a value filter on the 4th column, which is sub-category. We want to focus on transactions in the category of Fuel and Education
-            var filter = table.columns.getItemAt(3).filter;
-            filter.applyValuesFilter(["Fuel","Education"]);
-            return ctx.sync().then(function () {
-            })
-        }).catch(function (error) {
-            console.log("Error: " + error);
-            if (error instanceof OfficeExtension.Error) {
-                console.log("Debug info: " + JSON.stringify(error.debugInfo));
-            }
-        });
-    }
-````
+	````javascript
+	    function filter() {
+	        Excel.run(function (ctx) {
+	            var sheet = ctx.workbook.worksheets.getActiveWorksheet();
+	            var table = sheet.tables.getItemAt(0);
+	
+	            //Apply a value filter on the 4th column, which is sub-category. We want to focus on transactions in the category of Fuel and Education
+	            var filter = table.columns.getItemAt(3).filter;
+	            filter.applyValuesFilter(["Fuel","Education"]);
+	            return ctx.sync().then(function () {
+	            })
+	        }).catch(function (error) {
+	            console.log("Error: " + error);
+	            if (error instanceof OfficeExtension.Error) {
+	                console.log("Debug info: " + JSON.stringify(error.debugInfo));
+	            }
+	        });
+	    }
+	````
 
 10. Next we add functionality to use Excel formulas and charting to generate a report and then protect the report from editing. Here we first create a new sheet named "Summary", then create a summary table with total spendings based on Category. We then add a chart to visualize the data. Finally we protect the sheet from further changes.
 	1. Go back to the `Office.initialize` statement and replace the comment `// TODO-4` with the following jQuery code that creates a click handler for the button that will add a range of unformatted data to the current worksheet:
@@ -311,9 +311,9 @@ In this exercise, you will create an Excel add-in that uses the Excel JavaScript
 
 		Notice how the code works with ranges in a similar way to the last function, but this one assigns some formats to the range's `numberFormats` property:
 
-		````javascript
- function report() {
-        Excel.run(function (ctx) {
+	````javascript
+	 function report() {
+            Excel.run(function (ctx) {
             //Add a new worksheet
             var sheet = ctx.workbook.worksheets.add("Summary");
             //Activate the worksheet
@@ -356,10 +356,12 @@ In this exercise, you will create an Excel add-in that uses the Excel JavaScript
 
 
 ###Test the Add-in
+
 1. Now deploy the Excel add-in to the local Excel client: 
 	1. Select the **ExpenseReport** project within the **Solution Explorer** tool window.
 	2. Within the **Properties** window, set the **Start Action** selector to **Office Desktop Client** and press **F5** to start the project.
 	3. Visual Studio will launch the Excel desktop client and create a new Excel workbook.
+	
 2. Enter a name for a new worksheet and click the button **Add a New Worksheet**. 
 
 	Notice how Excel creates a new blank worksheet and changes focus to that worksheet.
