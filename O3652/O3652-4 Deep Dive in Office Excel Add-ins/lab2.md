@@ -1,7 +1,7 @@
 ## Exercise 1: Build an Expense Report with the new Excel JavaScript APIs in Office 2016
 In this exercise, you will create an Excel add-in that uses the Excel JavaScript API included in Excel 2016. 
 
-> **Note**: For this exercise you must have Excel 2016 Preview, or a later version, installed. Refer to the prerequisites at the beginning of this lab for links on where to obtain Office 2016 Preview.
+> **Note**: For this exercise you must have Excel 2016 Preview, or a later version, installed. Refer to the prerequisites at the beginning of this lab for links on where to obtain Office 2016.
 
 1. Launch Visual Studio 2015 as administrator.
 1. From the **File** menu select the **New Project** command. When the **New Project** dialog appears, select the **Excel Add-in** project template from the **Office/SharePoint** template folder, as shown below. Name the new project **ExpenseReport** and click **OK** to create the new project.
@@ -361,17 +361,20 @@ In this exercise, you will create an Excel add-in that uses the Excel JavaScript
 	2. Within the **Properties** window, set the **Start Action** selector to **Office Desktop Client** and press **F5** to start the project.
 	3. Visual Studio will launch the Excel desktop client and create a new Excel workbook.
 	
-2. Enter a name for a new worksheet and click the button **Add a New Worksheet**. 
+2. Eclick the button **Insert Data**. 
 
-	Notice how Excel creates a new blank worksheet and changes focus to that worksheet.
+	Notice how Excel update the worksheet nanme to "Data", inserted my transaction data and added a table on top of my data.
 
-3. Now, make sure you have a few worksheets in the workbook and then click the button **Add Range of Data**.
+3. Now, click the button **Sort**.
 
-	Notice how Excel creates a list of all the worksheets starting with cell **A1** in the current worksheet, but it adds a title to the worksheet at the top.
+	Notice how Excel sorted my transactions based on date, the latest transaction is on top now.
+	
+4. Now, click the button **Filter**.
+	Notice how Excel filtered my transactions based on sub-category, now only transactions under Education and Fuel are shown.
 
-4. Finally, click the button **Add Formatted Data Range**.
+5. Finally, click the button **Report**.
 
-	Notice how Excel creates a new table of data in the middle of the worksheet, but the dates and currency values are formatted accordingly.
+	Notice how Excel summarized my transactions with formulas and created a pie chart to visualize my spending.
 
 Congratulations! You've now written an Excel add-in that uses the new Excel JavaScript API.
 
