@@ -3,15 +3,12 @@
 In this lab, you will use Microsoft Graph to integrate the Office365 people api’s with an ASP.NET MVC application.
 
 ## Prerequisites
-  1. You must have an Office 365 tenant and Microsoft Azure subscription to complete this lab. If you do not have one, the lab for O3651-7 Setting up your Developer environment in Office 365 shows you how to obtain a trial.
-  2. You must have Visual Studio 2015 with Update 1 installed.
-  3. You must have the Graph AAD Auth v1 Started Project template installed.
-  4. You must have the OData v4 Client Code Generator addin installed.
+  1. You must have the OData v4 Client Code Generator addin installed. In Visual Studio go to Tools -> Extensions and Updates, Select "Online" from the left-most treeview then search for "Odata v4 Client Code Generator" and click install
 
 ## Exercise 1: Create a new project using Azure Active Directory v1 authentication
 
 In this first step, you will create a new ASP.NET MVC project using the
-**Graph AAD Auth v2 Start Project** template, register a new application
+**Graph AAD Auth v1 Starter Project** template, register a new application
 in the developer portal, and log in to your app and generate access tokens
 for calling the Graph API.
 
