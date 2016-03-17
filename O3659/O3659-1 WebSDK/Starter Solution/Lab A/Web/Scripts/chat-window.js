@@ -9,13 +9,15 @@
     return vars;
 }
 
+function endConversation(conversation) {
+}
+
 $(function () {
-    var SkypeWebApp;
-    var SkypeApi;
     var sip = getUrlVars()["sip"];
     var audioOnly = getUrlVars()["audioOnly"];
-    var muted = false;
-    var video = false;
+    var video = !(audioOnly == "true");
+    var escalated = false;
+    var SkypeWebApp, SkypeApi;
     Skype.initialize({
         apiKey: config.apiKey
     }, function (api) {
@@ -46,47 +48,52 @@ $(function () {
         $('#AVChatVideo').css('background', 'url(../Images/video.png) no-repeat');
         $('#AVChatVideo').css('background-size', '50px 50px');
     } else {
-        //start video
         $('#AVChatVideo').css('background', 'url(../Images/video-off.png) no-repeat');
         $('#AVChatVideo').css('background-size', '50px 50px');
         $('#AVWindowSelfView').css('background-image', 'url(../Images/self-video.png)');
     }
 
-    $('#AVChatVideo').click(function () {
-        if (!video) {
-            //this is where we would escalate to video
-            $('#AVChatVideo').css('background', 'url(../Images/video-off.png) no-repeat');
-            $('#AVChatVideo').css('background-size', '50px 50px');
-            $('#AVWindowSelfView').css('background-image', 'url(../Images/self-video.png)');
-            //$('#AVWindowContactView').css('background-image', 'url(../Images/participant-video.png)');
-            video = true;
-        } else {
-            //turn off self-video
-            $('#AVChatVideo').css('background', 'url(../Images/video.png) no-repeat');
-            $('#AVChatVideo').css('background-size', '50px 50px');
-            $('#AVWindowSelfView').css('background-image', 'url(../Images/default.png)');
-            //$('#AVWindowContactView').css('background-image', 'url(../Images/default.png)');
-            video = false;
-        }
-
-    });
-
     $('#AVChatMute').click(function () {
-        if (!muted) {
-            //mute self-mic
-            $('#AVChatMute').css('background', 'url(../Images/fabrikam_skypeControl_mic.png) no-repeat');
-            $('#AVChatMute').css('background-size', '50px 50px');
-            muted = true;
-        } else {
+        var muted = SkypeWebApp.conversationsManager.conversations(0).selfParticipant.audio.isMuted();
+        if (muted) {
             //unmute self-mic
             $('#AVChatMute').css('background', 'url(../Images/fabrikam_skypeControl_mic_muted.png) no-repeat');
             $('#AVChatMute').css('background-size', '50px 50px');
             muted = false;
+        } else {
+            //mute self-mic
+            $('#AVChatMute').css('background', 'url(../Images/fabrikam_skypeControl_mic.png) no-repeat');
+            $('#AVChatMute').css('background-size', '50px 50px');
+            muted = true;
+        }
+    });
+
+    $('#AVChatVideo').click(function () {
+        if (!escalated) {
+            console.log('escalating to video');
+            $('#AVChatVideo').css('background', 'url(../Images/video-off.png) no-repeat');
+            $('#AVChatVideo').css('background-size', '50px 50px');
+            $('#AVWindowSelfView').css('background-image', 'url(../Images/self-video.png)');
+            escalated = true;
+        } else {
+            if (!video) {
+                //enable self video
+                $('#AVChatVideo').css('background', 'url(../Images/video-off.png) no-repeat');
+                $('#AVChatVideo').css('background-size', '50px 50px');
+                $('#AVWindowSelfView').css('background-image', 'url(../Images/self-video.png)');
+                video = true;
+            } else {
+                //disable self video
+                $('#AVChatVideo').css('background', 'url(../Images/video.png) no-repeat');
+                $('#AVChatVideo').css('background-size', '50px 50px');
+                $('#AVWindowSelfView').css('background-image', 'url(../Images/default.png)');
+                video = false;
+            }
         }
     });
 
     $('#AVChatClose').click(function () {
+        var conversation = SkypeWebApp.conversationsManager.conversations(0);
         endConversation();
-        window.close();
     });
 });
