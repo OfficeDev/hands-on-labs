@@ -7,6 +7,9 @@
   <DefaultLocale>en-US</DefaultLocale>
   <DisplayName DefaultValue="ExcelAddIn" />
   <Description DefaultValue="ExcelAddIn"/>
+  <AppDomains>
+    <AppDomain>https://login.microsoftonline.com</AppDomain>
+  </AppDomains>
   <Hosts>
     <Host Name="Workbook" />
   </Hosts>

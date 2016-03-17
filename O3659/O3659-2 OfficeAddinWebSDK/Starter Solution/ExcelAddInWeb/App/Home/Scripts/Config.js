@@ -3,7 +3,7 @@
     apiKey: 'a42fcebd-5b43-4b89-a065-74450fb91255', // SDK DF
     apiKeyCC: '9c967f6b-a846-4df2-b43d-5167e47d81e1', // SDK+CC DF
     clientId: '', //REPLACE EMPTY QUOTES WITH CLIENTID GENERATED FROM AZURE APP
-    authLink: 'https://login.windows.net/common/oauth2/authorize?response_type=token',
+    authLink: 'https://login.microsoftonline.com/common/oauth2/authorize?response_type=token',
     authResource: 'https://webdir0d.tip.lync.com',
     redirect_uri: 'https://secondonlineapp.azurewebsites.net/App/home/home.html'
 };
