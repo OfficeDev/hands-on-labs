@@ -39,15 +39,4 @@ Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 2
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://tfs2013.claritycon.com/tfs/defaultcollection2013
-		SccLocalPath0 = .
-		SccWebProject1 = true
-		SccProjectUniqueName1 = Web
-		SccProjectName1 = Web
-		SccLocalPath1 = Web
-		SccProjectEnlistmentChoice1 = 2
-	EndGlobalSection
 EndGlobal
