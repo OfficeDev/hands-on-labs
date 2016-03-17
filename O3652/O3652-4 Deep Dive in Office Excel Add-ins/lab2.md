@@ -12,7 +12,11 @@ In this exercise, you will create an Excel add-in that uses the Excel JavaScript
 
 	![Screenshot of Choose add-in type dialog](Images/Fig02new.PNG)
 
-6. Open **ExpenseReport.xml**. Now, find the XML block that looks like this. Take a minute and read through it as it describes how add-ins can integrate with the Office UI. The example below demonstrates how an add-in can add a button to the Excel ribbon's Home tab.
+6. Open **ExpenseReport.xml**. 
+
+	![Screenshot of Manifest on the explorer](Images/ExpenseReportManifest.PNG)
+
+7. Now, find the XML block that looks like this. Take a minute and read through it as it describes how add-ins can integrate with the Office UI. The example below demonstrates how an add-in can add a button to the Excel ribbon's Home tab.
 
 	```XML
         <!-- PrimaryCommandSurface==Main Office Ribbon. -->
@@ -72,6 +76,8 @@ In this exercise, you will create an Excel add-in that uses the Excel JavaScript
 	```
         
 13. Press F5 to try your changes. You should see you add-in deploy in Excel and a button appear on the Home Tab. Don't worry if you don't see the label updated, this is a known issue with this build. 
+
+	![Screenshot of Button on Ribbon](Images/ExpenseReportButton.PNG)
 
 ###Part 2: Add Excel JavaScript API code
 1. Reference the Excel JavaScript API in the add-in:
