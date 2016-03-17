@@ -13,7 +13,7 @@ for calling the Graph API.
 1. Launch Visual Studio 2015 and select **New**, **Project**.
   1. Search the installed templates for **Graph** and select the
     **Graph AAD Auth v2 Starter Project** template.
-  1. Name the new project **MailWebApp** and click **OK**.
+  1. Name the new project **QuickStartMailWebApp** and click **OK**.
   1. Open the **Web.config** file and find the **appSettings** element. This is where you will need to add your appId and app secret you will generate in the next step.
 1. Launch the [Application Registration Portal](https://apps.dev.microsoft.com)
    to register a new application.
