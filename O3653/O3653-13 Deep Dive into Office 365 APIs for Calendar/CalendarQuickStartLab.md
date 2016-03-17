@@ -115,8 +115,8 @@ SDK and work with Office 365 and Outlook Calendar
   using System.Configuration;
   using System.Threading.Tasks;
   using Microsoft.Graph;
-  using CalendarWebApp.Auth;
-  using CalendarWebApp.TokenStorage;
+  using QuickStartCalendarWebApp.Auth;
+  using QuickStartCalendarWebApp.TokenStorage;
   using Newtonsoft.Json;
   using System.IO;
   ```
@@ -168,8 +168,15 @@ SDK and work with Office 365 and Outlook Calendar
 
             var client = GetGraphServiceClient();
 
+            // In order to use a calendar view, you must specify
+            // a start and end time for the view. Here we'll specify
+            // the next 7 days.
             DateTime start = DateTime.Today;
             DateTime end = start.AddDays(6);
+
+            // These values go into query parameters in the request URL,
+            // so add them as QueryOptions to the options passed ot the
+            // request builder.
             List<Option> viewOptions = new List<Option>();
             viewOptions.Add(new QueryOption("startDateTime",
               start.ToUniversalTime().ToString("s", System.Globalization.CultureInfo.InvariantCulture)));
@@ -195,6 +202,7 @@ SDK and work with Office 365 and Outlook Calendar
             {
                 return RedirectToAction("Index", "Error", new { message = ex.Error.Message });
             }
+        }
   ```
   
 1. Add the following code to the `CalenderController` class to display details of an event.
@@ -212,14 +220,7 @@ SDK and work with Office 365 and Outlook Calendar
             {
                 var result = await request.GetAsync();
 
-                if (result.Body.ContentType.HasValue)
-                {
-                    if (result.Body.ContentType == BodyType.html)
-                    {
-                        string textStr = StripHTML(result.Body.Content);
-                        result.Body.Content = textStr;
-                    }
-                }
+                TempData[eventId] = result.Body.Content;
 
                 return View(result);
             }
@@ -228,12 +229,17 @@ SDK and work with Office 365 and Outlook Calendar
                 return RedirectToAction("Index", "Error", new { message = ex.Error.Message });
             }
         }
+        
+      public async Task<ActionResult> GetEventBody(string eventId)
+        {
+            return Content(TempData[eventId] as string);
+        }
   ```
   
 1. Add the following code to the `CalendarController` class to add a new event in the calendar.
 
   ```csharp
-  // POST: me/events?eventId=<id>&subject=<text>&start=<text>&end=<text>&location=<text>
+        // POST Me/Events?eventId=<id>&subject=<text>&start=<text>&end=<text>&location=<text>
         [Authorize]
         [HttpPost]
         public async Task<ActionResult> AddEvent(string eventId, string subject, string body, string start, string end, string location)
@@ -271,6 +277,7 @@ SDK and work with Office 365 and Outlook Calendar
             }
 
             return RedirectToAction("Index", new { eventId = eventId });
+        }
   ```
   
 1. Add the following code to the `CalendarController` class to Accept an event.
@@ -279,17 +286,17 @@ SDK and work with Office 365 and Outlook Calendar
   // POST: me/events/<<ID>>/Accept
         [Authorize]
         [HttpPost]
-        public async Task<ActionResult> Accept(string eventId)
+        public async Task<ActionResult> Tentative(string eventId)
         {
             var client = GetGraphServiceClient();
 
-            var request = client.Me.Events[eventId].Accept().Request();
+            var request = client.Me.Events[eventId].TentativelyAccept().Request();
 
             try
             {
                 await request.PostAsync();
-        }
-        catch (ServiceException ex)
+            }
+            catch (ServiceException ex)
             {
                 TempData["error"] = ex.Error.Message;
                 return RedirectToAction("Index", "Error", new { message = ex.Error.Message });
@@ -297,7 +304,6 @@ SDK and work with Office 365 and Outlook Calendar
 
             return RedirectToAction("Detail", new { eventId = eventId });
         }
-
   ```
    
 1. Add the following code to the `CalendarController` class to TentativelyAccept an event.
