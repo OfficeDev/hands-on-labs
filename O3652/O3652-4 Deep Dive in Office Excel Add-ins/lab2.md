@@ -362,20 +362,22 @@ In this exercise, you will create an Excel add-in that uses the Excel JavaScript
 1. Now deploy the Excel add-in to the local Excel client: 
 	1. Select the **ExpenseReport** project within the **Solution Explorer** tool window.
 	2. Within the **Properties** window, set the **Start Action** selector to **Office Desktop Client** and press **F5** to start the project.
-	3. Visual Studio will launch the Excel desktop client and create a new Excel workbook.
+	3. Visual Studio will launch the Excel desktop client and create a new Excel workbook. 
 	
-2. Eclick the button **Insert Data**. 
+2. Launch your add-in by clicking the **Show Taskpane** button on the Ribbon. This button is defined in your add-in manifest. You can change the label if you want by edditing the manifest.xml file in your project.  
+
+3. On the taskpane, click the button **Insert Data**. 
 
 	Notice how Excel update the worksheet nanme to "Data", inserted my transaction data and added a table on top of my data.
 
-3. Now, click the button **Sort**.
+4. Now, click the button **Sort**.
 
 	Notice how Excel sorted my transactions based on date, the latest transaction is on top now.
 	
-4. Now, click the button **Filter**.
+5. Now, click the button **Filter**.
 	Notice how Excel filtered my transactions based on sub-category, now only transactions under Education and Fuel are shown.
 
-5. Finally, click the button **Report**.
+6. Finally, click the button **Report**.
 
 	Notice how Excel summarized my transactions with formulas and created a pie chart to visualize my spending.
 
