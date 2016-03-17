@@ -116,13 +116,13 @@ Sample Connector Card Message JSON Payload
 	
 1. Start Visual Studio 2015 and select **New>Project**. Select the ASP.net Web application template. Provide a project name. Select **empty** for the ASP.net type and select the Web API checkbox. This will pull down the necessary nugets for you.
 
-2. Right-click on the project, select **Add>Connected Service**. Select ASP.net on the left side of the dialog and select the ASP.net Webhooks. Click the **Configure** button. This will generate code into your project, so you can host and receive webhooks.
+2. Right-click on the project, select **Add>Connected Service**. Select ASP.net on the left side of the dialog box and select the ASP.net Webhooks. Click the **Configure** button. This will generate code into your project, so you can host and receive webhooks.
 
 3. Select Github in the **Enable incoming webhooks** dialog box. Provide a secret for your GitHub application. Let's generate a new secret. Go to sha1-online.com and generate a new SHA key. Copy this key into your clipboard and also save it in Notepad temporarily. Paste this secret into Github text box in Visual Studio.
 
 4. Visual studio will install the packages for Github webhook receivers and generate all the necessary code in your project. Verify the GitHub secret is present in the Web.config file of your project by looking under app settings for the key listed as `"MS_WebHookReceiverSecret_GitHub".` 
 
-5. Open the global.asax file. Initialize the webhook receiver. Add a line of code for `GlobalConifguration.Configure(WebhookConfig.Register)`  in the Application_Start function. 
+5. Open the global.asax file. Initialize the webhook receiver. Add a line of code for `GlobalConifguration.Configure(WebhookConfig.Register)`  in the Application_Start function.
 
 		protected void Application_Start()
 	        {
@@ -189,11 +189,11 @@ Sample Connector Card Message JSON Payload
 	
 	a. Select the Microsoft Azure Web Apps option and sign in to your Azure subscription (if needed). 
 	
-	b. Create a new web app.  Choose a web app name and app service plan location. Click **Create**.  Select  "Settings" on the left side, choose the Debug configuration (so you can debug your web application in Visual Studio) and select all the checkboxes under file publish options. 
+	b. Create a new web app.  Choose a web app name and app service plan location. Click **Create**. Select  "Settings" on the left side, choose the Debug configuration (so you can debug your web application in Visual Studio) and select all the checkboxes under file publish options. 
 	
-	c. Click **Publish** to publish the webapp to Azure websites. This will open a browser and take you to the Azure websites hosting your web application (for example, http://mywebhookspreview.azurewebsites.net) Copy this URL.
+	c. Click **Publish** to publish the webapp to Azure websites. This will open a browser and take you to the Azure websites hosting your web application (for example, http://mywebhookspreview.azurewebsites.net). Copy this URL.
 	
-		Note: If you don’t have an Azure subscription, get one free by signing up @ https://tryappservice.azure.com/
+		Note: If you don’t have an Azure subscription, get one free by signing up @ https://tryappservice.azure.com/
 		This allows you to host you web application on Azure for up to 24 hours, no credit card required.   
 		Choose **Web App** as the app type, then click **Next**.  
 		Change the language dropdown to **C#**, then choose **ASP.NET Empty Site** and click **Create**.  
@@ -201,15 +201,15 @@ Sample Connector Card Message JSON Payload
 		When using Visual Studio to publish your project, choose the import option to import the publishing profile, 
 		follow the same a, b, and c steps above to create the webapp.
 	
-11. Go to github.com. Create a new github repo (unless you already have one for testing purposes). Navigate to the repo. Click  **Settings**. Select Webhooks & Services on the left side. Click the **Add webhook** buttonAppend "/api/webhooks/incoming/Github" to the URL of your Azure web application (for example, http://mywebhookspreview.azurewebsites.net/api/webhooks/incoming/Github)You will receive notifications from Github service at this URL.  
+11. Go to github.com. Create a new github repo (unless you already have one for testing purposes). Navigate to the repo. Click  **Settings**. Select Webhooks & Services on the left side. Click the **Add webhook** button. Append "/api/webhooks/incoming/Github" to the URL of your Azure web application (for example, http://mywebhookspreview.azurewebsites.net/api/webhooks/incoming/Github). You will receive notifications from Github service at this URL.  
 
 12. For the secret, enter the SHA1 key you got earlier.
 
-13. Under "Which events would you like to trigger this webhook", select "Let me select individual events". Select the "Issues" checkbox. You will receive notification only when issues are created, assigned, labelled, or closed.For this exercise, we will focus on the experience for issue creation.  Click the **Update webhook** button to save your Github webhook configuration.
+13. Under "Which events would you like to trigger this webhook", select "Let me select individual events". Select the "Issues" checkbox. You will receive notification only when issues are created, assigned, labelled, or closed. For this exercise, we will focus on the experience for issue creation. Click the **Update webhook** button to save your Github webhook configuration.
 
-14. Optional: To debug the incoming webhook from Github service, place a breakpoint on the ExecuteAsync function of the GithubWebhookHandler.cs file of your Visual Studio project. To do this, open server explorer in Visual Studio, find and right-click your web application under App service, and attach the debugger. 
+14. Optional: To debug the incoming webhook from Github service, place a breakpoint on the ExecuteAsync function of the GithubWebhookHandler.cs file of your Visual Studio project. To do this, open server explorer in Visual Studio, find and right-click your web application under App service, and attach the debugger. 
 
-15. Create a new issue for your repo. This will trigger the incoming webhook in your ASP.net application. You should now receive connector card messages for new github issues in your Office 365 group inbox.
+15. Create a new issue for your repo. This will trigger the incoming webhook in your ASP.net application. You should now receive connector card messages for new github issues in your Office 365 group inbox.
 
 **Congratulations on completing this exercise!** Try building your own connector and submit it to Office 365. Customize the card message experience to show your own brand and style, and the sender avatar will show your logo (instead of "incoming webhook"). 
 Check out dev.outlook.com/connectors for more developer information, code samples, and instructions for submitting and listing your connector in the Office 365 Connectors catalog.
