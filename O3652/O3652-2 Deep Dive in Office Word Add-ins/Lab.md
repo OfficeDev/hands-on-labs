@@ -192,14 +192,16 @@ In this lab, you will get hands-on experience developing a Word add-in by using 
     }
 	````
 
-26. Finally, add a line of jQuery code into the add-in initialization logic to bind the click event of the **addContentHellowWorld** button to the **onaddContentHellowWorld** function.
+26. Finally, add a line of jQuery code into the add-in initialization logic to bind the click event of the **addContentHellowWorld** button to the **onaddContentHellowWorld** function (after the // Add event handlers here comment).
 
 	````javascript
 	Office.initialize = function (reason) {
 		$(document).ready(function () {
-			app.initialize();
-			// add this code to wire up event handler
-			$("#addContentHellowWorld").click(onaddContentHellowWorld)
+		var element = document.querySelector('.ms-MessageBanner');
+                messageBanner = new fabric.MessageBanner(element);
+                messageBanner.hideBanner();
+            // Add event handlers here....
+            $('#addContentHellowWorld').click(onaddContentHellowWorld);
 		});
 	};
 	````
@@ -207,37 +209,54 @@ In this lab, you will get hands-on experience developing a Word add-in by using 
 27. When you are done, the **Home.js** file should match the following listing.
 
 	````javascript
+/// <reference path="/Scripts/FabricUI/MessageBanner.js" />
+
+
 (function () {
     "use strict";
 
-    // The initialize function must be run each time a new page is loaded
+    var messageBanner;
+
+    // The initialize function must be run each time a new page is loaded.
     Office.initialize = function (reason) {
         $(document).ready(function () {
-            app.initialize();
-            // setup event handlers ala JQuery...
+            // Initialize the FabricUI notification mechanism and hide it
+            var element = document.querySelector('.ms-MessageBanner');
+            messageBanner = new fabric.MessageBanner(element);
+            messageBanner.hideBanner();
+
+            // Add event handlers here....
             $('#addContentHellowWorld').click(onaddContentHellowWorld);
-           
+
+     
         });
     };
 
-    function onaddContentHellowWorld() {
-        // Hello World in the Word.js world!
-        Word.run(function (context) {
-            //this line replaces the body of the document with a friendly "Hello World!!!"
-            context.document.body.insertText("Hello World!", "replace");
-            return context.sync()
 
-        }).then(function () {
-            // if evertything was succesful, we sent an ok...
-            showNotification("Task Complete!");
-        })
-          .catch(function (myError) {
-              //otherwise we handle the exception here!
-              showNotification("Error", myError.message);
-          });
+    //$$(Helper function for treating errors, $loc_script_taskpane_home_js_comment34$)$$
+    function errorHandler(error) {
+        // $$(Always be sure to catch any accumulated errors that bubble up from the Word.run execution., $loc_script_taskpane_home_js_comment35$)$$
+        showNotification("Error:", error);
+        console.log("Error: " + error);
+        if (error instanceof OfficeExtension.Error) {
+            console.log("Debug info: " + JSON.stringify(error.debugInfo));
+        }
     }
 
-	})();
+    // Helper function for displaying notifications
+    function showNotification(header, content) {
+        $("#notificationHeader").text(header);
+        $("#notificationBody").text(content);
+        messageBanner.showBanner();
+        messageBanner.toggleExpansion();
+    }
+
+
+
+
+
+
+})();
 	````
 
 28. Save your changes to **Home.js**.
