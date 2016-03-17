@@ -24,7 +24,7 @@ In this lab, you will get hands-on experience developing a Word add-in by using 
 	![](Images/Fig05.png)
 
 7. Save and close **StatementOfWorkManifest**.
-8. There are other 2 very important files that are part of this project that are on the root of the StatementOfWorkWeb project. One of them is the  **Home.html** page which is opened by default in Visual Studio and represents the add-in's starting page. If not opened please double click on it, you will see some HTML like this one: 
+8. There are other 2 very important files that are part of this project that are on the root of the StatementOfWorkWeb project. One of them is the  **Home.html** page which is opened by default in Visual Studio and represents the add-in's starting page. If not already opened please double click on it, you will see some HTML like this one: 
 
 	````html
 <head>
@@ -61,7 +61,7 @@ In this lab, you will get hands-on experience developing a Word add-in by using 
 12. Lets examine the JavaScript code in **home.js**. Double-click **home.js** to open it in a code editor window.
 13. Walk through the code in **Home.js** it includes a simple example to highlight the largest Word in the user selection. Note at the end of the file there is an **errorHandler** function  we will reuse in the lab to handle errors , as well as a **showNotification** function to display messages from the lab.   
 
-14. Lets clean up **Home.js** for our lab. Delete the **loadSampleData**, **hightlightLongestWord** and *displaySelectedText* function from **Home.js**. We also need to remove a few instructions from **Office.initialize**. Your Home.js should look like this: 
+14. Lets clean up **Home.js** for our lab. Replace the content of the entire file with the following snippet. Your Home.js should look like this: 
 
 	````javascript
 /// <reference path="/Scripts/FabricUI/MessageBanner.js" />
@@ -109,115 +109,64 @@ In this lab, you will get hands-on experience developing a Word add-in by using 
 15. Save your changes to **Home.js**. You will return to this source file after you have added your HTML layout to **Home.html**.
 16. Now it's time to examine the HTML that has been added to the project to create the add-in's user interface. Double-click **Home.html** to open this file in a Visual Studio editor window. Examine the layout of HTML elements inside the **body** element. 
 
+
+18. Update the **content-main** div within *Home.html* to match the following HTML layout, which adds a set of buttons to the add-in's layout. This are all the buttons you need for the lab. As you can see a **content-header** div is also added.
+
 	````html
-<body>
-    <div id="content-main">
+ <div id="content-header">
         <div class="padding">
-            <br />
-            <p class="ms-font-xxl ms-fontColor-neutralSecondary ms-fontWeight-semilight">Sample</p>
-            <br /><br />
-            <div class="ms-font-xl ms-fontColor-neutralTertiary">Select some text</div>
-            <p class="ms-font-m-plus ms-fontColor-neutralTertiary" id="template-description"></p>
-            <div class="ms-font-m"><a target="_blank" class="ms-Link ms-Link--hero" href="https://go.microsoft.com/fwlink/?LinkId=276812">Find more samples online...</a></div>
-            <br /><br />
-
-            <button class="ms-Button ms-Button--primary" id="highlight-button">
-                <span class="ms-Button-icon"><i class="ms-Icon ms-Icon--plus"></i></span>
-                <span class="ms-Button-label" id="button-text"></span>
-                <span class="ms-Button-description" id="button-desc"></span>
-            </button>
+            <h1 class="ms-font-xl ms-fontColor-blue">Welcome Word APIs Lab!</h1>
         </div>
     </div>
-    <div class="footer">
-        <div class="ms-Grid ms-bgColor-themeSecondary">
-            <div class="ms-Grid-row">
-                <div class="ms-Grid-col ms-u-sm12 ms-u-md12 ms-u-lg12"> <div class="ms-font-xl ms-fontColor-white">Contoso</div></div>
+        <div id="content-main">
+            <div id="sowPanel" class="padding">
+                <button class="ms-Button ms-Button--compound" id="addContentHellowWorld">
+                    <span class="ms-Button-label" id="button-text">Hello World!</span>
+                    <span class="ms-Button-description" id="button-desc">Just a simple Hello World!! This code writes the famous string.</span>
+                </button><br><br>
+
+                <button class="ms-Button ms-Button--compound" id="addContentStartingSOW">
+                    <span class="ms-Button-label" id="button-text">Step 1: Starting SOW</span>
+                    <span class="ms-Button-description" id="button-desc">Insert a starting document to play with. This sample uses OOXML.</span>
+                </button><br><br>
+
+                <button class="ms-Button ms-Button--compound" id="addPicture">
+                    <span class="ms-Button-label" id="button-text">Step 2: Fix Picture!</span>
+                    <span class="ms-Button-description" id="button-desc">How to insert or replace Images in document. This code replaces the first image it finds in the document.</span>
+                </button><br><br>
+
+                <button class="ms-Button ms-Button--compound" id="addSearchAndTempletize">
+                    <span class="ms-Button-label" id="button-text">Step 3: Search and Templetize!</span>
+                    <span class="ms-Button-description" id="button-desc">Search for 'Contoso' and insert content controls to hold the customer name. </span>
+                </button><br><br>
+
+                <button class="ms-Button ms-Button--compound" id="addChangeCustomer">
+                    <span class="ms-Button-label" id="button-text">Step 4: Replace Customer!</span>
+                    <span class="ms-Button-description" id="button-desc">Set the customer name to 'Fabrikam' using content controls. (Get content controls with the same title)</span>
+                </button><br><br>
+
+                <button class="ms-Button ms-Button--compound" id="addReuseContent">
+                    <span class="ms-Button-label" id="button-text">Step 5: Reuse Content!</span>
+                    <span class="ms-Button-description" id="button-desc">Reuse content by merging in another document/span>
+                </button><br><br>
+
+                <button class="ms-Button ms-Button--compound" id="addHighlights">
+                    <span class="ms-Button-label" id="button-text">Step 6: Highlight Word by Word!</span>
+                    <span class="ms-Button-description" id="button-desc">Shows how to get (as range) word by word of a paragraph.</span>
+                </button><br><br>
+
+                <button class="ms-Button ms-Button--compound" id="addOpenDoc">
+                    <span class="ms-Button-label" id="button-text">Step 7: Create a New Document!</span>
+                    <span class="ms-Button-description" id="button-desc">This samples shows how to create a new document, taking an existing one as base, and add some content to it.</span>
+                </button><br><br>
+
+
             </div>
         </div>
-    </div>
-
-    <!-- FabricUI component used for displaying notifications -->
-    <div class="ms-MessageBanner" style="position:absolute;bottom: 0;">
-        <div class="ms-MessageBanner-content">
-            <div class="ms-MessageBanner-text">
-                <div class="ms-MessageBanner-clipper">
-                    <div class="ms-font-m-plus ms-fontWeight-semibold" id="notificationHeader"></div>
-                    <div class="ms-font-m ms-fontWeight-semilight" id="notificationBody"></div>
-                </div>
-            </div>
-            <button class="ms-MessageBanner-expand" style="display:none"><i class="ms-Icon ms-Icon--chevronsDown"></i> </button>
-            <div class="ms-MessageBanner-action"></div>
-        </div>
-        <button class="ms-MessageBanner-close"> <i class="ms-Icon ms-Icon--x"></i> </button>
-    </div>
-</body>
-	````
-
-
-
-18. Update the **content-main** div to match the following HTML layout, which adds a set of buttons to the add-in's layout.
-
-	````html
-  <div id="content-main">
-        <div id="sowPanel" class="padding">
-            <br><br>
-            <button class="ms-Button ms-Button--compound" id="addContentHellowWorld">
-                <span class="ms-Button-label" id="button-text">Hello World!</span>
-                <span class="ms-Button-description" id="button-desc">Just a simple Hello World!!</span>
-            </button><br><br>
-
-            <button class="ms-Button ms-Button--compound" id="addContentStartingSOW">
-                <span class="ms-Button-label" id="button-text">Step 1: Starting SOW</span>
-                <span class="ms-Button-description" id="button-desc"></span>
-            </button><br><br>
-
-            <button class="ms-Button ms-Button--compound" id="addPicture">
-                <span class="ms-Button-label" id="button-text">Step 2: Fix Picture!</span>
-                <span class="ms-Button-description" id="button-desc"></span>
-            </button><br><br>
-
-            <button class="ms-Button ms-Button--compound" id="addSearchAndTempletize">
-                <span class="ms-Button-label" id="button-text">Step 3: Search and Templetize!</span>
-                <span class="ms-Button-description" id="button-desc"></span>
-            </button><br><br>
-
-            <button class="ms-Button ms-Button--compound" id="addChangeCustomer">
-                <span class="ms-Button-label" id="button-text">Step 4: Replace Customer!</span>
-                <span class="ms-Button-description" id="button-desc"></span>
-            </button><br><br>
-
-            <button class="ms-Button ms-Button--compound" id="addReuseContent">
-                <span class="ms-Button-label" id="button-text">Step 5: Reuse Content!</span>
-                <span class="ms-Button-description" id="button-desc"></span>
-            </button><br><br>
-
-            <button class="ms-Button ms-Button--compound" id="addHighlights">
-                <span class="ms-Button-label" id="button-text">Step 6: Highlight Word by Word!</span>
-                <span class="ms-Button-description" id="button-desc"></span>
-            </button><br><br>
-
-            <button class="ms-Button ms-Button--compound" id="addOpenDoc">
-                <span class="ms-Button-label" id="button-text">Step 7: Create a New Document!</span>
-                <span class="ms-Button-description" id="button-desc"></span>
-            </button><br><br>
-
-
-        </div>
-    </div>
 	````
 
 19. Save and close **Home.html**.
-20. Open the CSS file named **Home.css** and add the following CSS rule to ensure all the add-in's command buttons and select element have a uniform width and spacing.
 
-	````css
-	#content-main button, #content-main select{
-			width: 210px;
-			margin: 8px;
-	}
-	````
-
-21. Save and close **Home.css**.
-21. Right-click the StatementOfWork project in the Visual Studio Solution and select **Set as Startup Project**.
 22. Now it's time to test the add-in using the Visual Studio debugger. Press the **{F5}** key to run the project in the Visual Studio debugger. The debugger should launch Word 2016 and you should see your Office Add-in in the task pane on the right side of a new Word document, as shown in the following screenshot.
 
 	![](Images/Fig07.png)
