@@ -20,17 +20,17 @@ In this first step, you will create a new ASP.NET MVC project using the
 in the developer portal, and log in to your app and generate access tokens
 for calling the Graph API.
 
-1. Launch Visual Studio 2015 and select **New**, **Project**.
+1. Start Visual Studio 2015 and select **New**, **Project**.
   1. Search the installed templates for **Graph** and select the
     **Graph AAD Auth v2 Starter Project** template.
-  1. Name the new project **InboxSync** and click **OK**.
+  1. Name the new project **InboxSync** and choose **OK**.
   1. Open the **Web.config** file and find the **appSettings** element. This is where you will need to add your appId and app secret you will generate in the next step.
-1. Launch the [Application Registration Portal](https://apps.dev.microsoft.com)
+1. Start the [Application Registration Portal](https://apps.dev.microsoft.com)
    to register a new application.
   1. Sign into the portal using your Office 365 username and password.
-  1. Click **Add an App** and type **Inbox Sync Demo** for the application name.
+  1. Choose **Add an App** and type **Inbox Sync Demo** for the application name.
   1. Copy the **Application Id** and paste it into the value for **ida:AppId** in your project's **web.config** file.
-  1. Under **Application Secrets** click **Generate New Password** to create a new client secret for your app.
+  1. Under **Application Secrets** choose **Generate New Password** to create a new client secret for your app.
   1. Copy the displayed app password and paste it into the value for **ida:AppSecret** in your project's **web.config** file.
   1. Modify the **ida:AppScopes** value to include the required `https://outlook.office.com/mail.read` scope.
 
@@ -48,16 +48,16 @@ for calling the Graph API.
   </configuration>
   ```
 1. Add a redirect URL to enable testing on your localhost.
-  1. Right click on **InboxSync** and click on **Properties** to open the project properties.
-  1. Click on **Web** in the left navigation.
+  1. Right-click on **InboxSync** and choose **Properties** to open the project properties.
+  1. Choose **Web** in the left navigation.
   1. Copy the **Project Url** value.
-  1. Back on the Application Registration Portal page, click **Add Platform** and then **Web**.
+  1. Back on the Application Registration Portal page, choose **Add Platform** and then **Web**.
   1. Paste the value of **Project Url** into the **Redirect URIs** field.
-  1. Scroll to the bottom of the page and click **Save**.
+  1. Scroll to the bottom of the page and choose **Save**.
 
-1. Press F5 to compile and launch your new application in the default browser.
-  1. Once the Graph and AAD v2 Auth Endpoint Starter page appears, click **Sign in** and login to your Office 365 account.
-  1. Review the permissions the application is requesting, and click **Accept**.
+1. Press F5 to compile and start your new application in the default browser.
+  1. Once the Graph and AAD v2 Auth Endpoint Starter page appears, choose **Sign in** and login to your Office 365 account.
+  1. Review the permissions the application is requesting, and choose **Accept**.
   1. Now that you are signed into your application, exercise 1 is complete!
   
 ## Exercise 2: Configure MongoDB and access the database
@@ -73,20 +73,20 @@ If you have an Azure subscription, you can sign up using the following steps.
 > If you do not have an Azure subscription, you can visit the [MongoLab website](https://mongolab.com/) and sign up for an account. Once you've signed up you can create a sandbox database hosted on Azure. 
 
 1. Open your browser and browse to https://ms.portal.azure.com. Login with your Azure subscription account.
-1. In the left navigation bar, click the **New** button. Click the **Data + Storage**, then locate and click on the **MongoLab** app.
-![Screenshot](./Images/wh-azure-mongo-lab.PNG) 
-1. In the new browser window/tab that opens, scroll through the list of Developer Services and locate the **MongoLab** service. Click the **Next** button.
-![Screenshot](./Images/wh-azure-mongo-lab-service1.PNG)
-1. Select the **Sandbox** plan and optionally change the **Region** to a region close to you, then click the **Next** button.
-![Screenshot](./Images/wh-azure-mongo-lab-service2.PNG)
-1. Review your purchase details and review the legal terms. Click **Purchase**.
-1. On the next screen, after a few moments, the **Status** field should update to **Started**. Click the **MongoLab** item.
-![Screenshot](./Images/wh-azure-mongo-started.PNG)
-1. Click the **Go to the MongoLab website for the next steps** link.
+1. In the left navigation bar, choose the **New** button. Choose the **Data + Storage**, then locate and choose on the **MongoLab** app.
+![The Azure portal new Data + Storage menu showing MongoLab](./Images/wh-azure-mongo-lab.PNG) 
+1. In the new browser window/tab that opens, scroll through the list of Developer Services and locate the **MongoLab** service. Choose the **Next** button.
+![The Azure "Choose a Devloper Service" dialog](./Images/wh-azure-mongo-lab-service1.PNG)
+1. Select the **Sandbox** plan and optionally change the **Region** to a region close to you, then choose the **Next** button.
+![The Azure "Personalize Application and Service" dialog](./Images/wh-azure-mongo-lab-service2.PNG)
+1. Review your purchase details and review the legal terms. Choose **Purchase**.
+1. On the next screen, after a few moments, the **Status** field should update to **Started**. Choose the **MongoLab** item.
+![The Azure marketplace listing showing the MongoLab service started](./Images/wh-azure-mongo-started.PNG)
+1. Choose the **Go to the MongoLab website for the next steps** link.
 
 Once you've signed up and created a database, you can get the connection details from the MongoLab website.
 
-![Screenshot](./Images/wh-mongo-lab-db.PNG)
+![The MongoLab website showing connection details for the new database](./Images/wh-mongo-lab-db.PNG)
 
 1. On the MongoLab website, locate the **To connect using a driver via the standard MongoDB URI** section of the page and copy the MongoDB URI. It will look similar to `mongodb://<dbuser>:<dbpassword>@ds026989.mongolab.com:26989/MongoLab-2`.
 1. Open the **Web.config** file in Visual Studio. Immediately after the `<add key="ida:AppScopes" value="https://outlook.office.com/mail.read" />` line, add the following, replacing the `YOUR MONGODB URI HERE` placeholder with the MongoDB URI you copied in the previous step.
@@ -95,7 +95,7 @@ Once you've signed up and created a database, you can get the connection details
   <add key="mongoUri" value="YOUR MONGODB URI HERE" />
   ```
   
-1. Switch back to the MongoLab website and click **Users**, then click **Add database user**. Enter a value for the username and password and click **Create**.
+1. Switch back to the MongoLab website and choose **Users**, then choose **Add database user**. Enter a value for the username and password and choose **Create**.
 1. In **Web.config**, replace `<dbuser>` with the username you just created, and `<dbpassword>` with the password.
 1. In **Web.config**, immediately after the `<add key="mongoUri"...` line, add the following, replacing `YOUR MONGODB DATABASE NAME HERE` with the name of your database. The name of the database is the last portion of the MongoDB URI after the right-most `/`.
 
@@ -112,7 +112,7 @@ Once you've signed up and created a database, you can get the connection details
   Install-Package PagedList.Mvc
   ```
   
-1. Right-click the **Models** folder and choose **Add**, then **Class**. Name the class 'User' and click **Add**. Replace the entire contents of the file with the following.
+1. Right-click the **Models** folder and choose **Add**, then **Class**. Name the class 'User' and choose **Add**. Replace the entire contents of the file with the following.
 
   ```csharp
   using System;
@@ -132,7 +132,7 @@ Once you've signed up and created a database, you can get the connection details
   }
   ```
 
-1. Right-click the **Models** folder and choose **Add**, then **Class**. Name the class 'Message' and click **Add**. Replace the entire contents of the file with the following.
+1. Right-click the **Models** folder and choose **Add**, then **Class**. Name the class 'Message' and choose **Add**. Replace the entire contents of the file with the following.
 
   ```csharp
   using System;
@@ -170,7 +170,7 @@ Once you've signed up and created a database, you can get the connection details
   ```
     
 1. Right-click the **InboxSync** project and choose **Add**, then **New Folder**. Name the new folder `Helpers`.
-1. Right-click the **Helpers** folder and choose **Add**, then **Class**. Name the class `UserManager` and click **Add**. Replace the entire contents of the file with the following.
+1. Right-click the **Helpers** folder and choose **Add**, then **Class**. Name the class `UserManager` and choose **Add**. Replace the entire contents of the file with the following.
 
   ```csharp
   using System;
@@ -277,7 +277,7 @@ Once you've signed up and created a database, you can get the connection details
   httpContext.Session["user_id"] = user.Id.ToString();
   ```
 
-1. Right-click the **Controllers** folder and choose **Add**, then **Controller**. Name the controller `MailController` and click **Add**. Replace the entire contents of the file with the following.
+1. Right-click the **Controllers** folder and choose **Add**, then **Controller**. Name the controller `MailController` and choose **Add**. Replace the entire contents of the file with the following.
 
   ```csharp
   using System.Threading.Tasks;
@@ -358,7 +358,7 @@ Once you've signed up and created a database, you can get the connection details
   }
   ```
   
-1. Expand the **Views** folder. Right-click the **Mail** folder and choose **Add**, then **MVC 5 View Page (Razor)**. Name the page `Inbox` and click **OK**. Replace the entire contents of the file with the following.
+1. Expand the **Views** folder. Right-click the **Mail** folder and choose **Add**, then **MVC 5 View Page (Razor)**. Name the page `Inbox` and choose **OK**. Replace the entire contents of the file with the following.
 
   ```asp
   @model PagedList.IPagedList<InboxSync.Models.Message>
@@ -423,7 +423,7 @@ Once you've signed up and created a database, you can get the connection details
 
 Now let's add the ability to sync messages from the user's inbox into the database.
 
-1. In Visual Studio's Solution Explorer, right-click the **Helpers** folder and choose **Add**, then **Class**. Enter `OutlookHelper` for the class name and click **Add**.
+1. In Visual Studio's Solution Explorer, right-click the **Helpers** folder and choose **Add**, then **Class**. Enter `OutlookHelper` for the class name and choose **Add**.
 1. Add the following `using` directives to the top of the file:
   ```csharp
   using System.Net.Http;
@@ -687,7 +687,7 @@ This method issues sync requests to the API until there are no more results. It 
         string outlookId = (string)syncItem["Id"];
         var outlookIdFilter = Builders<Message>.Filter.Eq("OutlookId", outlookId);
 
-        // See if there's an item with the outlook ID
+        // See if there's an item with the Outlook ID
         var existingMsg = await messageCollection.Find(outlookIdFilter).FirstOrDefaultAsync();
         if (null != existingMsg)
         {
@@ -835,13 +835,13 @@ This function implements the `/Mail/ResetSyncState` route in our app. It does th
   </p>
   ```
 
-1. Save all of your changes and restart the app. Login as before, and click the **Local Inbox** link in the top nav bar.
+1. Save all of your changes and restart the app. Login as before, and choose the **Local Inbox** link in the top nav bar.
 
-1. Click the **Sync Now** button. If you have a large number of messages in your inbox this may take some time to complete. The view should refresh with a list of messages.
+1. Choose the **Sync Now** button. If you have a large number of messages in your inbox this may take some time to complete. The view should refresh with a list of messages.
 
-  ![Screenshot](./Images/wh-app-inbox-sync.PNG)
+  ![The application showing messages synchronized to the database](./Images/wh-app-inbox-sync.PNG)
 
-At this point you can experiment with making changes to messages in the Inbox and syncing again. For example, you can mark messages as read, delete messages, or send new messages to yourself. After making changes, if you click the **Sync Now** button you should see the changes show up in the app.
+At this point you can experiment with making changes to messages in the Inbox and syncing again. For example, you can mark messages as read, delete messages, or send new messages to yourself. After making changes, if you choose the **Sync Now** button you should see the changes show up in the app.
 
 ## Exercise 4 (Optional): Add a notification webhook
 
@@ -854,10 +854,10 @@ This exercise will take you through steps to publish the app to an Azure App Ser
 
 ### Publish the app to Azure
 
-1. Browse to https://tryappservice.azure.com/ to create a temporary test site. Choose **Web App** as the app type, then click **Next**. Change the language dropdown to **C#**, then choose **ASP.NET Empty Site** and click **Create**. Sign in with an account to complete the creation process.
-1. When the site is created, copy the site URL, then click the **Download publishing profile** link and save the file to the local machine.
+1. Browse to https://tryappservice.azure.com/ to create a temporary test site. Choose **Web App** as the app type, then choose **Next**. Change the language dropdown to **C#**, then choose **ASP.NET Empty Site** and choose **Create**. Sign in with an account to complete the creation process.
+1. When the site is created, copy the site URL, then choose the **Download publishing profile** link and save the file to the local machine.
 
-  ![Screenshot](./Images/wh-try-app-service.PNG)
+  ![The Azure website showing successful creation of a trial web app](./Images/wh-try-app-service.PNG)
 
 1. Open the **Startup.cs** file, and change the value of `RedirectUri` in `OpenIdConnectAuthenticationOptions` to the URL of the new site:
 
@@ -870,12 +870,12 @@ This exercise will take you through steps to publish the app to an Azure App Ser
   ```
   
 1. In Visual Studio, open the **Build** menu and choose **Publish InboxSync**.
-1. Select **Import** under **Select a publish target**. Browse to the publishing profile you downloaded in the previous step. Click the **Validate Connection** button to make sure the settings work.
-1. Click the **Settings** item in the left navigation. Expand **File Publish Options** and put a check in the **Remove additional files at destination** checkbox.
-1. Click **Publish** to publish the app to Azure. Once the publishing process is complete, a new browser window will open to the newly published site.
-1. In order for authentication to work, you need to add the URL of the new site to the app registration on https://apps.dev.microsoft.com. Edit the app registration you created earlier. Click the **Add Url** button in the **Redirect URIs** section. Add the URL of your new site, then click **Save**. It should look similar to this:
+1. Select **Import** under **Select a publish target**. Browse to the publishing profile you downloaded in the previous step. Choose the **Validate Connection** button to make sure the settings work.
+1. Choose the **Settings** item in the left navigation. Expand **File Publish Options** and put a check in the **Remove additional files at destination** checkbox.
+1. Choose **Publish** to publish the app to Azure. Once the publishing process is complete, a new browser window will open to the newly published site.
+1. In order for authentication to work, you need to add the URL of the new site to the app registration on https://apps.dev.microsoft.com. Edit the app registration you created earlier. Choose the **Add Url** button in the **Redirect URIs** section. Add the URL of your new site, then choose **Save**. It should look similar to this:
 
-  ![Screenshot](./Images/wh-add-redirect.PNG)
+  ![The "Platforms" section of the Application Registration Portal](./Images/wh-add-redirect.PNG)
 
 At this point you should be able to browse to your Azure web site and log in. The app should work just as it did on your local machine.
 
@@ -1015,7 +1015,7 @@ In this section we'll implement a webhook along with the code to subscribe for n
   }
   ```
   
-1. Right click the **Helpers** folder in Solution Explorer and choose **Add**, then **Class**. Enter `OutlookNotification` for the class name and click **Add**. Replace the entire contents of the file with the following code:
+1. Right-click the **Helpers** folder in Solution Explorer and choose **Add**, then **Class**. Enter `OutlookNotification` for the class name and choose **Add**. Replace the entire contents of the file with the following code:
 
   ```csharp
   using Newtonsoft.Json;
@@ -1157,9 +1157,9 @@ The `Subscribe` and `Unsubscribe` methods handle creating and deleting a subscri
     ```
     
 1. Right-click the `InboxSync` project in Solution Explorer and choose **Add**, then **New Folder**. Name the folder `Hubs`.
-1. Right-click the `Hubs` folder and choose **Add**, then **New Item**. On the left-hand side, expand **Visual csharp**, then **Web**, and select **SignalR**. Choose the **SignalR Hub Class (v2)** template. Enter `NotificationHub`` for the name and click **Add**. 
+1. Right-click the `Hubs` folder and choose **Add**, then **New Item**. On the left-hand side, expand **Visual csharp**, then **Web**, and select **SignalR**. Choose the **SignalR Hub Class (v2)** template. Enter `NotificationHub`` for the name and choose **Add**. 
 
-  ![Screenshot](./Images/wh-add-hub.PNG)
+  ![The Visual Studio "Add New Item" dialog with the SignalR Hub Class template selected](./Images/wh-add-hub.PNG)
   
 1. Replace the entire contents of the file with the following code:
 
@@ -1212,10 +1212,10 @@ The `Subscribe` and `Unsubscribe` methods handle creating and deleting a subscri
   }
   ```
   
-  1. Save all changes. Open the **Build** menu and choose **Publish InboxSync**. Click **Publish**.
+  1. Save all changes. Open the **Build** menu and choose **Publish InboxSync**. Choose **Publish**.
   
     ---
-    **Note:** You may receive a warning about conflicting assemblies when publishing after adding the SignalR library. If so, double-click the warning in the Visual Studio **Error List** and click **Yes** when asked if you want to fix the conflicts. After the conflict is fixed, attempt to publish the app again.
+    **Note:** You may receive a warning about conflicting assemblies when publishing after adding the SignalR library. If so, double-click the warning in the Visual Studio **Error List** and choose **Yes** when asked if you want to fix the conflicts. After the conflict is fixed, attempt to publish the app again.
     
     ---
   
@@ -1223,9 +1223,9 @@ The `Subscribe` and `Unsubscribe` methods handle creating and deleting a subscri
 
 Now that the app is published with the webhook, you can test that notifications are working. 
 
-1. Browse to the published app and login. Click on the **Inbox** link in the top navigation bar.
-1. Click the **Sync Now** button to sync your inbox.
-1. Click the **Subscribe for updates** button to create a subscription.
+1. Browse to the published app and login. Choose on the **Inbox** link in the top navigation bar.
+1. Choose the **Sync Now** button to sync your inbox.
+1. Choose the **Subscribe for updates** button to create a subscription.
 1. In a separate browser window or tab, open https://outlook.office.com and login with the same user.
 1. Try different actions in the Outlook Web app to generate notifications. For example:
   - Mark a message as read or unread
