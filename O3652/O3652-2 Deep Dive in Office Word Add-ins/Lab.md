@@ -24,7 +24,7 @@ In this lab, you will get hands-on experience developing a Word add-in by using 
 	![](Images/Fig05.png)
 
 7. Save and close **StatementOfWorkManifest**.
-8. There are other 2 very important files that are part of this project that are on the root of the StatementOfWorkWeb project. One of them is the  **Home.html** page which is opened by default in Visual Studio and represents the add-in's starting page. If not opened please double click on it, you will see some HTML like this one: 
+8. There are other 2 very important files that are part of this project that are on the root of the StatementOfWorkWeb project. One of them is the  **Home.html** page which is opened by default in Visual Studio and represents the add-in's starting page. If not already opened please double click on it, you will see some HTML like this one: 
 
 	````html
 <head>
@@ -55,145 +55,117 @@ In this lab, you will get hands-on experience developing a Word add-in by using 
 
 
 
-9. You can see that inside the **AddIn** folder there is a child folder named **Home**, which contains three files named **Home.html**, **Home.css** and **Home.js**. Note that the add-in project is currently configured to use **Home.html** as the add-in's start page and that **Home.html** is linked to both **Home.css** and **Home.js**.
+9. There are important references included in the **Home.html** head element. One for our Office.js library **<script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js" type="text/javascript"></script>**, that library enables the developer to interact with Word. There is also a reference to include  Office UI Fabric components, which are the styles you can use to make your add-in look great. Finally, there is also a reference to **Home.js** script on this page, which implements the logic of the add-in.
  
 
-12. Next, you will examine the JavaScript code in **home.js**. Double-click **home.js** to open it in a code editor window. Note that **Home.html** links to **app.js** before it links to **home.js**, which means that JavaScript code written in **Home.js** can access the global **app** object created in **app.js**.
-13. Walk through the code in **Home.js** and see how it uses a self-executing function to register an event handler on the **Office.initialize** method, which in turn registers a document-ready event handler using jQuery. This allows the add-in to call **app.initialize** and to register an event handler using the **getDataFromSelection** function. 
+12. Lets examine the JavaScript code in **home.js**. Double-click **home.js** to open it in a code editor window.
+13. Walk through the code in **Home.js** it includes a simple example to highlight the largest Word in the user selection. Note at the end of the file there is an **errorHandler** function  we will reuse in the lab to handle errors , as well as a **showNotification** function to display messages from the lab.   
 
-	````javascript 
-	(function () {
-	  "use strict";
-
-	  // The initialize function must be run each time a new page is loaded
-	  Office.initialize = function (reason) {
-	    $(document).ready(function () {
-	      app.initialize();
-	      $('#get-data-from-selection').click(getDataFromSelection);
-	    });
-	  };
-
-	  // Reads data from current document selection and displays a notification
-	  function getDataFromSelection() {
-	    Office.context.document.getSelectedDataAsync(Office.CoercionType.Text,
-	      function (result) {
-	        if (result.status === Office.AsyncResultStatus.Succeeded) {
-	          app.showNotification('The selected text is:', '"' + result.value + '"');
-	        } else {
-	          app.showNotification('Error:', result.error.message);
-	      }
-		});
-	  }
-	})();
-	````
-
-14. Delete the **getDataFromSelection** function from **Home.js** and also remove the line of code that binds the event handler to the button with the id of **get-data-from-selection**, so that your code matches the following code listing.
+14. Lets clean up **Home.js** for our lab. Replace the content of the entire file with the following snippet. Your Home.js should look like this: 
 
 	````javascript
-	(function () {
-	  "use strict";
+/// <reference path="/Scripts/FabricUI/MessageBanner.js" />
 
-	  // The initialize function must be run each time a new page is loaded
-	  Office.initialize = function (reason) {
-	    $(document).ready(function () {
-	      app.initialize();
-	      // your app initialization code goes here
-	    });
-	  };
 
-	})(); 
+(function () {
+    "use strict";
+
+    var messageBanner;
+
+    // The initialize function must be run each time a new page is loaded.
+    Office.initialize = function (reason) {
+        $(document).ready(function () {
+            // Initialize the FabricUI notification mechanism and hide it
+            var element = document.querySelector('.ms-MessageBanner');
+            messageBanner = new fabric.MessageBanner(element);
+            messageBanner.hideBanner();
+
+            // Add event handlers here.....
+           
+        });
+    };
+
+
+    //$$(Helper function for treating errors, $loc_script_taskpane_home_js_comment34$)$$
+    function errorHandler(error) {
+        // $$(Always be sure to catch any accumulated errors that bubble up from the Word.run execution., $loc_script_taskpane_home_js_comment35$)$$
+        showNotification("Error:", error);
+        console.log("Error: " + error);
+        if (error instanceof OfficeExtension.Error) {
+            console.log("Debug info: " + JSON.stringify(error.debugInfo));
+        }
+    }
+
+    // Helper function for displaying notifications
+    function showNotification(header, content) {
+        $("#notificationHeader").text(header);
+        $("#notificationBody").text(content);
+        messageBanner.showBanner();
+        messageBanner.toggleExpansion();
+    }
+})();
+
 	````
 15. Save your changes to **Home.js**. You will return to this source file after you have added your HTML layout to **Home.html**.
 16. Now it's time to examine the HTML that has been added to the project to create the add-in's user interface. Double-click **Home.html** to open this file in a Visual Studio editor window. Examine the layout of HTML elements inside the **body** element. 
 
-	````html
-	<body>
-		<div id="content-header">
-			<div class="padding">
-				<h1>Welcome</h1>
-			</div>
-		</div>
-		<div id="content-main">
-			<div class="padding">
-				<p><strong>Add home screen content here.</strong></p>
-				<p>For example:</p>
-				<button id="get-data-from-selection">Get data from selection</button>
 
-				<p style="margin-top: 50px;">
-					<a target="_blank" href="https://go.microsoft.com/fwlink/?LinkId=276812">Find more samples online...</a>
-				</p>
-			</div>
-		</div>
-	</body>
-	````
-
-17. Replace the text message of **Welcome** inside the **h1** element with **Welcome to Word 1.3 APIs!!**. Also, trim down the contents of the **div** element with the **id** of **content-main** to match the HTML code shown below. 
+18. Update the **content-main** div within *Home.html* to match the following HTML layout, which adds a set of buttons to the add-in's layout. These are all the buttons you need for the lab.
 
 	````html
-	<body>
-		<div id="content-header">
-			<div class="padding">
-				<h1>Welcome to Word 1.3 APIs!!</h1>
-			</div>
-		</div>
-		<div id="content-main">
-			<div class="padding">
-				<!-- your add-in UI layout goes here -->
-			</div>
-		</div>
-	</body>
-	````
+   <div id="content-main">
+        <div id="sowPanel" class="padding">
+            <button class="ms-Button ms-Button--compound" id="addContentHellowWorld">
+                <span class="ms-Button-label" id="button-text">Hello World!</span>
+                <span class="ms-Button-description" id="button-desc">Just a simple Hello World!! This code writes the famous string.</span>
+            </button><br><br>
 
-18. Update the **content-main** div to match the following HTML layout, which adds a set of buttons to the add-in's layout.
+            <button class="ms-Button ms-Button--compound" id="addContentStartingSOW">
+                <span class="ms-Button-label" id="button-text">Step 1: Starting SOW</span>
+                <span class="ms-Button-description" id="button-desc">Insert a starting document to play with. uses OOXML</span>
+            </button><br><br>
 
-	````html
- <div id="content-main">
-        <div class="padding">
-            <div>
-                <button id="addContentHellowWorld">Hello World!</button>
-            </div>
-            <div>
-                <button id="addContentStartingSOW">Step 1: Starting SOW</button>
-            </div>
-            <div>
-                <button id="addPicture">Step 2: Fix Picture!</button>
-            </div>
+            <button class="ms-Button ms-Button--compound" id="addPicture">
+                <span class="ms-Button-label" id="button-text">Step 2: Fix Picture!</span>
+                <span class="ms-Button-description" id="button-desc">How to insert or replace images in a document.</span>
+            </button><br><br>
 
-            <div>
-                <button id="addSearchAndTempletize">Step 3: Search and Templetize!</button>
-            </div>
+            <button class="ms-Button ms-Button--compound" id="addSearchAndTempletize">
+                <span class="ms-Button-label" id="button-text">Step 3: Search and Templetize!</span>
+                <span class="ms-Button-description" id="button-desc">Search for 'Contoso' and insert content controls to hold the customer name. </span>
+            </button><br><br>
 
-            <div>
-                <button id="addChangeCustomer">Step 4: Replace Customer!</button>
-            </div>
-            <div>
-                <button id="addReuseContent">Step 5: Reuse Content!</button>
-            </div>
-           
-          
-            <div>
-                <button id="addHighlights">Step 6: Highlight Word by Word!</button>
-            </div>
-            <div>
-                <button id="addOpenDoc">Step 7: Create a New Document!</button>
-            </div>
+            <button class="ms-Button ms-Button--compound" id="addChangeCustomer">
+                <span class="ms-Button-label" id="button-text">Step 4: Replace Customer!</span>
+                <span class="ms-Button-description" id="button-desc">Set the customer name to 'Fabrikam' using content controls.</span>
+            </button><br><br>
+
+            <button class="ms-Button ms-Button--compound" id="addReuseContent">
+                <span class="ms-Button-label" id="button-text">Step 5: Reuse Content!</span>
+                <span class="ms-Button-description" id="button-desc">Reuse content by merging in another document</span>
+            </button><br><br>
+
+            <button class="ms-Button ms-Button--compound" id="addHighlights">
+                <span class="ms-Button-label" id="button-text">Step 6: Highlight Word by Word!</span>
+                <span class="ms-Button-description" id="button-desc">Shows how to get (as range) word by word of a paragraph.</span>
+            </button><br><br>
+
+            <button class="ms-Button ms-Button--compound" id="addOpenDoc">
+                <span class="ms-Button-label" id="button-text">Step 7: Create a New Document!</span>
+                <span class="ms-Button-description" id="button-desc">This samples shows how to create and open a new document.</span>
+            </button><br><br>
+
+
         </div>
-    </div>
 	````
 
 19. Save and close **Home.html**.
-20. Open the CSS file named **Home.css** and add the following CSS rule to ensure all the add-in's command buttons and select element have a uniform width and spacing.
 
-	````css
-	#content-main button, #content-main select{
-			width: 210px;
-			margin: 8px;
-	}
-	````
+22. Now it's time to test the add-in using the Visual Studio debugger. Press the **{F5}** key to run the project in the Visual Studio debugger. The debugger should launch Word 2016. NOTE: Once Word is launched, make sure you insert your solution task pane by clicking on the **Show Taskpane** button on the ribbon. (and make sure to repeat this operation each time you F5)
 
-21. Save and close **Home.css**.
-21. Right-click the StatementOfWork project in the Visual Studio Solution and select **Set as Startup Project**.
-22. Now it's time to test the add-in using the Visual Studio debugger. Press the **{F5}** key to run the project in the Visual Studio debugger. The debugger should launch Word 2016 and you should see your Office Add-in in the task pane on the right side of a new Word document, as shown in the following screenshot.
+	![](Images/Fig03.png)
+
+23. After you click on this button you should see your Office Add-in in the task pane on the right side of a new Word document, as shown in the following screenshot.
 
 	![](Images/Fig07.png)
 
@@ -211,23 +183,25 @@ In this lab, you will get hands-on experience developing a Word add-in by using 
 
         }).then(function () {
             // if evertything was succesful, we sent an ok...
-            app.showNotification("Task Complete!");
+            showNotification("Task Complete!");
         })
           .catch(function (myError) {
               //otherwise we handle the exception here!
-              app.showNotification("Error", myError.message);
+              showNotification("Error", myError.message);
           });
     }
 	````
 
-26. Finally, add a line of jQuery code into the add-in initialization logic to bind the click event of the **addContentHellowWorld** button to the **onaddContentHellowWorld** function.
+26. Finally, add a line of jQuery code into the add-in initialization logic to bind the click event of the **addContentHellowWorld** button to the **onaddContentHellowWorld** function (after the // Add event handlers here comment).
 
 	````javascript
 	Office.initialize = function (reason) {
 		$(document).ready(function () {
-			app.initialize();
-			// add this code to wire up event handler
-			$("#addContentHellowWorld").click(onaddContentHellowWorld)
+		var element = document.querySelector('.ms-MessageBanner');
+                messageBanner = new fabric.MessageBanner(element);
+                messageBanner.hideBanner();
+            // Add event handlers here....
+            $('#addContentHellowWorld').click(onaddContentHellowWorld);
 		});
 	};
 	````
@@ -235,41 +209,58 @@ In this lab, you will get hands-on experience developing a Word add-in by using 
 27. When you are done, the **Home.js** file should match the following listing.
 
 	````javascript
+/// <reference path="/Scripts/FabricUI/MessageBanner.js" />
+
+
 (function () {
     "use strict";
 
-    // The initialize function must be run each time a new page is loaded
+    var messageBanner;
+
+    // The initialize function must be run each time a new page is loaded.
     Office.initialize = function (reason) {
         $(document).ready(function () {
-            app.initialize();
-            // setup event handlers ala JQuery...
+            // Initialize the FabricUI notification mechanism and hide it
+            var element = document.querySelector('.ms-MessageBanner');
+            messageBanner = new fabric.MessageBanner(element);
+            messageBanner.hideBanner();
+
+            // Add event handlers here....
             $('#addContentHellowWorld').click(onaddContentHellowWorld);
-           
+
+     
         });
     };
 
-    function onaddContentHellowWorld() {
-        // Hello World in the Word.js world!
-        Word.run(function (context) {
-            //this line replaces the body of the document with a friendly "Hello World!!!"
-            context.document.body.insertText("Hello World!", "replace");
-            return context.sync()
 
-        }).then(function () {
-            // if evertything was succesful, we sent an ok...
-            app.showNotification("Task Complete!");
-        })
-          .catch(function (myError) {
-              //otherwise we handle the exception here!
-              app.showNotification("Error", myError.message);
-          });
+    //$$(Helper function for treating errors, $loc_script_taskpane_home_js_comment34$)$$
+    function errorHandler(error) {
+        // $$(Always be sure to catch any accumulated errors that bubble up from the Word.run execution., $loc_script_taskpane_home_js_comment35$)$$
+        showNotification("Error:", error);
+        console.log("Error: " + error);
+        if (error instanceof OfficeExtension.Error) {
+            console.log("Debug info: " + JSON.stringify(error.debugInfo));
+        }
     }
 
-	})();
+    // Helper function for displaying notifications
+    function showNotification(header, content) {
+        $("#notificationHeader").text(header);
+        $("#notificationBody").text(content);
+        messageBanner.showBanner();
+        messageBanner.toggleExpansion();
+    }
+
+
+
+
+
+
+})();
 	````
 
 28. Save your changes to **Home.js**.
-29. Now test the functionality of the add-in. Press the **{F5}** key to begin a debugging session and click the **Hello World** button. You should see that "Hello World" has been added into the cursor position of the Word document.
+29. Now test the functionality of the add-in. Press the **{F5}** key to begin a debugging session and after inserting the TaskPane  click the **Hello World** button. You should see that "Hello World" has been added into the cursor position of the Word document.
 
 	![](Images/Fig08.png)
 
@@ -293,11 +284,11 @@ In this lab, you will get hands-on experience developing a Word add-in by using 
 
         }).then(function () {
             // if everything was succesful, we sent an ok...
-            app.showNotification("Task Complete!");
+            showNotification("Task Complete!");
         })
           .catch(function (myError) {
               //otherwise we handle the exception here!
-              app.showNotification("Error", myError.message);
+              showNotification("Error", myError.message);
           });
     }
 
@@ -320,23 +311,29 @@ In this lab, you will get hands-on experience developing a Word add-in by using 
     } 
 	````
 
-4. Just below the call to **app.initialize**, add the jQuery code required to bind each of the four new functions to the **click** event of the associated buttons.
+4. Go back to Office.initialize and provide the handlers for each button **click** event associating the buttons with the corresponding newly created functions.
    
 	````javascript
-	Office.initialize = function (reason) {
-		$(document).ready(function () {
-			app.initialize();
-			// wire up event handler
-		    $('#addContentHellowWorld').click(onaddContentHellowWorld);
-	            $('#addContentStartingSOW').click(onaddContentStartingSOW);
-	            $('#addPicture').click(onFixPicture);
-	            $('#addSearchAndTempletize').click(onSearchAndTempletize);
-	            $('#addChangeCustomer').click(onaddChangeCustomer);
-	            $('#addReuseContent').click(onaaddReuseContent);
-	            $('#addHighlights').click(onaddHighlights);
-	            $('#addOpenDoc').click(onaddOpenDoc);
-		});
-	};
+	 Office.initialize = function (reason) {
+        $(document).ready(function () {
+            // Initialize the FabricUI notification mechanism and hide it
+            var element = document.querySelector('.ms-MessageBanner');
+            messageBanner = new fabric.MessageBanner(element);
+            messageBanner.hideBanner();
+
+
+            // Add event handlers here....
+            $('#addContentHellowWorld').click(onaddContentHellowWorld);
+            $('#addContentStartingSOW').click(onaddContentStartingSOW);
+            $('#addPicture').click(onFixPicture);
+            $('#addSearchAndTempletize').click(onSearchAndTempletize);
+            $('#addChangeCustomer').click(onaddChangeCustomer);
+            $('#addReuseContent').click(onaaddReuseContent);
+            $('#addHighlights').click(onaddHighlights);
+            $('#addOpenDoc').click(onaddOpenDoc);
+     
+        });
+	    };
 	````
 
 5. Implement the **addContentStartingSOW** function to load the OOXML fragment with the starting document and then to write that OOXML to the Word document using the **body.insertOoxml** method by  using the code in the following listing. Note that there is  **getOOXMLForTemplate()** is a helping function used to load the needed  OOXML. 
@@ -353,11 +350,11 @@ function onaddContentStartingSOW() {
 
         }).then(function () {
             // if evertything was succesful, we sent an ok...
-            app.showNotification("Task Complete!");
+            showNotification("Task Complete!");
         })
           .catch(function (myError) {
               //otherwise we handle the exception here!
-              app.showNotification("Error", myError.message);
+              showNotification("Error", myError.message);
           });
     }
     
@@ -383,7 +380,7 @@ function onaddContentStartingSOW() {
 
 6. Test your work by pressing F5 to start a debug session and then click the **Step 1: Starting SOW** button. When you click the button, you should see that the starting Statement of Work  has been added to the Word document.
 
-	![](Images/Fig12.png)
+	![](Images/Fig09.png)
 	
 
 7. You have now finished Exercise 2 and it is time to move on to Exercise 3. Don't feel overhelmed with the OOXML file you inserted; if you want to master how to handle OOXML we recommend you to read [this](https://msdn.microsoft.com/en-us/library/office/dn423225.aspx) article.
@@ -420,17 +417,17 @@ function onaddContentStartingSOW() {
                         pics.items[0].insertInlinePictureFromBase64(mybase64, "replace");
                         return context.sync()
                             .then(function () {
-                                app.showNotification("Task Complete!");
+                                showNotification("Task Complete!");
                             })
                     })
             })
             .catch(function (myError) {
                 //otherwise we handle the exception here!
-                app.showNotification("Error", myError.message);
+                showNotification("Error", myError.message);
             })
         }
         else {
-            app.showNotification("Error. This functionality requires Word with at least January update!! (check  builds 6741+)");
+            showNotification("Error. This functionality requires Word with at least January update!! (check  builds 6741+)");
         }
     }
 	````
@@ -477,10 +474,10 @@ function onSearchAndTempletize() {
                 return ctx.sync()  // OK ready! lets send it to the host for processing :)
             })
             .then(function () {
-                app.showNotification("Task Complete!");
+                showNotification("Task Complete!");
             })
             .catch(function (myError) {
-                app.showNotification("Error", myError.message);
+                showNotification("Error", myError.message);
             })
         });
 
@@ -535,8 +532,8 @@ Word.run(function (ctx) {
                 }
 
             })
-            .then(function () { app.showNotification("Task Complete!"); })
-            .catch(function (myError) { app.showNotification("Error", myError.message); })
+            .then(function () { showNotification("Task Complete!"); })
+            .catch(function (myError) { showNotification("Error", myError.message); })
         });
 
 
@@ -577,13 +574,13 @@ Word.run(function (ctx) {
             })
              .catch(function (myError) {
                  //otherwise we handle the exception here!
-                 app.showNotification("Error", myError.message);
+                 showNotification("Error", myError.message);
              })
         }
         else {
             //if you reach this code it means that the Word executing this code does not yet support the 1.2 requirement set. In this case you can also insert a paragraph and then insert the document on the paragraph.
 
-            app.showNotification("Error. This functionality requires Word with at least January update!! (check  builds 6568+)");
+            showNotification("Error. This functionality requires Word with at least January update!! (check  builds 6568+)");
 
         }
 
@@ -732,10 +729,10 @@ Word.run(function (ctx) {
                     context.sync();
                 }).catch(function (myError) {
                     //otherwise we handle the exception here!
-                    app.showNotification("Error", myError.message);
+                    showNotification("Error", myError.message);
                 })
 
-        }).catch(function (myError) { app.showNotification("Error", myError.message); });
+        }).catch(function (myError) { showNotification("Error", myError.message); });
 
 	````
 	

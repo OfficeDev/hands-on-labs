@@ -148,7 +148,7 @@ In this exercise, you will code the **TrendingController** of the MVC applicatio
         if (String.IsNullOrEmpty(userId))
             return View(service.Me.TrendingAround);
         else
-            return View(service.Users.ByKey(userId).GetValue().TrendingAround);
+            return View(service.Users.ByKey(userId).TrendingAround);
     }
    
     ````
