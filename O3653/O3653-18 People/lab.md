@@ -15,7 +15,7 @@ In this first step, you will create a new ASP.NET MVC project using the
 in the developer portal, and log in to your app and generate access tokens
 for calling the Graph API.
 
-1. Launch Visual Studio 2015 and select **New**, **Project**.
+1. Launch Visual Studio 2015 and select **New** **Project**.
   1. Search the installed templates for **Graph** and select the **Graph AAD Auth v1 Starter Project** template.
   2. Name the new project **PeopleGraphWeb** and click **OK**.
   3. Note that for this quickstart the AppId and AppSecret are already filled in in the web.config
