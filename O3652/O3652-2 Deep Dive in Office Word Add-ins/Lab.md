@@ -183,11 +183,11 @@ In this lab, you will get hands-on experience developing a Word add-in by using 
 
         }).then(function () {
             // if evertything was succesful, we sent an ok...
-            app.showNotification("Task Complete!");
+            showNotification("Task Complete!");
         })
           .catch(function (myError) {
               //otherwise we handle the exception here!
-              app.showNotification("Error", myError.message);
+              showNotification("Error", myError.message);
           });
     }
 	````
@@ -229,11 +229,11 @@ In this lab, you will get hands-on experience developing a Word add-in by using 
 
         }).then(function () {
             // if evertything was succesful, we sent an ok...
-            app.showNotification("Task Complete!");
+            showNotification("Task Complete!");
         })
           .catch(function (myError) {
               //otherwise we handle the exception here!
-              app.showNotification("Error", myError.message);
+              showNotification("Error", myError.message);
           });
     }
 
@@ -265,11 +265,11 @@ In this lab, you will get hands-on experience developing a Word add-in by using 
 
         }).then(function () {
             // if everything was succesful, we sent an ok...
-            app.showNotification("Task Complete!");
+            showNotification("Task Complete!");
         })
           .catch(function (myError) {
               //otherwise we handle the exception here!
-              app.showNotification("Error", myError.message);
+              showNotification("Error", myError.message);
           });
     }
 
@@ -325,11 +325,11 @@ function onaddContentStartingSOW() {
 
         }).then(function () {
             // if evertything was succesful, we sent an ok...
-            app.showNotification("Task Complete!");
+            showNotification("Task Complete!");
         })
           .catch(function (myError) {
               //otherwise we handle the exception here!
-              app.showNotification("Error", myError.message);
+              showNotification("Error", myError.message);
           });
     }
     
@@ -392,17 +392,17 @@ function onaddContentStartingSOW() {
                         pics.items[0].insertInlinePictureFromBase64(mybase64, "replace");
                         return context.sync()
                             .then(function () {
-                                app.showNotification("Task Complete!");
+                                showNotification("Task Complete!");
                             })
                     })
             })
             .catch(function (myError) {
                 //otherwise we handle the exception here!
-                app.showNotification("Error", myError.message);
+                showNotification("Error", myError.message);
             })
         }
         else {
-            app.showNotification("Error. This functionality requires Word with at least January update!! (check  builds 6741+)");
+            showNotification("Error. This functionality requires Word with at least January update!! (check  builds 6741+)");
         }
     }
 	````
@@ -449,10 +449,10 @@ function onSearchAndTempletize() {
                 return ctx.sync()  // OK ready! lets send it to the host for processing :)
             })
             .then(function () {
-                app.showNotification("Task Complete!");
+                showNotification("Task Complete!");
             })
             .catch(function (myError) {
-                app.showNotification("Error", myError.message);
+                showNotification("Error", myError.message);
             })
         });
 
@@ -507,8 +507,8 @@ Word.run(function (ctx) {
                 }
 
             })
-            .then(function () { app.showNotification("Task Complete!"); })
-            .catch(function (myError) { app.showNotification("Error", myError.message); })
+            .then(function () { showNotification("Task Complete!"); })
+            .catch(function (myError) { showNotification("Error", myError.message); })
         });
 
 
@@ -549,13 +549,13 @@ Word.run(function (ctx) {
             })
              .catch(function (myError) {
                  //otherwise we handle the exception here!
-                 app.showNotification("Error", myError.message);
+                 showNotification("Error", myError.message);
              })
         }
         else {
             //if you reach this code it means that the Word executing this code does not yet support the 1.2 requirement set. In this case you can also insert a paragraph and then insert the document on the paragraph.
 
-            app.showNotification("Error. This functionality requires Word with at least January update!! (check  builds 6568+)");
+            showNotification("Error. This functionality requires Word with at least January update!! (check  builds 6568+)");
 
         }
 
@@ -704,10 +704,10 @@ Word.run(function (ctx) {
                     context.sync();
                 }).catch(function (myError) {
                     //otherwise we handle the exception here!
-                    app.showNotification("Error", myError.message);
+                    showNotification("Error", myError.message);
                 })
 
-        }).catch(function (myError) { app.showNotification("Error", myError.message); });
+        }).catch(function (myError) { showNotification("Error", myError.message); });
 
 	````
 	
