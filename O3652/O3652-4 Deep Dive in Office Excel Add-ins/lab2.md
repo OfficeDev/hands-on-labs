@@ -118,7 +118,7 @@ In this exercise, you will create an Excel add-in that uses the Excel JavaScript
 		````
 
 
-	1. Now add a function that will add data:
+1. Now add a function that will add data:
 		1. Replace the comment `// TODO-1` with the following jQuery code that creates a click event handler on one of the buttons in the `home.html` page you added previously:
 
 			````javascript
