@@ -3,178 +3,6 @@ var apiManager;
 var access_token;
 var contactNo = 0;
 
-function toggleChat(sip) {
-    startConversation(sip);
-}
-
-function toggleContacts() {
-    endConversation();
-}
-
-function displayContactCard(contactCardID) {
-    //get user data from the Skype logins here
-    var cardName = $('#' + contactCardID + ' .contactName').html();
-    var cardPresence = $('#' + contactCardID + ' .contactPresence').html();
-    var cardSIP = $('#' + contactCardID + ' .contactSIP').val();
-    $('#ContactCard #ContactPresence').html(cardPresence);
-    $('#ContactCard .contactCardSIP').val(cardSIP);
-    $('#ContactCard').dialog({
-        dialogClass: "no-close",
-        title: cardName,
-        draggable: false,
-        resizable: false,
-        position: { my: "right", at: "left", of: $('#' + contactCardID) },
-        buttons: [
-          {
-              icons: {
-                  primary: "ui-icon-chat"
-              },
-              click: function () {
-                  $(this).dialog("close");
-                  //replace the contact list with the chat window. Add the call and video buttons there as well
-                  $('#ChatContact').val(cardName); //we'd store actual info here, not just the name
-                  toggleChat(cardSIP);
-              }
-          },
-          {
-              icons: {
-                  primary: "ui-icon-call"
-              },
-              click: function () {
-                  $(this).dialog("close");
-                  var params = "sip=" + cardSIP + "&audioOnly=true";
-                  launchAVWindow(params);
-                  //pop open the call window for audio. You can end the call or initiate video from here
-              },
-          },
-          {
-              icons: {
-                  primary: "ui-icon-video"
-              },
-              click: function () {
-                  $(this).dialog("close");
-                  var params = "sip=" + cardSIP + "&audioOnly=false";
-                  launchAVWindow(params);
-                  //pop open the call window for full audio and video. You can end the call or turn off video, etc.
-              }
-          }
-        ]
-    });
-}
-
-function launchAVWindow(params) {
-    window.open('http://secondonlineapp.azurewebsites.net/AVChat.html?' + params, 'mywindow', 'width=850,height=650');
-}
-
-function getSelectedEmployeeInfo(email) {
-    if (email) {
-        console.log('employee info: ' + email);
-        var emp = email;
-        var query = client.personsAndGroupsManager.createPersonSearchQuery();
-        query.text(emp);
-        query.limit(1);
-        query.getMore().then(function (results) {
-            results.forEach(function (item) {
-                var person = item.result;
-                var avatar = person.avatarUrl();
-                var sip = person.id();
-                console.log('sip:' + sip);
-                $('#ContactList').append('<div id="Contact' + contactNo + '" class="contact" data-sip="' + sip + '">' +
-                    '<input type="hidden" value="' + sip + '" class="contactSIP"/>' +
-                    '<div class="contactName">' + person.displayName() + '</div>' +
-                    '<div><img class="contactListAvatar" src="Images/default.png" /></div>' +
-                    '<div class="contactPresence"></div>' +
-                    '</div>');
-                contactNo++;
-                person.status.get().then(function (s) {
-                    console.log('initial status:' + s);
-                    $('[data-sip="' + person.id() + '"] .contactPresence').html(s);
-                });
-                person.status.changed(function (newStatus) {
-                    console.log('new status:' + newStatus);
-                    $('[data-sip="' + person.id() + '"] .contactPresence').html(newStatus);
-                    $('#ContactsLoadingGif').hide();
-                    $('#ContactList').show();
-                });
-                $('#selectedCall').attr('href', 'Callto:' + sip);
-                $('#selectedVideo').attr('href', 'Callto:' + sip);
-                person.status.subscribe();
-            });
-        });
-    }
-}
-
-function conversationHandler() {
-    var test = '';
-    client.conversationsManager.conversations.added(function (conversation) {
-        conversation.selfParticipant.chat.state.when('Notified', function () {
-            console.log('new conversation notification');
-            $('#ContactList').hide();
-            $('#ChatWindow').show();
-            $('#ChatControlsArea').show();
-            var id = conversation.participants(0).person.id();
-            var container = document.getElementById(id);
-            if (!container) {
-                container = document.createElement('div');
-                container.id = id;
-                document.querySelector('#conversations').appendChild(container);
-            }
-            else {
-                document.querySelector('#conversations').removeChild(container);
-            }
-            var promise = apiManager.renderConversation(container, {
-                modalities: ['Chat'],
-                participants: [id]
-            });
-            monitor('start conversation', promise);
-        });
-    });
-}
-
-function startConversation(sip) {
-    $('#ContactList').hide();
-    $('#ChatWindow').show();
-    $('#ChatControlsArea').show();
-    console.log(sip);
-    var chatSip = sip;
-    var uris = [chatSip];
-    var container = document.getElementById(chatSip);
-    if (!container) {
-        container = document.createElement('div');
-        container.id = chatSip;
-        document.querySelector('#conversations').appendChild(container);
-    }
-    var promise = apiManager.renderConversation(container, { modalities: ['Chat'], participants: uris });
-    monitor('start conversation', promise);
-}
-
-function endConversation() {
-    apiManager.UIApplicationInstance.conversationsManager.conversations.get().then(function (conversationsArray) {
-        if (conversationsArray && conversationsArray.length > 0) {
-            conversationsArray.forEach(function (element, index, array) {
-                console.log("Closing existing conversation...");
-                var convo = apiManager.UIApplicationInstance.conversationsManager.conversations(0);
-                convo.leave();
-                apiManager.UIApplicationInstance.conversationsManager.conversations.remove(element);
-                $('#conversations').empty();
-            });
-        }
-    });
-    $('#ChatWindow').hide();
-    $('#ChatControlsArea').hide();
-    $('#ContactList').show();
-}
-
-function monitor(title, promise) {
-    console.log(title, 'started');
-    promise.then(function (res) {
-        console.log(title, 'succeeded', res);
-    }, function (err) {
-        console.log(title, 'failed', err && err.stack || err);
-        alert(title + ' failed:' + err);
-    });
-}
-
 $(function () {
     Skype.initialize({
         apiKey: config.apiKeyCC
@@ -186,6 +14,178 @@ $(function () {
         });
         signIn();
     });
+
+    function toggleChat(sip) {
+        startConversation(sip);
+    }
+
+    function toggleContacts() {
+        endConversation();
+    }
+
+    function displayContactCard(contactCardID) {
+        //get user data from the Skype logins here
+        var cardName = $('#' + contactCardID + ' .contactName').html();
+        var cardPresence = $('#' + contactCardID + ' .contactPresence').html();
+        var cardSIP = $('#' + contactCardID + ' .contactSIP').val();
+        $('#ContactCard #ContactPresence').html(cardPresence);
+        $('#ContactCard .contactCardSIP').val(cardSIP);
+        $('#ContactCard').dialog({
+            dialogClass: "no-close",
+            title: cardName,
+            draggable: false,
+            resizable: false,
+            position: { my: "right", at: "left", of: $('#' + contactCardID) },
+            buttons: [
+              {
+                  icons: {
+                      primary: "ui-icon-chat"
+                  },
+                  click: function () {
+                      $(this).dialog("close");
+                      //replace the contact list with the chat window. Add the call and video buttons there as well
+                      $('#ChatContact').val(cardName); //we'd store actual info here, not just the name
+                      toggleChat(cardSIP);
+                  }
+              },
+              {
+                  icons: {
+                      primary: "ui-icon-call"
+                  },
+                  click: function () {
+                      $(this).dialog("close");
+                      var params = "sip=" + cardSIP + "&audioOnly=true";
+                      launchAVWindow(params);
+                      //pop open the call window for audio. You can end the call or initiate video from here
+                  },
+              },
+              {
+                  icons: {
+                      primary: "ui-icon-video"
+                  },
+                  click: function () {
+                      $(this).dialog("close");
+                      var params = "sip=" + cardSIP + "&audioOnly=false";
+                      launchAVWindow(params);
+                      //pop open the call window for full audio and video. You can end the call or turn off video, etc.
+                  }
+              }
+            ]
+        });
+    }
+
+    function launchAVWindow(params) {
+        location.assign('/AVDemo.html?' + params);
+    }
+
+    function getSelectedEmployeeInfo(email) {
+        if (email) {
+            console.log('employee info: ' + email);
+            var emp = email;
+            var query = client.personsAndGroupsManager.createPersonSearchQuery();
+            query.text(emp);
+            query.limit(1);
+            query.getMore().then(function (results) {
+                results.forEach(function (item) {
+                    var person = item.result;
+                    var avatar = person.avatarUrl();
+                    var sip = person.id();
+                    console.log('sip:' + sip);
+                    $('#ContactList').append('<div id="Contact' + contactNo + '" class="contact" data-sip="' + sip + '">' +
+                        '<input type="hidden" value="' + sip + '" class="contactSIP"/>' +
+                        '<div class="contactName">' + person.displayName() + '</div>' +
+                        '<div><img class="contactListAvatar" src="Images/default.png" /></div>' +
+                        '<div class="contactPresence"></div>' +
+                        '</div>');
+                    contactNo++;
+                    person.status.get().then(function (s) {
+                        console.log('initial status:' + s);
+                        $('[data-sip="' + person.id() + '"] .contactPresence').html(s);
+                    });
+                    person.status.changed(function (newStatus) {
+                        console.log('new status:' + newStatus);
+                        $('[data-sip="' + person.id() + '"] .contactPresence').html(newStatus);
+                        $('#ContactsLoadingGif').hide();
+                        $('#ContactList').show();
+                    });
+                    $('#selectedCall').attr('href', 'Callto:' + sip);
+                    $('#selectedVideo').attr('href', 'Callto:' + sip);
+                    person.status.subscribe();
+                });
+            });
+        }
+    }
+
+    function conversationHandler() {
+        var test = '';
+        client.conversationsManager.conversations.added(function (conversation) {
+            conversation.selfParticipant.chat.state.when('Notified', function () {
+                console.log('new conversation notification');
+                $('#ContactList').hide();
+                $('#ChatWindow').show();
+                $('#ChatControlsArea').show();
+                var id = conversation.participants(0).person.id();
+                var container = document.getElementById(id);
+                if (!container) {
+                    container = document.createElement('div');
+                    container.id = id;
+                    document.querySelector('#conversations').appendChild(container);
+                }
+                else {
+                    document.querySelector('#conversations').removeChild(container);
+                }
+                var promise = apiManager.renderConversation(container, {
+                    modalities: ['Chat'],
+                    participants: [id]
+                });
+                monitor('start conversation', promise);
+            });
+        });
+    }
+
+    function startConversation(sip) {
+        $('#ContactList').hide();
+        $('#ChatWindow').show();
+        $('#ChatControlsArea').show();
+        console.log(sip);
+        var chatSip = sip;
+        var uris = [chatSip];
+        var container = document.getElementById(chatSip);
+        if (!container) {
+            container = document.createElement('div');
+            container.id = chatSip;
+            document.querySelector('#conversations').appendChild(container);
+        }
+        var promise = apiManager.renderConversation(container, { modalities: ['Chat'], participants: uris });
+        monitor('start conversation', promise);
+    }
+
+    function endConversation() {
+        apiManager.UIApplicationInstance.conversationsManager.conversations.get().then(function (conversationsArray) {
+            if (conversationsArray && conversationsArray.length > 0) {
+                conversationsArray.forEach(function (element, index, array) {
+                    console.log("Closing existing conversation...");
+                    var convo = apiManager.UIApplicationInstance.conversationsManager.conversations(0);
+                    convo.leave();
+                    apiManager.UIApplicationInstance.conversationsManager.conversations.remove(element);
+                    $('#conversations').empty();
+                });
+            }
+        });
+        $('#ChatWindow').hide();
+        $('#ChatControlsArea').hide();
+        $('#ContactList').show();
+    }
+
+    function monitor(title, promise) {
+        console.log(title, 'started');
+        promise.then(function (res) {
+            console.log(title, 'succeeded', res);
+        }, function (err) {
+            console.log(title, 'failed', err && err.stack || err);
+            alert(title + ' failed:' + err);
+        });
+    }
 
 
 

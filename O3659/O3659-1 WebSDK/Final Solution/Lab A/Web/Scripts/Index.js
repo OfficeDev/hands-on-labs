@@ -13,7 +13,7 @@
 
     });
     function showSkypeLogin() {
-        location.assign('https://login.windows.net/common/oauth2/authorize?response_type=token' +
+        location.assign('https://login.microsoftonline.com/common/oauth2/authorize?response_type=token' +
                 '&client_id=' + config.clientId+
                 '&redirect_uri=' + config.redirect_uri+
                 '&resource=https://webdir.online.lync.com');
