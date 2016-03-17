@@ -260,7 +260,7 @@ In this lab, you will get hands-on experience developing a Word add-in by using 
 	````
 
 28. Save your changes to **Home.js**.
-29. Now test the functionality of the add-in. Press the **{F5}** key to begin a debugging session and click the **Hello World** button. You should see that "Hello World" has been added into the cursor position of the Word document.
+29. Now test the functionality of the add-in. Press the **{F5}** key to begin a debugging session and after inserting the TaskPane  click the **Hello World** button. You should see that "Hello World" has been added into the cursor position of the Word document.
 
 	![](Images/Fig08.png)
 
@@ -311,23 +311,29 @@ In this lab, you will get hands-on experience developing a Word add-in by using 
     } 
 	````
 
-4. Just below the call to **app.initialize**, add the jQuery code required to bind each of the four new functions to the **click** event of the associated buttons.
+4. Go back to Office.initialize and provide the handlers for each button **click** associating the newly created functions.
    
 	````javascript
-	Office.initialize = function (reason) {
-		$(document).ready(function () {
-			app.initialize();
-			// wire up event handler
-		    $('#addContentHellowWorld').click(onaddContentHellowWorld);
-	            $('#addContentStartingSOW').click(onaddContentStartingSOW);
-	            $('#addPicture').click(onFixPicture);
-	            $('#addSearchAndTempletize').click(onSearchAndTempletize);
-	            $('#addChangeCustomer').click(onaddChangeCustomer);
-	            $('#addReuseContent').click(onaaddReuseContent);
-	            $('#addHighlights').click(onaddHighlights);
-	            $('#addOpenDoc').click(onaddOpenDoc);
-		});
-	};
+	 Office.initialize = function (reason) {
+        $(document).ready(function () {
+            // Initialize the FabricUI notification mechanism and hide it
+            var element = document.querySelector('.ms-MessageBanner');
+            messageBanner = new fabric.MessageBanner(element);
+            messageBanner.hideBanner();
+
+
+            // Add event handlers here....
+            $('#addContentHellowWorld').click(onaddContentHellowWorld);
+            $('#addContentStartingSOW').click(onaddContentStartingSOW);
+            $('#addPicture').click(onFixPicture);
+            $('#addSearchAndTempletize').click(onSearchAndTempletize);
+            $('#addChangeCustomer').click(onaddChangeCustomer);
+            $('#addReuseContent').click(onaaddReuseContent);
+            $('#addHighlights').click(onaddHighlights);
+            $('#addOpenDoc').click(onaddOpenDoc);
+     
+        });
+	    };
 	````
 
 5. Implement the **addContentStartingSOW** function to load the OOXML fragment with the starting document and then to write that OOXML to the Word document using the **body.insertOoxml** method by  using the code in the following listing. Note that there is  **getOOXMLForTemplate()** is a helping function used to load the needed  OOXML. 
