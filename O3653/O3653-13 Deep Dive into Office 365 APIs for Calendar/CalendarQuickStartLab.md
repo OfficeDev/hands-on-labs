@@ -360,7 +360,7 @@ SDK and work with Office 365 and Outlook Calendar.
   
 ### Create the EventList view
 
-In this section, you'll wire up the CalendarController you created in the previous section
+In this section, you'll connect the CalendarController you created in the previous section
 to an MVC view that will display the events in your calendar and allow you to add an event to it.
 
 1. Locate the **Views/Shared** folder in the project.
