@@ -122,8 +122,8 @@ or OneDrive.
     }
     ```
 
-5. Add the following code to the `FilesController` class to return the view of items
-   in the root of the user's OneDrive.
+5. **Replace** the existing `Index()` method in the `FilesController` class with this
+   version which returns a view of items in the root of the user's OneDrive.
 
     ```csharp
     [Authorize]
