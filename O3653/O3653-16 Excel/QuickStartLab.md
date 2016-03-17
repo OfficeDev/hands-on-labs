@@ -6,8 +6,6 @@ In this lab, you will read and write into an Excel document stored in your OneDr
 
 _Use the Office 365 user credentials available during the lab session to sign-in and authorize the app_
 
-### Create a new project 
-
 In this first step, you will create a new ASP.NET MVC project using the **Graph AAD Auth v1 Starter Project** template and log in to your app and generate access tokens for calling the Graph API.
 
 1. Launch Visual Studio 2015 and select **New**, **Project**.
