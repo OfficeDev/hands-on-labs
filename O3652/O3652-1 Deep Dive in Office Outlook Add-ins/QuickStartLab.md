@@ -26,7 +26,7 @@ In this exercise you will create a new project using the Outlook add-in template
   
     ![The Connect to Exchange email account dialog](./Images/deploy-addin.PNG)
     
-  1. With the app running, open Outlook 2016 and logon to the user's mailbox. You should see a **Display all propeties** button on the ribbon when you select or open a message.
+  1. With the app running, open Outlook 2016 and log on to the user's mailbox. You should see a **Display all properties** button on the ribbon when you select or open a message.
   
     ![A message in Outlook 2016 with the add-in button on the ribbon](./Images/default-button.PNG)
     
@@ -34,7 +34,7 @@ Now that you've verified that the add-in is working, Exercise 1 is complete!
 
 ## Exercise 2: Add buttons to the new message ribbon
 
-In this exercise you will add a button to do translate text to Latin and a button to open a task pane, allowing the user to select start and end languages.
+In this exercise you will add a button to translate text to Latin and a button to open a task pane, allowing the user to select start and end languages.
   
 1. Add the **Translator** button group to the new message ribbon.
   1. Open the **Translator/TranslatorManifest/Translator.xml** file.
