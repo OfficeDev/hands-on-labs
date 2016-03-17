@@ -42,7 +42,7 @@ This application uses SignalR, which doesn't support ASP.NET session state. So y
 
 1. Open **Startup.cs** in the root directory of the project.
 
-1. Replace the **Configuration** method with the following code.
+1. Replace the **OnAuthorizationCodeReceived** method with the following code.
  
 
    ```c#
