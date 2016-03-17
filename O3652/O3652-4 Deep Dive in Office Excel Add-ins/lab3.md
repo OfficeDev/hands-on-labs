@@ -17,7 +17,7 @@ This lab requires that you have the Yeoman generator for Office Add-ins installe
   * Type of add-in: Task pane
   * Technology to use: HTML, CSS, & JavaScript
   * Supported Office application: uncheck all options except Excel
-1. The yeoman generator will then create all the necessary files for your Excel task pane add-in. When it's done, the add-in can already be used. Run the following command to host the add-in locally: `gulp serve-static`
+1. The yeoman generator will then create all the necessary files for your Excel task pane add-in. You may see some warnings about deprecated components, which you can ignore. When it's done, the add-in can already be used. Run the following command to host the add-in locally: `gulp serve-static`
 1. Open a browser and make sure the add-in is working by going to <https://localhost:8443/app/home/home.html>.
 1. These instructions assume the security certificate that comes with gulp has already been trusted as a trusted root certificate. If you see a warning saying the security certificate is untrusted, you will need to trust the certificate. See the [Mac instructions](https://github.com/OfficeDev/generator-office/blob/master/docs/trust-self-signed-cert.md) or [Windows instructions](https://technet.microsoft.com/en-us/library/cc754841.aspx#BKMK_addlocal) for adding a trusted root certificate.
 
