@@ -162,7 +162,9 @@ In this lab, you will get hands-on experience developing a Word add-in by using 
 19. Save and close **Home.html**.
 
 22. Now it's time to test the add-in using the Visual Studio debugger. Press the **{F5}** key to run the project in the Visual Studio debugger. The debugger should launch Word 2016. NOTE: Once Word is launched, make sure you insert your solution task pane by clicking on the **Show Taskpane** button on the ribbon. (and make sure to repeat this operation each time you F5)
+
 	![](Images/Fig03.png)
+
 23. After you click on this button you should see your Office Add-in in the task pane on the right side of a new Word document, as shown in the following screenshot.
 
 	![](Images/Fig07.png)
