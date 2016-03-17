@@ -182,6 +182,8 @@ Now that we have a controller, all we need to see your trending documents is a v
             <tr>
                <td>
                   @Html.DisplayFor(modelItem => item.Name)
+               </td>
+               <td>
                   @Html.DisplayFor(modelItem => item.LastModifiedBy)
                </td>
             </tr>
@@ -231,6 +233,11 @@ While viewing your trending documents is interesting, retrieving them for other 
          <th>
             @Html.DisplayName("User Name")
          </th>
+         <th>
+            @Html.DisplayName("Mail")
+         </th>
+         <th>
+         </th>
       </tr>
 
       @foreach (var item in Model)
@@ -238,6 +245,8 @@ While viewing your trending documents is interesting, retrieving them for other 
          <tr>
             <td>
                @Html.DisplayFor(modelItem => item.DisplayName)
+            </td>
+            <td>
                @Html.DisplayFor(modelItem => item.Mail)
             </td>
             <td>
