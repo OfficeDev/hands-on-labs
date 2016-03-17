@@ -55,128 +55,153 @@ In this lab, you will get hands-on experience developing a Word add-in by using 
 
 
 
-9. There are important references included in the **Home.html** header. One for our Office.js library **<script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js" type="text/javascript"></script>**, and also to the Office UI Fabric components. Note there is also a reference to **Home.js** script on this page, which implements the logic of the add-in.
+9. There are important references included in the **Home.html** head element. One for our Office.js library **<script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js" type="text/javascript"></script>**, that library enables the developer to interact with Word. There is also a reference to include  Office UI Fabric components, which are the styles you can use to make your add-in look great. Finally, there is also a reference to **Home.js** script on this page, which implements the logic of the add-in.
  
 
-12. Lets examine the JavaScript code in **home.js**. Double-click **home.js** to open it in a code editor window. Note that **Home.html** links to **app.js** before it links to **home.js**, which means that JavaScript code written in **Home.js** can access the global **app** object created in **app.js**.
-13. Walk through the code in **Home.js** and see how it uses a self-executing function to register an event handler on the **Office.initialize** method, which in turn registers a document-ready event handler using jQuery. This allows the add-in to call **app.initialize** and to register an event handler using the **getDataFromSelection** function. 
+12. Lets examine the JavaScript code in **home.js**. Double-click **home.js** to open it in a code editor window.
+13. Walk through the code in **Home.js** it includes a simple example to highlight the largest Word in the user selection. Note at the end of the file there is an **errorHandler** function  we will reuse in the lab to handle errors , as well as a **showNotification** function to display messages from the lab.   
 
-	````javascript 
-	(function () {
-	  "use strict";
-
-	  // The initialize function must be run each time a new page is loaded
-	  Office.initialize = function (reason) {
-	    $(document).ready(function () {
-	      app.initialize();
-	      $('#get-data-from-selection').click(getDataFromSelection);
-	    });
-	  };
-
-	  // Reads data from current document selection and displays a notification
-	  function getDataFromSelection() {
-	    Office.context.document.getSelectedDataAsync(Office.CoercionType.Text,
-	      function (result) {
-	        if (result.status === Office.AsyncResultStatus.Succeeded) {
-	          app.showNotification('The selected text is:', '"' + result.value + '"');
-	        } else {
-	          app.showNotification('Error:', result.error.message);
-	      }
-		});
-	  }
-	})();
-	````
-
-14. Delete the **getDataFromSelection** function from **Home.js** and also remove the line of code that binds the event handler to the button with the id of **get-data-from-selection**, so that your code matches the following code listing.
+14. Lets clean up **Home.js** for our lab. Delete the **loadSampleData**, **hightlightLongestWord** and *displaySelectedText* function from **Home.js**. We also need to remove a few instructions from **Office.initialize**. Your Home.js should look like this: 
 
 	````javascript
-	(function () {
-	  "use strict";
+/// <reference path="/Scripts/FabricUI/MessageBanner.js" />
 
-	  // The initialize function must be run each time a new page is loaded
-	  Office.initialize = function (reason) {
-	    $(document).ready(function () {
-	      app.initialize();
-	      // your app initialization code goes here
-	    });
-	  };
 
-	})(); 
+(function () {
+    "use strict";
+
+    var messageBanner;
+
+    // The initialize function must be run each time a new page is loaded.
+    Office.initialize = function (reason) {
+        $(document).ready(function () {
+            // Initialize the FabricUI notification mechanism and hide it
+            var element = document.querySelector('.ms-MessageBanner');
+            messageBanner = new fabric.MessageBanner(element);
+            messageBanner.hideBanner();
+
+            // Add event handlers here.....
+           
+        });
+    };
+
+
+    //$$(Helper function for treating errors, $loc_script_taskpane_home_js_comment34$)$$
+    function errorHandler(error) {
+        // $$(Always be sure to catch any accumulated errors that bubble up from the Word.run execution., $loc_script_taskpane_home_js_comment35$)$$
+        showNotification("Error:", error);
+        console.log("Error: " + error);
+        if (error instanceof OfficeExtension.Error) {
+            console.log("Debug info: " + JSON.stringify(error.debugInfo));
+        }
+    }
+
+    // Helper function for displaying notifications
+    function showNotification(header, content) {
+        $("#notificationHeader").text(header);
+        $("#notificationBody").text(content);
+        messageBanner.showBanner();
+        messageBanner.toggleExpansion();
+    }
+})();
+
 	````
 15. Save your changes to **Home.js**. You will return to this source file after you have added your HTML layout to **Home.html**.
 16. Now it's time to examine the HTML that has been added to the project to create the add-in's user interface. Double-click **Home.html** to open this file in a Visual Studio editor window. Examine the layout of HTML elements inside the **body** element. 
 
 	````html
-	<body>
-		<div id="content-header">
-			<div class="padding">
-				<h1>Welcome</h1>
-			</div>
-		</div>
-		<div id="content-main">
-			<div class="padding">
-				<p><strong>Add home screen content here.</strong></p>
-				<p>For example:</p>
-				<button id="get-data-from-selection">Get data from selection</button>
+<body>
+    <div id="content-main">
+        <div class="padding">
+            <br />
+            <p class="ms-font-xxl ms-fontColor-neutralSecondary ms-fontWeight-semilight">Sample</p>
+            <br /><br />
+            <div class="ms-font-xl ms-fontColor-neutralTertiary">Select some text</div>
+            <p class="ms-font-m-plus ms-fontColor-neutralTertiary" id="template-description"></p>
+            <div class="ms-font-m"><a target="_blank" class="ms-Link ms-Link--hero" href="https://go.microsoft.com/fwlink/?LinkId=276812">Find more samples online...</a></div>
+            <br /><br />
 
-				<p style="margin-top: 50px;">
-					<a target="_blank" href="https://go.microsoft.com/fwlink/?LinkId=276812">Find more samples online...</a>
-				</p>
-			</div>
-		</div>
-	</body>
+            <button class="ms-Button ms-Button--primary" id="highlight-button">
+                <span class="ms-Button-icon"><i class="ms-Icon ms-Icon--plus"></i></span>
+                <span class="ms-Button-label" id="button-text"></span>
+                <span class="ms-Button-description" id="button-desc"></span>
+            </button>
+        </div>
+    </div>
+    <div class="footer">
+        <div class="ms-Grid ms-bgColor-themeSecondary">
+            <div class="ms-Grid-row">
+                <div class="ms-Grid-col ms-u-sm12 ms-u-md12 ms-u-lg12"> <div class="ms-font-xl ms-fontColor-white">Contoso</div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FabricUI component used for displaying notifications -->
+    <div class="ms-MessageBanner" style="position:absolute;bottom: 0;">
+        <div class="ms-MessageBanner-content">
+            <div class="ms-MessageBanner-text">
+                <div class="ms-MessageBanner-clipper">
+                    <div class="ms-font-m-plus ms-fontWeight-semibold" id="notificationHeader"></div>
+                    <div class="ms-font-m ms-fontWeight-semilight" id="notificationBody"></div>
+                </div>
+            </div>
+            <button class="ms-MessageBanner-expand" style="display:none"><i class="ms-Icon ms-Icon--chevronsDown"></i> </button>
+            <div class="ms-MessageBanner-action"></div>
+        </div>
+        <button class="ms-MessageBanner-close"> <i class="ms-Icon ms-Icon--x"></i> </button>
+    </div>
+</body>
 	````
 
-17. Replace the text message of **Welcome** inside the **h1** element with **Welcome to Word 1.3 APIs!!**. Also, trim down the contents of the **div** element with the **id** of **content-main** to match the HTML code shown below. 
 
-	````html
-	<body>
-		<div id="content-header">
-			<div class="padding">
-				<h1>Welcome to Word 1.3 APIs!!</h1>
-			</div>
-		</div>
-		<div id="content-main">
-			<div class="padding">
-				<!-- your add-in UI layout goes here -->
-			</div>
-		</div>
-	</body>
-	````
 
 18. Update the **content-main** div to match the following HTML layout, which adds a set of buttons to the add-in's layout.
 
 	````html
- <div id="content-main">
-        <div class="padding">
-            <div>
-                <button id="addContentHellowWorld">Hello World!</button>
-            </div>
-            <div>
-                <button id="addContentStartingSOW">Step 1: Starting SOW</button>
-            </div>
-            <div>
-                <button id="addPicture">Step 2: Fix Picture!</button>
-            </div>
+  <div id="content-main">
+        <div id="sowPanel" class="padding">
+            <br><br>
+            <button class="ms-Button ms-Button--compound" id="addContentHellowWorld">
+                <span class="ms-Button-label" id="button-text">Hello World!</span>
+                <span class="ms-Button-description" id="button-desc">Just a simple Hello World!!</span>
+            </button><br><br>
 
-            <div>
-                <button id="addSearchAndTempletize">Step 3: Search and Templetize!</button>
-            </div>
+            <button class="ms-Button ms-Button--compound" id="addContentStartingSOW">
+                <span class="ms-Button-label" id="button-text">Step 1: Starting SOW</span>
+                <span class="ms-Button-description" id="button-desc"></span>
+            </button><br><br>
 
-            <div>
-                <button id="addChangeCustomer">Step 4: Replace Customer!</button>
-            </div>
-            <div>
-                <button id="addReuseContent">Step 5: Reuse Content!</button>
-            </div>
-           
-          
-            <div>
-                <button id="addHighlights">Step 6: Highlight Word by Word!</button>
-            </div>
-            <div>
-                <button id="addOpenDoc">Step 7: Create a New Document!</button>
-            </div>
+            <button class="ms-Button ms-Button--compound" id="addPicture">
+                <span class="ms-Button-label" id="button-text">Step 2: Fix Picture!</span>
+                <span class="ms-Button-description" id="button-desc"></span>
+            </button><br><br>
+
+            <button class="ms-Button ms-Button--compound" id="addSearchAndTempletize">
+                <span class="ms-Button-label" id="button-text">Step 3: Search and Templetize!</span>
+                <span class="ms-Button-description" id="button-desc"></span>
+            </button><br><br>
+
+            <button class="ms-Button ms-Button--compound" id="addChangeCustomer">
+                <span class="ms-Button-label" id="button-text">Step 4: Replace Customer!</span>
+                <span class="ms-Button-description" id="button-desc"></span>
+            </button><br><br>
+
+            <button class="ms-Button ms-Button--compound" id="addReuseContent">
+                <span class="ms-Button-label" id="button-text">Step 5: Reuse Content!</span>
+                <span class="ms-Button-description" id="button-desc"></span>
+            </button><br><br>
+
+            <button class="ms-Button ms-Button--compound" id="addHighlights">
+                <span class="ms-Button-label" id="button-text">Step 6: Highlight Word by Word!</span>
+                <span class="ms-Button-description" id="button-desc"></span>
+            </button><br><br>
+
+            <button class="ms-Button ms-Button--compound" id="addOpenDoc">
+                <span class="ms-Button-label" id="button-text">Step 7: Create a New Document!</span>
+                <span class="ms-Button-description" id="button-desc"></span>
+            </button><br><br>
+
+
         </div>
     </div>
 	````
