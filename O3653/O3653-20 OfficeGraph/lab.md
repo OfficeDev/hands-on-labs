@@ -3,7 +3,6 @@
 # TODO:
 1. Limit the number of retrieved items.
 2. Still getting auth exception?
-3. Prerequisites not needed (except for number 4)? The machines should be set up shouldn't they?
 4. Formatting in lists is off.
 5. Screenshots.
 6. Explain why we're adding the Odata Client file.
@@ -14,10 +13,9 @@
 In this lab, you will use Microsoft Graph to connect to insights and rich relationships calculated in the Office Graph. You will build an ASP.NET MVC 5 application that retrieves documents trending around you and a specific users.
 
 ## Prerequisites
-1. Visual Studio 2015 with Update 1
-2. The Graph AAD Auth v1 Started Project template installed
-3. An administrator account for an Office 365 tenant. This is required because you'll be using the client credentials of a pre-registered application that's configured to request admin-level permissions.
-4. The OData v4 Client Code Generator Visual Studio addin installed.
+
+2. You must have the OData v4 Client Code Generator addin installed. 
+   1. In Visual Studio go to Tools -> Extensions and Updates, Select "Online" from the left-most treeview then search for "Odata v4 Client Code Generator" and click install
 
 ## Exercise 1: Create a new project and authenticate using Azure Active Directory v1 authentication
 
@@ -140,6 +138,7 @@ In this exercise, you will code the **TrendingController** of the MVC applicatio
     public async Task<ActionResult> Index(string userId)
     {            
         var service = await GetService();
+
         if (String.IsNullOrEmpty(userId))
             return View(service.Me.TrendingAround);
         else
@@ -258,3 +257,8 @@ While viewing your trending documents is interesting, retrieving them for other 
   6. Close the browser window, terminate the debugging session and return to Visual Studio.
 
 Congratulations! You have created an MVC application that displays documents trending around users! Stay tuned for our new, richer Trending API. Released in a few weeks!
+
+## Next Steps and Additional Resources:  
+- See our blog posts on Office Graph and the new Trending API.
+- See this training and more on http://dev.office.com/
+- Learn about and connect to the Microsoft Graph at https://graph.microsoft.io
