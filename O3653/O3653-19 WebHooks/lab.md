@@ -707,7 +707,7 @@ This app uses SignalR to notify the client to refresh its view.
 
 1. Right-click the **GraphWebhooks** project and create a folder named **SignalR**.
 
-1. Right-click the **SignalR** folder and choose **Add/SignalR Hub Class (v2)**. 
+1. Right-click the **SignalR** folder and choose **Add/Class** and then type **SignalR Hub** in the search bar to find **SignalR Hub Class (v2)**. 
 
 1. Name the class **NotificationHub**, and click **OK**. This sample doesn't add any functionality to the hub.
 
