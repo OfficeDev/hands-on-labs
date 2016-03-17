@@ -601,13 +601,22 @@ $(function () {
                             }
                         </td>
                     </tr>
+                    <tr>
+                        <td class="auto-style12">Web link:</td>
+                        <td>
+                            @{
+                                if (null != Model.WebLink)
+                                {
+                                    <a href="@Model.WebLink">Message OWA link </a>
+                                }
+                            }
+                        </td>
+                    </tr>
                         <td>Body:</td>
                         <td>
-                            <pre>
-                                @{
-                                    @Model.Body.Content
-                                }
-                            </pre>
+                            <div>
+                                <iframe id="mailBody" width="800" src="@(string.Format("/Calendar/GetEventBody/?eventId={0}", Model.Id))" class="auto-style9" />
+                            </div>
                         </td>
                     </tr>
                 </tbody>
