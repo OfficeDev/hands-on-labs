@@ -1,44 +1,31 @@
-# Excel REST API 
+# Microsoft Graph and the Excel REST API 
 
-The purpose of this lab is to show step-by-step instructions for reading and writing into an Excel document stored in your OneDrive Business using new Excel REST APIs. We'll use Visual Studio MVC project to showcase the interaction. 
+In this lab, you will read and write into an Excel document stored in your OneDrive Business using new Excel REST APIs. We'll use Visual Studio MVC project to showcase the interaction. 
 
-* [Lab instructions](#lab-instructions)
-    * [Create a new project](#create-a-new-project)
-    * [Add ToDo file](#add-todo-file)
-    * [Use Excel REST API](#use-excel-rest-api)
-        * [Add new controllers](#add-new-controllers)
-        * [Add model](#add-model)
-        * [Update Shared folder](#update-shared-folder)
-        * [Create Helpers](#create-helpers)                            
-    * [Run project](#run-project)
-        * [View source Excel file](#view-source-excel-file) 
-* [Overview of Excel API](#overview-of-excel-api)
-
-## Lab instructions 
-
-
+## Exercise 1: Create a new project using Azure Active Directory v1 authentication
 
 _Use the Office 365 user credentials available during the lab session to sign-in and authorize the app_
 
 ### Create a new project 
 
-In this first step, you will create a new ASP.NET MVC project using the **Graph AAD Auth v1 Starter Project** template and log in to your app and generate access tokens
-for calling the Graph API.
+In this first step, you will create a new ASP.NET MVC project using the **Graph AAD Auth v1 Starter Project** template and log in to your app and generate access tokens for calling the Graph API.
 
 1. Launch Visual Studio 2015 and select **New**, **Project**.
   1. Search the installed templates for **Graph** and select the **Graph AAD Auth v1 Starter Project** template.
-  1. Name the new project **ExcelRestAPI-ToDoList** and click **OK**.
+  2. Name the new project **ExcelRestAPI-ToDoList** and click **OK**.
 
 ![](images/start.JPG)
    
-1. Press F5 to compile and launch your new application in the default browser.
+2. Press F5 to compile and launch your new application in the default browser.
   1. Once the Graph and AAD Auth Endpoint Starter page appears, click **Sign in** and login to your Office 365 administrator account.
-  1. Review the permissions the application is requesting, and click **Accept**.
-  1. Now that you are signed into your application, exercise 1 is complete!
-  1. Note that this sample only ensured that you were able to launch the project and use the login using the pre-defined client Id and secret. If you wish to use your own client Id and secret, edit the webconf.xml and add your own values under `configuration` > `appSettings` segment. 
+  2. Review the permissions the application is requesting, and click **Accept**.
+  3. Now that you are signed into your application, exercise 1 is complete!
+  4. Note that this sample only ensured that you were able to launch the project and use the login using the pre-defined client Id and secret. If you wish to use your own client Id and secret, edit the webconf.xml and add your own values under `configuration` > `appSettings` segment. 
   
 ![](images/webconfig1.JPG)   
 ![](images/webconfig2.JPG)
+
+## Exercise 2: Access the Excel file in OneDrive for Business through Microsoft Graph SDK
 
 ### Add ToDo file 
 
