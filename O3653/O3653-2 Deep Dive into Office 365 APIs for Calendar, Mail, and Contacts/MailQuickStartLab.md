@@ -1,5 +1,5 @@
-# Microsoft Graph for Mail and Calendar
-In this lab, you will use Microsoft Graph to program against an Office 365 and Outlook mailbox with an ASP.NET MVC application.
+# Connect to the Office 365 mail with the Microsoft Graph
+Learn how to read, send, reply and forward messages in Office 365 Outlook and Outlook.com using the Microsoft Graph, AAD v2 end point, and ASP.NET MVC 5. 
 
 [//]: # (Remove if doing v1)
 
@@ -32,7 +32,7 @@ for calling the Graph API.
       <add key="ida:AppSecret" value="paste application password here" />
       <!-- ... -->
       <!-- Specify scopes in this value. Multiple values should be comma separated. -->
-      <add key="ida:AppScopes" value="https://outlook.office.com/mail.readwrite,https://outlook.office.com/mail.send" />
+      <add key="ida:AppScopes" value="https://graph.microsoft.com/mail.readwrite,https://graph.microsoft.com/mail.send" />
     </appSettings>
     <!-- ... -->
   </configuration>
