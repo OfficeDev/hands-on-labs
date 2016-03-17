@@ -65,19 +65,19 @@ for calling the Graph API.
    3. Now that you are signed in to your application, exercise 1 is complete!
    4. Make sure to stop debugging before continuing to exercise 2.
 
-## Exercise 2: Access OneDrive for Business files through Microsoft Graph SDK
+## Exercise 2: Access OneDrive for Business files through Microsoft Graph
 
 In this exercise, you will build on exercise 1 to connect to the Microsoft Graph
-SDK and perform CRUD operations associated with the files in OneDrive for Business
+and perform CRUD operations associated with the files in OneDrive for Business
 or OneDrive.
 
-### Create the files controller and use the Graph SDK
+### Create the Files controller and use the Microsoft Graph
 
 1. Add a reference to the Microsoft Graph SDK to your project.
   1. In the **Solution Explorer**, right-click the **GraphFilesWeb** project and select **Manage NuGet Packages...**.
   2. Click **Browse** and search for **Microsoft.Graph**.
-  3. Select the Microsoft Graph SDK and click **Install**.
-  4. Click **I Accept** when prompted to accept the license agreement for the Microsoft Graph SDK.
+  3. Select **Microsoft Graph Client Library** and click **Install**.
+  4. Review the terms and click **I Accept** when prompted with the license agreement.
 
 2. Create a new controller to process the requests for files and send them to Graph API.
   1. Find the **Controllers** folder under **GraphFilesWeb**, right-click it and select **Add** then **Controller**.
@@ -226,11 +226,9 @@ to an MVC view that will display the contents of the OneDrive folder selected.
     ```
 
 3. Create a new **View** for OneDrive Files:
-   1. Right-click the **Views** folder in **GraphFilesWeb** and select
-      **Add** then **New Folder**.
-   2. Name the folder **Files**.
-   3. Right-click the new folder **Files** and select **Add** > **New Item**.
-   4. Select **MVC 5 View Page (Razor)**, change the file name to **Index.cshtml**, and click **Add**.
+   1. Find the **Views\Files** folder in the project.
+   2. Right-click the **Files** folder and select **Add** > **New Item**.
+   3. Select **MVC 5 View Page (Razor)**, change the file name to **Index.cshtml**, and click **Add**.
 
 4. **Replace** all of the code in the **Files/Index.cshtml** with the following:
 
