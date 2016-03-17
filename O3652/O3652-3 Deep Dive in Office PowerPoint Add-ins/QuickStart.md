@@ -19,7 +19,7 @@ This quick start will start with an excersize that will guide you through creati
 
     ![](Images/Fig01.PNG)
 
-3. When you create a new **PowerPoint Add-in** project, Visual Studio prompts you with the Choose the add-in type page of the Create Office Add-in dialog. This is the point where you select the type of add-in you want to create. Leave the default setting with the radio button titled **Add new functionalities to PowerPoint** and select **Finish** to continue.
+3. When you create a new **PowerPoint Add-in** project, Visual Studio prompts you with the **Choose the add-in type** page of the **Create Office Add-in** dialog. This is the point where you select the type of add-in you want to create. Leave the default setting with the radio button titled **Add new functionalities to PowerPoint** and select **Finish** to continue.
 
     ![](Images/Fig02.PNG)
 
