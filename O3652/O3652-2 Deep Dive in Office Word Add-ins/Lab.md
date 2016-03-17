@@ -14,13 +14,6 @@ In this lab, you will get hands-on experience developing a Word add-in by using 
 
 	![](Images/Fig01.png)
 
-3. When you create a new Office Add-in project, Visual Studio prompts you with the **Choose the Add-in type** page of the **Create Office Add-in** dialog. This is the point where you select the type of Office Add-in you want to create. Leave the default setting with the radio button titled **Task pane** selected, and select **Next** to continue.
-
-	![](Images/Fig02.png)
-
-4. On the **Choose the host applications** page of the **Create Office Add-in** dialog, uncheck all the Office applications except for **Word**, and then click **Finish** to create the new Visual Studio solution. 
-
-	![](Images/Fig03.png)
 
 5. Take a look at the structure of the new Visual Studio solution after it has been created. At a high-level, the new solution has been created using two Visual Studio projects named **StatementOfWork** and **StatementOfWorkWeb**. You should also observe that the top project contains a top-level manifest for the add-in named **StatementOfWorkManifest**, which contains a single file named **StatementOfWork.xml**.
 
