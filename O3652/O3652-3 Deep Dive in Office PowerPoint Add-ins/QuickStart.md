@@ -11,7 +11,7 @@ This quick start will start with an excersize that will guide you through creati
 
 ## Instructions
 
-### Excersize 1: Create your first add-in
+### Exercise 1: Create your first add-in
 *In this exercise you will learn how to use Visual Studio to create your first add-in and you will learn about the files that are created for you.  You will also learn about how to customize buttons on the ribbon. *
 
 1. Launch Visual Studio 2015 as administrator.
@@ -86,7 +86,7 @@ This quick start will start with an excersize that will guide you through creati
 12. Now, set the DefaultValue attribute to *Daily Photo*.
 
 
-### Excersize 2: Get the Photo of the day from Bing and insert it
+### Exercise 2: Get the Photo of the day from Bing and insert it
 
 *In this excersize, we will continue where you left off. You will learn more about add-in commands and learn how to customize the add-in command on the ribbon.*
 
