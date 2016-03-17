@@ -194,7 +194,7 @@ This quick start will start with an excersize that will guide you through creati
 
 	![](Images/Fig07.PNG)  
 
-1. Examine what's inside **PhotoController.cs**. You can see that there is an **ApiController**-derived class named **VideosController**, which is initially empty.
+1. Examine what's inside **PhotoController.cs**. You can see that there is an **ApiController**-derived class named **PhotoController**, which is initially empty.
 
 	```c#
 	using System;
