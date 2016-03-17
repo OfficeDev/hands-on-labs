@@ -1,14 +1,11 @@
-# Lab 17: Using Microsoft Graph to manage groups and users
+# Microsoft Graph to manage groups and users
 
-## What you'll learn
 In this lab, you will create an ASP.NET MVC application that uses the Microsoft Graph client SDK to create a basic group manangement experience. It will search for groups in your tenant's directory, show their members, and get more member details including photo. In a bonus excercise you can also learn how to add more users to a group (through a people picker) and remove users from a group.
 
 ## Prerequisites
-1. Visual Studio 2015 with Update 1
-2. The Graph AAD Auth v1 Started Project template installed
-3. An administrator account for an Office 365 tenant. This is required because you'll be using the client credentials of a pre-registered application that's configured to request admin-level permissions.
+1. An administrator account for an Office 365 tenant. This is required because you'll be using the client credentials of a pre-registered application that's configured to request admin-level permissions.
 
-## Step 1: Create a new project using Graph AAD Auth v1 Started Project template
+## Exercise 1: Create a new project using Graph AAD Auth v1 Started Project template
 In this first step, you will create a new ASP.NET MVC project using the
 **Graph AAD Auth v1 Start Project** template.
 
@@ -21,7 +18,7 @@ In this first step, you will create a new ASP.NET MVC project using the
 4. Your new application is ready to go! 
 > *Required*: Press **F5** to to restore the NuGet packages required by the project. This will compile and launch your new application in the default browser.  You can sign in to the app using the O365 tenant administrator account provided to you.
 
-## Step 2: Implement group search bar and view group memberships using the Microsoft Graph SDK
+## Exercise 2: Implement group search bar and view group memberships using the Microsoft Graph SDK
 
 1. Add a reference to the Microsoft Graph SDK to your project
     1. In the Solution Explorer right click on the **GraphUsersGroups** project and select **Manage NuGet Packages...**
@@ -244,7 +241,7 @@ In this first step, you will create a new ASP.NET MVC project using the
     
     ![](images/GroupMembership.JPG)
     
-## Step 3: Paged members and a detailed user profile page
+## Exercise 3: Paged members and a detailed user profile page
 In this step, we'll enable selecting a user from the group members search results table, for whom we'll show more details.  We'll also add in paging and a new button to allow you to page through the results. 
 1. Go back to the **GroupSearchController** and find the **GroupMembers** function. Find the `members = await membersRequest.GetAsync();` line, and replace with following code.  This will manage the next link paging.
     ```csharp
@@ -461,7 +458,7 @@ Hooray! Congratulations on creating your GraphUsersGroups app! You have created 
 - Learn about and connect to the Microsoft Graph at https://graph.microsoft.io
 - Or try some option bonus exercises below
 
-##Step 4: Optional Bonus!!!
+## Exercise 4: Optional Bonus!!!
 This step is entirely optional.  Here we'll add code that will allow you to add new users to a group (with a people picker), and buttons that allow you to remove users from a group.
 
 1. Firstly let's add the code to add a member to a group and to remove a member from a group.  We'll add this to our trusty **GroupSearchController**. Each function routes the user back to the GroupMembers view after adding or removing a member. 
