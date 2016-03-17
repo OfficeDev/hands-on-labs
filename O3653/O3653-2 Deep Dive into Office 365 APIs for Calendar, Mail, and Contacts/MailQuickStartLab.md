@@ -1,15 +1,6 @@
 # Microsoft Graph for Mail and Calendar
 In this lab, you will use Microsoft Graph to program against an Office 365 and Outlook mailbox with an ASP.NET MVC application.
 
-[//]: # (Change which template based on if using converged auth)
-
-## Prerequisites
-1. You must have an Office 365 tenant and Microsoft Azure subscription to
-   complete this lab. If you do not have one, the lab for **O3651-7 Setting up
-   your Developer environment in Office 365** shows you how to obtain a trial.
-1. You must have Visual Studio 2015 with Update 1 installed.
-1. You must have the Graph AAD Auth v1 Starter Project template installed.
-
 [//]: # (Remove if doing v1)
 
 ## Exercise 1: Create a new project using Azure Active Directory v2 authentication
@@ -31,7 +22,7 @@ for calling the Graph API.
   1. Copy the **Application Id** and paste it into the value for **ida:AppId** in your project's **web.config** file.
   1. Under **Application Secrets** click **Generate New Password** to create a new client secret for your app.
   1. Copy the displayed app password and paste it into the value for **ida:AppSecret** in your project's **web.config** file.
-  1. Modify the **ida:AppScopes** value to include the required `https://outlook.office.com/mail.readwrite` and `https://outlook.office.com/mail.send` scopes.
+  1. Modify the **ida:AppScopes** value to include the required `https://graph.microsoft.com/mail.readwrite` and `https://graph.microsoft.com/mail.send` scopes.
 
   ```xml
   <configuration>
