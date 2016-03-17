@@ -613,5 +613,11 @@ to an MVC view that will display the events in your calendar and allow you to ad
 3. Click the **Outlook Calendar API** link in the navigation bar at the top of the page.
 4. Try out the app!
 
-Congratulations! In this exercise you have created an MVC application that uses
-Microsoft Graph to view and manage Calendar in your mailbox.
+
+***
+Congratulations!, dedicated quick start developer. In this exercise you have created an MVC application that uses
+Microsoft Graph to view and manage Calendar in your mailbox. This quick start ends here.  But don't stop here - there's plenty more to explore with the Microsoft Graph.
+
+## Next Steps and Additional Resources:  
+- See this training and more on http://dev.office.com/
+- Learn about and connect to the Microsoft Graph at https://graph.microsoft.io
