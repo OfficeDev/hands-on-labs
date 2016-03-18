@@ -2,63 +2,37 @@
 In this lab, you will use Microsoft Graph to program against the Office 365 OneNote Service as part of an ASP.NET MVC5 application.
 
 ## Prerequisites
-1. You must have an Office 365 tenant and Microsoft Azure subscription to complete this lab. If you do not have one, the lab for **O3651-7 Setting up your Developer environment in Office 365** shows you how to obtain a trial.
-1. You must have Visual Studio 2015 with Update 1 installed.
+- Visual Studio 2015 with Update 1
+- The Graph AAD Auth v1 Started Project template installed
+- An administrator account for an Office 365 tenant. This is required because you'll be using the client credentials of an Azure application that's configured to request admin-level permissions.
 
 ## Exercise 1: Use the Microsoft Graph to access Notebooks in OneDrive for Business (Office 365)
-In this exercise you will use the Microsoft Graph to access OneNote notebook that is stored in the user's OneDrive for Business in Office 365.
+In this exercise you will use the Microsoft Graph to access a OneNote notebook that is stored in the user's OneDrive for Business in Office 365.
 
-### Create an ASP.NET MVC5 Application
-In this exercise, you will create the ASP.NET MVC5 application and register it with Azure active Directory.
+### Create an ASP.NET MVC application
+1. Open Visual Studio and select **File/New/Project**. 
 
-1. Launch **Visual Studio 2015** as an administrator. 
-1. In Visual Studio select **File/New/Project**.
-1. In the **New Project** dialog, select **Templates/Visual C#/Web** and click **ASP.NET Web Application**. Name the new project **OneNoteDev** and then click **OK**.  
+1. In the **New Project** dialog, select **Templates/Visual C#/Graph AAD Auth v1 Starter Project**. If you don't see the template, try searching for *Graph*. The starter project template scaffolds some auth infrastructure for you.
+
+1. Name the new project **OneNoteDev**, and then click **OK**.  
     
-    ![](Images/01.png)
-    > **Note:** Make sure you enter the exact same name for the Visual Studio Project that is specified in these lab instructions.  The Visual Studio Project name becomes part of the namespace in the code.  The code inside these instructions depends on the namespace matching the Visual Studio Project name specified in these instructions.  If you use a different project name the code will not compile unless you adjust all the namespaces to match the Visual Studio Project name you enter when you create the project.
+   > NOTE: Make sure you use the exact same name that is specified in these instructions for your Visual Studio project. Otherwise, your namespace name will differ from the one in these instructions and your code will not compile.
+ 
+    ![Creating the project in Visual Studio](Images/VSProject.png)
+
+1. Build the solution (**Build/Build Solution**) to restore the NuGet packages required by the project. This should remove all of the solution's initial red squigglies.
     
-1. In the **New ASP.NET Project** dialog, click **MVC** and then click **Change Authentication**.
-1. Select **Work And School Accounts**, check **Read directory data** and click **OK**.
-
-	![](Images/02.png)
-
-1. Uncheck **Host in the cloud**, once the **New ASP.NET Project** dialog appears like the following screenshot, click **OK**. 
-
-	![](Images/03.png)
-    
-1. At this point you can test the authentication flow for your application.
-  1. In Visual Studio, press **F5**. The browser will automatically launch taking you to the HTTPS start page for the web application.
+1. At this point you can test the authentication flow for your application. In Visual Studio, press **F5**. The browser will automatically open to the start page for the web application.
 
    > **Note:** If you receive an error that indicates ASP.NET could not connect to the SQL database, please see the [SQL Server Database Connection Error Resolution document](../../SQL-DB-Connection-Error-Resolution.md) to quickly resolve the issue. 
 
-  1. To sign in, click the **Sign In** link in the upper-right corner.
-  1. Login using your **Organizational Account**.
-  1. Upon a successful login, since this will be the first time you have logged into this app, Azure AD will present you with the common consent dialog that looks similar to the following image:
+1. Click the **Click here to sign in** button on the page, and sign in with your Office 365 administrator account.
 
-    ![](Images/ConsentDialog.png)
-  1. Click **Accept** to approve the app's permission request on your data in Office 365.
-  1. You will then be redirected back to your web application. However notice in the upper right corner, it now shows your email address & the **Sign Out** link.
-  1. In Visual Studio, press **Shift+F5** to stop debugging.
+   You will be redirected back to your web application. However notice in the upper right corner, it now shows your email address and the **Sign out** link.
+  
+1. In Visual Studio, press **Shift+F5** to stop debugging.
 
 Congratulations... at this point your app is configured with Azure AD and leverages OpenID Connect and OWIN to facilitate the authentication process!
-
-### Grant App Necessary Permissions
-1. Browse to the [Azure Management Portal](https://manage.windowsazure.com) and sign in with your **Organizational Account**.
-2. In the left-hand navigation, click **Active Directory**.
-3. Select the directory you share with your Office 365 subscription.
-4. Search for this app with the **ida:ClientId** that was created in 'Create an ASP.NET MVC5 Application' section.
-
-    ![](Images/04.png)
-5. Select the application. 
-6. Open the **Configure** tab.
-7. Scroll down to the **permissions to other applications** section. 
-8. Click the **Add Application** button.
-9. In the **Permissions to other applications** dialog, click the **PLUS** icon next to the **Microsoft Graph** option.
-10. Click the **Check mark** icon in the lower right corner.
-11. For the new **Microsoft Graph** application permission entry, select the **Delegated Permissions** dropdown on the same line and then select the following permissions:
-    * **Read and write notebooks that the user can access (preview)**
-12. Click the **Save** button at the bottom of the page.
 
 ### Create the OneNote API Repository
 In this step you will create a repository class that will handle all communication with the OneNote API to interact with notebooks in your OneDrive for Business store.
@@ -66,15 +40,19 @@ In this step you will create a repository class that will handle all communicati
 1. This exercise will heavily leverage the OneNote REST API. To simplify working with the REST services, we will use the popular [JSON.NET](http://www.newtonsoft.com/json) JSON framework for .NET.
 	1. Create a new folder in the project's **Models** folder named **JsonHelpers**.
 	1. Copy all the C# files provided with this lab, located in the [\\\O3653\O3653-7 Deep Dive into the Office 365 APIs for OneNote services\Labs\Labfiles](Labs/Labfiles/JsonHelpers) folder, into this new **JsonHelpers** folder you just added in your project.
+    1. Right-click the **JsonHelpers** folder and choose **Add / Existing Item**. Select all the files you just copied to the folder and click **Add**.
 
 		> **Note:** These files were created using the handy utility in Visual Studio: [Paste JSON as Classes](http://blogs.msdn.com/b/webdev/archive/2012/12/18/paste-json-as-classes-in-asp-net-and-web-tools-2012-2-rc.aspx).
 
 1. Create model objects for the OneNote notebook, section & page:
 	1. Add a new class named **Notebook** to the **Models** folder in the project.
-	1. Add the following code to the `Notebook` class:
+	1. Replace the `Notebook` class with the following code:
 
 		````c#
-        public Notebook() {
+    public class Notebook
+    {
+        public Notebook()
+        {
             Sections = new List<Section>();
         }
 
@@ -89,14 +67,18 @@ In this step you will create a repository class that will handle all communicati
         public string SectionsUrl { get; set; }
         public string SectionGroupsUrl { get; set; }
         public List<Section> Sections { get; set; }
+    }
 		````
 
 	1. Add a new class named **Section** to the **Models** folder in the project.
-	1. Add the following code to the `Section` class:
+	1. Replace the `Section` class with the following code:
 
 		````c#
-        public Section() {
-        Pages = new List<NotePage>();
+    public class Section
+    {
+        public Section()
+        {
+            Pages = new List<NotePage>();
         }
 
         public string Id { get; set; }
@@ -105,12 +87,15 @@ In this step you will create a repository class that will handle all communicati
         public DateTime LastModifiedDateTime { get; set; }
         public string PagesUrl { get; set; }
         public List<NotePage> Pages { get; set; }
+    }
 		````
 
 	1. Add a new class named **NotePage** to the **Models** folder in the project.
-	1. Add the following code to the `NotePage` class:
+	1. Replace the `NotePage` class with the following code:
 
 		````c#
+    public class NotePage
+    {
         public string Id { get; set; }
         public string Name { get; set; }
         public DateTime CreatedDateTime { get; set; }
@@ -120,6 +105,7 @@ In this step you will create a repository class that will handle all communicati
         public string PageUrl { get; set; }
         public string WebUrl { get; set; }
         public string ClientUrl { get; set; }
+    }
 		````
 
 1. Create the repository class for communicating with the OneNote via Microsoft Graph:
@@ -401,35 +387,31 @@ In this step you will create a repository class that will handle all communicati
 		````
 
 ### Add Navigation
-In this step you will create a link on home page to navigate to notebooks list page.
+In this step you will create a link on the home page to navigate to notebooks list page.
 
 1. Locate the **Views/Shared** folder in the project.
 1. Open the **_Layout.cshtml** file found in the **Views/Shared** folder.
-    1. Locate the part of the file that includes a few links at the top of the page... it should look similar to the following code:
+    1. Locate the part of the file that includes a few links near the top of the page... it should look similar to the following code:
     
     ````asp
-    <div class="navbar-collapse collapse">
-        <ul class="nav navbar-nav">
-            <li>@Html.ActionLink("Home", "Index", "Home")</li>
-            <li>@Html.ActionLink("About", "About", "Home")</li>
-            <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-        </ul>
-        @Html.Partial("_LoginPartial")
-    </div>
+    <ul class="nav navbar-nav">
+        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+        <li>@Html.ActionLink("About", "About", "Home")</li>
+        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+        <li>@Html.ActionLink("Graph API", "Graph", "Home")</li>
+    </ul>
     ````
 
-    1. Update that navigation to have a new link (the **Files (Graph)** link added below) as well as a reference to the login control you just created:
+    1. Update that navigation to have a new link (the **Notebooks** link added below):
 
     ````asp
-    <div class="navbar-collapse collapse">
-        <ul class="nav navbar-nav">
-            <li>@Html.ActionLink("Home", "Index", "Home")</li>
-            <li>@Html.ActionLink("About", "About", "Home")</li>
-            <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-            <li>@Html.ActionLink("Notebooks", "Index", "Notebook")</li>
-        </ul>
-        @Html.Partial("_LoginPartial")
-    </div>
+    <ul class="nav navbar-nav">
+        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+        <li>@Html.ActionLink("About", "About", "Home")</li>
+        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+        <li>@Html.ActionLink("Graph API", "Graph", "Home")</li>
+        <li>@Html.ActionLink("Notebooks", "Index", "Notebook")</li>
+    </ul>
     ````
     
 ### Add Notebook Controller & View
@@ -440,14 +422,14 @@ In this step you will create the ASP.NET MVC controller and view for OneNote not
 	1. Click **Add**.
 	1. When prompted for a name, enter **NotebookController**.
 	1. Click **Add**.
-1. Within the `NotebookController` class, add the following using statement:
+1. Within the `NotebookController` class, add the following **using** statements:
 
 	````c#
 	using System.Threading.Tasks;
 	using OneNoteDev.Models;
 	````
 
-1. Update `Index()` action as following to support viewing all notebooks:
+1. Update the `Index()` action as follows to support viewing all notebooks:
 
     ````c#
     [Authorize]
@@ -513,7 +495,7 @@ In this step you will create the ASP.NET MVC controller and view for OneNote not
 	</table>
 	````
 
-### Add Notebook Section Controller & View
+### Add Section Controller & View
 In this step you will create the ASP.NET MVC controller and view for OneNote notebook sections.
 
 1. Right-click the **Controllers** folder in the project and select **Add / Controller**.
@@ -521,14 +503,14 @@ In this step you will create the ASP.NET MVC controller and view for OneNote not
 	1. Click **Add**.
 	1. When prompted for a name, enter **SectionController**.
 	1. Click **Add**.
-1. Within the `SectionController` class, add the following using statement:
+1. Within the `SectionController` class, add the following **using** statements:
 
 	````c#
 	using System.Threading.Tasks;
 	using OneNoteDev.Models;
 	````
 
-1. Update `Index()` action as following to support viewing all notebook sections:
+1. Update the `Index()` action as follows to support viewing all notebook sections:
 
     ````c#
     [Authorize]
@@ -608,7 +590,7 @@ In this step you will create the ASP.NET MVC controller and view for OneNote not
 		);
 		````
 
-### Add Notebook Pages Controller & View
+### Add Pages Controller & View
 In this step you will create the ASP.NET MVC controller and view for pages within OneNote notebook sections.
 
 1. Right-click the **Controllers** folder in the project and select **Add / Controller**.
@@ -616,7 +598,7 @@ In this step you will create the ASP.NET MVC controller and view for pages withi
 	1. Click **Add**.
 	1. When prompted for a name, enter **PageController**.
 	1. Click **Add**.
-1. Within the `PageController` class, add the following using statement:
+1. Within the `PageController` class, add the following **using** statements:
 
 	````c#
 	using System.Threading.Tasks;
@@ -726,7 +708,7 @@ The last step is to test the application you just created!
 
  > **Note:** If you receive an error that indicates ASP.NET could not connect to the SQL database, please see the [SQL Server Database Connection Error Resolution document](../../SQL-DB-Connection-Error-Resolution.md) to quickly resolve the issue. 
 
-1. When the browser loads, click the **Sign in** link in the upper right corner and login using your Office 365 credentials.
+1. When the browser loads, click the **Click here to sign in** button and login using your Office 365 administrator credentials.
 
 	After logging in you will be taken back to your ASP.NET MVC application. 
 

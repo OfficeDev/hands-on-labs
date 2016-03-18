@@ -76,7 +76,7 @@ This quick start will start with an excersize that will guide you through creati
             </ExtensionPoint>
 	```
     
-9. Let's modify the button to say "Hello world" instead of "Show Taskpane". Find the following element in the file.
+9. Let's modify the button to say "Daily Photo" instead of "Show Taskpane". Find the following element in the file.
 
 	```XML
 		<Title resid="Contoso.TaskpaneButton.Label" />
@@ -213,7 +213,7 @@ This quick start will start with an excersize that will guide you through creati
 
 1. Let's replace the contents of the file with the code to call the Bing Service.  
 
-    ````c#
+    ```c#
     using System;
     using System.IO;
     using System.Net;
@@ -258,7 +258,7 @@ This quick start will start with an excersize that will guide you through creati
             }
         }
     }
-    ````
+    ```
     
 1. Now, let's go back to **Home.js** and add in the call to insert the image.  Replace the **insertImageFromBase64String** function with the following:
     ```js

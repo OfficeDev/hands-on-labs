@@ -2,7 +2,7 @@
 
 <!-- TODO  
 - changes from beta -> v1.0 path  
-- changes to JSON Attributes on model for subscriptionExpirationDateTime -> expirationDateTime and subscriptionId -> id
+- changes to JSON Attributes on model for subscriptionExpirationDateTime -> expirationDateTime and subscriptionId -> id - should be in prod 3/21
 - change Notification.subscriptionExpirationDateTime (217617 currently returns as string) to DateTimeOffset -->
 
 ## What You'll Learn
@@ -29,13 +29,14 @@ A webhooks subscription allows a client app to receive notifications about mail,
 
 1. Build the solution (**Build/Build Solution**) to restore the NuGet packages required by the project. This should remove all of the solution's initial red squigglies.
 
-1. Open **Tools/Nuget Package Manager/Package Manager Console**, and run the following command. This installs [AspNet.SignalR](http://go.microsoft.com/fwlink/?LinkID=615530), which is used to notify the client to refresh its view.
+1. Open **Tools/Nuget Package Manager/Package Manager Console**, and run the following commands. These install [AspNet.SignalR](http://go.microsoft.com/fwlink/?LinkID=615530), which is used to notify the client to refresh its view, and an SDK for communicating with the Microsoft Graph.
 
    ```
 Install-Package Microsoft.AspNet.SignalR
+Install-Package Microsoft.Graph
    ```
-
-TEMP STEP? Install the Microsoft Graph SDK Nuget packages.
+   
+    > NOTE: In the Package Manager Console, make sure you use the set the package source to: *nuget.org*. 
 
 ### Configure authorization
 This application uses SignalR, which doesn't support ASP.NET session state. So you'll need to reconfigure the **AuthenticationContext** to use the default token cache instead of the **SessionTokenCache** that's provided in the starter template. However, production applications should implement a custom token cache that derives from the ADAL **TokenCache** class. 
@@ -88,7 +89,7 @@ This application uses SignalR, which doesn't support ASP.NET session state. So y
    ```
 
 ## Step 2: Set up the ngrok proxy and notification URL data
-You must expose a public HTTPS endpoint to create a subscription and receive notifications from Microsoft Graph. While testing, you can use ngrok to temporarily allow messages from Microsoft Graph to tunnel to a port on your local computer. This makes it easier to test and debug webhooks. To learn more about using ngrok, see the [ngrok website](https://ngrok.com/).  
+You must expose a public HTTPS endpoint to create a subscription and receive notifications from Microsoft Graph. While testing, you can use ngrok to temporarily allow messages from Microsoft Graph to tunnel to a port on your local computer. This makes it easier to test and debug webhooks. To learn more about using ngrok, see the [ngrok website](https://ngrok.com/) [https://ngrok.com/](https://ngrok.com/).  
 
 1. In Solution Explorer, select the **GraphWebhooks** project.
 
@@ -748,7 +749,7 @@ app.MapSignalR();
 ## Step 10: Create the Notification view
 In this step you'll create a view that displays some properties of the changed message. 
 
-1. Right-click the **Views/Subscription** folder and choose **Add/View**. 
+1. Right-click the **Views/Notification** folder and choose **Add/View**. 
 
 1. Name the view **Notification**.
 
@@ -806,7 +807,7 @@ In this step you'll create a view that displays some properties of the changed m
 
 Congratulations! In this exercise you created an MVC application that subscribes for Microsoft Graph webhooks and receives change notifications! Now you can run the app.
 
-## Step 10: Run the application
+## Step 11: Run the application
 
 1. Make sure that the ngrok console is still running, then press **F5** to begin debugging.
 
