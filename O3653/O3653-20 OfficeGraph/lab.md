@@ -74,7 +74,7 @@ In this exercise, you will extend the page layout so that it displays a new link
           </ul>
         ````
 
-        > The links will not work just yet. We'll add some functionality to the page later.
+        > The links will not work just yet. We'll add some functionality to the pages later.
 
 ## Exercise 4: Create a controller for displaying trending documents
 In this exercise, you will code the **TrendingController** of the MVC application to display trending documents.
