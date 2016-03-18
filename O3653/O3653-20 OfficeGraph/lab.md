@@ -150,7 +150,9 @@ Now that we have a controller, we need a view that displays the trending documen
 ## Exercise 5: Create a page for displaying trending documents
 1. Create a view to display trending documents.
    1. Within the `TrendingController` class, right click the first `View()` method at the end of the `Index()` action and select **Add View**.
+   
    ![Adding a new view](images/4_AddView.PNG)
+   
    2. Make sure the following properties are entered in the **Add View** dialog:
       1. View Name: **Index**.
       2. Template: **Empty (without model)**.
@@ -218,7 +220,9 @@ Now we have a page that displays trending documents ready. Let's now list the us
 
 1. Create a view to display users.    
    1. Within the `TrendingController` class, right click the `View(service.Users)` at the end of the `Users()` action method  that you just created and select **Add View**.
+   
    ![Adding a new view](images/5_AddView.PNG)
+   
    2. Make sure the following properties are entered in the **Add View** dialog.
       1. View Name: **Users**.
       2. Template: **Empty (without model)**.
