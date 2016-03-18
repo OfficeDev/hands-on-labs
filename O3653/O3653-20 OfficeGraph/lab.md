@@ -70,7 +70,7 @@ In this exercise, you will extend the page layout so that it displays a new link
             <li>@Html.ActionLink("About", "About", "Home")</li>
             <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
             <li>@Html.ActionLink("Insights", "Index", "Trending")</li>
-            <li>@Html.ActionLink("Users", "Insights", "Trending")</li>
+            <li>@Html.ActionLink("Users", "Users", "Trending")</li>
           </ul>
         ````
 
