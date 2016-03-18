@@ -160,8 +160,8 @@ Now that we have a controller, we need a view that displays the trending documen
         
         > Leave all other fields blank & unchecked.
       
-      3. Click **Add**.
-   3. Within the **Views/Trending/Index.cshtml** file, delete all the code in the file and replace it with the following code:
+   3. Click **Add**.
+   4. Within the **Views/Trending/Index.cshtml** file, delete all the code in the file and replace it with the following code:
       
       ````html
       @model IEnumerable<OfficeGraphLab.Service.DriveItem>
@@ -195,9 +195,9 @@ Now that we have a controller, we need a view that displays the trending documen
           <p>No trending documents for this user.</p>
       }
       ````  
-   4. Save the file.   
-   5. Test the view by pressing Ctrl (Command) + F5.
-   6. Return back to Visual Studio.
+   5. Save the file.   
+   6. Test the view by pressing Ctrl (Command) + F5.
+   7. Return back to Visual Studio.
   
 Now we have a page that displays trending documents ready. Let's now list the users in your Office 365 tenant and see their trending documents!
 
@@ -227,7 +227,7 @@ Now we have a page that displays trending documents ready. Let's now list the us
         
         > Leave all other fields blank & unchecked.
       
-      3. Click **Add**.
+   3. Click **Add**.
 2. Within the **Views/Trending/Users.cshtml** file, delete all the code in the file and replace it with the following code:
    ````html
    @model IEnumerable<OfficeGraphLab.Service.User>
