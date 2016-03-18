@@ -43,15 +43,19 @@ In this step you will create a repository class that will handle all communicati
 1. This exercise will heavily leverage the OneNote REST API. To simplify working with the REST services, we will use the popular [JSON.NET](http://www.newtonsoft.com/json) JSON framework for .NET.
 	1. Create a new folder in the project's **Models** folder named **JsonHelpers**.
 	1. Copy all the C# files provided with this lab, located in the [\\\O3653\O3653-7 Deep Dive into the Office 365 APIs for OneNote services\Labs\Labfiles](Labs/Labfiles/JsonHelpers) folder, into this new **JsonHelpers** folder you just added in your project.
+    1. Right-click the **JsonHelpers** folder and choose **Add / Existing Item**. Select all the files you just copied to the folder and click **Add**.
 
 		> **Note:** These files were created using the handy utility in Visual Studio: [Paste JSON as Classes](http://blogs.msdn.com/b/webdev/archive/2012/12/18/paste-json-as-classes-in-asp-net-and-web-tools-2012-2-rc.aspx).
 
 1. Create model objects for the OneNote notebook, section & page:
 	1. Add a new class named **Notebook** to the **Models** folder in the project.
-	1. Add the following code to the `Notebook` class:
+	1. Replace the `Notebook` class with the following code:
 
 		````c#
-        public Notebook() {
+    public class Notebook
+    {
+        public Notebook()
+        {
             Sections = new List<Section>();
         }
 
@@ -66,14 +70,18 @@ In this step you will create a repository class that will handle all communicati
         public string SectionsUrl { get; set; }
         public string SectionGroupsUrl { get; set; }
         public List<Section> Sections { get; set; }
+    }
 		````
 
 	1. Add a new class named **Section** to the **Models** folder in the project.
-	1. Add the following code to the `Section` class:
+	1. Replace the `Section` class with the following code:
 
 		````c#
-        public Section() {
-        Pages = new List<NotePage>();
+    public class Section
+    {
+        public Section()
+        {
+            Pages = new List<NotePage>();
         }
 
         public string Id { get; set; }
@@ -82,12 +90,15 @@ In this step you will create a repository class that will handle all communicati
         public DateTime LastModifiedDateTime { get; set; }
         public string PagesUrl { get; set; }
         public List<NotePage> Pages { get; set; }
+    }
 		````
 
 	1. Add a new class named **NotePage** to the **Models** folder in the project.
-	1. Add the following code to the `NotePage` class:
+	1. Replace the `NotePage` class with the following code:
 
 		````c#
+    public class NotePage
+    {
         public string Id { get; set; }
         public string Name { get; set; }
         public DateTime CreatedDateTime { get; set; }
@@ -97,6 +108,7 @@ In this step you will create a repository class that will handle all communicati
         public string PageUrl { get; set; }
         public string WebUrl { get; set; }
         public string ClientUrl { get; set; }
+    }
 		````
 
 1. Create the repository class for communicating with the OneNote via Microsoft Graph:
@@ -378,35 +390,31 @@ In this step you will create a repository class that will handle all communicati
 		````
 
 ### Add Navigation
-In this step you will create a link on home page to navigate to notebooks list page.
+In this step you will create a link on the home page to navigate to notebooks list page.
 
 1. Locate the **Views/Shared** folder in the project.
 1. Open the **_Layout.cshtml** file found in the **Views/Shared** folder.
-    1. Locate the part of the file that includes a few links at the top of the page... it should look similar to the following code:
+    1. Locate the part of the file that includes a few links near the top of the page... it should look similar to the following code:
     
     ````asp
-    <div class="navbar-collapse collapse">
-        <ul class="nav navbar-nav">
-            <li>@Html.ActionLink("Home", "Index", "Home")</li>
-            <li>@Html.ActionLink("About", "About", "Home")</li>
-            <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-        </ul>
-        @Html.Partial("_LoginPartial")
-    </div>
+    <ul class="nav navbar-nav">
+        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+        <li>@Html.ActionLink("About", "About", "Home")</li>
+        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+        <li>@Html.ActionLink("Graph API", "Graph", "Home")</li>
+    </ul>
     ````
 
-    1. Update that navigation to have a new link (the **Files (Graph)** link added below) as well as a reference to the login control you just created:
+    1. Update that navigation to have a new link (the **Notebooks** link added below):
 
     ````asp
-    <div class="navbar-collapse collapse">
-        <ul class="nav navbar-nav">
-            <li>@Html.ActionLink("Home", "Index", "Home")</li>
-            <li>@Html.ActionLink("About", "About", "Home")</li>
-            <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-            <li>@Html.ActionLink("Notebooks", "Index", "Notebook")</li>
-        </ul>
-        @Html.Partial("_LoginPartial")
-    </div>
+    <ul class="nav navbar-nav">
+        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+        <li>@Html.ActionLink("About", "About", "Home")</li>
+        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+        <li>@Html.ActionLink("Graph API", "Graph", "Home")</li>
+        <li>@Html.ActionLink("Notebooks", "Index", "Notebook")</li>
+    </ul>
     ````
     
 ### Add Notebook Controller & View
@@ -417,14 +425,14 @@ In this step you will create the ASP.NET MVC controller and view for OneNote not
 	1. Click **Add**.
 	1. When prompted for a name, enter **NotebookController**.
 	1. Click **Add**.
-1. Within the `NotebookController` class, add the following using statement:
+1. Within the `NotebookController` class, add the following **using** statements:
 
 	````c#
 	using System.Threading.Tasks;
 	using OneNoteDev.Models;
 	````
 
-1. Update `Index()` action as following to support viewing all notebooks:
+1. Update the `Index()` action as follows to support viewing all notebooks:
 
     ````c#
     [Authorize]
@@ -490,7 +498,7 @@ In this step you will create the ASP.NET MVC controller and view for OneNote not
 	</table>
 	````
 
-### Add Notebook Section Controller & View
+### Add Section Controller & View
 In this step you will create the ASP.NET MVC controller and view for OneNote notebook sections.
 
 1. Right-click the **Controllers** folder in the project and select **Add / Controller**.
@@ -498,14 +506,14 @@ In this step you will create the ASP.NET MVC controller and view for OneNote not
 	1. Click **Add**.
 	1. When prompted for a name, enter **SectionController**.
 	1. Click **Add**.
-1. Within the `SectionController` class, add the following using statement:
+1. Within the `SectionController` class, add the following **using** statements:
 
 	````c#
 	using System.Threading.Tasks;
 	using OneNoteDev.Models;
 	````
 
-1. Update `Index()` action as following to support viewing all notebook sections:
+1. Update the `Index()` action as follows to support viewing all notebook sections:
 
     ````c#
     [Authorize]
@@ -585,7 +593,7 @@ In this step you will create the ASP.NET MVC controller and view for OneNote not
 		);
 		````
 
-### Add Notebook Pages Controller & View
+### Add Pages Controller & View
 In this step you will create the ASP.NET MVC controller and view for pages within OneNote notebook sections.
 
 1. Right-click the **Controllers** folder in the project and select **Add / Controller**.
@@ -593,7 +601,7 @@ In this step you will create the ASP.NET MVC controller and view for pages withi
 	1. Click **Add**.
 	1. When prompted for a name, enter **PageController**.
 	1. Click **Add**.
-1. Within the `PageController` class, add the following using statement:
+1. Within the `PageController` class, add the following **using** statements:
 
 	````c#
 	using System.Threading.Tasks;
@@ -703,7 +711,7 @@ The last step is to test the application you just created!
 
  > **Note:** If you receive an error that indicates ASP.NET could not connect to the SQL database, please see the [SQL Server Database Connection Error Resolution document](../../SQL-DB-Connection-Error-Resolution.md) to quickly resolve the issue. 
 
-1. When the browser loads, click the **Sign in** link in the upper right corner and login using your Office 365 credentials.
+1. When the browser loads, click the **Click here to sign in** button and login using your Office 365 administrator credentials.
 
 	After logging in you will be taken back to your ASP.NET MVC application. 
 
