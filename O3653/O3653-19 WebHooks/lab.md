@@ -29,7 +29,7 @@ A webhooks subscription allows a client app to receive notifications about mail,
 
 1. Build the solution (**Build/Build Solution**) to restore the NuGet packages required by the project. This should remove all of the solution's initial red squigglies.
 
-1. Open **Tools/Nuget Package Manager/Package Manager Console**, and run the following commands. These installs [AspNet.SignalR](http://go.microsoft.com/fwlink/?LinkID=615530), which is used to notify the client to refresh its view and an SDK for communicating with the Microsoft Graph.
+1. Open **Tools/Nuget Package Manager/Package Manager Console**, and run the following commands. These install [AspNet.SignalR](http://go.microsoft.com/fwlink/?LinkID=615530), which is used to notify the client to refresh its view, and an SDK for communicating with the Microsoft Graph.
 
    ```
 Install-Package Microsoft.AspNet.SignalR
