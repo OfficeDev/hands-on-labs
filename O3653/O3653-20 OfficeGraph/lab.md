@@ -1,11 +1,5 @@
-# WORK IN PROGRESS
-# TEST ME IF YOU'VE GOT A MINUTE
-# TODO:
+## TODO:
 2. Still getting auth exception?
-4. Formatting in lists is off.
-5. Screenshots.
-6. Explain why we're adding the Odata Client file.
-7. Will this be printed? Can we add links to our blog posts for more info on the new Trending API and Office Graph?
 
 # Lab 20: Insights from Microsoft Graph
 In this lab, you will use Microsoft Graph to connect to insights and rich relationships calculated in the Office Graph. You will build an ASP.NET MVC 5 application that retrieves documents trending around you and a specific users.
@@ -68,7 +62,8 @@ In this exercise, you will extend the page layout so that it displays a new link
         </div>
         ````
 
-    2. Update that navigation to have two new links (the **Insights** and **Users** links added below):
+    2. Update that navigation to have two new links (the **Insights** and **Users** links added below). 
+    Feel free to also remove the **Graph API** link:
 
         ````asp
         <div class="navbar-collapse collapse">
@@ -76,7 +71,6 @@ In this exercise, you will extend the page layout so that it displays a new link
             <li>@Html.ActionLink("Home", "Index", "Home")</li>
             <li>@Html.ActionLink("About", "About", "Home")</li>
             <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-            <li>@Html.ActionLink("Graph API", "Graph", "Home")</li>
             <li>@Html.ActionLink("Insights", "Index", "Trending")</li>
             <li>@Html.ActionLink("Users", "Insights", "Trending")</li>
           </ul>
@@ -170,31 +164,37 @@ Now that we have a controller, we need a view that displays the trending documen
       ````html
       @model IEnumerable<OfficeGraphLab.Service.DriveItem>
       @{
-         ViewBag.Title = "Trending Documents";
+          ViewBag.Title = "Trending Documents";
       }
       <h2>Trending Documents</h2>
-      <table class="table">
-      <tr>
-         <th>
-            @Html.DisplayName("Document Name");
-         </th>
-         <th>
-            @Html.DisplayName("Last modified by");
-         </th>
-      </tr>
-
-         @foreach (var item in Model)
-         {
-            <tr>
-               <td>
-                  @Html.DisplayFor(modelItem => item.Name)
-               </td>
-               <td>
-                  @Html.DisplayFor(modelItem => item.LastModifiedBy)
-               </td>
-            </tr>
-         }
-      </table>
+      @if (Model.Any())
+      {
+          <table class="table">
+              <tr>
+                  <th>
+                      @Html.DisplayName("Document Name")
+                  </th>
+                  <th>
+                      @Html.DisplayName("Last Modified By")
+                  </th>
+              </tr>
+              @foreach (var item in Model)
+              {
+                  <tr>
+                      <td>
+                          @Html.DisplayFor(modelItem => item.Name)
+                      </td>
+                      <td>
+                          @Html.DisplayFor(modelItem => item.LastModifiedBy)
+                      </td>
+                  </tr>
+              }
+          </table>
+      }
+      else
+      {
+          <p>No trending documents for this user.</p>
+      }
       ````  
 1. Test the new view:
   1. In **Visual Studio**, press F5 to launch your new application in the default browser.
