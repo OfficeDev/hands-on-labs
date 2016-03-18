@@ -34,7 +34,7 @@ In this first exercise, you will create a new ASP.NET MVC project using the
    
 ## Exercise 2: Add a reference to the Graph API beta namespace
 
-1. Right-click the project and select **Add item**.
+1. Right-click the project and select **Add -> New item**.
    1. Select **Visual C# -> Code -> OData Client**.
    2. Name the file Graph.tt and click **Add**.
 2. Edit the Graph.tt file
