@@ -1,6 +1,6 @@
 # Microsoft Graph to manage groups and users
 
-In this lab, you will create an ASP.NET MVC application that uses the Microsoft Graph client SDK to create a basic group manangement experience. It will search for groups in your tenant's directory, show their members, and get member details such as their photo. In a bonus excercise, you will learn how to add more users to a group (through a people picker) and remove users from a group.
+In this lab, you will create an ASP.NET MVC application that uses the Microsoft Graph client SDK to create a basic group management experience. It will search for groups in your tenant's directory, show their members, and get member details such as their photo. In a bonus excercise, you will learn how to add more users to a group (through a people picker) and remove users from a group.
 
 ## Prerequisites
 1. An administrator account for an Office 365 tenant. This is required because you'll be using the client credentials of a pre-registered application that's configured to request admin-level permissions.
