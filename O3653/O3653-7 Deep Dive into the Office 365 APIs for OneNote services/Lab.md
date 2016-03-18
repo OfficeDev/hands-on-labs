@@ -1,9 +1,6 @@
 # Microsoft Graph for OneNote Services
 In this lab, you will use Microsoft Graph to program against the Office 365 OneNote Service as part of an ASP.NET MVC5 application.
 
-# Microsoft Graph for OneNote Services
-In this lab, you will use Microsoft Graph to program against the Office 365 OneNote Service as part of an ASP.NET MVC5 application.
-
 ## Prerequisites
 - Visual Studio 2015 with Update 1
 - The Graph AAD Auth v1 Started Project template installed
