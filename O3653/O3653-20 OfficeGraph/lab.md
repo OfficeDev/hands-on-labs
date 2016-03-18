@@ -145,6 +145,7 @@ In this exercise, you will code the **TrendingController** of the MVC applicatio
    2. Save the file.
    
 **Note that you have to replace the default Index() method with the one above.**
+
 Now that we have a controller, we need a view that displays the trending documents!
 
 ## Exercise 5: Create a page for displaying trending documents
