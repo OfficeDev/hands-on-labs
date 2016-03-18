@@ -25,38 +25,17 @@ In this exercise you will use the Microsoft Graph to access a OneNote notebook t
 
 1. Build the solution (**Build/Build Solution**) to restore the NuGet packages required by the project. This should remove all of the solution's initial red squigglies.
     
-1. At this point you can test the authentication flow for your application.
-  1. In Visual Studio, press **F5**. The browser will automatically launch taking you to the HTTPS start page for the web application.
+1. At this point you can test the authentication flow for your application. In Visual Studio, press **F5**. The browser will automatically open to the start page for the web application.
 
    > **Note:** If you receive an error that indicates ASP.NET could not connect to the SQL database, please see the [SQL Server Database Connection Error Resolution document](../../SQL-DB-Connection-Error-Resolution.md) to quickly resolve the issue. 
 
-  1. To sign in, click the **Sign In** link in the upper-right corner.
-  1. Login using your **Organizational Account**.
-  1. Upon a successful login, since this will be the first time you have logged into this app, Azure AD will present you with the common consent dialog that looks similar to the following image:
+1. Click the **Click here to sign in** button on the page, and sign in with your Office 365 administrator account.
 
-    ![](Images/ConsentDialog.png)
-  1. Click **Accept** to approve the app's permission request on your data in Office 365.
-  1. You will then be redirected back to your web application. However notice in the upper right corner, it now shows your email address & the **Sign Out** link.
-  1. In Visual Studio, press **Shift+F5** to stop debugging.
+   You will be redirected back to your web application. However notice in the upper right corner, it now shows your email address and the **Sign out** link.
+  
+1. In Visual Studio, press **Shift+F5** to stop debugging.
 
 Congratulations... at this point your app is configured with Azure AD and leverages OpenID Connect and OWIN to facilitate the authentication process!
-
-### Grant App Necessary Permissions
-1. Browse to the [Azure Management Portal](https://manage.windowsazure.com) and sign in with your **Organizational Account**.
-2. In the left-hand navigation, click **Active Directory**.
-3. Select the directory you share with your Office 365 subscription.
-4. Search for this app with the **ida:ClientId** that was created in 'Create an ASP.NET MVC5 Application' section.
-
-    ![](Images/04.png)
-5. Select the application. 
-6. Open the **Configure** tab.
-7. Scroll down to the **permissions to other applications** section. 
-8. Click the **Add Application** button.
-9. In the **Permissions to other applications** dialog, click the **PLUS** icon next to the **Microsoft Graph** option.
-10. Click the **Check mark** icon in the lower right corner.
-11. For the new **Microsoft Graph** application permission entry, select the **Delegated Permissions** dropdown on the same line and then select the following permissions:
-    * **Read and write notebooks that the user can access (preview)**
-12. Click the **Save** button at the bottom of the page.
 
 ### Create the OneNote API Repository
 In this step you will create a repository class that will handle all communication with the OneNote API to interact with notebooks in your OneDrive for Business store.
