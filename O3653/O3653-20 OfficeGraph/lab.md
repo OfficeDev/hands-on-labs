@@ -175,18 +175,12 @@ Now that we have a controller, we need a view that displays the trending documen
                   <th>
                       @Html.DisplayName("Document Name")
                   </th>
-                  <th>
-                      @Html.DisplayName("Last Modified By")
-                  </th>
               </tr>
               @foreach (var item in Model)
               {
                   <tr>
                       <td>
-                          @Html.DisplayFor(modelItem => item.Name)
-                      </td>
-                      <td>
-                          @Html.DisplayFor(modelItem => item.LastModifiedBy)
+                          <a href="@Html.DisplayFor(modelItem => item.WebUrl)" target="_blank">@Html.DisplayFor(modelItem => item.Name)</a>
                       </td>
                   </tr>
               }
