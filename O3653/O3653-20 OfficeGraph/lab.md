@@ -2,7 +2,7 @@
 2. Still getting auth exception?
 
 # Lab 20: Insights from Microsoft Graph
-In this lab, you will use Microsoft Graph to connect to insights and rich relationships calculated in the Office Graph. You will build an ASP.NET MVC 5 application that retrieves documents trending around you and a specific users.
+In this lab, you will use Microsoft Graph to connect to insights and rich relationships calculated in the Office Graph. You will build an ASP.NET MVC 5 application that retrieves documents trending around users in your Office 365 account.
 
 ## Prerequisites
 
@@ -149,7 +149,7 @@ In this exercise, you will code the **TrendingController** of the MVC applicatio
 
 Now that we have a controller, we need a view that displays the trending documents!
 
-## Exercise 5: Code the MVC application that displays documents trending around you
+## Exercise 5: Create a page for displaying trending documents
 1. Create a view to display trending documents.
    1. Within the `TrendingController` class, right click the first `View()` method at the end of the `Index()` action and select **Add View**.
    2. Within the **Add View** dialog, set the following values:
@@ -196,15 +196,10 @@ Now that we have a controller, we need a view that displays the trending documen
           <p>No trending documents for this user.</p>
       }
       ````  
-1. Test the new view:
-  1. In **Visual Studio**, press F5 to launch your new application in the default browser.
-  2. Once the application is loaded click the **Insights** link in the top menu bar.
-  3. Verify that your application displays trending documents from your Office 365 account.  
-  4. Close the browser window, terminate the debugging session and return to Visual Studio.
   
-While viewing your trending documents is interesting, we can go further and see what document are trending around other users! Let's make sure that we can do that now.
+Now we have a page that displays trending documents ready. Let's now list the users in your Office 365 account and see their trending documents!
 
-## Exercise 6: Make the MVC application display documents trending around other users
+## Exercise 6: Display trending documents
 1. Add an action method and view to handle displaying documents trending around a specific user:
   1. In the **TrendingController.cs** file, add an action method named **Users** with the following code:
 
