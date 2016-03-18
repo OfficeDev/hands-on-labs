@@ -10,7 +10,7 @@ In this lab, you will use Microsoft Graph to connect to insights in the Office G
    1. In Visual Studio go to Tools -> Extensions and Updates, Select "Online" from the left-most treeview then search for "OData v4 Client Code Generator"
    2. Click Download and then Install once the extension downloads.
 
-![](images/1_Odata.PNG) 
+![Installing ODaata v4 Client Code Generator](images/1_Odata.PNG) 
    
 
 ## Exercise 1: Create a new project and authenticate using Azure Active Directory v1 authentication
@@ -24,7 +24,7 @@ In this first exercise, you will create a new ASP.NET MVC project using the
    2. Name the new project **OfficeGraphLab**
    3. Click **OK**.
 
-![](images/2_NewProject.PNG) 
+![Creating a new project based on the Graph AAD Auth v1 Starter Project template](images/2_NewProject.PNG) 
 
 4. Press Ctrl (Command) + F5 to launch your new application in the default browser.
    1. Once the Graph and AAD v1 Auth Endpoint Starter page appears, click on **Click here to sign in** and login with the Office 365 admin account that was provided to your for this lab.
@@ -42,7 +42,7 @@ In this first exercise, you will create a new ASP.NET MVC project using the
    2. Edit **NamespacePrefix** to be "OfficeGraphLab.Service"
 3. Click **Build -> Build solution**.
 
-![](images/3_Building.PNG) 
+![Building the solution](images/3_Building.PNG) 
 
 ## Exercise 3: Change the page layout
 In this exercise, you will extend the page layout so that it displays a new link leading to Insights in the header.
@@ -150,7 +150,8 @@ Now that we have a controller, we need a view that displays the trending documen
 ## Exercise 5: Create a page for displaying trending documents
 1. Create a view to display trending documents.
    1. Within the `TrendingController` class, right click the first `View()` method at the end of the `Index()` action and select **Add View**.
-   2. Within the **Add View** dialog, set the following values:
+   ![Adding a new view](images/4_AddView.PNG)
+   2. Make sure the following properties are entered in the **Add View** dialog:
       1. View Name: **Index**.
       2. Template: **Empty (without model)**.
         
@@ -217,8 +218,9 @@ Now we have a page that displays trending documents ready. Let's now list the us
 
 1. Create a view to display users.    
    1. Within the `TrendingController` class, right click the `View(service.Users)` at the end of the `Users()` action method  that you just created and select **Add View**.
-   2. In the **Add View** dialog, set the following options on the dialog and click **Add**.
-      1. View Name: **Insights**.
+   ![Adding a new view](images/5_AddView.PNG)
+   2. Make sure the following properties are entered in the **Add View** dialog.
+      1. View Name: **Users**.
       2. Template: **Empty (without model)**.
         
         > Leave all other fields blank & unchecked.
