@@ -179,9 +179,12 @@ Now that we have a controller, we need a view that displays the trending documen
               @foreach (var item in Model)
               {
                   <tr>
-                      <td>
-                          <a href="@Html.DisplayFor(modelItem => item.WebUrl)" target="_blank">@Html.DisplayFor(modelItem => item.Name)</a>
-                      </td>
+                     <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                     </td>
+                     <td>
+                        <a href="@Html.DisplayFor(modelItem => item.WebUrl)" target="_blank">Download</a>
+                     </td>
                   </tr>
               }
           </table>
