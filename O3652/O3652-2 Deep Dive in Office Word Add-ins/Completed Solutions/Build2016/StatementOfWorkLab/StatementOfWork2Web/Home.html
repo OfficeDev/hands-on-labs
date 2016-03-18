@@ -1,0 +1,98 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <title>Word Addin with Commands Sample</title>
+
+    <script src="/Scripts/jquery-1.9.1.js" type="text/javascript"></script>
+    <script src="/Scripts/FabricUI/MessageBanner.js" type="text/javascript"></script>
+ <!--  <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js" type="text/javascript"></script>  -->
+
+    <script src="https://appsforoffice.microsoft.com/lib/beta/hosted/office.js" type="text/javascript"></script>   
+
+    <!-- To enable offline debugging using a local reference to Office.js, use:                        -->
+    <!-- <script src="/Scripts/Office/MicrosoftAjax.js" type="text/javascript"></script>  -->
+    <!-- <script src="/Scripts/Office/1.1/office.js" type="text/javascript"></script>  -->
+
+    <link href="Home.css" rel="stylesheet" type="text/css" />
+    <script src="Home.js" type="text/javascript"></script>
+
+    <!-- For the Office UI Fabric, go to http://aka.ms/office-ui-fabric to learn more. -->
+    <link rel="stylesheet" href="https://appsforoffice.microsoft.com/fabric/2.1.0/fabric.min.css">
+    <link rel="stylesheet" href="https://appsforoffice.microsoft.com/fabric/2.1.0/fabric.components.min.css">
+    
+    <!-- To enable the offline use of Office UI Fabric, use: -->
+    <!-- link rel="stylesheet" href="/Content/fabric.min.css" -->
+    <!-- link rel="stylesheet" href="/Content/fabric.components.min.css" -->
+</head>
+<body>
+    <div id="content-main">
+        <div id="sowPanel" class="padding">
+            <button class="ms-Button ms-Button--compound" id="addContentHellowWorld">
+                <span class="ms-Button-label" id="button-text">Hello World!</span>
+                <span class="ms-Button-description" id="button-desc">Just a simple Hello World!! This code writes the famous string.</span>
+            </button><br><br>
+
+            <button class="ms-Button ms-Button--compound" id="addContentStartingSOW">
+                <span class="ms-Button-label" id="button-text">Step 1: Starting SOW</span>
+                <span class="ms-Button-description" id="button-desc">Insert a starting document to play with. uses OOXML</span>
+            </button><br><br>
+
+            <button class="ms-Button ms-Button--compound" id="addPicture">
+                <span class="ms-Button-label" id="button-text">Step 2: Fix Picture!</span>
+                <span class="ms-Button-description" id="button-desc">How to insert or replace images in a document.</span>
+            </button><br><br>
+
+            <button class="ms-Button ms-Button--compound" id="addSearchAndTempletize">
+                <span class="ms-Button-label" id="button-text">Step 3: Search and Templetize!</span>
+                <span class="ms-Button-description" id="button-desc">Search for 'Contoso' and insert content controls to hold the customer name. </span>
+            </button><br><br>
+
+            <button class="ms-Button ms-Button--compound" id="addChangeCustomer">
+                <span class="ms-Button-label" id="button-text">Step 4: Replace Customer!</span>
+                <span class="ms-Button-description" id="button-desc">Set the customer name to 'Fabrikam' using content controls.</span>
+            </button><br><br>
+
+            <button class="ms-Button ms-Button--compound" id="addReuseContent">
+                <span class="ms-Button-label" id="button-text">Step 5: Reuse Content!</span>
+                <span class="ms-Button-description" id="button-desc">Reuse content by merging in another document</span>
+            </button><br><br>
+
+            <button class="ms-Button ms-Button--compound" id="addHighlights">
+                <span class="ms-Button-label" id="button-text">Step 6: Highlight Word by Word!</span>
+                <span class="ms-Button-description" id="button-desc">Shows how to get (as range) word by word of a paragraph.</span>
+            </button><br><br>
+
+            <button class="ms-Button ms-Button--compound" id="addOpenDoc">
+                <span class="ms-Button-label" id="button-text">Step 7: Create a New Document!</span>
+                <span class="ms-Button-description" id="button-desc">This samples shows how to create and open a new document.</span>
+            </button><br><br>
+
+
+        </div>
+    </div>
+        <div class="footer">
+            <div class="ms-Grid ms-bgColor-themeSecondary">
+                <div class="ms-Grid-row">
+                    <div class="ms-Grid-col ms-u-sm12 ms-u-md12 ms-u-lg12"> <div class="ms-font-xl ms-fontColor-white">Contoso</div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FabricUI component used for displaying notifications -->
+        <div class="ms-MessageBanner" style="position:absolute;bottom: 0;">
+            <div class="ms-MessageBanner-content">
+                <div class="ms-MessageBanner-text">
+                    <div class="ms-MessageBanner-clipper">
+                        <div class="ms-font-m-plus ms-fontWeight-semibold" id="notificationHeader"></div>
+                        <div class="ms-font-m ms-fontWeight-semilight" id="notificationBody"></div>
+                    </div>
+                </div>
+                <button class="ms-MessageBanner-expand" style="display:none"><i class="ms-Icon ms-Icon--chevronsDown"></i> </button>
+                <div class="ms-MessageBanner-action"></div>
+            </div>
+            <button class="ms-MessageBanner-close"> <i class="ms-Icon ms-Icon--x"></i> </button>
+        </div>
+</body>
+</html>
