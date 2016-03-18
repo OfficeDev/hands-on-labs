@@ -2,12 +2,13 @@
 2. Still getting auth exception?
 
 # Lab 20: Insights from Microsoft Graph
-In this lab, you will use Microsoft Graph to connect to insights and rich relationships calculated in the Office Graph. You will build an ASP.NET MVC 5 application that retrieves documents trending around users in your Office 365 account.
+In this lab, you will use Microsoft Graph to connect to insights in the Office Graph. You will build an ASP.NET MVC 5 application that retrieves documents trending around users in your Office 365 tenant.
 
 ## Prerequisites
 
 2. You must have the OData v4 Client Code Generator addin installed. 
-   1. In Visual Studio go to Tools -> Extensions and Updates, Select "Online" from the left-most treeview then search for "Odata v4 Client Code Generator" and click install
+   1. In Visual Studio go to Tools -> Extensions and Updates, Select "Online" from the left-most treeview then search for "OData v4 Client Code Generator"
+   2. Click Download and then Install once the extension downloads.
 
 ![](images/1_Odata.PNG) 
    
@@ -25,20 +26,21 @@ In this first exercise, you will create a new ASP.NET MVC project using the
 
 ![](images/2_NewProject.PNG) 
 
-4. Press F5 to launch your new application in the default browser.
-   1. Once the Graph and AAD v1 Auth Endpoint Starter page appears, click **Sign in** and login with the Office 365 account that was provided to your for this lab.
+4. Press Ctrl (Command) + F5 to launch your new application in the default browser.
+   1. Once the Graph and AAD v1 Auth Endpoint Starter page appears, click on **Click here to sign in** and login with the Office 365 admin account that was provided to your for this lab.
    2. Review the permissions the application is requesting, and click **Accept**.
    3. Now that you are signed in, you can start building the application and querying the Microsoft Graph!
+   4. Return back to Visual Studio.
    
 ## Exercise 2: Add a reference to the Graph API beta namespace
 
 1. Right-click the project and select **Add item**.
-   1. Select **Visual C# -> Code -> Odata Client**.
+   1. Select **Visual C# -> Code -> OData Client**.
    2. Name the file Graph.tt and click **Add**.
 2. Edit the Graph.tt file
    1. Edit **MetadataDocumentUri** to be "https://graph.microsoft.com/beta/$metadata"
    2. Edit **NamespacePrefix** to be "OfficeGraphLab.Service"
-3. Click **Build -> Build solution** the project
+3. Click **Build -> Build solution**.
 
 ![](images/3_Building.PNG) 
 
@@ -51,22 +53,18 @@ In this exercise, you will extend the page layout so that it displays a new link
     1. Locate the part of the file that includes links at the top of the page:
       
         ````asp
-        <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
             <li>@Html.ActionLink("Home", "Index", "Home")</li>
             <li>@Html.ActionLink("About", "About", "Home")</li>
             <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
             <li>@Html.ActionLink("Graph API", "Graph", "Home")</li>
           </ul>
-          @Html.Partial("_LoginPartial")
-        </div>
         ````
 
     2. Update that navigation to have two new links (the **Insights** and **Users** links added below). 
     Feel free to also remove the **Graph API** link:
 
         ````asp
-        <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
             <li>@Html.ActionLink("Home", "Index", "Home")</li>
             <li>@Html.ActionLink("About", "About", "Home")</li>
@@ -74,8 +72,6 @@ In this exercise, you will extend the page layout so that it displays a new link
             <li>@Html.ActionLink("Insights", "Index", "Trending")</li>
             <li>@Html.ActionLink("Users", "Insights", "Trending")</li>
           </ul>
-          @Html.Partial("_LoginPartial")
-        </div>
         ````
 
         > The links will not work just yet. We'll add some functionality to the page later.
@@ -88,7 +84,7 @@ In this exercise, you will code the **TrendingController** of the MVC applicatio
    2. Click **Add**.
    3. When prompted for a name, enter **TrendingController**.
    4. Click **Add**.
-1. Within the **TrendingController** file, add the following `using` statements to the top of the file:
+1. Copy the following `using` statements to the top of the **TrendingController** file, replacing the existing ones:
 
     ````c#
     using OfficeGraphLab.Auth;
@@ -130,7 +126,7 @@ In this exercise, you will code the **TrendingController** of the MVC applicatio
     }
     ````
 
-1. Add an action method for retrieving trending documents. The method will be able to retrieve trending documents of the currently logged in user as well as of other users on your Office 365 account.
+1. Add an action method for retrieving trending documents to the **TrendingController** class. The method will be able to retrieve trending documents of the currently logged in user as well as of other users on your Office 365 account.
   1. **Replace** the **Index** method with the following code to retrieve trending documents.
       
     ````c#
@@ -146,7 +142,9 @@ In this exercise, you will code the **TrendingController** of the MVC applicatio
     }
    
     ````
-
+   2. Save the file.
+   
+**Note that you have to replace the default Index() method with the one above.**
 Now that we have a controller, we need a view that displays the trending documents!
 
 ## Exercise 5: Create a page for displaying trending documents
@@ -196,12 +194,15 @@ Now that we have a controller, we need a view that displays the trending documen
           <p>No trending documents for this user.</p>
       }
       ````  
+   4. Save the file.   
+   5. Test the view by pressing Ctrl (Command) + F5.
+   6. Return back to Visual Studio.
   
-Now we have a page that displays trending documents ready. Let's now list the users in your Office 365 account and see their trending documents!
+Now we have a page that displays trending documents ready. Let's now list the users in your Office 365 tenant and see their trending documents!
 
-## Exercise 6: Display trending documents
-1. Add an action method and view to handle displaying documents trending around a specific user:
-  1. In the **TrendingController.cs** file, add an action method named **Users** with the following code:
+## Exercise 6: Displaying documents trending around other users
+1. Add an action method and a view to handle displaying documents trending around a specific user:
+   1. In the **TrendingController.cs** file, add an action method named **Users** with the following code:
 
     ````c#
     [Authorize]
@@ -211,6 +212,7 @@ Now we have a page that displays trending documents ready. Let's now list the us
         return View(service.Users);
     }
     ````
+   2. Save the file.    
     > When developing your own web application,  you'd most likely want to create a new controller for this action. Keeping the action in one controller is OK for the purpose of our demo, though.
 
 1. Create a view to display users.    
@@ -257,14 +259,15 @@ Now we have a page that displays trending documents ready. Let's now list the us
       }
    </table>
   ````
+3. Save the file.  
        
 1. Test the new view:
-  1. In **Visual Studio**, hit **F5** to begin debugging.
-  2. Once the application is loaded click the **Users** link in the top menu bar.
-  3. You should see a couple of users from your Office 365 account.
-  4. Click the **See Trending Documents** next to one of the users.
-  5. You will see a number of documents currently trending around the current user.
-  6. Close the browser window, terminate the debugging session and return to Visual Studio.
+   1. Launch the application with **Ctrl (Command) + F5**.
+   2. Once the application is loaded click the **Users** link in the top menu bar.
+   3. You should see a couple of users from your Office 365 tenant.
+   4. Click on **See Trending Documents** next to one of the users.
+   5. You will see a number of documents currently trending around the current user.
+   6. Close the browser window, terminate the debugging session and return to Visual Studio.
 
 Congratulations! You have created an MVC application that displays documents trending around users! Stay tuned for our new, richer Trending API. Released in a few weeks!
 
