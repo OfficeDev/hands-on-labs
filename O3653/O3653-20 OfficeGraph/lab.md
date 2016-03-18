@@ -49,8 +49,8 @@ In this exercise, you will extend the page layout so that it displays a new link
   
 1. Back in Visual Studio, click the Stop button to stop the site.
 2. Update **_Layout** file to add a link to **Insights** and **Users**:
-  1. Open the **_Layout.cshtml** file found in the **Views/Shared** folder.
-    1. Locate the part of the file that includes links at the top of the page:
+   1. Open the **_Layout.cshtml** file found in the **Views/Shared** folder.
+   2. Locate the part of the file that includes links at the top of the page:
       
         ````asp
           <ul class="nav navbar-nav">
@@ -61,7 +61,7 @@ In this exercise, you will extend the page layout so that it displays a new link
           </ul>
         ````
 
-    2. Update that navigation to have two new links (the **Insights** and **Users** links added below). 
+   3. Update that navigation to have two new links (the **Insights** and **Users** links added below). 
     Feel free to also remove the **Graph API** link:
 
         ````asp
