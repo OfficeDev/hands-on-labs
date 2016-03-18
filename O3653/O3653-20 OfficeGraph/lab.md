@@ -271,7 +271,7 @@ Now we have a page that displays trending documents ready. Let's now list the us
    3. You should see a couple of users from your Office 365 tenant.
    4. Click on **See Trending Documents** next to one of the users.
    5. You will see a number of documents currently trending around the current user.
-   6. Close the browser window, terminate the debugging session and return to Visual Studio.
+   6. Close the browser window and return to Visual Studio.
 
 Congratulations! You have created an MVC application that displays documents trending around users! Stay tuned for our new, richer Trending API. Released in a few weeks!
 
