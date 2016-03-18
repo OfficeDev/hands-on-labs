@@ -1,5 +1,5 @@
-# Connect to calendar with the Microsoft Graph, find my next meeting and launch the Skype online meeting experience
-Learn how to use Microsoft Graph to build context centered applications, find your next meeting and launch the Skype online meeting experience.
+# Connect to Outlook calendar with the Microsoft Graph
+Learn how to use Microsoft Graph to build calendar applications, schedule a meeting, show my meetings for the upcoming week, display the details of a meeting with the abilithy to Accept/Tentative/Decline it, and launch the Skype online meeting experience.
 
 [//]: # (Change which template based on if using v2.0 Auth endpoint)
 
@@ -20,11 +20,11 @@ for calling the Graph API.
 1. Launch the [Application Registration Portal](https://apps.dev.microsoft.com)
    to register a new application.
   1. Sign into the portal using your Office 365 username and password.
-  1. Click **Add an App** and type **Graph Calendar Quick Start** for the application name.
+  1. Click **Add an App** and type **GraphCalendarQuickStart** for the application name.
   1. Copy the **Application Id** and paste it into the value for **ida:AppId** in your project **web.config** file.
   1. Under **Application Secrets** click **Generate New Password** to create a new client secret for your app.
   1. Copy the displayed app password and paste it into the value for **ida:AppSecret** in your project **web.config** file.
-  1. Modify the **ida:AppScopes** value to include the required `https://graph.microsoft.com/calendars.readwrite`  scopes.
+  1. Modify the **ida:AppScopes** value to include the required `https://graph.microsoft.com/calendars.readwrite`  and https://graph.microsoft.com/calendars.read scopes.
 
   ```xml
   <configuration>
@@ -34,7 +34,7 @@ for calling the Graph API.
       <add key="ida:AppSecret" value="paste application password here" />
       <!-- ... -->
       <!-- Specify scopes in this value. Multiple values should be comma separated. -->
-      <add key="ida:AppScopes" value="//graph.microsoft.com/calendars.readwrite" />
+      <add key="ida:AppScopes" value="https://graph.microsoft.com/calendars.read,https://graph.microsoft.com/calendars.readwrite" />
     </appSettings>
     <!-- ... -->
   </configuration>
@@ -65,11 +65,13 @@ SDK and work with Office 365 and Outlook Calendar.
 
 1. Add a reference to the Microsoft Graph SDK to your project.
   1. In the **Solution Explorer** right-click the **QuickStartCalendarWebApp** project and select **Manage NuGet Packages...**.
+  1. Change **Package Source** (on the upper right corner) to **Microsoft Graph local**.
   1. Click **Browse** and search for **Microsoft.Graph**.
   1. Select the Microsoft Graph SDK and click **Install**.
   
 1. Add a reference to the Bootstrap DateTime picker to your project
   1. In the **Solution Explorer** right-click the **QuickStartCalendarWebApp** project and select **Manage NuGet Packages...**.
+  1. Change **Package Source** (on the upper right corner) to **nuget.org**.
   1. Click **Browse** and search for **Bootstrap.v3.Datetimepicker.CSS**.
   1. Select Bootstrap.v3.Datetimepicker.CSS and click **Install**.
   1. Open the **App_Start/BundleConfig.cs** file and update the bootstrap script and CSS bundles. Replace these lines:
@@ -125,37 +127,41 @@ SDK and work with Office 365 and Outlook Calendar.
    `GraphServiceClient` and generate an access token for the Graph API:
 
   ```csharp
-  private GraphServiceClient GetGraphServiceClient()
-  {
-    string userObjId = System.Security.Claims.ClaimsPrincipal.Current
-      .FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
-    SessionTokenCache tokenCache = new SessionTokenCache(userObjId, HttpContext);
+        private GraphServiceClient GetGraphServiceClient()
+        {
+            string userObjId = System.Security.Claims.ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
+            SessionTokenCache tokenCache = new SessionTokenCache(userObjId, HttpContext);
 
-    string authority = string.Format(ConfigurationManager.AppSettings["ida:AADInstance"], "common", "");
+            string tenantId = System.Security.Claims.ClaimsPrincipal.Current
+                .FindFirst("http://schemas.microsoft.com/identity/claims/tenantid").Value;
 
-    AuthHelper authHelper = new AuthHelper(
-      authority,
-      ConfigurationManager.AppSettings["ida:AppId"],
-      ConfigurationManager.AppSettings["ida:AppSecret"],
-      tokenCache);
+            string authority = string.Format(ConfigurationManager.AppSettings["ida:AADInstance"], tenantId, "");
 
-    // Request an accessToken and provide the original redirect URL from sign-in.
-    GraphServiceClient client = new GraphServiceClient(new DelegateAuthenticationProvider(async (request) =>
-    {
-      string accessToken = await authHelper.GetUserAccessToken(Url.Action("Index", "Home", null, Request.Url.Scheme));
-      request.Headers.TryAddWithoutValidation("Authorization", "Bearer " + accessToken);
-    }));
+            AuthHelper authHelper = new AuthHelper(
+                authority,
+                ConfigurationManager.AppSettings["ida:AppId"],
+                ConfigurationManager.AppSettings["ida:AppSecret"],
+                tokenCache);
 
-    return client;
-  }
+            // Request an accessToken and provide the original redirect URL from sign-in
+            GraphServiceClient client = new GraphServiceClient(new DelegateAuthenticationProvider(async (request) =>
+            {
+                string accessToken = await authHelper.GetUserAccessToken(Url.Action("Index", "Home", null, Request.Url.Scheme));
+                request.Headers.TryAddWithoutValidation("Authorization", "Bearer " + accessToken);
+            }),
+            // WORKAROUND 
+            new HttpProvider(new Serializer(new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.None })));
+
+            return client;
+        }
   ```
  
 ### Work with EventList
   
-1. Add the following code to the `CalenderController` class to get all events in your mailbox.
+1. Add the following code to the `CalenderController` class to get all events for the next 7 days in your mailbox.
 
   ```csharp
-        // GET: Me/Events
+        // GET: Me/Calendar
         [Authorize]
         public async Task<ActionResult> Index(int? pageSize, string nextLink)
         {
@@ -168,14 +174,14 @@ SDK and work with Office 365 and Outlook Calendar.
 
             var client = GetGraphServiceClient();
 
-            // To use a calendar view, specify
+            // In order to use a calendar view, you must specify
             // a start and end time for the view. Here we'll specify
             // the next 7 days.
             DateTime start = DateTime.Today;
             DateTime end = start.AddDays(6);
 
             // These values go into query parameters in the request URL,
-            // so add them as QueryOptions to the options passed to the
+            // so add them as QueryOptions to the options passed ot the
             // request builder.
             List<Option> viewOptions = new List<Option>();
             viewOptions.Add(new QueryOption("startDateTime",
@@ -208,7 +214,6 @@ SDK and work with Office 365 and Outlook Calendar.
 1. Add the following code to the `CalenderController` class to display details of an event.
 
   ```csharp
-        // GET: Event/Detail?eventId=<id>
         [Authorize]
         public async Task<ActionResult> Detail(string eventId)
         {
@@ -229,8 +234,8 @@ SDK and work with Office 365 and Outlook Calendar.
                 return RedirectToAction("Index", "Error", new { message = ex.Error.Message });
             }
         }
-        
-      public async Task<ActionResult> GetEventBody(string eventId)
+
+        public async Task<ActionResult> GetEventBody(string eventId)
         {
             return Content(TempData[eventId] as string);
         }
@@ -238,19 +243,34 @@ SDK and work with Office 365 and Outlook Calendar.
   
 1. Add the following code to the `CalendarController` class to add a new event in the calendar.
 
-  ```csharp
+```csharp
         // POST Me/Events?eventId=<id>&subject=<text>&start=<text>&end=<text>&location=<text>
         [Authorize]
         [HttpPost]
-        public async Task<ActionResult> AddEvent(string eventId, string subject, string body, string start, string end, string location)
+        public async Task<ActionResult> AddEvent(string eventId, string attendees, string subject, string body, string start, string end, string location)
         {
             if (string.IsNullOrEmpty(subject) || string.IsNullOrEmpty(start)
               || string.IsNullOrEmpty(end) || string.IsNullOrEmpty(location))
             {
                 TempData["error"] = "Please fill in all fields";
             }
+
             else
             {
+                bool IsPersonalAppointment = true;
+                List<Attendee> eventAttendees = new List<Attendee>();
+                if (!string.IsNullOrEmpty(attendees))
+                {
+                    IsPersonalAppointment = false;
+
+
+                    if (!buildRecipients(attendees, eventAttendees))
+
+                    {
+                        TempData["error"] = "Please provide valid email addresses";
+                    }
+                }
+
                 var client = GetGraphServiceClient();
                 
                 var request = client.Me.Events.Request();
@@ -265,6 +285,8 @@ SDK and work with Office 365 and Outlook Calendar.
                     End = new DateTimeTimeZone() { DateTime = end, TimeZone = "UTC" },
                     Location = new Location() { DisplayName = location }
                 };
+                if (!IsPersonalAppointment)
+                    newEvent.Attendees = eventAttendees;
 
                 try
                 {
@@ -278,25 +300,72 @@ SDK and work with Office 365 and Outlook Calendar.
 
             return RedirectToAction("Index", new { eventId = eventId });
         }
+
+        const string SEMICOLON = ";";
+        const string PERIOD = ".";
+        const string AT = "@";
+        const string SPACE = " ";
+        
+        private bool buildRecipients(string strAttendees, List<Attendee> Attendees)
+        {
+            int iSemiColonPos = -1;
+            string strTemp = strAttendees.Trim();
+            string strEmailAddress = null;
+            Attendee attendee = new Attendee();
+
+            while (strTemp.Length != 0)
+            {
+                iSemiColonPos = strTemp.IndexOf(SEMICOLON);
+                if (iSemiColonPos != -1)
+                {
+                    strEmailAddress = strTemp.Substring(0, iSemiColonPos);
+                    strTemp = strTemp.Substring(iSemiColonPos + 1).Trim();
+                }
+                else
+                {
+                    strEmailAddress = strTemp;
+                    strTemp = "";
+                }
+                int iAt = strEmailAddress.IndexOf(AT);
+                int iPeriod = strEmailAddress.LastIndexOf(PERIOD);
+                if ((iAt != -1) && (iPeriod != -1) && (strEmailAddress.LastIndexOf(SPACE) == -1) && (iPeriod > iAt))
+                {
+                    EmailAddress mailAddress = new EmailAddress();
+                    mailAddress.Address = strEmailAddress;
+                    Attendee eventAttendee = new Attendee();
+                    eventAttendee.EmailAddress = mailAddress;
+                    Attendees.Add(eventAttendee);
+                }
+                else
+                {
+                    return false;
+                }
+                strEmailAddress = null;
+
+            }
+            return true;
+        }
+
+
   ```
   
 1. Add the following code to the `CalendarController` class to Accept an event.
 
   ```csharp
-  // POST: me/events/<<ID>>/Accept
+        // Accept Calendar event
         [Authorize]
         [HttpPost]
-        public async Task<ActionResult> Tentative(string eventId)
+        public async Task<ActionResult> Accept(string eventId)
         {
             var client = GetGraphServiceClient();
 
-            var request = client.Me.Events[eventId].TentativelyAccept().Request();
+            var request = client.Me.Events[eventId].Accept().Request();
 
             try
             {
                 await request.PostAsync();
-            }
-            catch (ServiceException ex)
+        }
+        catch (ServiceException ex)
             {
                 TempData["error"] = ex.Error.Message;
                 return RedirectToAction("Index", "Error", new { message = ex.Error.Message });
@@ -309,7 +378,6 @@ SDK and work with Office 365 and Outlook Calendar.
 1. Add the following code to the `CalendarController` class to TentativelyAccept an event.
 
   ```csharp
-  // POST: me/events/<<ID>>/TentativelyAccept
         [Authorize]
         [HttpPost]
         public async Task<ActionResult> Tentative(string eventId)
@@ -334,7 +402,6 @@ SDK and work with Office 365 and Outlook Calendar.
 1. Add the following code to the `CalendarController` class to Decline an event.
 
   ```csharp
-  // POST: me/events/<<ID>>/Decline
         [Authorize]
         [HttpPost]
         public async Task<ActionResult> Decline(string eventId)
@@ -373,7 +440,7 @@ to an MVC view that will display the events in your calendar and allow you to ad
         <li>@Html.ActionLink("Home", "Index", "Home")</li>
         <li>@Html.ActionLink("About", "About", "Home")</li>
         <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-        <li>@Html.ActionLink("Outlook Calendar API", "Index", "Calendar")</li>
+        <li>@Html.ActionLink("Graph API", "Graph", "Home")</li>
     </ul>
   ```
 
@@ -389,9 +456,10 @@ to an MVC view that will display the events in your calendar and allow you to ad
     </ul>
   ```
 1. Create a new **View** for CalendarList.
-  1. Expand the **Views** folder in **QuickStartCalendarWebApp**. Right-click **Calendar** and select
-      **Add** then **New Item**.
-  1. Select **MVC View Page** and change the filename **Index.cshtml** and click **Add**.
+  1. Right-click **Views** folder in **QuickStartCalendarWebApp** and select **Add** then **New Folder**.
+  1. Change the foldername **Calendar**.  
+  1. Right-click **Calendar** and select **Add** then **New Item**.
+  1. Select **MVC 5 View Page (Razor)** and change the filename **Index.cshtml** and click **Add**.
   1. **Replace** all of the code in the **Calendar/Index.cshtml** with the following:
   
   ```asp
@@ -415,6 +483,9 @@ $(function () {
         <div class="panel panel-default">
             <div class="panel-body">
                 <form class="form-inline" action="/Calendar/AddEvent" method="post">
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="attendees" id="attendees" placeholder="To" />
+                    </div>
                     <div class="form-group">
                         <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" />
                     </div>
@@ -515,7 +586,7 @@ $(function () {
 1. Create a new **View** to get event details and either Accept or TentativelyAccept or Decline it.
   1. Expand the **Views** folder in **QuickStartCalendarWebApp**. Right-click **Calendar** and select
       **Add** then **New Item**.
-  1. Select **MVC View Page** and change the filename **Detail.cshtml** and click **Add**.
+  1. Select **MVC 5 View Page (Razor)** and change the filename **Detail.cshtml** and click **Add**.
   1. **Replace** all of the code in the **Calendar/Detail.cshtml** with the following:
   
   ```asp
@@ -651,5 +722,5 @@ $(function () {
 
 Next Steps and Additional Resources:
 
-See this training and more on http://dev.office.com/
+See this training and more on http://dev.office.com/ and http://dev.outlook.com
 Learn about and connect to the Microsoft Graph at https://graph.microsoft.io

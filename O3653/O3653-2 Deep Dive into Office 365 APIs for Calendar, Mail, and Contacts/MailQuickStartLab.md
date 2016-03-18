@@ -18,7 +18,7 @@ for calling the Graph API.
 1. Launch the [Application Registration Portal](https://apps.dev.microsoft.com)
    to register a new application.
   1. Sign into the portal using your Office 365 username and password.
-  1. Click **Add an App** and type **Graph Mail Quick Start** for the application name.
+  1. Click **Add an App** and type **GraphMailQuickStart** for the application name.
   1. Copy the **Application Id** and paste it into the value for **ida:AppId** in your project's **web.config** file.
   1. Under **Application Secrets** click **Generate New Password** to create a new client secret for your app.
   1. Copy the displayed app password and paste it into the value for **ida:AppSecret** in your project's **web.config** file.
@@ -63,11 +63,13 @@ SDK and work with Office 365 and Outlook Mail
 
 1. Add a reference to the Microsoft Graph SDK to your project
   1. In the **Solution Explorer** right click on the **QuickStartMailWebApp** project and select **Manage NuGet Packages...**.
+  1. Change **Package Source** (on the upper right corner) to **Microsoft Graph local**.
   1. Click **Browse** and search for **Microsoft.Graph**.
   1. Select the Microsoft Graph SDK and click **Install**.
 
 1. Add a reference to the Bootstrap DateTime picker to your project
   1. In the **Solution Explorer** right click on the **QuickStartMailWebApp** project and select **Manage NuGet Packages...**.
+  1. Change **Package Source** (on the upper right corner) to **nuget.org**.
   1. Click **Browse** and search for **Bootstrap.v3.Datetimepicker.CSS**.
   1. Select Bootstrap.v3.Datetimepicker.CSS and click **Install**.
   1. Open the **App_Start/BundleConfig.cs** file and update the bootstrap script and CSS bundles. Replace these lines:
@@ -105,47 +107,51 @@ SDK and work with Office 365 and Outlook Mail
 1. **Add** the following reference to the top of the `MailController` class.
 
   ```csharp
-  using System;
-  using System.Collections.Generic;
-  using System.Linq;
-  using System.Web;
-  using System.Web.Mvc;
-  using System.Configuration;
-  using System.Threading.Tasks;
-  using Microsoft.Graph;
-  using QuickStartMailWebApp.Auth;
-  using QuickStartMailWebApp.TokenStorage;
-  using Newtonsoft.Json;
-  using System.IO;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using System.Configuration;
+using System.Threading.Tasks;
+using Microsoft.Graph;
+using REST_Cal.Auth;
+using REST_Cal.TokenStorage;
+using Newtonsoft.Json;
+using System.IO;
   ```
 
 1. Add the following code to the `MailController` class to initialize a new
    `GraphServiceClient` and generate an access token for the Graph API:
 
   ```csharp
-  private GraphServiceClient GetGraphServiceClient()
-  {
-    string userObjId = System.Security.Claims.ClaimsPrincipal.Current
-      .FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
-    SessionTokenCache tokenCache = new SessionTokenCache(userObjId, HttpContext);
-
-    string authority = string.Format(ConfigurationManager.AppSettings["ida:AADInstance"], "common", "");
-
-    AuthHelper authHelper = new AuthHelper(
-      authority,
-      ConfigurationManager.AppSettings["ida:AppId"],
-      ConfigurationManager.AppSettings["ida:AppSecret"],
-      tokenCache);
-
-    // Request an accessToken and provide the original redirect URL from sign-in
-    GraphServiceClient client = new GraphServiceClient(new DelegateAuthenticationProvider(async (request) =>
+    private GraphServiceClient GetGraphServiceClient()
     {
-      string accessToken = await authHelper.GetUserAccessToken(Url.Action("Index", "Home", null, Request.Url.Scheme));
-      request.Headers.TryAddWithoutValidation("Authorization", "Bearer " + accessToken);
-    }));
+        string userObjId = System.Security.Claims.ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
+        SessionTokenCache tokenCache = new SessionTokenCache(userObjId, HttpContext);
 
-    return client;
-  }
+        string tenantId = System.Security.Claims.ClaimsPrincipal.Current
+            .FindFirst("http://schemas.microsoft.com/identity/claims/tenantid").Value;
+
+        string authority = string.Format(ConfigurationManager.AppSettings["ida:AADInstance"], tenantId, "");
+
+        AuthHelper authHelper = new AuthHelper(
+            authority,
+            ConfigurationManager.AppSettings["ida:AppId"],
+            ConfigurationManager.AppSettings["ida:AppSecret"],
+            tokenCache);
+
+        // Request an accessToken and provide the original redirect URL from sign-in
+        GraphServiceClient client = new GraphServiceClient(new DelegateAuthenticationProvider(async (request) =>
+        {
+            string accessToken = await authHelper.GetUserAccessToken(Url.Action("Index", "Home", null, Request.Url.Scheme));
+            request.Headers.TryAddWithoutValidation("Authorization", "Bearer " + accessToken);
+        }),
+        // WORKAROUND 
+        new HttpProvider(new Serializer(new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.None })));
+
+        return client;
+    }
   ```
 
 ### Work with Mails
@@ -191,7 +197,9 @@ SDK and work with Office 365 and Outlook Mail
 1. Add the following code to the `MailController` class to display details of a mail.
 
   ```csharp
-       public async Task<ActionResult> Detail(string messageId)
+        // GET: Message/Detail?messageId=<id>
+        [Authorize]
+        public async Task<ActionResult> Detail(string messageId)
         {
             var client = GetGraphServiceClient();
 
@@ -210,7 +218,8 @@ SDK and work with Office 365 and Outlook Mail
                 return RedirectToAction("Index", "Error", new { message = ex.Error.Message });
             }
         }
-      public async Task<ActionResult> GetMessageBody(string messageId)
+
+        public async Task<ActionResult> GetMessageBody(string messageId)
         {
             return Content(TempData[messageId] as string);
         }
@@ -219,7 +228,10 @@ SDK and work with Office 365 and Outlook Mail
 1. Add the following code to the `MailController` class to send a new mail.
 
   ```csharp
-    public async Task<ActionResult> SendMail(string messageId, string recipients, string subject, string body)
+        // POST Messages/SendMail
+        [Authorize]
+        [HttpPost]
+        public async Task<ActionResult> SendMail(string messageId, string recipients,  string subject, string body)
         {
             if (string.IsNullOrEmpty(subject) || string.IsNullOrEmpty(recipients))
             {
@@ -229,6 +241,7 @@ SDK and work with Office 365 and Outlook Mail
             {
                 List<Recipient> mailRecipients = new List<Recipient>();
                 if (!buildRecipients(recipients, mailRecipients))
+
                 {
                     TempData["error"] = "Please provide valid email addresses";
                 }
@@ -256,8 +269,13 @@ SDK and work with Office 365 and Outlook Mail
 
             return RedirectToAction("Index", new { messageId = messageId });
         }
+
+        const string SEMICOLON = ";";
+        const string PERIOD = ".";
+        const string AT = "@";
+        const string SPACE = " ";
         
-               private bool buildRecipients(string strRecipients, List<Recipient> Recipients)
+        private bool buildRecipients(string strRecipients, List<Recipient> Recipients)
         {
             int iSemiColonPos = -1;
             string strTemp = strRecipients.Trim();
@@ -301,10 +319,12 @@ SDK and work with Office 365 and Outlook Mail
 1. Add the following code to the `MailController` class to reply to a mail.
 
   ```csharp
-       public async Task<ActionResult> Reply(string messageId, string comment)
+        [Authorize]
+        [HttpPost]
+        public async Task<ActionResult> Reply(string messageId, string comment)
         {
             var client = GetGraphServiceClient();
-
+                
             var request = client.Me.Messages[messageId].Reply(comment).Request();
 
             try
@@ -323,6 +343,8 @@ SDK and work with Office 365 and Outlook Mail
 1. Add the following code to the `MailController` class to reply all to a mail.
 
   ```csharp
+        [Authorize]
+        [HttpPost]
         public async Task<ActionResult> ReplyAll(string messageId, string comment)
         {
             var client = GetGraphServiceClient();
@@ -405,12 +427,14 @@ to an MVC view that will display all your mails and allow you to send a new mail
       </ul>
   ```
 1. Create a new **View** for MailList.
-  1. Expand the **Views** folder in **MailWebApp**. Right-click **Mail** and select
-      **Add** then **New Item**.
-  1. Select **MVC View Page** and change the filename **Index.cshtml** and click **Add**.
+  1. Right-click **Views** folder in **QuickStartCalendarWebApp** and select **Add** then **New Folder**.
+  1. Change the foldername **Mail**.  
+  1. Right-click **Mail** and select **Add** then **New Item**.
+  1. Select **MVC 5 View Page (Razor)** and change the filename **Index.cshtml** and click **Add**.
   1. **Replace** all of the code in the **Mail/Index.cshtml** with the following:
 
   ```asp
+@model IEnumerable<Microsoft.Graph.Message>
 @model IEnumerable<Microsoft.Graph.Message>
 @{ ViewBag.Title = "Index"; }
 <h2>Inbox</h2>
@@ -533,6 +557,23 @@ $(function () {
   1. **Replace** all of the code in the **Mail/Detail.cshtml** with the following:
 
   ```asp
+@model Microsoft.Graph.Message
+<head>
+    <style type="text/css">
+        .auto-style9 {
+            height: 404px;
+        }
+        .auto-style10 {
+            width: 601px;
+        }
+        .auto-style11 {
+            width: 575px;
+        }
+        .auto-style12 {
+            width: 461px;
+        }
+    </style>
+</head>
 @model Microsoft.Graph.Message
 @{ ViewBag.Title = "Detail"; }
 <h2>@Model.Subject</h2>
@@ -687,5 +728,5 @@ $(function () {
 Congratulations!, dedicated quick start developer. In this exercise you have created an MVC application that uses Microsoft Graph to view and manage Mails in your mailbox. This quick start ends here.  But don't stop here - there's plenty more to explore with the Microsoft Graph.
 
 ## Next Steps and Additional Resources:  
-- See this training and more on http://dev.office.com/
+- See this training and more on http://dev.office.com/ and http://dev.outlook.com
 - Learn about and connect to the Microsoft Graph at https://graph.microsoft.io
