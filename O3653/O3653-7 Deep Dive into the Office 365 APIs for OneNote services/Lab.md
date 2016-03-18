@@ -1,31 +1,29 @@
 # Microsoft Graph for OneNote Services
 In this lab, you will use Microsoft Graph to program against the Office 365 OneNote Service as part of an ASP.NET MVC5 application.
 
+# Microsoft Graph for OneNote Services
+In this lab, you will use Microsoft Graph to program against the Office 365 OneNote Service as part of an ASP.NET MVC5 application.
+
 ## Prerequisites
-1. You must have an Office 365 tenant and Microsoft Azure subscription to complete this lab. If you do not have one, the lab for **O3651-7 Setting up your Developer environment in Office 365** shows you how to obtain a trial.
-1. You must have Visual Studio 2015 with Update 1 installed.
+- Visual Studio 2015 with Update 1
+- The Graph AAD Auth v1 Started Project template installed
+- An administrator account for an Office 365 tenant. This is required because you'll be using the client credentials of an Azure application that's configured to request admin-level permissions.
 
 ## Exercise 1: Use the Microsoft Graph to access Notebooks in OneDrive for Business (Office 365)
-In this exercise you will use the Microsoft Graph to access OneNote notebook that is stored in the user's OneDrive for Business in Office 365.
+In this exercise you will use the Microsoft Graph to access a OneNote notebook that is stored in the user's OneDrive for Business in Office 365.
 
-### Create an ASP.NET MVC5 Application
-In this exercise, you will create the ASP.NET MVC5 application and register it with Azure active Directory.
+### Create an ASP.NET MVC application
+1. Open Visual Studio and select **File/New/Project**. 
 
-1. Launch **Visual Studio 2015** as an administrator. 
-1. In Visual Studio select **File/New/Project**.
-1. In the **New Project** dialog, select **Templates/Visual C#/Web** and click **ASP.NET Web Application**. Name the new project **OneNoteDev** and then click **OK**.  
+1. In the **New Project** dialog, select **Templates/Visual C#/Graph AAD Auth v1 Starter Project**. If you don't see the template, try searching for *Graph*. The starter project template scaffolds some auth infrastructure for you.
+
+1. Name the new project **OneNoteDev**, and then click **OK**.  
     
-    ![](Images/01.png)
-    > **Note:** Make sure you enter the exact same name for the Visual Studio Project that is specified in these lab instructions.  The Visual Studio Project name becomes part of the namespace in the code.  The code inside these instructions depends on the namespace matching the Visual Studio Project name specified in these instructions.  If you use a different project name the code will not compile unless you adjust all the namespaces to match the Visual Studio Project name you enter when you create the project.
-    
-1. In the **New ASP.NET Project** dialog, click **MVC** and then click **Change Authentication**.
-1. Select **Work And School Accounts**, check **Read directory data** and click **OK**.
+   > NOTE: Make sure you use the exact same name that is specified in these instructions for your Visual Studio project. Otherwise, your namespace name will differ from the one in these instructions and your code will not compile.
+ 
+    ![Creating the project in Visual Studio](Images/VSProject.png)
 
-	![](Images/02.png)
-
-1. Uncheck **Host in the cloud**, once the **New ASP.NET Project** dialog appears like the following screenshot, click **OK**. 
-
-	![](Images/03.png)
+1. Build the solution (**Build/Build Solution**) to restore the NuGet packages required by the project. This should remove all of the solution's initial red squigglies.
     
 1. At this point you can test the authentication flow for your application.
   1. In Visual Studio, press **F5**. The browser will automatically launch taking you to the HTTPS start page for the web application.
