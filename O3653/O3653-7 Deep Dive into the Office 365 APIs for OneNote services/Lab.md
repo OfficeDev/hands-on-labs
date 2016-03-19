@@ -5,6 +5,7 @@ In this lab, you will use Microsoft Graph to program against the Office 365 OneN
 - Visual Studio 2015 with Update 1
 - The Graph AAD Auth v1 Started Project template installed
 - An administrator account for an Office 365 tenant. This is required because you'll be using the client credentials of an Azure application that's configured to request admin-level permissions.
+
    This user must also have at least one OneNote notebook with a section and a page. 
 
 ## Exercise 1: Use the Microsoft Graph to access Notebooks in OneDrive for Business (Office 365)
@@ -14,7 +15,7 @@ In this exercise you will use the Microsoft Graph to access a OneNote notebook t
 1. Open Visual Studio and select **File/New/Project**. 
 
 1. In the **New Project** dialog, select **Templates/Visual C#/Graph AAD Auth v1 Starter Project**. If you don't see the template, try searching for *Graph*. The starter project template scaffolds some auth infrastructure for you.
-
+   
 1. Name the new project **OneNoteDev**, and then click **OK**.  
     
    > **Note**: Make sure you use the exact same name that is specified in these instructions for your Visual Studio project. Otherwise, your namespace name will differ from the one in these instructions and your code will not compile.
@@ -27,9 +28,9 @@ In this exercise you will use the Microsoft Graph to access a OneNote notebook t
 
    > **Note:** If you receive an error that indicates ASP.NET could not connect to the SQL database, please see the [SQL Server Database Connection Error Resolution document](../../SQL-DB-Connection-Error-Resolution.md) to quickly resolve the issue. 
 
-1. Click the **Click here to sign in** button on the page, and sign in with your Office 365 administrator account.
+1. Click the **Click here to sign in** button, and sign in with your Office 365 administrator account. If prompted, consent to the requested permissions.
 
-   You will be redirected back to your web application. However notice in the upper right corner, it now shows your email address and the **Sign out** link.
+   You will be redirected back to your web application. Your email address is displayed at the top of the page next to the **Sign out** link.
   
 1. In Visual Studio, press **Shift+F5** to stop debugging.
 
@@ -111,7 +112,7 @@ In this step you will create a repository class that will handle all communicati
 
 1. Create the repository class for communicating with the OneNote via Microsoft Graph:
 	1. Add a new class to the **Models** folder named **NotebookRepository**.
-	1. Ensure the following `using` statements are present at the top of the `NotebookRepository` class:
+	1. Ensure the following `using` statements are present at the top of the **NotebookRepository** class:
 
 		````c#
     using System.Collections.Generic;
@@ -121,7 +122,7 @@ In this step you will create a repository class that will handle all communicati
     using Newtonsoft.Json;
 		````
 
-	1. Add the following private fields and class constructor to the `NotebookRepository` class:
+	1. Add the following private fields and class constructor to the **NotebookRepository** class:
 
 		````c#
         private HttpClient _client;
@@ -142,7 +143,7 @@ In this step you will create a repository class that will handle all communicati
         }
 		````
 
-	1. Add the **GetNotebooks** action to the `NotebookRepository` class This gets a list of all OneNote notebooks for the currently logged in user's OneDrive for Business store.
+	1. Add the **GetNotebooks** method to the **NotebookRepository** class. This gets a list of all OneNote notebooks for the currently logged in user's OneDrive for Business store.
 
 		````c#
         public async Task<IEnumerable<Notebook>> GetNotebooks()
@@ -189,7 +190,7 @@ In this step you will create a repository class that will handle all communicati
         }
 		````
 
-	1. Add the **GetNotebook** action to the `NotebookRepository` class. This gets a single notebook based on the ID specified:
+	1. Add the **GetNotebook** method to the **NotebookRepository** class. This gets a single notebook based on the ID specified:
 
 		````c#
         public async Task<Notebook> GetNotebook(string notebookid)
@@ -225,7 +226,7 @@ In this step you will create a repository class that will handle all communicati
         }
 		````
 
-	1. Add the **GetNotebookSections** actions to the `NotebookRepository` class. This gets all the sections in the specified notebook using the Microsoft Graph.
+	1. Add the **GetNotebookSections** methods to the **NotebookRepository** class. This gets all the sections in the specified notebook using the Microsoft Graph.
 
 		````c#
         public async Task<Notebook> GetNotebookSections(string notebookid)
@@ -266,7 +267,7 @@ In this step you will create a repository class that will handle all communicati
         }
 		````
         
-    1. Add the **GetNotebookPages** actions to the `NotebookRepository` class. This loads all the pages within the specified notebook section.
+    1. Add the **GetNotebookPages** methods to the **NotebookRepository** class. This loads all the pages within the specified notebook section.
 
 		````c#
         public async Task<Notebook> GetNotebookPages(string notebookid, string sectionid)
@@ -321,7 +322,7 @@ In this step you will create a repository class that will handle all communicati
         }
 		````
 
-	1. And finally, add the following method to the `NotebookRepository` class. This deletes a specified page:
+	1. And finally, add the **DeletePage** method to the **NotebookRepository** class. This deletes a specified page.
 
 		````c#
         public async Task DeletePage(string id)
