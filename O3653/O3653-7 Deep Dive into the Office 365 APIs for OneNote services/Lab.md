@@ -9,7 +9,7 @@ In this lab, you will use Microsoft Graph to program against the Office 365 OneN
    This user must also have at least one OneNote notebook with a section and a page. 
 
 ## Exercise 1: Use the Microsoft Graph to access Notebooks in OneDrive for Business (Office 365)
-In this exercise you will use the Microsoft Graph to access a OneNote notebook that is stored in the user's OneDrive for Business in Office 365.
+In this exercise you will use the Microsoft Graph API to access OneNote notebooks that are stored in the user's OneDrive for Business in Office 365.
 
 ### Create an ASP.NET MVC application
 1. Open Visual Studio and select **File/New/Project**. 
@@ -37,81 +37,87 @@ In this exercise you will use the Microsoft Graph to access a OneNote notebook t
 Congratulations... at this point your app is configured with Azure AD and leverages OpenID Connect and OWIN to facilitate the authentication process!
 
 ### Create the OneNote API Repository
-In this step you will create a repository class that will handle all communication with the OneNote API to interact with notebooks in your OneDrive for Business store.
+In this step you will create a repository class that will handle all communication with the Microsoft Graph API to interact with notebooks in your OneDrive for Business store.
 
-1. This exercise will heavily leverage the OneNote REST API. To simplify working with the REST services, we will use the popular [JSON.NET](http://www.newtonsoft.com/json) JSON framework for .NET.
-	1. Create a new folder in the project's **Models** folder named **JsonHelpers**.
-	1. Copy all the C# files provided with this lab, located in the [\\\O3653\O3653-7 Deep Dive into the Office 365 APIs for OneNote services\Labs\Labfiles](Labs/Labfiles/JsonHelpers) folder, into this new **JsonHelpers** folder you just added in your project.
-    1. Right-click the **JsonHelpers** folder and choose **Add / Existing Item**. Select all the files you just copied to the folder and click **Add**.
+1. To simplify working with the REST services, we will use the popular [JSON.NET](http://www.newtonsoft.com/json) JSON framework for .NET.
+	1. In the project's **Models** folder, create a new folder named **JsonHelpers**.
+	
+	1. Copy all the C# files provided with this lab, located in the [\\\O3653\O3653-7 Deep Dive into the Office 365 APIs for OneNote services\Labs\Labfiles](Labs/Labfiles/JsonHelpers) folder, into the **JsonHelpers** folder you just added to your project.
+
+    1. Right-click the **JsonHelpers** folder and choose **Add/Existing Item**. Select all the files you just copied to the folder and click **Add**.
 
 		> **Note:** These files were created using the handy utility in Visual Studio: [Paste JSON as Classes](http://blogs.msdn.com/b/webdev/archive/2012/12/18/paste-json-as-classes-in-asp-net-and-web-tools-2012-2-rc.aspx).
 
 1. Create model objects for the OneNote notebook, section, and page:
 	1. Add a new class named **Notebook** to the **Models** folder in the project.
-	1. Replace the `Notebook` class with the following code:
+	
+	1. Replace the **Notebook** class with the following code:
 
-		````c#
-    public class Notebook
-    {
-        public Notebook()
-        {
-            Sections = new List<Section>();
-        }
+	   ```c#
+	public class Notebook
+	{
+		public Notebook()
+		{
+			Sections = new List<Section>();
+		}
 
-        public string Id { get; set; }
-        public string Name { get; set; }
-        public string NotebookUrl { get; set; }
-        public string ClientUrl { get; set; }
-        public string WebUrl { get; set; }
-        public bool IsDefault { get; set; }
-        public DateTime CreatedDateTime { get; set; }
-        public DateTime LastModifiedDateTime { get; set; }
-        public string SectionsUrl { get; set; }
-        public string SectionGroupsUrl { get; set; }
-        public List<Section> Sections { get; set; }
-    }
-		````
+		public string Id { get; set; }
+		public string Name { get; set; }
+		public string NotebookUrl { get; set; }
+		public string ClientUrl { get; set; }
+		public string WebUrl { get; set; }
+		public bool IsDefault { get; set; }
+		public DateTime CreatedDateTime { get; set; }
+		public DateTime LastModifiedDateTime { get; set; }
+		public string SectionsUrl { get; set; }
+		public string SectionGroupsUrl { get; set; }
+		public List<Section> Sections { get; set; }
+	}
+	   ```
 
 	1. Add a new class named **Section** to the **Models** folder in the project.
-	1. Replace the `Section` class with the following code:
+	
+	1. Replace the **Section** class with the following code:
 
-		````c#
-    public class Section
-    {
-        public Section()
-        {
-            Pages = new List<NotePage>();
-        }
+	   ```c#
+	public class Section
+	{
+		public Section()
+		{
+			Pages = new List<NotePage>();
+		}
 
-        public string Id { get; set; }
-        public string Name { get; set; }
-        public DateTime CreatedDateTime { get; set; }
-        public DateTime LastModifiedDateTime { get; set; }
-        public string PagesUrl { get; set; }
-        public List<NotePage> Pages { get; set; }
-    }
-		````
+		public string Id { get; set; }
+		public string Name { get; set; }
+		public DateTime CreatedDateTime { get; set; }
+		public DateTime LastModifiedDateTime { get; set; }
+		public string PagesUrl { get; set; }
+		public List<NotePage> Pages { get; set; }
+	}
+	   ```
 
 	1. Add a new class named **NotePage** to the **Models** folder in the project.
-	1. Replace the `NotePage` class with the following code:
+	
+	1. Replace the **NotePage** class with the following code:
 
-		````c#
-    public class NotePage
-    {
-        public string Id { get; set; }
-        public string Name { get; set; }
-        public DateTime CreatedDateTime { get; set; }
-        public DateTime LastModifiedDateTime { get; set; }
-        public string ContentUrl { get; set; }
-        public string Content { get; set; }
-        public string PageUrl { get; set; }
-        public string WebUrl { get; set; }
-        public string ClientUrl { get; set; }
-    }
-		````
+	   ```c#
+	public class NotePage
+	{
+		public string Id { get; set; }
+		public string Name { get; set; }
+		public DateTime CreatedDateTime { get; set; }
+		public DateTime LastModifiedDateTime { get; set; }
+		public string ContentUrl { get; set; }
+		public string Content { get; set; }
+		public string PageUrl { get; set; }
+		public string WebUrl { get; set; }
+		public string ClientUrl { get; set; }
+	}
+	   ```
 
-1. Create the repository class for communicating with the OneNote via Microsoft Graph:
+1. Create the repository class for communicating with the OneNote service using the Microsoft Graph API.
 	1. Add a new class to the **Models** folder named **NotebookRepository**.
+	
 	1. Ensure the following `using` statements are present at the top of the **NotebookRepository** class:
 
 		````c#
@@ -143,7 +149,7 @@ In this step you will create a repository class that will handle all communicati
         }
 		````
 
-	1. Add the **GetNotebooks** method to the **NotebookRepository** class. This gets a list of all OneNote notebooks for the currently logged in user's OneDrive for Business store.
+	1. Add the **GetNotebooks** method to the **NotebookRepository** class. This gets a list of all OneNote notebooks from the currently logged in user's OneDrive for Business store.
 
 		````c#
         public async Task<IEnumerable<Notebook>> GetNotebooks()
@@ -226,7 +232,7 @@ In this step you will create a repository class that will handle all communicati
         }
 		````
 
-	1. Add the **GetNotebookSections** methods to the **NotebookRepository** class. This gets all the sections in the specified notebook using the Microsoft Graph.
+	1. Add the **GetNotebookSections** methods to the **NotebookRepository** class. This gets all the sections in the specified notebook.
 
 		````c#
         public async Task<Notebook> GetNotebookSections(string notebookid)
