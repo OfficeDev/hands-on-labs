@@ -16,7 +16,7 @@ In this exercise you will use the Microsoft Graph to access a OneNote notebook t
 
 1. Name the new project **OneNoteDev**, and then click **OK**.  
     
-   > NOTE: Make sure you use the exact same name that is specified in these instructions for your Visual Studio project. Otherwise, your namespace name will differ from the one in these instructions and your code will not compile.
+   > **Note**: Make sure you use the exact same name that is specified in these instructions for your Visual Studio project. Otherwise, your namespace name will differ from the one in these instructions and your code will not compile.
  
     ![Creating the project in Visual Studio](Images/VSProject.png)
 
@@ -44,7 +44,7 @@ In this step you will create a repository class that will handle all communicati
 
 		> **Note:** These files were created using the handy utility in Visual Studio: [Paste JSON as Classes](http://blogs.msdn.com/b/webdev/archive/2012/12/18/paste-json-as-classes-in-asp-net-and-web-tools-2012-2-rc.aspx).
 
-1. Create model objects for the OneNote notebook, section & page:
+1. Create model objects for the OneNote notebook, section, and page:
 	1. Add a new class named **Notebook** to the **Models** folder in the project.
 	1. Replace the `Notebook` class with the following code:
 
@@ -414,7 +414,7 @@ In this step you will create a link on the home page to navigate to notebooks li
     </ul>
     ````
     
-### Add Notebook Controller & View
+### Add Notebook Controller and View
 In this step you will create the ASP.NET MVC controller and view for OneNote notebooks.
 
 1. Right-click the **Controllers** folder in the project and select **Add / Controller**.
@@ -425,8 +425,11 @@ In this step you will create the ASP.NET MVC controller and view for OneNote not
 1. Within the `NotebookController` class, add the following **using** statements:
 
 	````c#
-	using System.Threading.Tasks;
-	using OneNoteDev.Models;
+using System.Configuration;
+using System.Threading.Tasks;
+using OneNoteDev.Auth;
+using OneNoteDev.Models;
+using OneNoteDev.TokenStorage;
 	````
 
 1. Update the `Index()` action as follows to support viewing all notebooks:
@@ -495,7 +498,7 @@ In this step you will create the ASP.NET MVC controller and view for OneNote not
 	</table>
 	````
 
-### Add Section Controller & View
+### Add Section Controller and View
 In this step you will create the ASP.NET MVC controller and view for OneNote notebook sections.
 
 1. Right-click the **Controllers** folder in the project and select **Add / Controller**.
@@ -506,8 +509,11 @@ In this step you will create the ASP.NET MVC controller and view for OneNote not
 1. Within the `SectionController` class, add the following **using** statements:
 
 	````c#
-	using System.Threading.Tasks;
-	using OneNoteDev.Models;
+using System.Configuration;
+using System.Threading.Tasks;
+using OneNoteDev.Auth;
+using OneNoteDev.Models;
+using OneNoteDev.TokenStorage;
 	````
 
 1. Update the `Index()` action as follows to support viewing all notebook sections:
@@ -590,7 +596,7 @@ In this step you will create the ASP.NET MVC controller and view for OneNote not
 		);
 		````
 
-### Add Pages Controller & View
+### Add Pages Controller and View
 In this step you will create the ASP.NET MVC controller and view for pages within OneNote notebook sections.
 
 1. Right-click the **Controllers** folder in the project and select **Add / Controller**.
@@ -601,8 +607,11 @@ In this step you will create the ASP.NET MVC controller and view for pages withi
 1. Within the `PageController` class, add the following **using** statements:
 
 	````c#
-	using System.Threading.Tasks;
-	using OneNoteDev.Models;
+using System.Configuration;
+using System.Threading.Tasks;
+using OneNoteDev.Auth;
+using OneNoteDev.Models;
+using OneNoteDev.TokenStorage;
 	````
 
 1. Update `Index()` action as following to support viewing all pages within a notebook section:
@@ -702,17 +711,17 @@ In this step you will create the ASP.NET MVC controller and view for pages withi
 		````
 
 ### Test the Application
-The last step is to test the application you just created!
+The last step is to test the application you just created! But first, make sure you have at least one notebook with a section and a page.
 
 1. Press **F5** in Visual Studio to launch the application.
 
  > **Note:** If you receive an error that indicates ASP.NET could not connect to the SQL database, please see the [SQL Server Database Connection Error Resolution document](../../SQL-DB-Connection-Error-Resolution.md) to quickly resolve the issue. 
 
-1. When the browser loads, click the **Click here to sign in** button and login using your Office 365 administrator credentials.
+1. When the browser loads, click the **Click here to sign in** button and login using your Office 365 administrator credentials if you're not already signed in.
 
 	After logging in you will be taken back to your ASP.NET MVC application. 
 
-1. Click the **Notebooks** link in the top navigation. You will see a list of notebooks that are currently in your OneDrive for Business store listed.
+1. Click the **Notebooks** link in the top navigation bar. You will see a list of notebooks that are currently in your OneDrive for Business store listed.
 1. Click one of the notebook's **View Sections** links. You will see a list of the sections within the selected notebook.
 1. Click one of the section's **View Pages** links. You will see a list of the pages within that section.
 1. Click one of the page's **View in OneNote Web Client** links to see a new browser window load the notebook's page within the browser.
