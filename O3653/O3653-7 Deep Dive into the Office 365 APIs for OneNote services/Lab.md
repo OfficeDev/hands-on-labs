@@ -36,7 +36,7 @@ In this exercise you will use the Microsoft Graph API to access OneNote notebook
 
 Congratulations... at this point your app is configured with Azure AD and leverages OpenID Connect and OWIN to facilitate the authentication process!
 
-### Create the OneNote API Repository
+### Create the Notebook Repository
 In this step you will create a repository class that will handle all communication with the Microsoft Graph API to interact with notebooks in your OneDrive for Business store.
 
 1. To simplify working with the REST services, we will use the popular [JSON.NET](http://www.newtonsoft.com/json) JSON framework for .NET.
@@ -133,19 +133,19 @@ In this step you will create a repository class that will handle all communicati
 		````c#
         private HttpClient _client;
 
-        private string _oneNoteResourceId = string.Empty;
-        private string _oneNoteEndpoint = string.Empty;
+        private string _msGraphResourceId = string.Empty;
+        private string _msGraphEndpoint = string.Empty;
 
         public NotebookRepository(string accessToken)
         {
             _client = new HttpClient();
             _client.DefaultRequestHeaders.Add("Accept", "application/json");
 
-            // set the access token on all requests for onenote API
+            // set the access token on all requests to the Microsoft Graph API
             _client.DefaultRequestHeaders.Add("Authorization", "Bearer " + accessToken);
 
-            _oneNoteEndpoint = "https://graph.microsoft.com/beta";
-            _oneNoteResourceId = "https://graph.microsoft.com/";
+            _msGraphEndpoint = "https://graph.microsoft.com/beta";
+            _msGraphResourceId = "https://graph.microsoft.com/";
         }
 		````
 
@@ -156,7 +156,7 @@ In this step you will create a repository class that will handle all communicati
         {
 
             // create query
-            var query = _oneNoteEndpoint + "/me/notes/notebooks";
+            var query = _msGraphEndpoint + "/me/notes/notebooks";
 
             // create request
             var request = new HttpRequestMessage(HttpMethod.Get, query);
@@ -203,7 +203,7 @@ In this step you will create a repository class that will handle all communicati
         {
 
             // create query
-            var query = string.Format("{0}/me/notes/notebooks/?$top=1&$filter=id eq '{1}'", _oneNoteEndpoint, notebookid);
+            var query = string.Format("{0}/me/notes/notebooks/{1}", _msGraphEndpoint, notebookid);
 
             // create request
             var request = new HttpRequestMessage(HttpMethod.Get, query);
@@ -335,7 +335,7 @@ In this step you will create a repository class that will handle all communicati
         {
 
             // create query
-            var query = string.Format("{0}/me/notes/pages/{1}", _oneNoteEndpoint, id);
+            var query = string.Format("{0}/me/notes/pages/{1}", _msGraphEndpoint, id);
 
             // create request
             var request = new HttpRequestMessage(HttpMethod.Delete, query);
