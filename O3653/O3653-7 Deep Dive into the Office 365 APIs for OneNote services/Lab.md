@@ -5,6 +5,7 @@ In this lab, you will use Microsoft Graph to program against the Office 365 OneN
 - Visual Studio 2015 with Update 1
 - The Graph AAD Auth v1 Started Project template installed
 - An administrator account for an Office 365 tenant. This is required because you'll be using the client credentials of an Azure application that's configured to request admin-level permissions.
+   This user must also have at least one OneNote notebook with a section and a page. 
 
 ## Exercise 1: Use the Microsoft Graph to access Notebooks in OneDrive for Business (Office 365)
 In this exercise you will use the Microsoft Graph to access a OneNote notebook that is stored in the user's OneDrive for Business in Office 365.
@@ -113,14 +114,11 @@ In this step you will create a repository class that will handle all communicati
 	1. Ensure the following `using` statements are present at the top of the `NotebookRepository` class:
 
 		````c#
-        using System.Collections.Generic;
-        using System.Linq;
-        using System.Net.Http;
-        using System.Security.Claims;
-        using System.Threading.Tasks;
-        using Microsoft.IdentityModel.Clients.ActiveDirectory;
-        using Newtonsoft.Json;
-        using System.Configuration;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using System.Net.Http;
+    using Newtonsoft.Json;
 		````
 
 	1. Add the following private fields and class constructor to the `NotebookRepository` class:
@@ -128,52 +126,27 @@ In this step you will create a repository class that will handle all communicati
 		````c#
         private HttpClient _client;
 
-        private string _oneNoteResourceId = string.Empty; 
-        private string _oneNoteEndpoint = string.Empty; 
+        private string _oneNoteResourceId = string.Empty;
+        private string _oneNoteEndpoint = string.Empty;
 
-        public NotebookRepository()
+        public NotebookRepository(string accessToken)
         {
             _client = new HttpClient();
             _client.DefaultRequestHeaders.Add("Accept", "application/json");
-        }
-		````
-
-	1. Next, add a new method `InitOneNoteRestConnection()` to the `NotebookRepository` class. This method will be used to obtain an access token, endpoint & resource ID for Microsoft Graph:
-
-		````c#
-        private async Task InitOneNoteRestConnection()
-        {
-            _oneNoteEndpoint = "https://graph.microsoft.com/beta";
-            _oneNoteResourceId = "https://graph.microsoft.com/";
-            var Authority = ConfigurationManager.AppSettings["ida:AADInstance"] + ConfigurationManager.AppSettings["ida:TenantId"];
-
-            var signInUserId = ClaimsPrincipal.Current.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var userObjectId = ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
-            var clientCredential = new ClientCredential(ConfigurationManager.AppSettings["ida:ClientId"], ConfigurationManager.AppSettings["ida:ClientSecret"]);
-            var userIdentifier = new UserIdentifier(userObjectId, UserIdentifierType.UniqueId);
-
-            // create auth context
-            AuthenticationContext authContext = new AuthenticationContext(Authority, new ADALTokenCache(signInUserId));
-            var authResult = await authContext.AcquireTokenSilentAsync(_oneNoteResourceId, clientCredential, userIdentifier);
 
             // set the access token on all requests for onenote API
-            _client.DefaultRequestHeaders.Add("Authorization", "Bearer " + authResult.AccessToken);
+            _client.DefaultRequestHeaders.Add("Authorization", "Bearer " + accessToken);
 
-            return;
+            _oneNoteEndpoint = "https://graph.microsoft.com/beta";
+            _oneNoteResourceId = "https://graph.microsoft.com/";
         }
 		````
 
-	1. Add a method to get a list of all OneNote notebooks for the currently logged in user's OneDrive for Business store. Add the following code to the `NotebookRepository` class:
+	1. Add the **GetNotebooks** action to the `NotebookRepository` class This gets a list of all OneNote notebooks for the currently logged in user's OneDrive for Business store.
 
 		````c#
         public async Task<IEnumerable<Notebook>> GetNotebooks()
         {
-            // ensure connection established to new onenote API
-            if ((string.IsNullOrEmpty(_oneNoteEndpoint)) ||
-                (string.IsNullOrEmpty(_oneNoteResourceId)))
-            {
-                await InitOneNoteRestConnection();
-            }
 
             // create query
             var query = _oneNoteEndpoint + "/me/notes/notebooks";
@@ -188,40 +161,39 @@ In this step you will create a repository class that will handle all communicati
 
             // convert to model object
             var notebooks = new List<Notebook>();
-            foreach (var notebook in jsonResponse.Notebooks)
-            {
-                var item = new Notebook
-                {
-                    Id = notebook.Id,
-                    Name = notebook.Name,
-                    NotebookUrl = notebook.NotebookUrl,
-                    IsDefault = notebook.IsDefault,
-                    CreatedDateTime = notebook.CreatedTime,
-                    LastModifiedDateTime = notebook.LastModifiedTime,
-                    SectionsUrl = notebook.SectionsUrl,
-                    SectionGroupsUrl = notebook.SectionGroupsUrl,
-                    ClientUrl = notebook.Links.OneNoteClientUrl.href,
-                    WebUrl = notebook.Links.OneNoteWebUrl.href
-                };
 
-                notebooks.Add(item);
+            // check for null if the user's OneDrive for Business is not provisioned
+            if (jsonResponse.Notebooks != null)
+            {
+                foreach (var notebook in jsonResponse.Notebooks)
+                {
+                    var item = new Notebook
+                    {
+                        Id = notebook.Id,
+                        Name = notebook.Name,
+                        NotebookUrl = notebook.NotebookUrl,
+                        IsDefault = notebook.IsDefault,
+                        CreatedDateTime = notebook.CreatedTime,
+                        LastModifiedDateTime = notebook.LastModifiedTime,
+                        SectionsUrl = notebook.SectionsUrl,
+                        SectionGroupsUrl = notebook.SectionGroupsUrl,
+                        ClientUrl = notebook.Links.OneNoteClientUrl.href,
+                        WebUrl = notebook.Links.OneNoteWebUrl.href
+                    };
+
+                    notebooks.Add(item);
+                }
             }
 
             return notebooks.OrderBy(n => n.Name).ToList();
         }
 		````
 
-	1. Add the following code to get a single notebook based on the ID specified:
+	1. Add the **GetNotebook** action to the `NotebookRepository` class. This gets a single notebook based on the ID specified:
 
 		````c#
         public async Task<Notebook> GetNotebook(string notebookid)
         {
-            // ensure connection established to new onenote API
-            if ((string.IsNullOrEmpty(_oneNoteEndpoint)) ||
-                (string.IsNullOrEmpty(_oneNoteResourceId)))
-            {
-                await InitOneNoteRestConnection();
-            }
 
             // create query
             var query = string.Format("{0}/me/notes/notebooks/?$top=1&$filter=id eq '{1}'", _oneNoteEndpoint, notebookid);
@@ -253,7 +225,7 @@ In this step you will create a repository class that will handle all communicati
         }
 		````
 
-	1. Add the following code to get all the sections in the specified notebook using the Microsoft Graph. This should go in the `NotebookRepository` class.
+	1. Add the **GetNotebookSections** actions to the `NotebookRepository` class. This gets all the sections in the specified notebook using the Microsoft Graph.
 
 		````c#
         public async Task<Notebook> GetNotebookSections(string notebookid)
@@ -264,12 +236,6 @@ In this step you will create a repository class that will handle all communicati
 
         public async Task<Notebook> GetNotebookSections(Notebook notebook)
         {
-            // ensure connection established to new onenote API
-            if ((string.IsNullOrEmpty(_oneNoteEndpoint)) ||
-                (string.IsNullOrEmpty(_oneNoteResourceId)))
-            {
-                await InitOneNoteRestConnection();
-            }
 
             // create query
             var query = notebook.SectionsUrl;
@@ -300,7 +266,7 @@ In this step you will create a repository class that will handle all communicati
         }
 		````
         
-    1. Next, add the following code to load all the pages within the specified notebook section. This should also be added to the `NotebookRepository` class.
+    1. Add the **GetNotebookPages** actions to the `NotebookRepository` class. This loads all the pages within the specified notebook section.
 
 		````c#
         public async Task<Notebook> GetNotebookPages(string notebookid, string sectionid)
@@ -312,26 +278,18 @@ In this step you will create a repository class that will handle all communicati
 
         public async Task<Notebook> GetNotebookPages(Notebook notebook, string sectionid)
         {
-            // ensure connection established to new onenote API
-            if ((string.IsNullOrEmpty(_oneNoteEndpoint)) ||
-                (string.IsNullOrEmpty(_oneNoteResourceId)))
-            {
-                await InitOneNoteRestConnection();
-            }
 
-            HttpRequestMessage request = null;
-            HttpResponseMessage response = null;
-            string responseString;
-
-            // for the specified section...
+            // create query for the specified section...
             var section = notebook.Sections.First(s => s.Id == sectionid);
 
-            // get all the pages in the section
-            request = new HttpRequestMessage(HttpMethod.Get, section.PagesUrl);
-            response = await _client.SendAsync(request);
+            // create request to get all the pages in the section
+            var request = new HttpRequestMessage(HttpMethod.Get, section.PagesUrl);
+
+            // issue request & get response
+            var response = await _client.SendAsync(request);
 
             // convert to JSON object
-            responseString = await response.Content.ReadAsStringAsync();
+            string responseString = await response.Content.ReadAsStringAsync();
             var jsonPages = JsonConvert.DeserializeObject<JsonHelpers.PagesJson>(responseString);
 
             // loop through all pages
@@ -363,17 +321,11 @@ In this step you will create a repository class that will handle all communicati
         }
 		````
 
-	1. And finally, add the following method to delete a specified page:
+	1. And finally, add the following method to the `NotebookRepository` class. This deletes a specified page:
 
 		````c#
         public async Task DeletePage(string id)
         {
-            // ensure connection established to new onenote API
-            if ((string.IsNullOrEmpty(_oneNoteEndpoint)) ||
-                (string.IsNullOrEmpty(_oneNoteResourceId)))
-            {
-                await InitOneNoteRestConnection();
-            }
 
             // create query
             var query = string.Format("{0}/me/notes/pages/{1}", _oneNoteEndpoint, id);
@@ -389,20 +341,8 @@ In this step you will create a repository class that will handle all communicati
 ### Add Navigation
 In this step you will create a link on the home page to navigate to notebooks list page.
 
-1. Locate the **Views/Shared** folder in the project.
 1. Open the **_Layout.cshtml** file found in the **Views/Shared** folder.
-    1. Locate the part of the file that includes a few links near the top of the page... it should look similar to the following code:
-    
-    ````asp
-    <ul class="nav navbar-nav">
-        <li>@Html.ActionLink("Home", "Index", "Home")</li>
-        <li>@Html.ActionLink("About", "About", "Home")</li>
-        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-        <li>@Html.ActionLink("Graph API", "Graph", "Home")</li>
-    </ul>
-    ````
-
-    1. Update that navigation to have a new link (the **Notebooks** link added below):
+    1. Locate the navigation links and add a **Notebooks** link, as shown below:
 
     ````asp
     <ul class="nav navbar-nav">
@@ -432,14 +372,23 @@ using OneNoteDev.Models;
 using OneNoteDev.TokenStorage;
 	````
 
-1. Update the `Index()` action as follows to support viewing all notebooks:
+1. Replace the `Index()` action with the following code to support viewing all notebooks:
 
     ````c#
     [Authorize]
     public async Task<ActionResult> Index()
     {
-        var repository = new NotebookRepository();
+        // Get an access token for the request.
+        string userObjId = System.Security.Claims.ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
+        SessionTokenCache tokenCache = new SessionTokenCache(userObjId, HttpContext);
+        string tenantId = System.Security.Claims.ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/tenantid").Value;
+        string authority = string.Format(ConfigurationManager.AppSettings["ida:AADInstance"], tenantId, "");
 
+        AuthHelper authHelper = new AuthHelper(authority, ConfigurationManager.AppSettings["ida:AppId"], ConfigurationManager.AppSettings["ida:AppSecret"], tokenCache);
+        string accessToken = await authHelper.GetUserAccessToken("/Notebook/Index");
+
+        // Make the request.
+        var repository = new NotebookRepository(accessToken);
         var myNotebooks = await repository.GetNotebooks();
 
         return View(myNotebooks);
@@ -516,14 +465,23 @@ using OneNoteDev.Models;
 using OneNoteDev.TokenStorage;
 	````
 
-1. Update the `Index()` action as follows to support viewing all notebook sections:
+1. Replace the `Index()` action with the following code to support viewing all notebook sections:
 
     ````c#
     [Authorize]
     public async Task<ActionResult> Index(string notebookid)
     {
-        var repository = new NotebookRepository();
+        // Get an access token for the request.
+        string userObjId = System.Security.Claims.ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
+        SessionTokenCache tokenCache = new SessionTokenCache(userObjId, HttpContext);
+        string tenantId = System.Security.Claims.ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/tenantid").Value;
+        string authority = string.Format(ConfigurationManager.AppSettings["ida:AADInstance"], tenantId, "");
 
+        AuthHelper authHelper = new AuthHelper(authority, ConfigurationManager.AppSettings["ida:AppId"], ConfigurationManager.AppSettings["ida:AppSecret"], tokenCache);
+        string accessToken = await authHelper.GetUserAccessToken("/Section/Index");
+            
+        // Make the request.
+        var repository = new NotebookRepository(accessToken);
         var notebook = await repository.GetNotebookSections(notebookid);
 
         ViewBag.CurrentNotebookTitle = notebook.Name; ViewBag.CurrentNotebookId = notebook.Id;
@@ -614,29 +572,55 @@ using OneNoteDev.Models;
 using OneNoteDev.TokenStorage;
 	````
 
-1. Update `Index()` action as following to support viewing all pages within a notebook section:
+1. Replace the `Index()` action with the following code to support viewing all pages within a notebook section:
 
 	````c#
     [Authorize]
     public async Task<ActionResult> Index(string notebookid, string sectionid)
-    {
-        var repository = new NotebookRepository();
+    {   
+            
+        // Get an access token for the request.
+        string userObjId = System.Security.Claims.ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
+        SessionTokenCache tokenCache = new SessionTokenCache(userObjId, HttpContext);
+        string tenantId = System.Security.Claims.ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/tenantid").Value;
+        string authority = string.Format(ConfigurationManager.AppSettings["ida:AADInstance"], tenantId, "");
+
+        AuthHelper authHelper = new AuthHelper(authority, ConfigurationManager.AppSettings["ida:AppId"], ConfigurationManager.AppSettings["ida:AppSecret"], tokenCache);
+        string accessToken = await authHelper.GetUserAccessToken("/Page/Index");
+
+        // Make the request.
+        var repository = new NotebookRepository(accessToken);
         var notebook = await repository.GetNotebookPages(notebookid, sectionid);
+
         ViewBag.CurrentNotebookTitle = notebook.Name;
         ViewBag.CurrentNotebookId = notebook.Id;
+
         var section = notebook.Sections.First(s => s.Id == sectionid);
+ 
         ViewBag.CurrentSectionTitle = section.Name;
+
         return View(section.Pages);
     }
 	````
 
-1. Add the following action to support deleting a page:
+1. Add the **Delete** action to support deleting a page:
 
 	````c#
     [Authorize]
     public async Task<ActionResult> Delete(string id)
     {
-        var repository = new NotebookRepository();
+
+        // Get an access token for the request.
+        string userObjId = System.Security.Claims.ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
+        SessionTokenCache tokenCache = new SessionTokenCache(userObjId, HttpContext);
+        string tenantId = System.Security.Claims.ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/tenantid").Value;
+        string authority = string.Format(ConfigurationManager.AppSettings["ida:AADInstance"], tenantId, "");
+
+        AuthHelper authHelper = new AuthHelper(authority, ConfigurationManager.AppSettings["ida:AppId"], ConfigurationManager.AppSettings["ida:AppSecret"], tokenCache);
+        string accessToken = await authHelper.GetUserAccessToken("/Page/Delete");
+
+        // Make the request.
+        var repository = new NotebookRepository(accessToken);
         if (id != null)
         {
             await repository.DeletePage(id);
