@@ -47,6 +47,11 @@ for calling the Graph API.
   1. Paste the value of **Project Url** into the **Redirect URIs** field.
   1. Scroll to the bottom of the page and click **Save**.
 
+1. Set Startup page to Signout page (to avoid stale token error) 
+  1. Right-click **QuickStartCalendarWebApp** and click **Properties** to open the project properties.
+  1. Click **Web** in the left navigation.
+  1. Under **Start Action** Choose **Specific Page** option and Type its value as **Account/SignOut**  
+
 1. Press **F5** to compile and launch your new application in the default browser.
   1. Once the Graph and AAD v2 Auth Endpoint Starter page appears, click **Sign in** and login to your Office 365 account.
   1. Review the permissions the application is requesting, and click **Accept**.
@@ -106,8 +111,16 @@ SDK and work with Office 365 and Outlook Calendar.
   1. Select **MVC 5 Controller - Empty** and click **Add**.
   1. Change the name of the controller to **CalendarController** and click **Add**.
 
-1. **Add** the following reference to the top of the `CalendarController` class.
+1. **Replace** the following reference to the top of the `CalendarController` class
+  ```csharp
+  using System;
+  using System.Collections.Generic;
+  using System.Linq;
+  using System.Web;
+  using System.Web.Mvc;
+  ```
 
+  with the following references
   ```csharp
   using System;
   using System.Collections.Generic;
@@ -158,8 +171,18 @@ SDK and work with Office 365 and Outlook Calendar.
  
 ### Work with EventList
   
-1. Add the following code to the `CalenderController` class to get all events for the next 7 days in your mailbox.
+1. Replace the following code in the `CalenderController` class 
 
+  ```csharp
+        // GET: Calendar
+        public ActionResult Index()
+        {
+            return View();
+        }
+  ```
+  
+  with the following code to get all events for the next 7 days in your mailbox.
+  
   ```csharp
         // GET: Me/Calendar
         [Authorize]
@@ -456,8 +479,7 @@ to an MVC view that will display the events in your calendar and allow you to ad
     </ul>
   ```
 1. Create a new **View** for CalendarList.
-  1. Right-click **Views** folder in **QuickStartCalendarWebApp** and select **Add** then **New Folder**.
-  1. Change the foldername **Calendar**.  
+  1. Expand **Views** folder in **QuickStartCalendarWebApp** and select the folder **Calendar**.  
   1. Right-click **Calendar** and select **Add** then **New Item**.
   1. Select **MVC 5 View Page (Razor)** and change the filename **Index.cshtml** and click **Add**.
   1. **Replace** all of the code in the **Calendar/Index.cshtml** with the following:
@@ -535,7 +557,14 @@ $(function () {
                                 @{
                                     RouteValueDictionary idVal = new RouteValueDictionary();
                                     idVal.Add("eventId", calendarEvent.Id);
-                                    @Html.ActionLink(calendarEvent.Subject, "Detail", idVal);
+                                    if (!string.IsNullOrEmpty(calendarEvent.Subject))
+                                    {
+                                        @Html.ActionLink(calendarEvent.Subject, "Detail", idVal)
+                                    }
+                                    else
+                                    {
+                                        @Html.ActionLink("(no subject)", "Detail", idVal)
+                                    }
                                 }
                             </td>
                             <td>

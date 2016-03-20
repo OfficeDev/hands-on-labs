@@ -45,6 +45,11 @@ for calling the Graph API.
   1. Paste the value of **Project Url** into the **Redirect URIs** field.
   1. Scroll to the bottom of the page and click **Save**.
 
+1. Set Startup page to Signout page (to avoid stale token error) 
+  1. Right-click **QuickStartCalendarWebApp** and click **Properties** to open the project properties.
+  1. Click **Web** in the left navigation.
+  1. Under **Start Action** Choose **Specific Page** option and Type its value as **Account/SignOut**  
+
 1. Press F5 to compile and launch your new application in the default browser.
   1. Once the Graph and AAD v2 Auth Endpoint Starter page appears, click **Sign in** and login to your Office 365 account.
   1. Review the permissions the application is requesting, and click **Accept**.
@@ -67,58 +72,34 @@ SDK and work with Office 365 and Outlook Mail
   1. Click **Browse** and search for **Microsoft.Graph**.
   1. Select the Microsoft Graph SDK and click **Install**.
 
-1. Add a reference to the Bootstrap DateTime picker to your project
-  1. In the **Solution Explorer** right click on the **QuickStartMailWebApp** project and select **Manage NuGet Packages...**.
-  1. Change **Package Source** (on the upper right corner) to **nuget.org**.
-  1. Click **Browse** and search for **Bootstrap.v3.Datetimepicker.CSS**.
-  1. Select Bootstrap.v3.Datetimepicker.CSS and click **Install**.
-  1. Open the **App_Start/BundleConfig.cs** file and update the bootstrap script and CSS bundles. Replace these lines:
-
-    ```csharp
-    bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-              "~/Scripts/bootstrap.js",
-              "~/Scripts/respond.js"));
-
-    bundles.Add(new StyleBundle("~/Content/css").Include(
-              "~/Content/bootstrap.css",
-              "~/Content/site.css"));
-    ```
-
-    with:
-
-    ```csharp
-    bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-              "~/Scripts/bootstrap.js",
-              "~/Scripts/respond.js",
-              "~/Scripts/moment.js",
-              "~/Scripts/bootstrap-datetimepicker.js"));
-
-    bundles.Add(new StyleBundle("~/Content/css").Include(
-              "~/Content/bootstrap.css",
-              "~/Content/bootstrap-datetimepicker.css",
-              "~/Content/site.css"));
-    ```
-
 1. Create a new controller to process the requests for files and send them to Graph API.
   1. Find the **Controllers** folder under **QuickStartMailWebApp**, right click on it and select **Add** then **Controller**.
   1. Select **MVC 5 Controller - Empty** and click **Add**.
   1. Change the name of the controller to **MailController** and click **Add**.
 
-1. **Add** the following reference to the top of the `MailController` class.
-
+1. **Replace** the following reference to the top of the `CalendarController` class
   ```csharp
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using System.Configuration;
-using System.Threading.Tasks;
-using Microsoft.Graph;
-using REST_Cal.Auth;
-using REST_Cal.TokenStorage;
-using Newtonsoft.Json;
-using System.IO;
+  using System;
+  using System.Collections.Generic;
+  using System.Linq;
+  using System.Web;
+  using System.Web.Mvc;
+  ```
+
+  with the following references
+  ```csharp
+  using System;
+  using System.Collections.Generic;
+  using System.Linq;
+  using System.Web;
+  using System.Web.Mvc;
+  using System.Configuration;
+  using System.Threading.Tasks;
+  using Microsoft.Graph;
+  using QuickStartMailWebApp.Auth;
+  using QuickStartMailWebApp.TokenStorage;
+  using Newtonsoft.Json;
+  using System.IO;
   ```
 
 1. Add the following code to the `MailController` class to initialize a new
@@ -156,8 +137,18 @@ using System.IO;
 
 ### Work with Mails
 
-1. Add the following code to the `MailController` class to get all mails from your mailbox.
+1. Replace the following code in the `MailController` class 
 
+  ```csharp
+        // GET: Calendar
+        public ActionResult Index()
+        {
+            return View();
+        }
+  ```
+  
+  with the following code to get all mails from your mailbox.
+  
   ```csharp
         // GET: Me/Messages
         [Authorize]
@@ -427,14 +418,12 @@ to an MVC view that will display all your mails and allow you to send a new mail
       </ul>
   ```
 1. Create a new **View** for MailList.
-  1. Right-click **Views** folder in **QuickStartCalendarWebApp** and select **Add** then **New Folder**.
-  1. Change the foldername **Mail**.  
+  1. Expand **Views** folder in **QuickStartCalendarWebApp** and select the folder **Mail**.  
   1. Right-click **Mail** and select **Add** then **New Item**.
   1. Select **MVC 5 View Page (Razor)** and change the filename **Index.cshtml** and click **Add**.
   1. **Replace** all of the code in the **Mail/Index.cshtml** with the following:
 
   ```asp
-@model IEnumerable<Microsoft.Graph.Message>
 @model IEnumerable<Microsoft.Graph.Message>
 @{ ViewBag.Title = "Index"; }
 <h2>Inbox</h2>
@@ -503,7 +492,14 @@ $(function () {
                                         {
                                             <p>
                                                 <b>
-                                                    @Html.ActionLink(MailMessage.Subject, "Detail", idVal)
+                                                    @if (!string.IsNullOrEmpty(MailMessage.Subject))
+                                                    {
+                                                        @Html.ActionLink(MailMessage.Subject, "Detail", idVal)
+                                                    }
+                                                    else
+                                                    {
+                                                        @Html.ActionLink("(no subject)", "Detail", idVal)
+                                                    }
                                                 </b>
                                             </p>
                                         }
@@ -557,7 +553,6 @@ $(function () {
   1. **Replace** all of the code in the **Mail/Detail.cshtml** with the following:
 
   ```asp
-@model Microsoft.Graph.Message
 <head>
     <style type="text/css">
         .auto-style9 {
