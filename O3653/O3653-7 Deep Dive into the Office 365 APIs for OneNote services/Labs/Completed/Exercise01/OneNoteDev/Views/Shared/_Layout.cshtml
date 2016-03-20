@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title - Graph and AAD Auth Starter</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
@@ -16,16 +16,35 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Graph and AAD Auth Starter", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li>@Html.ActionLink("About", "About", "Home")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    <li>@Html.ActionLink("Graph API", "Graph", "Home")</li>
                     <li>@Html.ActionLink("Notebooks", "Index", "Notebook")</li>
                 </ul>
-                @Html.Partial("_LoginPartial")
+                @if (Request.IsAuthenticated)
+                {
+                <text>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="navbar-text">
+                            Hello, @(System.Security.Claims.ClaimsPrincipal.Current.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/upn").Value)!
+                        </li>
+                        <li>
+                            @Html.ActionLink("Sign out", "SignOut", "Account")
+                        </li>
+                    </ul>
+                </text>
+                }
+                else
+                {
+                <ul class="nav navbar-nav navbar-right">
+                    <li>@Html.ActionLink("Sign in", "SignIn", "Account")</li>
+                </ul>
+                }
             </div>
         </div>
     </div>
@@ -33,7 +52,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>Graph and AAD Auth Starter</p>
         </footer>
     </div>
 
