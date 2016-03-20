@@ -3,12 +3,14 @@ In this lab, you will use Microsoft Graph to program against the Office 365 OneN
 
 ## Prerequisites
 - Visual Studio 2015 with Update 1
+
 - The Graph AAD Auth v1 Started Project template installed
-- An administrator account for an Office 365 tenant. This is required because you'll be using the client credentials of an Azure application that's configured to request admin-level permissions.
 
-   This user must also have at least one OneNote notebook with a section and a page. 
+- An administrator account for an Office 365 tenant. This is required because you'll be using the client credentials of an Azure application that's configured to request admin-level permissions. 
 
-## Exercise 1: Use the Microsoft Graph to access Notebooks in OneDrive for Business (Office 365)
+This user must also have at least one OneNote notebook with a section and a page. 
+
+## Exercise 1: Use the Microsoft Graph API to access Notebooks in OneDrive for Business (Office 365)
 In this exercise you will use the Microsoft Graph API to access OneNote notebooks that are stored in the user's OneDrive for Business in Office 365.
 
 ### Create an ASP.NET MVC application
@@ -30,7 +32,7 @@ In this exercise you will use the Microsoft Graph API to access OneNote notebook
 
 1. Click the **Click here to sign in** button, and sign in with your Office 365 administrator account. If prompted, consent to the requested permissions.
 
-   You will be redirected back to your web application. Your email address is displayed at the top of the page next to the **Sign out** link.
+   You will be redirected back to your web application. Notice that your email address displays at the top of the page next to the **Sign out** link.
   
 1. In Visual Studio, press **Shift+F5** to stop debugging.
 
@@ -40,9 +42,9 @@ Congratulations... at this point your app is configured with Azure AD and levera
 In this step you will create a repository class that will handle all communication with the Microsoft Graph API to interact with notebooks in your OneDrive for Business store.
 
 1. To simplify working with the REST services, we will use the popular [JSON.NET](http://www.newtonsoft.com/json) JSON framework for .NET.
-	1. In the project's **Models** folder, create a new folder named **JsonHelpers**.
+	1. In Solution Explorer, right-click the project's **Models** folder and choose **Add / New Folder**. Name the folder **JsonHelpers**.
 	
-	1. Copy all the C# files provided with this lab, located in the [\\\O3653\O3653-7 Deep Dive into the Office 365 APIs for OneNote services\Labs\Labfiles](Labs/Labfiles/JsonHelpers) folder, into the **JsonHelpers** folder you just added to your project.
+	1. Copy all the C# files provided with this lab, located in the [\\\O3653\O3653-7 Deep Dive into the Office 365 APIs for OneNote services\Labs\Labfiles](Labs/Labfiles/JsonHelpers) folder, into the **JsonHelpers** folder that you just added to your project.
 
     1. Right-click the **JsonHelpers** folder and choose **Add / Existing Item**. Select all the files you just copied to the folder and click **Add**.
 
@@ -203,7 +205,7 @@ In this step you will create a repository class that will handle all communicati
         {
 
             // create query
-            var query = string.Format("{0}/me/notes/notebooks/{1}", _msGraphEndpoint, notebookid);
+            var query = string.Format("{0}/me/notes/notebooks/?$top=1&$filter=id eq '{1}'", _msGraphEndpoint, notebookid);
 
             // create request
             var request = new HttpRequestMessage(HttpMethod.Get, query);
@@ -273,7 +275,7 @@ In this step you will create a repository class that will handle all communicati
         }
 		````
         
-    1. Add the **GetNotebookPages** methods to the **NotebookRepository** class. This loads all the pages within the specified notebook section.
+    1. Add the **GetNotebookPages** methods to the **NotebookRepository** class. This loads all the pages within the specified section.
 
 		````c#
         public async Task<Notebook> GetNotebookPages(string notebookid, string sectionid)
@@ -729,7 +731,7 @@ The last step is to test the application you just created! First, make sure you 
 
  > **Note:** If you receive an error that indicates ASP.NET could not connect to the SQL database, please see the [SQL Server Database Connection Error Resolution document](../../SQL-DB-Connection-Error-Resolution.md) to quickly resolve the issue. 
 
-1. When the browser loads, click the **Click here to sign in** button and login using your Office 365 administrator credentials if you're not already signed in.
+1. When the browser loads, click the **Click here to sign in** button and sign in using your Office 365 administrator credentials if you're not already signed in.
 
 	After logging in you will be taken back to your ASP.NET MVC application. 
 
