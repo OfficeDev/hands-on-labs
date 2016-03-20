@@ -135,7 +135,7 @@ SDK and work with Office 365 and Outlook Mail
     }
   ```
 
-### Work with Mails
+### Work with Mail
 
 1. Replace the following code in the `MailController` class 
 
@@ -147,7 +147,7 @@ SDK and work with Office 365 and Outlook Mail
         }
   ```
   
-  with the following code to get all mails from your mailbox.
+  with the following code to get all mail messages from your mailbox.
   
   ```csharp
         // GET: Me/Messages
@@ -390,7 +390,7 @@ SDK and work with Office 365 and Outlook Mail
 ### Create the MailList view
 
 In this section you'll wire up the Controller you created in the previous section
-to an MVC view that will display all your mails and allow you to send a new mail.
+to an MVC view that will display all your Inbox messages and allow you to send a new mail.
 
 1. Locate the **Views/Shared** folder in the project.
 1. Open the **_Layout.cshtml** file found in the **Views/Shared** folder.
@@ -484,7 +484,14 @@ $(function () {
                                         if ((bool)MailMessage.IsRead)
                                         {
                                             <p>
-                                               @Html.ActionLink(MailMessage.Subject, "Detail", idVal)
+                                                    @if (!string.IsNullOrEmpty(MailMessage.Subject))
+                                                    {
+                                                        @Html.ActionLink(MailMessage.Subject, "Detail", idVal)
+                                                    }
+                                                    else
+                                                    {
+                                                        @Html.ActionLink("(no subject)", "Detail", idVal)
+                                                    }
                                             </p>
                                         }
 
@@ -720,7 +727,7 @@ $(function () {
 1. Try out the app!
 
 ***
-Congratulations!, dedicated quick start developer. In this exercise you have created an MVC application that uses Microsoft Graph to view and manage Mails in your mailbox. This quick start ends here.  But don't stop here - there's plenty more to explore with the Microsoft Graph.
+Congratulations!, dedicated quick start developer. In this exercise you have created an MVC application that uses Microsoft Graph to view and manage Mail in your mailbox. This quick start ends here.  But don't stop here - there's plenty more to explore with the Microsoft Graph.
 
 ## Next Steps and Additional Resources:  
 - See this training and more on http://dev.office.com/ and http://dev.outlook.com
