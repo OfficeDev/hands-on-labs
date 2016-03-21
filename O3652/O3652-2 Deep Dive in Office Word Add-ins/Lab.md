@@ -82,7 +82,7 @@ In this lab, you will get hands-on experience developing a Word add-in by using 
 		<bt:String id="Contoso.TaskpaneButton.Label" DefaultValue="Statement of Work" />
 	```
         
-13. Press *F5* (or click the "Start" button) to try your changes. You should see you add-in deploy in Word and a button appear on the Home Tab. If you didn't change the label this is what you will see. 
+13. Press *F5* (or click the "Start" button) to try your changes. If you're prompted to installed a self-signed certificate for localhost, accept the two dialogs. You should see you add-in deploy in Word and a button appear on the Home Tab. If you didn't change the label this is what you will see. 
 
 	![Button on Ribbon](Images/Fig03.png)
 
