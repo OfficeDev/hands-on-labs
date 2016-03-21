@@ -108,13 +108,10 @@ SDK and work with Office 365 and Outlook Mail
   ```csharp
     private GraphServiceClient GetGraphServiceClient()
     {
-        string userObjId = System.Security.Claims.ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
+        string userObjId = AuthHelper.GetUserId(System.Security.Claims.ClaimsPrincipal.Current);
         SessionTokenCache tokenCache = new SessionTokenCache(userObjId, HttpContext);
 
-        string tenantId = System.Security.Claims.ClaimsPrincipal.Current
-            .FindFirst("http://schemas.microsoft.com/identity/claims/tenantid").Value;
-
-        string authority = string.Format(ConfigurationManager.AppSettings["ida:AADInstance"], tenantId, "");
+        string authority = string.Format(ConfigurationManager.AppSettings["ida:AADInstance"], "common", "");
 
         AuthHelper authHelper = new AuthHelper(
             authority,
@@ -127,9 +124,7 @@ SDK and work with Office 365 and Outlook Mail
         {
             string accessToken = await authHelper.GetUserAccessToken(Url.Action("Index", "Home", null, Request.Url.Scheme));
             request.Headers.TryAddWithoutValidation("Authorization", "Bearer " + accessToken);
-        }),
-        // WORKAROUND 
-        new HttpProvider(new Serializer(new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.None })));
+        }));
 
         return client;
     }
