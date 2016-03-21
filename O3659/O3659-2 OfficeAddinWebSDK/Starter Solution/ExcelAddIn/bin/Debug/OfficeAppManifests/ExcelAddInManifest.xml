@@ -8,13 +8,13 @@
   <DisplayName DefaultValue="ExcelAddIn" />
   <Description DefaultValue="ExcelAddIn"/>
   <AppDomains>
-    <AppDomain>https://login.windows-ppe.net</AppDomain>
+    <AppDomain>https://login.microsoftonline.com</AppDomain>
   </AppDomains>
   <Hosts>
     <Host Name="Workbook" />
   </Hosts>
   <DefaultSettings>
-    <SourceLocation DefaultValue="https://localhost:44301/App/Home/Home.html" />
+    <SourceLocation DefaultValue="https://localhost:44300/App/Home/Home.html" />
   </DefaultSettings>
   <Permissions>ReadWriteDocument</Permissions>
 </OfficeApp>

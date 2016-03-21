@@ -8,6 +8,6 @@
     <GeneratedProductId>{19d6af3d-5581-477e-a258-78488d30451e}</GeneratedProductId>
     <GeneratedAppVersion>1.0.0.0</GeneratedAppVersion>
     <GeneratedClientSecret>QHUh6qIVaPdGZo7OagpLw0mKqyNpTB6ajaPuevhjlBU=</GeneratedClientSecret>
-    <OfficeAppStartDocument>TestExcel.xlsx</OfficeAppStartDocument>
+    <OfficeAppStartDocument>&lt;NewExcelWorkbook&gt;</OfficeAppStartDocument>
   </PropertyGroup>
 </Project>

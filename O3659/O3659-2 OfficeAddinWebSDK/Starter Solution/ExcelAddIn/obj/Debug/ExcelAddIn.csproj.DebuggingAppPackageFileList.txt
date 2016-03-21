@@ -1,2 +1,2 @@
 bin\Debug\OfficeAppManifests\ExcelAddInManifest.xml
-C:\DEV\Skype Build Demo\Build 2016\Starter Solutions\Lab B\ExcelAddIn\ExcelAddIn\bin\Debug\ExcelAddIn.debugapp
+C:\Users\troberts\Downloads\Current Lab B\Lab B\Lab B\Lab B\Lab B - Starter\ExcelAddIn\ExcelAddIn\bin\Debug\ExcelAddIn.debugapp

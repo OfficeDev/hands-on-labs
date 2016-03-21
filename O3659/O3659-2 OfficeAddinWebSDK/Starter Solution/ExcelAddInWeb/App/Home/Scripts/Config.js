@@ -5,5 +5,5 @@
     clientId: '', //REPLACE EMPTY QUOTES WITH CLIENTID GENERATED FROM AZURE APP
     authLink: 'https://login.microsoftonline.com/common/oauth2/authorize?response_type=token',
     authResource: 'https://webdir0d.tip.lync.com',
-    redirect_uri: 'https://secondonlineapp.azurewebsites.net/App/home/home.html'
+    redirect_uri: 'http://localhost:55073/App/home/home.html'
 };
