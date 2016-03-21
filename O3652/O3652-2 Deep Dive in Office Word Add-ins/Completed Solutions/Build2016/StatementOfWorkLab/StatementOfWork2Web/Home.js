@@ -16,12 +16,12 @@
 
 
             // Add event handlers here....
-            $('#addContentHellowWorld').click(onaddContentHellowWorld);
+            $('#addContentHelloWorld').click(onaddContentHelloWorld);
             $('#addContentStartingSOW').click(onaddContentStartingSOW);
             $('#addPicture').click(onFixPicture);
             $('#addSearchAndTempletize').click(onSearchAndTempletize);
             $('#addChangeCustomer').click(onaddChangeCustomer);
-            $('#addReuseContent').click(onaaddReuseContent);
+            $('#addReuseContent').click(onaddReuseContent);
             $('#addHighlights').click(onaddHighlights);
             $('#addOpenDoc').click(onaddOpenDoc);
      
@@ -55,7 +55,7 @@
 
 
 
-    function onaddContentHellowWorld() {
+    function onaddContentHelloWorld() {
         // Hello World in the Word.js world!
         Word.run(function (context) {
             //this line replaces the body of the document with a friendly "Hello World!!!"
@@ -179,7 +179,7 @@
     }
 
 
-    function onaaddReuseContent() {
+    function onaddReuseContent() {
         if (Office.context.requirements.isSetSupported("WordApi", "1.2")) {
             Word.run(function (context) {
                 var newParagraph = context.document.body.insertParagraph("Costs", "end");
