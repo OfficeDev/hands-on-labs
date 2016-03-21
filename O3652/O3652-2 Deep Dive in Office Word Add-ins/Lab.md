@@ -799,6 +799,7 @@ function onaddHighlights() {
 4. Add the following code to the **onaddOpenDoc** function:
 
 	````javascript
+function onaddOpenDoc() {
     Word.run(function (context) {
             var myNewDoc = context.application.createDoc(getDocumentAsBase64());
             context.load(myNewDoc);
@@ -817,6 +818,7 @@ function onaddHighlights() {
                 })
 
         }).catch(function (myError) { showNotification("Error", myError.message); });
+     }
 
 	````
 	
