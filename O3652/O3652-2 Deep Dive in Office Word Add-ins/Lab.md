@@ -235,10 +235,10 @@ In this lab, you will get hands-on experience developing a Word add-in by using 
 
 23. Close Word to terminate your debugging session and return to Visual Studio.
 24. Return to the source file named **Home.js** or open it if it is not already open.
-25. Create a function named **onaddContentHellowWorld** and add the following call to **body.insertText**. This method is replacing the entire body of the document with the "Hello World!" string (note that instead of "replace" the method can also insert at the "start" or "end" of the body). Also add a handler for success and error.
+25. Create a function named **onaddContentHelloWorld** and add the following call to **body.insertText**. This method is replacing the entire body of the document with the "Hello World!" string (note that instead of "replace" the method can also insert at the "start" or "end" of the body). Also add a handler for success and error.
 
 	````javascript
-  function onaddContentHellowWorld() {
+  function onaddContentHelloWorld() {
         // Hello World in the Word.js world!
         Word.run(function (context) {
             //this line replaces the body of the document with a friendly "Hello World!!!"
@@ -256,7 +256,7 @@ In this lab, you will get hands-on experience developing a Word add-in by using 
     }
 	````
 
-26. Finally, add a line of jQuery code into the add-in initialization logic to bind the click event of the **addContentHellowWorld** button to the **onaddContentHellowWorld** function (after the // Add event handlers here comment).
+26. Finally, add a line of jQuery code into the add-in initialization logic to bind the click event of the **addContentHelloWorld** button to the **onaddContentHelloWorld** function (after the // Add event handlers here comment).
 
 	````javascript
 	Office.initialize = function (reason) {
