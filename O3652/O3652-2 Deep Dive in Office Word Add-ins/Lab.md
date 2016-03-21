@@ -689,7 +689,7 @@ function onaddReuseContent() {
 1. Go back to Visual Studio, make sure you are using the StatementOfWord project.
 
 2. In the solution explorer double click on  **Home.html** file.
-3. Make sure to be using the preview location of Office.js which **https://appsforoffice.microsoft.com/lib/beta/hosted/office.js**, so your head element should be like: (make sure to comment out the other Office.js reference)
+3. Update **Home.html** to use the preview location of Office.js **https://appsforoffice.microsoft.com/lib/beta/hosted/office.js**, so your head element should be like: (make sure to comment out the other Office.js reference)
 	````html
 	<head>
     <meta charset="UTF-8" />
@@ -719,6 +719,7 @@ function onaddReuseContent() {
 4. Add the following code to the **onaddHighlights** function:
 
 	````javascript
+function onaddHighlights() {
     Word.run(function (ctx) {
             var myParagraphs = ctx.document.body.paragraphs;
             ctx.load(myParagraphs);
