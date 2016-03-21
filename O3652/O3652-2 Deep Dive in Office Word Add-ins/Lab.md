@@ -87,6 +87,7 @@ In this lab, you will get hands-on experience developing a Word add-in by using 
 	![Button on Ribbon](Images/Fig03.png)
 
 14. If you did change the label you should see the label you provided. However don't worry if you don't see the label updated, this is a known issue with this build. 
+15. Switch back to Visual Studio and click the Stop Debugging button (or Shift+F5)
 
 ###Part 2: Understanding the Web Project files and preparing them for the lab.
 8. There are other 2 very important files that are part of this project that are on the root of the StatementOfWorkWeb project. One of them is the  **Home.html** page which is opened by default in Visual Studio and represents the add-in's starting page. If not already opened please double click on it, you will see some HTML like this one: 
