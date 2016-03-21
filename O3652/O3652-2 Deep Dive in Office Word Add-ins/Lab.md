@@ -750,6 +750,7 @@ function onaddHighlights() {
 
         }).catch(function (myError) {
         });
+    }
 	````
 	
 
