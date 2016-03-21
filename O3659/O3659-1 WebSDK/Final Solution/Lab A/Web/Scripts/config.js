@@ -5,5 +5,5 @@
     clientId: '98267106-694b-4df2-8e06-fbbafd8a90e7',
     authLink: 'https://login.microsoftonline.com/common/oauth2/authorize?response_type=token',
     authResource: 'https://webdir.online.lync.com',
-    redirect_uri: 'https://secondonlineapp.azurewebsites.net',
+    redirect_uri: 'http://localhost:59915'
 };

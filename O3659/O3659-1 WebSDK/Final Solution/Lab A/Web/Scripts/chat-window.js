@@ -9,15 +9,6 @@
     return vars;
 }
 
-function endConversation(conversation) {
-    conversation.videoService.stop();
-    conversation.audioService.stop();
-    conversation.chatService.stop();
-    conversation.leave();
-    SkypeWebApp.conversationsManager.conversations.remove(conversation);
-    location.assign('/Home.html');
-}
-
 $(function () {
     var sip = getUrlVars()["sip"];
     var audioOnly = getUrlVars()["audioOnly"];
@@ -153,7 +144,6 @@ $(function () {
             console.log('participant video state changed');
 
             if (newState == 'Connected') {
-                clearInterval(timer);
                 console.log("The remote participant video has connected");
                 participant.video.channels(0).stream.source.sink.container.set(document.getElementById("render-participant-window"));
                 participant.video.channels(0).isStarted.set(true);
@@ -210,4 +200,13 @@ $(function () {
         var conversation = SkypeWebApp.conversationsManager.conversations(0);
         endConversation(conversation);
     });
+
+    function endConversation(conversation) {
+        conversation.videoService.stop();
+        conversation.audioService.stop();
+        conversation.chatService.stop();
+        conversation.leave();
+        SkypeWebApp.conversationsManager.conversations.remove(conversation);
+        location.assign('/Home.html');
+    }
 });
