@@ -522,9 +522,9 @@ function onaddContentStartingSOW() {
 5. Congratulations! In this exercise, you learned how to navigate through the inline pictures on a document and learned how to replace images! Let's continue with Exercise 4!
 
 ## Exercise 4: Using Search and inserting Content Controls
-*In this exercise, you will continue working on the Visual Studio solution for the StatementOfWork add-in you created on in the previous steps. You will extend the add-in's capabilities by adding JavaScript code to search for content in the document and add content controls. Content controls are a key building block in Word development and enables developers to insert 'placeholders' in the document that can be later identified and replaced with different content. This exercise is cummulative and assumes you completed  Exercise 2.*
+*In this exercise, you will continue working on the Visual Studio solution for the StatementOfWork add-in you created on in the previous steps. You will extend the add-in's capabilities by adding JavaScript code to search for content in the document and add content controls. Content controls are a key building block in Word development and using them enables developers to insert 'placeholders' in the document that can be later identified and replaced with different content. This exercise is cummulative and assumes you completed  Exercise 2.*
 
-1. A common scenario in Word development is reusing documents to create new ones. A "Statement of Work" (SOW) is a very good example of this. By replacing a few fields, an existing SOW may be a completely new SOW instance. To illustrate that point, we will implement a simple example on how a template can be created. 
+1. A common scenario in Word development is reusing documents to create new ones. A "Statement of Work" (SOW) is a very good example of this. By replacing a few fields, an existing SOW may be a completely new SOW instance. To illustrate that point, we will implement a simple example of how a template can be created. 
 
 2. Go back to Visual Studio, make sure you are using the StatementOfWord project.
 
@@ -566,7 +566,7 @@ function onSearchAndTempletize() {
 	````
 	
 
-4. Note that the code is searching for "Contoso", the search method returns a collection of ranges matching the search criteria, the code iterates through that collection and wraps each instance with a content control. Note that you are adding each content control a tag with a "customer" title, this is important as we will use this information in the next exercise to replace the content of all the content controls with this tag with a new customer.  
+4. Note that the code is searching for "Contoso". The search method returns a collection of ranges matching the search criteria. The code iterates through that collection and wraps each instance with a content control. Note that you are adding to each content control a tag with a "customer" title. This is important as we will use this information in the next exercise to replace the content of all the content controls with this tag with a new customer's name.  
 
 5. Test your work by pressing F5 to start a debug session and then click the **Step 1: Starting SOW** button. After the starting document gets inserted, click on the  **Step 3: Search and Templetize!** button to try your code. Each "Contoso" instance should be wrapped with a content control and with a yellow highlight. For visibility purposes we are also adding a red font color and yellow highlight to each search result instance. Your document should look like this after you click on the Step 1 and Step 3 buttons:
 
@@ -592,7 +592,7 @@ function onSearchAndTempletize() {
 ## Exercise 5: Changing content of tagged Content Controls!
 *In this exercise, you will continue working on the Visual Studio solution for the StatementOfWork add-in you created in the previous steps. You will extend the add-in's capabilities by adding JavaScript code to replace content in tagged content controls. Content controls are a key building block in Word development and enable developers to insert 'placeholders' in the document that can be later identified and replaced with different content. This exercise is cummulative and assumes you completed  Exercises 2 and 4.*
 
-1. A common scenario in Word development is reusing documents to create new ones. A "Statement of Work" (SOW) is a very good example of this. By replacing a few fields an existing SOW may be a completely new SOW instance. To illustrate that point, now that we created a template in the previous exercise, we will now change all content controls tagged as 'customer' with 'Fabrikam'. Note that this can very well come from data stored in an external system, like a CRM, ERP, etc. The idea is to generate a new instance of a document with a new customer. 
+1. A common scenario in Word development is reusing documents to create new ones. A "Statement of Work" (SOW) is a very good example of this. By replacing a few fields an existing SOW may be a completely new SOW instance. To illustrate that point, now that we have created a template in the previous exercise, we will replace the content of all content controls tagged as 'customer' with 'Fabrikam'. Note that this could very well come from data stored in an external system, like a CRM, ERP, etc. The idea is to generate a new instance of a document with a new customer. 
 
 2. Go back to Visual Studio, make sure you are using the StatementOfWord project.
 
