@@ -1,14 +1,5 @@
 #Skype for Business Online Web SDK
 
-Note to internal bug bash participants: The Skype for Business Online APIs currently have a private Allowed List of ClientIDs and tenants (will be removed some time next week before //build). That just means you will need to use a specific tenant and ClientID to test out this lab. 
-
-Please use the following:
-Tenant: danewman.onmicrosoft.com 
-ClientID for app: 98267106-694b-4df2-8e06-fbbafd8a90e7 
-Log in to webpage with user:david@danewman.onmicrosoft.com 07Apples 
-Log in to Skype for Business Client with userauburys@danewman.onmicrosoft.com 07Apples
-
-
 In this lab you will get hands-on experience developing a website with Skype for Business integration.  The sample website will allow an Office 365 user to perform the following from within their website:
 
 1.  Sign into Skype for Business.
@@ -23,7 +14,9 @@ In this lab you will get hands-on experience developing a website with Skype for
 >1.  Visual Studio 2013 and above.
 >2.  At least (2) Office 365 user credentials.
 >3.  Each user has the other user added to his or her contacts.
->6.  Skype for Business Web Plug-in [Download Here](need url).
+>6.  Skype for Business Web Plug-in
+>	Windows Users: [Download Here](https://mlccdn.blob.core.windows.net/prod/LWA/plugins/windows/archive/SkypeForBusinessPlugin-16.0.0.101.msi)
+>	Mac Users: [Download Here](https://mlccdn.blob.core.windows.net/prod/LWA/plugins/mac/archive/SkypeForBusinessPlugin-16.0.0.63.pkg)
 
 ##Setting up the code
 1.  Open Visual Studio and click **File->Open->Project/Solution**.
@@ -37,7 +30,7 @@ In this lab you will get hands-on experience developing a website with Skype for
 This section will instruct a user on how to add code to your website in order to connect to Skype for Business Online.
 
 1.  Copy the Client ID from above and paste into `Scripts\Config.js`replacing the text after **clientId:**.
-2.  Replace the **redirectURL** with the localhost value from step 4 in the "Setting up the code" section above. 
+2.  Replace the **redirectURL** with the localhost value from step 4 in the "Setting up the code" section above.
 
 	```javascript
     var config = {
