@@ -290,7 +290,7 @@ In this lab, you will get hands-on experience developing a Word add-in by using 
             messageBanner.hideBanner();
 
             // Add event handlers here....
-            $('#addContentHellowWorld').click(onaddContentHellowWorld);
+            $('#addContentHelloWorld').click(onaddContentHelloWorld);
 
      
         });
