@@ -672,7 +672,7 @@ function onaddReuseContent() {
 
 4. Note that the code is getting a sample docx file encoded as base64 (which is the format the insertFile method expects), then iterates each of the ocurrences and changes the content and the formatting information. Note that in the interest of time, the code is calling a method inserted on Exercise 2: **getDocumentAsBase64**  to simulate creating a base64 encoded based on an existing docx file.
 
-5. Test your work by pressing F5 to start a debug session and then click the **Step 1: Starting SOW** button. After the document gets inserted, try your code by clicking  on the  **Step 5: Reuse Content!** to insert the file at the end of the document. Now try your code by clicking on **Step 4: Replace Customer!**. Each "Contoso" instance should be replaced with 'Fabrikam' and look like the following image:
+5. Test your work by pressing F5 to start a debug session and then click the **Step 1: Starting SOW** button. After the document gets inserted, try your code by clicking  on the  **Step 5: Reuse Content!** to insert the file at the end of the document. Now try your code by clicking on **Step 3: Search and Templatize!** and then **Step 4: Replace Customer!**. Each "Contoso" instance should be replaced with 'Fabrikam' and look like the following image:
 
 	![](Images/Fig17.png) 
 	
