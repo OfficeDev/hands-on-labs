@@ -265,7 +265,7 @@ In this lab, you will get hands-on experience developing a Word add-in by using 
                 messageBanner = new fabric.MessageBanner(element);
                 messageBanner.hideBanner();
             // Add event handlers here....
-            $('#addContentHellowWorld').click(onaddContentHellowWorld);
+            $('#addContentHelloWorld').click(onaddContentHelloWorld);
 		});
 	};
 	````
@@ -352,10 +352,10 @@ In this lab, you will get hands-on experience developing a Word add-in by using 
  
 1. In Visual Studio, make sure you have the **StatementOfWork** project open.
 2. In the Solution Explorer, double click on **Home.js** to open this JavaScript file in an editor window. 
-3. Just below the **onaddContentHellowWorld** function, add seven new functions named **onaddContentStartingSOW**, **onFixPicture**, **onSearchAndTempletize**, **onaddChangeCustomer**, **onaaddReuseContent**, **onaddHighlights** and **onaddOpenDoc**.
+3. Just below the **onaddContentHelloWorld** function, add seven new functions named **onaddContentStartingSOW**, **onFixPicture**, **onSearchAndTempletize**, **onaddChangeCustomer**, **onaaddReuseContent**, **onaddHighlights** and **onaddOpenDoc**.
 
 	````javascript
- function onaddContentHellowWorld() {
+ function onaddContentHelloWorld() {
         // Hello World in the Word.js world!
         Word.run(function (context) {
             //this line replaces the body of the document with a friendly "Hello World!!!"
@@ -403,7 +403,7 @@ In this lab, you will get hands-on experience developing a Word add-in by using 
 
 
             // Add event handlers here....
-            $('#addContentHellowWorld').click(onaddContentHellowWorld);
+            $('#addContentHelloWorld').click(onaddContentHelloWorld);
             $('#addContentStartingSOW').click(onaddContentStartingSOW);
             $('#addPicture').click(onFixPicture);
             $('#addSearchAndTempletize').click(onSearchAndTempletize);
