@@ -296,7 +296,7 @@ In this lab, you will get hands-on experience developing a Word add-in by using 
         });
     };
 
-  function onaddContentHellowWorld() {
+  function onaddContentHelloWorld() {
         // Hello World in the Word.js world!
         Word.run(function (context) {
             //this line replaces the body of the document with a friendly "Hello World!!!"
