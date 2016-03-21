@@ -352,7 +352,7 @@ In this lab, you will get hands-on experience developing a Word add-in by using 
  
 1. In Visual Studio, make sure you have the **StatementOfWork** project open.
 2. In the Solution Explorer, double click on **Home.js** to open this JavaScript file in an editor window. 
-3. Just below the **onaddContentHelloWorld** function, add seven new functions named **onaddContentStartingSOW**, **onFixPicture**, **onSearchAndTempletize**, **onaddChangeCustomer**, **onaaddReuseContent**, **onaddHighlights** and **onaddOpenDoc**.
+3. Just below the **onaddContentHelloWorld** function, add seven new functions named **onaddContentStartingSOW**, **onFixPicture**, **onSearchAndTempletize**, **onaddChangeCustomer**, **onaddReuseContent**, **onaddHighlights** and **onaddOpenDoc**.
 
 	````javascript
  function onaddContentHelloWorld() {
@@ -381,7 +381,7 @@ In this lab, you will get hands-on experience developing a Word add-in by using 
     
     function onaddChangeCustomer() {
     }
-    function onaaddReuseContent() {
+    function onaddReuseContent() {
     }
 
     function onaddHighlights() {
@@ -408,7 +408,7 @@ In this lab, you will get hands-on experience developing a Word add-in by using 
             $('#addPicture').click(onFixPicture);
             $('#addSearchAndTempletize').click(onSearchAndTempletize);
             $('#addChangeCustomer').click(onaddChangeCustomer);
-            $('#addReuseContent').click(onaaddReuseContent);
+            $('#addReuseContent').click(onaddReuseContent);
             $('#addHighlights').click(onaddHighlights);
             $('#addOpenDoc').click(onaddOpenDoc);
      
@@ -600,6 +600,7 @@ function onSearchAndTempletize() {
 4. Add the following code to the **onaddChangeCustomer** function:
 
 	````javascript
+function onaddChangeCustomer() {
 Word.run(function (ctx) {
             var ccs = ctx.document.contentControls.getByTag("customer");
             ctx.load(ccs, { select: 'text', expand: 'font' }); // i want to change the font highlight color, so i need to expand font. note i can also do select" 'font/highlightColor', but not in the mood :)
@@ -639,9 +640,10 @@ Word.run(function (ctx) {
 2. Go back to Visual Studio, make sure you are using the StatementOfWord project.
 
 3. In the Solution Explorer, double click on **Home.js** to open this JavaScript file.
-4. Add the following code to the **onaaddReuseContent** function:
+4. Add the following code to the **onaddReuseContent** function:
 
 	````javascript
+function onaddReuseContent() {
  if (Office.context.requirements.isSetSupported("WordApi", "1.2")) { 
  // this functionality is included in the 1.2 requirement set, so we need to verify if it exists.
             Word.run(function (context) {
