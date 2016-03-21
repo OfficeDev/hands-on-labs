@@ -125,7 +125,7 @@ In this lab, you will get hands-on experience developing a Word add-in by using 
  
 
 12. Lets examine the JavaScript code in **home.js**. Double-click **home.js** to open it in a code editor window.
-13. Walk through the code in **Home.js** it includes a simple example to highlight the largest word in the user selection. Note at the end of the file there is an **errorHandler** function we will reuse in the lab to handle errors, as well as a **showNotification** function to display messages from the lab.   
+13. Walk through the code in **Home.js**. It includes a simple example to highlight the largest word in the user selection. Note at the end of the file there is an **errorHandler** function we will reuse in the lab to handle errors, as well as a **showNotification** function to display messages from the lab.   
 
 14. Lets clean up **Home.js** for our lab. Replace the content of the entire file with the following snippet. Your Home.js should look like this: 
 
