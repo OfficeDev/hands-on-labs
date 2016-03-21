@@ -6,5 +6,5 @@
     authLink: 'https://login.microsoftonline.com/common/oauth2/authorize?response_type=token',
     authResource: 'https://webdir.online.lync.com',
     origins: 'https://webdir.online.lync.com/autodiscover/autodiscoverservice.svc/root',
-    redirect_uri: 'https://secondonlineapp.azurewebsites.net/App/home/home.html'  
+    redirect_uri: 'http://localhost:44302/App/home/home.html'
 };

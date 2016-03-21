@@ -28,7 +28,7 @@ registeredListeners = [];
                 $('#accessToken').val(access_token);
             }
             else {
-                $('#content-main').show();
+                $('#main-content').show();
                 $('#content-loading').hide();
 }
             Skype.initialize({
@@ -121,7 +121,7 @@ registeredListeners = [];
         $('.signIn').hide();
         $('.loggedIn').show();
         conversationHandler();
-        $('#content-main').show();
+        $('#main-content').show();
         $('#content-loading').hide();
     }
 
@@ -229,7 +229,7 @@ registeredListeners = [];
         }
     }
     function pageLoading() {
-        $('#content-main').hide();
+        $('#main-content').hide();
         $('#content-loading').show();
     }
     function excelClickHandler(eventArgs) {

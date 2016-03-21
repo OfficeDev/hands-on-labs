@@ -1,0 +1,2 @@
+bin\Debug\OfficeAppManifests\OfficeAddInManifest.xml
+C:\Users\troberts\Downloads\Current Lab B\Lab B\Lab B\Lab B\Lab B - Final\OfficeAddIn\OfficeAddIn\bin\Debug\OfficeAddIn.debugapp

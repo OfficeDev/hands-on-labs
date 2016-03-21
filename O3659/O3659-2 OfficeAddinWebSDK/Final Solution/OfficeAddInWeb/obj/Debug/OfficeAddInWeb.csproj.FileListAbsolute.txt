@@ -18,3 +18,63 @@ C:\DEV\Skype Build Demo\Build 2016\POC\OfficeAddIn\OfficeAddInWeb\bin\Microsoft.
 C:\DEV\Skype Build Demo\Build 2016\POC\OfficeAddIn\OfficeAddInWeb\obj\Debug\OfficeAddInWeb.csprojResolveAssemblyReference.cache
 C:\DEV\Skype Build Demo\Build 2016\POC\OfficeAddIn\OfficeAddInWeb\obj\Debug\OfficeAddInWeb.dll
 C:\DEV\Skype Build Demo\Build 2016\POC\OfficeAddIn\OfficeAddInWeb\obj\Debug\OfficeAddInWeb.pdb
+C:\Users\troberts\Downloads\Lab B\Lab B\Lab B - Final\OfficeAddIn\OfficeAddInWeb\bin\roslyn\csc.exe
+C:\Users\troberts\Downloads\Lab B\Lab B\Lab B - Final\OfficeAddIn\OfficeAddInWeb\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+C:\Users\troberts\Downloads\Lab B\Lab B\Lab B - Final\OfficeAddIn\OfficeAddInWeb\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+C:\Users\troberts\Downloads\Lab B\Lab B\Lab B - Final\OfficeAddIn\OfficeAddInWeb\bin\roslyn\Microsoft.CodeAnalysis.dll
+C:\Users\troberts\Downloads\Lab B\Lab B\Lab B - Final\OfficeAddIn\OfficeAddInWeb\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+C:\Users\troberts\Downloads\Lab B\Lab B\Lab B - Final\OfficeAddIn\OfficeAddInWeb\bin\roslyn\Microsoft.CSharp.Core.targets
+C:\Users\troberts\Downloads\Lab B\Lab B\Lab B - Final\OfficeAddIn\OfficeAddInWeb\bin\roslyn\Microsoft.VisualBasic.Core.targets
+C:\Users\troberts\Downloads\Lab B\Lab B\Lab B - Final\OfficeAddIn\OfficeAddInWeb\bin\roslyn\System.Collections.Immutable.dll
+C:\Users\troberts\Downloads\Lab B\Lab B\Lab B - Final\OfficeAddIn\OfficeAddInWeb\bin\roslyn\System.Reflection.Metadata.dll
+C:\Users\troberts\Downloads\Lab B\Lab B\Lab B - Final\OfficeAddIn\OfficeAddInWeb\bin\roslyn\vbc.exe
+C:\Users\troberts\Downloads\Lab B\Lab B\Lab B - Final\OfficeAddIn\OfficeAddInWeb\bin\roslyn\VBCSCompiler.exe
+C:\Users\troberts\Downloads\Lab B\Lab B\Lab B - Final\OfficeAddIn\OfficeAddInWeb\bin\roslyn\VBCSCompiler.exe.config
+C:\Users\troberts\Downloads\Lab B\Lab B\Lab B - Final\OfficeAddIn\OfficeAddInWeb\bin\OfficeAddInWeb.dll.config
+C:\Users\troberts\Downloads\Lab B\Lab B\Lab B - Final\OfficeAddIn\OfficeAddInWeb\bin\OfficeAddInWeb.dll
+C:\Users\troberts\Downloads\Lab B\Lab B\Lab B - Final\OfficeAddIn\OfficeAddInWeb\bin\OfficeAddInWeb.pdb
+C:\Users\troberts\Downloads\Lab B\Lab B\Lab B - Final\OfficeAddIn\OfficeAddInWeb\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+C:\Users\troberts\Downloads\Lab B\Lab B\Lab B - Final\OfficeAddIn\OfficeAddInWeb\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+C:\Users\troberts\Downloads\Lab B\Lab B\Lab B - Final\OfficeAddIn\OfficeAddInWeb\obj\Debug\OfficeAddInWeb.csprojResolveAssemblyReference.cache
+C:\Users\troberts\Downloads\Lab B\Lab B\Lab B - Final\OfficeAddIn\OfficeAddInWeb\obj\Debug\OfficeAddInWeb.dll
+C:\Users\troberts\Downloads\Lab B\Lab B\Lab B - Final\OfficeAddIn\OfficeAddInWeb\obj\Debug\OfficeAddInWeb.pdb
+C:\Users\kkelley\Desktop\Lab B\Lab B\Lab B\Lab B - Final\OfficeAddIn\OfficeAddInWeb\bin\roslyn\csc.exe
+C:\Users\kkelley\Desktop\Lab B\Lab B\Lab B\Lab B - Final\OfficeAddIn\OfficeAddInWeb\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+C:\Users\kkelley\Desktop\Lab B\Lab B\Lab B\Lab B - Final\OfficeAddIn\OfficeAddInWeb\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+C:\Users\kkelley\Desktop\Lab B\Lab B\Lab B\Lab B - Final\OfficeAddIn\OfficeAddInWeb\bin\roslyn\Microsoft.CodeAnalysis.dll
+C:\Users\kkelley\Desktop\Lab B\Lab B\Lab B\Lab B - Final\OfficeAddIn\OfficeAddInWeb\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+C:\Users\kkelley\Desktop\Lab B\Lab B\Lab B\Lab B - Final\OfficeAddIn\OfficeAddInWeb\bin\roslyn\Microsoft.CSharp.Core.targets
+C:\Users\kkelley\Desktop\Lab B\Lab B\Lab B\Lab B - Final\OfficeAddIn\OfficeAddInWeb\bin\roslyn\Microsoft.VisualBasic.Core.targets
+C:\Users\kkelley\Desktop\Lab B\Lab B\Lab B\Lab B - Final\OfficeAddIn\OfficeAddInWeb\bin\roslyn\System.Collections.Immutable.dll
+C:\Users\kkelley\Desktop\Lab B\Lab B\Lab B\Lab B - Final\OfficeAddIn\OfficeAddInWeb\bin\roslyn\System.Reflection.Metadata.dll
+C:\Users\kkelley\Desktop\Lab B\Lab B\Lab B\Lab B - Final\OfficeAddIn\OfficeAddInWeb\bin\roslyn\vbc.exe
+C:\Users\kkelley\Desktop\Lab B\Lab B\Lab B\Lab B - Final\OfficeAddIn\OfficeAddInWeb\bin\roslyn\VBCSCompiler.exe
+C:\Users\kkelley\Desktop\Lab B\Lab B\Lab B\Lab B - Final\OfficeAddIn\OfficeAddInWeb\bin\roslyn\VBCSCompiler.exe.config
+C:\Users\kkelley\Desktop\Lab B\Lab B\Lab B\Lab B - Final\OfficeAddIn\OfficeAddInWeb\bin\OfficeAddInWeb.dll.config
+C:\Users\kkelley\Desktop\Lab B\Lab B\Lab B\Lab B - Final\OfficeAddIn\OfficeAddInWeb\bin\OfficeAddInWeb.dll
+C:\Users\kkelley\Desktop\Lab B\Lab B\Lab B\Lab B - Final\OfficeAddIn\OfficeAddInWeb\bin\OfficeAddInWeb.pdb
+C:\Users\kkelley\Desktop\Lab B\Lab B\Lab B\Lab B - Final\OfficeAddIn\OfficeAddInWeb\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+C:\Users\kkelley\Desktop\Lab B\Lab B\Lab B\Lab B - Final\OfficeAddIn\OfficeAddInWeb\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+C:\Users\kkelley\Desktop\Lab B\Lab B\Lab B\Lab B - Final\OfficeAddIn\OfficeAddInWeb\obj\Debug\OfficeAddInWeb.csprojResolveAssemblyReference.cache
+C:\Users\kkelley\Desktop\Lab B\Lab B\Lab B\Lab B - Final\OfficeAddIn\OfficeAddInWeb\obj\Debug\OfficeAddInWeb.dll
+C:\Users\kkelley\Desktop\Lab B\Lab B\Lab B\Lab B - Final\OfficeAddIn\OfficeAddInWeb\obj\Debug\OfficeAddInWeb.pdb
+C:\Users\troberts\Downloads\Current Lab B\Lab B\Lab B\Lab B\Lab B - Final\OfficeAddIn\OfficeAddInWeb\bin\roslyn\csc.exe
+C:\Users\troberts\Downloads\Current Lab B\Lab B\Lab B\Lab B\Lab B - Final\OfficeAddIn\OfficeAddInWeb\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+C:\Users\troberts\Downloads\Current Lab B\Lab B\Lab B\Lab B\Lab B - Final\OfficeAddIn\OfficeAddInWeb\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+C:\Users\troberts\Downloads\Current Lab B\Lab B\Lab B\Lab B\Lab B - Final\OfficeAddIn\OfficeAddInWeb\bin\roslyn\Microsoft.CodeAnalysis.dll
+C:\Users\troberts\Downloads\Current Lab B\Lab B\Lab B\Lab B\Lab B - Final\OfficeAddIn\OfficeAddInWeb\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+C:\Users\troberts\Downloads\Current Lab B\Lab B\Lab B\Lab B\Lab B - Final\OfficeAddIn\OfficeAddInWeb\bin\roslyn\Microsoft.CSharp.Core.targets
+C:\Users\troberts\Downloads\Current Lab B\Lab B\Lab B\Lab B\Lab B - Final\OfficeAddIn\OfficeAddInWeb\bin\roslyn\Microsoft.VisualBasic.Core.targets
+C:\Users\troberts\Downloads\Current Lab B\Lab B\Lab B\Lab B\Lab B - Final\OfficeAddIn\OfficeAddInWeb\bin\roslyn\System.Collections.Immutable.dll
+C:\Users\troberts\Downloads\Current Lab B\Lab B\Lab B\Lab B\Lab B - Final\OfficeAddIn\OfficeAddInWeb\bin\roslyn\System.Reflection.Metadata.dll
+C:\Users\troberts\Downloads\Current Lab B\Lab B\Lab B\Lab B\Lab B - Final\OfficeAddIn\OfficeAddInWeb\bin\roslyn\vbc.exe
+C:\Users\troberts\Downloads\Current Lab B\Lab B\Lab B\Lab B\Lab B - Final\OfficeAddIn\OfficeAddInWeb\bin\roslyn\VBCSCompiler.exe
+C:\Users\troberts\Downloads\Current Lab B\Lab B\Lab B\Lab B\Lab B - Final\OfficeAddIn\OfficeAddInWeb\bin\roslyn\VBCSCompiler.exe.config
+C:\Users\troberts\Downloads\Current Lab B\Lab B\Lab B\Lab B\Lab B - Final\OfficeAddIn\OfficeAddInWeb\bin\OfficeAddInWeb.dll.config
+C:\Users\troberts\Downloads\Current Lab B\Lab B\Lab B\Lab B\Lab B - Final\OfficeAddIn\OfficeAddInWeb\bin\OfficeAddInWeb.dll
+C:\Users\troberts\Downloads\Current Lab B\Lab B\Lab B\Lab B\Lab B - Final\OfficeAddIn\OfficeAddInWeb\bin\OfficeAddInWeb.pdb
+C:\Users\troberts\Downloads\Current Lab B\Lab B\Lab B\Lab B\Lab B - Final\OfficeAddIn\OfficeAddInWeb\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+C:\Users\troberts\Downloads\Current Lab B\Lab B\Lab B\Lab B\Lab B - Final\OfficeAddIn\OfficeAddInWeb\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+C:\Users\troberts\Downloads\Current Lab B\Lab B\Lab B\Lab B\Lab B - Final\OfficeAddIn\OfficeAddInWeb\obj\Debug\OfficeAddInWeb.csprojResolveAssemblyReference.cache
+C:\Users\troberts\Downloads\Current Lab B\Lab B\Lab B\Lab B\Lab B - Final\OfficeAddIn\OfficeAddInWeb\obj\Debug\OfficeAddInWeb.dll
+C:\Users\troberts\Downloads\Current Lab B\Lab B\Lab B\Lab B\Lab B - Final\OfficeAddIn\OfficeAddInWeb\obj\Debug\OfficeAddInWeb.pdb

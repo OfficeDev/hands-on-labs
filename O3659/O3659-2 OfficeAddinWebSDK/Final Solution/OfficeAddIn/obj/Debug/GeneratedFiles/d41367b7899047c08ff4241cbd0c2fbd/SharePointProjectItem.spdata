@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ProjectItem Type="Microsoft.VisualStudio.SharePoint.SharePointOfficeApp" DefaultFile="OfficeAddIn.xml" SupportedTrustLevels="All" SupportedDeploymentScopes="Web, Site" xmlns="http://schemas.microsoft.com/VisualStudio/2010/SharePointTools/SharePointProjectItemModel">
+  <Files>
+    <ProjectItemFile Source="OfficeAddIn.xml" Target="d41367b7899047c08ff4241cbd0c2fbd\" Type="ElementFile" />
+    <ProjectItemFile Source="Elements.xml" Target="d41367b7899047c08ff4241cbd0c2fbd\" Type="ElementManifest" />
+  </Files>
+  <FeatureActivationDependencies>
+    <FeatureActivationDependency>61e874cd-3ac3-4531-8628-28c3acb78279</FeatureActivationDependency>
+  </FeatureActivationDependencies>
+  <ExtensionData>
+    <ExtensionDataItem Key="OfficeAppManifestRelativePath" Value="d41367b7899047c08ff4241cbd0c2fbd\OfficeAddIn.xml" />
+  </ExtensionData>
+</ProjectItem>

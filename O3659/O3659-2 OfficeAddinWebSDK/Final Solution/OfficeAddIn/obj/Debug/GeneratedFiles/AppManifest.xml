@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<App xmlns="http://schemas.microsoft.com/sharepoint/2012/app/manifest"
+     Name="OfficeAddIn"
+     ProductID="{8c76308a-14e4-4ff6-a072-3a24df3a9e9f}"
+     Version="1.0.0.0"
+     SharePointMinVersion="15.0.0.0"
+>
+  <Properties>
+    <Title>OfficeAddIn</Title>
+    <StartPage>~appWebUrl/_layouts/15/WopiFrame.aspx?sourcedoc=~appWebUrl%2FOfficeDocuments%2FTestPayroll.xlsx&amp;action=edit</StartPage>
+  </Properties>
+
+  <AppPrincipal>
+    <RemoteWebApplication ClientId="*" />
+  </AppPrincipal>
+</App>

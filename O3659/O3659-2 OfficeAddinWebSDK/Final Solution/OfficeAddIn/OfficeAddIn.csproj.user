@@ -9,5 +9,6 @@
     <GeneratedAppVersion>1.0.0.0</GeneratedAppVersion>
     <GeneratedClientSecret>7CPhJm+DRBFowmU3AMGy3Ti6x8pP4A0wdWZptyh74PM=</GeneratedClientSecret>
     <OfficeAppStartDocument>TestPayroll.xlsx</OfficeAppStartDocument>
+    <OfficeAndSharePointStartAction>OfficeDesktopClient</OfficeAndSharePointStartAction>
   </PropertyGroup>
 </Project>

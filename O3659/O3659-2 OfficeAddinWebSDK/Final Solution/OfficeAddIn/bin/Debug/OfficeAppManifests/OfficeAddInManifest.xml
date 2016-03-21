@@ -23,7 +23,7 @@
   </Hosts>
   <DefaultSettings>
     <!--<SourceLocation DefaultValue="https://secondonlineapp.azurewebsites.net/App/home/home.html" />-->
-    <SourceLocation DefaultValue="~remoteAppUrl/App/Home/Home.html" />
+    <SourceLocation DefaultValue="https://localhost:44300/App/Home/Home.html" />
     <!--<SourceLocation DefaultValue="https://skypedemolabb.waws-ppedf.windows-int.net/App/home/home.html" />-->
     
   </DefaultSettings>

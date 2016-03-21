@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
+  <Module Name="OfficeDocuments">
+    <File Path="OfficeDocuments\TestPayroll.xlsx" Url="OfficeDocuments/TestPayroll.xlsx" ReplaceContent="TRUE" />
+  </Module>
+</Elements>

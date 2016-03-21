@@ -16,7 +16,7 @@
 #content-main {
     background: #fff;
     position: fixed;
-    top: 150px; /* Same value as #content-header's height */
+    /*top: 150px; */ /* Same value as #content-header's height */
     left: 0;
     right: 0;
     bottom: 0;
