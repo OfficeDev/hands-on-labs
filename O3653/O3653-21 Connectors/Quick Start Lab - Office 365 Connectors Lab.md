@@ -201,7 +201,7 @@ Sample Connector Card Message JSON Payload
 		When using Visual Studio to publish your project, choose the import option to import the publishing profile, 
 		follow the same a, b, and c steps above to create the webapp.
 	
-11. Go to github.com. Create a new github repo (unless you already have one for testing purposes). Navigate to the repo. Click  **Settings**. Select Webhooks & Services on the left side. Click the **Add webhook** button. Append "/api/webhooks/incoming/Github" to the URL of your Azure web application (for example, http://mywebhookspreview.azurewebsites.net/api/webhooks/incoming/Github). You will receive notifications from Github service at this URL.  
+11. Go to github.com. Create a new github repo (unless you already have one for testing purposes). Navigate to the repo. Click  **Settings**. Select Webhooks & Services on the left side. Click the **Add webhook** button. Provide the full webhook URL of your ASP.net application. To get this url, append "/api/webhooks/incoming/Github" to the URL of your Azure web application (as an example, the full webhook URL would be http://mywebhookspreview.azurewebsites.net/api/webhooks/incoming/Github). You will receive notifications from Github service at this URL.  
 
 12. For the secret, enter the SHA1 key you got earlier.
 
