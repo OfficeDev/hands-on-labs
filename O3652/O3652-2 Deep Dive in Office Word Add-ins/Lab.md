@@ -181,7 +181,7 @@ In this lab, you will get hands-on experience developing a Word add-in by using 
 	````html
    <div id="content-main">
         <div id="sowPanel" class="padding">
-            <button class="ms-Button ms-Button--compound" id="addContentHellowWorld">
+            <button class="ms-Button ms-Button--compound" id="addContentHelloWorld">
                 <span class="ms-Button-label" id="button-text">Hello World!</span>
                 <span class="ms-Button-description" id="button-desc">Just a simple Hello World!! This code writes the famous string.</span>
             </button><br><br>
@@ -296,6 +296,22 @@ In this lab, you will get hands-on experience developing a Word add-in by using 
         });
     };
 
+  function onaddContentHellowWorld() {
+        // Hello World in the Word.js world!
+        Word.run(function (context) {
+            //this line replaces the body of the document with a friendly "Hello World!!!"
+            context.document.body.insertText("Hello World!", "replace");
+            return context.sync()
+
+        }).then(function () {
+            // if evertything was succesful, we sent an ok...
+            showNotification("Task Complete!");
+        })
+          .catch(function (myError) {
+              //otherwise we handle the exception here!
+              showNotification("Error", myError.message);
+          });
+    }
 
     //$$(Helper function for treating errors, $loc_script_taskpane_home_js_comment34$)$$
     function errorHandler(error) {
