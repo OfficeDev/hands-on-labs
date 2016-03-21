@@ -98,6 +98,10 @@
     border:none;
 }
 
+.container {
+    max-width: 100% !important;
+}
+
 .ui-widget-overlay {
     background: #333;
     opacity: .8;
@@ -177,7 +181,7 @@
     background-size: 30px 30px;
 }
 
-#AVChatCall, #AVChatVideo, #AVChatClose {
+#AVChatCall, #AVChatVideo, #AVChatClose, #AVChatMute {
     width: 50px;
     height: 50px;
     border: none;
@@ -199,6 +203,11 @@
     background-size: 50px 50px;
 }
 
+#AVChatMute {
+    background: url(../Images/fabrikam_skypeControl_mic_muted.png) no-repeat;
+    background-size: 50px 50px;
+}
+
 #AVWindow {
     background: #000;
 }
@@ -212,10 +221,16 @@
 
 #AVWindowSelfView, #AnonAVWindowSelfView {
     background-image: url(../Images/default.png);
+    background-size: 400px 400px;
+    min-height: 400px;
+    min-width: 400px;
 }
 
 #AVWindowContactView, #AnonAVWindowContactView {
     background-image: url(../Images/default.png);
+    background-size: 400px 400px;
+    min-height: 400px;
+    min-width: 400px;
 }
 
 .avWindowDisplayName
@@ -323,4 +338,11 @@
 
 #AnonChatControlsArea {
     text-align: center;
+}
+
+.avplaceholders {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

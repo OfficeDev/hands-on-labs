@@ -81,7 +81,7 @@ $(function () {
     }
 
     function launchAVWindow(params) {
-        window.open('http://secondonlineapp.azurewebsites.net/AVChat.html?' + params, 'mywindow', 'width=800,height=600');
+        location.assign('/AVDemo.html?' + params);
     }
 
 
