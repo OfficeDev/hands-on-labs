@@ -7,7 +7,10 @@ with an ASP.NET MVC application.
 Through Microsoft Graph API, you can access files in OneDrive, OneDrive for
 Business, and Office Groups, by accessing the **drive** property of a user or
 group entity. You can navigate the hierarchy of a drive by path or by enumerating
-the contents of folders and files.
+the contents of folders
+
+## Get an Office 365 developer environment
+To complete the exercises below, you will require an Office 365 developer environment. Navigate to https://tryoffice.azurewebsites.net and log in with your Microsoft Account (outlook.com, hotmail.com, msn.com).
 
 ## Exercise 1: Create a new project using Azure Active Directory v2 authentication
 
