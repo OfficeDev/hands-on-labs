@@ -6,12 +6,9 @@ The [Outlook Mail REST API](https://msdn.microsoft.com/office/office365/APi/mail
 
 This can be paired with the [Outlook Notifications API](https://msdn.microsoft.com/office/office365/APi/notify-rest-operations) to get near real-time updates and keep your data store in constant sync with the user's mailbox.
 
-## Prerequisites
-1. You must have an Office 365 tenant to
-   complete this lab. If you do not have one, the lab for **O3651-7 Setting up
-   your Developer environment in Office 365** shows you how to obtain a trial.
-1. You must have Visual Studio 2015 with Update 1 installed.
-1. You must have the Graph AAD Auth v2 Starter Project template installed.
+
+## Get an Office 365 developer environment
+To complete the exercises below, you will require an Office 365 developer environment. Navigate to https://tryoffice.azurewebsites.net and use the code `BuildChallenge` to get an administrator username and password to one. 
 
 ## Exercise 1: Create a new project using Azure Active Directory v2 authentication
 
