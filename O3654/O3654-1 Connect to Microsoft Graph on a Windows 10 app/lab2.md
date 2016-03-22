@@ -26,14 +26,8 @@ The app you'll build requires the user to sign in with either their personal or 
 
 ![Microsoft Graph sample app user interface](../images/StartScreen.png "Microsoft Graph sample app user interface.")
 
-<a name="prerequisites"></a>
-## Prerequisites ##
-
-This Code Challenge requires the following:  
-
-  * [Visual Studio 2015](https://www.visualstudio.com/en-us/downloads) 
-  * Windows 10 ([development mode enabled](https://msdn.microsoft.com/library/windows/apps/xaml/dn706236.aspx))
-  * Either a [Microsoft](www.outlook.com) or [Office 365 for business account](https://msdn.microsoft.com/en-us/office/office365/howto/setup-development-environment#bk_Office365Account).
+## Get an Office 365 developer environment
+To complete the exercises below, you will require an Office 365 developer environment. Navigate to https://tryoffice.azurewebsites.net and use the code `BuildChallenge` to get an administrator username and password to one. 
 
 <a name="create"></a>
 ##Exercise 1: Create the app
