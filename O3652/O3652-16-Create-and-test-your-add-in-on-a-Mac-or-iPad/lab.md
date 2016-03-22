@@ -36,7 +36,8 @@ In this lab, you will learn how to create a sample add-in on the Mac and then si
 ## Exercise 3: Debug HelloWorld add-in using VorlonJS
 *In this exercise, we'll use Vorlon.js to debug your add-in on the Mac.*
 
-1. Install by typing `sudo npm i –g vorlon` in Terminal.
+1. Go to ~/Desktop/add-ins folder
+2. Install Vorlon by typing `sudo npm i –g vorlon` in Terminal.
 2. Type `sudo vorlon` in Terminal to start the VorlonJS server.
 3. To verify that Vorlon server is up and running, type `https://localhost:1337` in a browser. You should see the VorlonJS start page.
 4. Copy the `<script .... ></script>` tag on that page and paste it into the `<head>` tag of `app/home/home.html`. 
