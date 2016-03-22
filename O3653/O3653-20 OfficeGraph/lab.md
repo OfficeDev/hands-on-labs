@@ -1,6 +1,3 @@
-## TODO:
-2. Still getting auth exception?
-
 # Lab 20: Insights from Microsoft Graph
 In this lab, you will use Microsoft Graph to connect to insights in the Office Graph. You will build an ASP.NET MVC 5 application that retrieves documents trending around users in your Office 365 tenant.
 
