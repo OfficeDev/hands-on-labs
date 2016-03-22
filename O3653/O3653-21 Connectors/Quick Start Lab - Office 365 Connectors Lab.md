@@ -9,7 +9,7 @@ To complete the exercises below, you will require an Office 365 developer enviro
 **Pre-requisites**
 ------------------
  
-1. For Exercise 1, use tools like Fiddler, Postman or Curl to post a JSON payload to the group's webhook URL. This exercise will use www.Hurl.it to post JSON message. You may also use the Connector sandbox to complete this exercise.
+1. For Exercise 1, you will post a message to the Office 365 Group using simple JSON payload and www.hurl.it tool do the http POST. 
 
 **Environment Prep**
 ---------
