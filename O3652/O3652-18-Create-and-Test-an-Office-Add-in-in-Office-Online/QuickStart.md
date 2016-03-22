@@ -58,7 +58,7 @@ An Office Add-in is just a web app that is displayed within the Office UI and ca
 
  ```javascript
  function writeDataToSelection(){
-     Office.context.document.writeDataToSelection("Office add-ins are awesome!",
+     Office.context.document.setSelectedDataAsync("Office add-ins are awesome!",
       function(result){
         if (result.status === Office.AsyncResultStatus.Succeeded) {
           app.showNotification('Data successfully written.');
