@@ -2,14 +2,8 @@
 
 In this lab, you will use Visual Studio to create your first Outlook add-in using the Outlook JavaScript APIs. The add-in will allow the user to translate parts of a message they are composing into different languages.
 
-## Prerequisites
-
-1. You must have an Office 365 tenant to
-   complete this lab. If you do not have one, the lab for **O3651-7 Setting up
-   your Developer environment in Office 365** shows you how to obtain a trial.
-1. You must have Visual Studio 2015 with Update 1 installed.
-1. You must have the Microsoft Office Developer Tools for Visual Studio 2015 installed.
-1. You must have Outlook 2016 installed.
+## Get an Office 365 developer environment
+To complete the exercises below, you will require an Office 365 developer environment. Navigate to https://tryoffice.azurewebsites.net and use the code `BuildChallenge` to get an administrator username and password to one. 
 
 ## Exercise 1: Create a new Outlook add-in project
 
