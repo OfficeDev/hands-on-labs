@@ -2,6 +2,9 @@
 
 In this lab, you will read and write into an Excel document stored in your OneDrive Business using new Excel REST APIs. We'll use Visual Studio MVC project to showcase the interaction. 
 
+## Get an Office 365 developer environment
+To complete the exercises below, you will require an Office 365 developer environment. Navigate to https://tryoffice.azurewebsites.net and use the code `BuildChallenge` to get an administrator username and password to one. 
+
 ## Exercise 1: Create a new project using Azure Active Directory v1 authentication
 
 _Use the Office 365 user credentials available during the lab session to sign-in and authorize the app_
