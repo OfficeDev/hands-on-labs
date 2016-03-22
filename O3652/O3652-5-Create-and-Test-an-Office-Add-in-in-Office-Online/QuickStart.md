@@ -1,6 +1,9 @@
 # Create and Test an Office Add-in in Excel Online
 This lab will teach you how to create an add-in using only the shell and a browser. 
 
+## Get an Office 365 developer environment
+To complete the exercises below, you will require an Office 365 developer environment. Navigate to https://tryoffice.azurewebsites.net and use the code `BuildChallenge` to get an administrator username and password to one. 
+
 **Prerequisites**
 
 This lab requires that you have the Yeoman generator for Office Add-ins installed. The Yeoman generator requires other tools to run, including Node.js, Git, Gulp, and Bower. These tools have been installed on this computer already.
