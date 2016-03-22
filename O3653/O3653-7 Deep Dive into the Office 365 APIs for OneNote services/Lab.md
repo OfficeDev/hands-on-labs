@@ -1,14 +1,8 @@
 # Microsoft Graph for OneNote Services
 In this lab, you will use Microsoft Graph to program against the Office 365 OneNote Service as part of an ASP.NET MVC5 application.
 
-## Prerequisites
-- Visual Studio 2015 with Update 1
-
-- The Graph AAD Auth v1 Started Project template installed
-
-- An administrator account for an Office 365 tenant. This is required because you'll be using the client credentials of an Azure application that's configured to request admin-level permissions. 
-
-This user must also have at least one OneNote notebook with a section and a page. 
+## Get an Office 365 developer environment
+To complete the exercises below, you will require an Office 365 developer environment. Navigate to https://tryoffice.azurewebsites.net and use the code `BuildChallenge` to get an administrator username and password to one. 
 
 ## Exercise 1: Use the Microsoft Graph API to access Notebooks in OneDrive for Business (Office 365)
 In this exercise you will use the Microsoft Graph API to access OneNote notebooks that are stored in the user's OneDrive for Business in Office 365.
