@@ -751,7 +751,7 @@ In this step you'll create a view that displays some properties of the changed m
 
 1. Name the view **Notification**.
 
-1. Select the **Empty** template, select **Message (GraphWebhooks.Models)**, and then click **Add**.
+1. Select the **Empty (without model)** template, and then click **Add**.
 
 1. In the **Notification.cshtml** file that's created, replace the content with the following code:
 
