@@ -1,6 +1,9 @@
 # Microsoft Graph to connect to groups, add a member, see the group files and conversations
 In this lab, you will use Microsoft Graph to integrate Groups, its files, conversations and events
 with an ASP.NET MVC application.
+  
+## Get an Office 365 developer environment
+To complete the exercises below, you will require an Office 365 developer environment. Navigate to https://tryoffice.azurewebsites.net and use the code `BuildChallenge` to get an administrator username and password to one. 
 
 ## Exercise 1: Create a new project using Azure Active Directory authentication
 
