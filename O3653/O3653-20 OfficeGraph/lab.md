@@ -279,6 +279,6 @@ Now we have a page that displays trending documents ready. Let's now list the us
 Congratulations! You have created an MVC application that displays documents trending around users! Stay tuned for our new, richer Trending API. Released in a few weeks!
 
 ## Next Steps and Additional Resources:  
-- See our blog posts on Office Graph and the new Trending API.
+- See our blog post on Office Graph.
 - See this training and more on http://dev.office.com/
 - Learn about and connect to the Microsoft Graph at https://graph.microsoft.io
