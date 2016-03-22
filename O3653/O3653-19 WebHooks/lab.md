@@ -11,10 +11,8 @@ In this lab, you'll create an ASP.NET MVC application that subscribes for Micros
 ## Overview 
 A webhooks subscription allows a client app to receive notifications about mail, events, and contacts from the Microsoft Graph. Microsoft Graph implements a poke-pull model: it sends notifications when changes are made to messages, events, or contacts, and then you query the Microsoft Graph for the details you need. 
 
-## Prerequisites
-- Visual Studio 2015 with Update 1
-- The Graph AAD Auth v1 Started Project template installed
-- An administrator account for an Office 365 tenant. This is required because you'll be using the client credentials of an Azure application that's configured to request admin-level permissions.
+## Get an Office 365 developer environment
+To complete the exercises below, you will require an Office 365 developer environment. Navigate to https://tryoffice.azurewebsites.net and use the code `BuildChallenge` to get an administrator username and password to one. 
 
 ## Step 1: Create an ASP.NET MVC application
 1. Open Visual Studio and select **File/New/Project**. 
