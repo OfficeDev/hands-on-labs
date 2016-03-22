@@ -1,6 +1,9 @@
 # Create, test, and debug your add-in on a Mac or iPad
 In this lab, you will learn how to create a sample add-in on the Mac and then sideload it to test/validate using Excel on the Mac. You will also get hands-on experience debugging your add-in on the Mac using Vorlon.js.
 
+## Get an Office 365 developer environment
+To complete the exercises below, you will require an Office 365 developer environment. Navigate to https://tryoffice.azurewebsites.net and use the code `BuildChallenge` to get an administrator username and password to one. 
+
 **Prerequisites**
 
 1. You must have node.js and VS Code [or your favorite code editor] installed on your Mac.
