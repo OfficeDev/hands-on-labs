@@ -3,16 +3,13 @@ Office 365 Connectors are a great way to get useful information and content into
 
 In this lab, you will learn how to post messages to Office 365 Groups using incoming webhooks.  To illustrate using a real world scenario, you will also build an application that receives Github notifications from your favorite repos and post them as connector messages to your Office 365 group. 
 
+## Get an Office 365 developer environment
+To complete the exercises below, you will require an Office 365 developer environment. Navigate to https://tryoffice.azurewebsites.net and use the code `BuildChallenge` to get an administrator username and password to one. 
 
 **Pre-requisites**
 ------------------
-
- 1. You must have an Office 365 tenant and Microsoft Azure subscription to complete this lab. If you do not have one, the lab for O3651-7 Setting up your Developer environment in Office 365 shows you how to obtain a trial.
  
- 2. For Exercise 1, use tools like Fiddler, Postman or Curl to post a JSON payload to the group's webhook URL. This exercise will use www.Hurl.it to post JSON message. You may also use the Connector sandbox to complete this exercise.
- 
- 3. For Exercise 2, you must have Visual Studio 2015 with Update 1 installed. 
-
+1. For Exercise 1, use tools like Fiddler, Postman or Curl to post a JSON payload to the group's webhook URL. This exercise will use www.Hurl.it to post JSON message. You may also use the Connector sandbox to complete this exercise.
 
 **Environment Prep**
 ---------
