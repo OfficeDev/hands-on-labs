@@ -2,6 +2,9 @@
 
 In this lab you will get hands-on experience developing a website with Skype for Business integration.  The sample website will allow an Office 365 user to perform the following from within their website:
 
+## Get an Office 365 developer environment
+To complete the exercises below, you will require an Office 365 developer environment. Navigate to https://tryoffice.azurewebsites.net and use the code `BuildChallenge` to get an administrator username and password to one. 
+
 1.  Sign into Skype for Business.
 2.  View own presence and set status.
 3.  View contact list and other user presence.
