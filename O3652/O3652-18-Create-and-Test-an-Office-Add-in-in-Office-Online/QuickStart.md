@@ -58,10 +58,10 @@ An Office Add-in is just a web app that is displayed within the Office UI and ca
 
  ```javascript
  function writeDataToSelection(){
-     Office.context.document.writeDataToSelection(Office.CoercionType.Text,
+     Office.context.document.writeDataToSelection("Office add-ins are awesome!",
       function(result){
         if (result.status === Office.AsyncResultStatus.Succeeded) {
-          app.showNotification('The selected text is:', '"' + result.value + '"');
+          app.showNotification('Data successfully written.');
           console.log("Writing to the document succeeded: " + result.value);
         } else {
           app.showNotification('Error:', result.error.message);
@@ -73,8 +73,8 @@ An Office Add-in is just a web app that is displayed within the Office UI and ca
  ```
 8. Save the home.js file.
 9. Go back to Excel Online and refresh the page. You should see the new button in your add-in.
-10. Select an empty cell in the worksheet and click the new button that says "Write data to selection". You should see <> written to the cell.
-11. Open the browser's developer tools (this can be done by pressing F12 for most browsers), and go to the Console. You should see the message that the button wrote to the console.
+10. Select an empty cell in the worksheet and click the new button that says "Write data to selection". You should see "Office add-ins are awesome!" written to the cell.
+11. Open the browser's developer tools (this can be done by pressing F12 for most browsers), and go to the Console. You should see a message written to the console by the button.
  
 
 You've now completed the entire lifecycle of add-in development: new project creation, code editing, hosting, loading the add-in into Office, testing, and debugging. You can use this method to create add-ins for any Office application, on any platform that supports add-ins.
