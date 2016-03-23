@@ -35,8 +35,6 @@ First, you need to create the app project itself.
 
 Next, you'll use the NuGet Package Manager to add the Microsoft Graph SDK and Microsoft Graph OAuth 2.0 provider to your project.
 
-###Use the NuGet Package Manager to install the Graph SDK in your project
-
 1. In **Solution Explorer**, choose the project, and from the short-cut menu, choose **Manage NuGet Packages...**
 2. In the **NuGet** dialog box, in the Search box, enter Microsoft.Graph.
 	The Microsoft.Graph and Microsoft.Graph.OAuth2 packages should be displayed in the search results.
