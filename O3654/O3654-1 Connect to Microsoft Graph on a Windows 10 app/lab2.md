@@ -110,14 +110,16 @@ Next, you'll add two helper classes: one that handles authenticating the user, a
 2. Name the new class **AuthenticationHelper.cs**, and choose **Add**.
 3. Add using directives for the Microsoft.Graph and Microsoft.Graph.OAuth2 namespaces:
 	
+	```	
 	using Microsoft.Graph.OAuth2;	
 	using Microsoft.Graph;
+	```
 	
 4. In the class definition, add code that authenticates the app and sets its permissions to read and write email. 
 
 	The finished class should look like this:
 
-```
+	```
 	using System;
 	using System.Diagnostics;
 	using System.Net.Http;
@@ -182,7 +184,7 @@ Next, you'll add two helper classes: one that handles authenticating the user, a
 
     }
 	}
-```
+	```
 
 ### Create the MailHelper class
 
@@ -190,11 +192,11 @@ Next, you'll add two helper classes: one that handles authenticating the user, a
 2. Name the new class **MailHelper.cs**, and choose **Add**.
 3. Add using directives for the additional namespaces you'll need to reference:
 
-```		
+	```		
 	using System.Net.Http;
 	using Microsoft.Graph;
 	using System.Net.Http.Headers;
-```
+	```
 		
 4. In the class definition, add code that composes the sample email and sends it. 
 
@@ -278,7 +280,7 @@ namespace Microsoft_Graph_UWP_Connect_SDK
 Next, you'll add a resource file that contains strings used in the app UI, as well as the sample email the app sends.
 
 1. In **Solution Explorer**, choose the **Assets** folder, and from the short-cut menu, choose **Add** > **Existing Item**.
-2. Navigate to the **Resources.rsw** file, and choose **Add**.
+2. Navigate to the **Resources.rsw** file, located in the Assets folder of this repo. Choose **Add**.
 
 	The Resources file is added to the Assets folder.
 
@@ -596,7 +598,7 @@ With that in mind, it's worth looking at two methods in the helper classes in a 
 <a name="additional-resources"></a>
 ## Additional resources ##
 
-- [Microsoft Graph UWP Connect SDK](https://github.com/OfficeDev/Microsoft-Graph-UWP-Connect-SDK/)
+- [Microsoft Graph UWP Connect SDK](https://github.com/OfficeDev/Microsoft-Graph-UWP-Connect-SDK/) code sample on [GitHub](https://github.com) 
 - [Microsoft Graph overview](http://graph.microsoft.io)
 - [Office 365 API code samples and videos](https://msdn.microsoft.com/office/office365/howto/starter-projects-and-code-samples)
 - [Office developer code samples](http://dev.office.com/code-samples)
