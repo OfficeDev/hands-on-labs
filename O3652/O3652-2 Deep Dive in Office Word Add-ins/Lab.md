@@ -4,14 +4,12 @@ In this lab, you will get hands-on experience developing a Word add-in by using 
 ## Get an Office 365 developer environment
 To complete the exercises below, you will require an Office 365 developer environment. Navigate to https://tryoffice.azurewebsites.net and use the code `BuildChallenge` to get an administrator username and password to one. 
 
-**Prerequisites:**
-1. This lab requires you to use multiple starter files or an entire starter project from the GitHub location. You can either download the whole repo as a zip or clone the repo https://github.com/OfficeDev/TrainingContent.git, for those familiar with git.
 
 ##Exercise 1:Creating the Statement of Work Wizard Add-in Project and Hello World!
 *In this exercise, you will create a new Office Add-in project in Visual Studio so that you can begin to write, test and debug a Word add-in. The user interface of the Office Add-in you will create in this lab will not be very complicated as it will just contain HTML buttons and JavaScript command handlers. You will also code your first  "Hello World!" sample!*
 
 ###Part 1: Create a basic Add-in
-1. Launch Visual Studio 2015 as an administrator.
+1. Launch Visual Studio 2015.
 2. From the **File** menu, select the **New Project** command. When the **New Project** dialog appears, select the Word Add-in under Web Add-ins in the **Office/SharePoint** template folder as shown below. Name the new project **StatementOfWork** and click **OK** to create the new project.
 
 	![](Images/Fig01.png)
