@@ -1,18 +1,6 @@
 ﻿# Connect to the Microsoft Graph from a Windows Universal App
 
 
-**Table of contents**
-
-* [Introduction](#introduction)
-* [Prerequisites](#prerequisites)
-* [Exercise 1: Create the app project](#create)
-* [Exercise 2: Add the Microsoft Graph SDK](#graphSDK)
-* [Exercise 3: Register and configure the app](#register)
-* [Exercise 4: Create helper classes](#createFiles)
-* [Exercise 5: Create the app UI and code](#createMain)
-* [Exercise 6: Test the app](#test)
-* [Additional resources](#additional-resources)
-
 <a name="introduction"></a>
 ##Introduction
 
