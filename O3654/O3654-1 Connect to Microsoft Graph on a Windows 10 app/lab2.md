@@ -12,7 +12,7 @@ You'll use the Microsoft Graph SDK to handle user authentication and manipulatio
 
 The app you'll build requires the user to sign in with either their personal or work or school Microsoft account. The app then authenticates the user. The user can then have the app connect to their Outlook email account, and have the app send a sample email from their account to the specified recipient.
 
-![Microsoft Graph sample app user interface](../images/StartScreen.png "Microsoft Graph sample app user interface.")
+![Microsoft Graph sample app user interface](../images/StartScreen.png)
 
 ## Get an Office 365 developer environment
 To complete the exercises below, you will require an Office 365 developer environment. Navigate to https://tryoffice.azurewebsites.net and use the code `BuildChallenge` to get an administrator username and password to one. 
@@ -81,7 +81,7 @@ After you've loaded the solution in Visual Studio, configure the sample to use t
 2. In the App.xaml file, in the Application element, add a new element named Application.Resources that contains your app's client id and redirectURI values.
 	
 	The Application element should now look like this:
-	
+	```
 	<Application
 	x:Class="Microsoft_Graph_UWP_Connect_SDK.App"
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -94,9 +94,10 @@ After you've loaded the solution in Visual Studio, configure the sample to use t
 		<!--<x:String x:Key="ida:ClientID">aed1bde9-797f-4f5c-b65b-211585f9cdfe</x:String>-->
 		<x:String x:Key="ida:ClientID"></x:String>
 		<x:String x:Key="ida:ReturnUrl">urn:ietf:wg:oauth:2.0:oob</x:String>
-    </Application.Resources>
+    	</Application.Resources>
 	
 	</Application>
+```
 
 <a name="createFiles"></a>
 ## Exercise 4: Create helper classes for authentication and sending email
