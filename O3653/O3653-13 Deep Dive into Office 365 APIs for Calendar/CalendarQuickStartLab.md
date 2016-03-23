@@ -1,5 +1,5 @@
 # Connect to Outlook calendar with the Microsoft Graph
-Learn how to use Microsoft Graph to build calendar applications, schedule a meeting, show my meetings for the upcoming week, display the details of a meeting with the abilithy to Accept/Tentative/Decline it, and launch the Skype online meeting experience.
+Learn how to use Microsoft Graph to build calendar applications, schedule a meeting, show my meetings for the upcoming week, display the details of a meeting with the ability to Accept/Tentative/Decline it, and launch the Skype online meeting experience.
 
 [//]: # (Change which template based on if using v2.0 Auth endpoint)
 
