@@ -7,6 +7,8 @@ To complete the exercises below, you will require an Office 365 developer enviro
 ## Exercise 1: Use the Microsoft Graph API to access Notebooks in OneDrive for Business (Office 365)
 In this exercise you will use the Microsoft Graph API to access OneNote notebooks that are stored in the user's OneDrive for Business in Office 365.
 
+Your user must have at least one OneNote notebook with a section and a page.
+
 ### Create an ASP.NET MVC application
 1. Open Visual Studio and select **File / New / Project**. 
 
@@ -650,7 +652,7 @@ using OneNoteDev.TokenStorage;
     }
 	````
 
-1. Now add a view to render a list of the notebook sections.
+1. Now add a view to render a list of the notebook pages.
 	1. Right-click in the **Index** method and select **Add View**.
 	
     1. Within the **Add View** dialog, set the following values:
