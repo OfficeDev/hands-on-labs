@@ -23,7 +23,7 @@ This lab will teach you how to create an add-in using only the shell and a brows
 2. Sign in with your Microsoft Account if prompted.
 3. Create a blank workbook.
 4. Go to the **Insert** tab and choose **Office Add-ins**.
-5. In the Office Add-ins dialog, choose **Manage My Add-ins** in the upper-right corner, and select **Upload My Add-in**.
+5. In the Office Add-ins dialog, choose **Manage My Add-ins** in the upper-right corner, and select **Upload My Add-in** (if you are logged in to a work or school account, you will see a direct link for "Upload My Add-in" instead of "Manage My Add-ins").
 6. Click **Browse** and select the *manifest-myhelloworldaddin.xml* file from your project folder, then click **Upload**.
 7. Your add-in should load in Excel. You can type in some data in the spreadsheet, highlight it, and then click the **Get Selected Data** button to see an example that shows how add-ins interact with Office content using the JavaScript APIs.
 
