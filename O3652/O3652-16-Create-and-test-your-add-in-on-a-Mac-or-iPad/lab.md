@@ -12,7 +12,7 @@ To complete the exercises below, you will require an Office 365 developer enviro
 ## Exercise 1: Create an add-in using Yeoman generator
 *In this exercise, you will create a sample Hello World add-in using the Yeoman generator directly on your Mac.*
 
-1. First, install Node.js and Git, if you haven’t already. Next, open a command prompt/terminal as an administrator and run the following command: `npm install –g tsd gulp bower yo generator-office`
+1. First, install Node.js and Git, if you haven’t already. Next, open a command prompt/terminal as an administrator and run the following command: `sudo npm install –g tsd gulp bower yo generator-office`
 2. Create a folder for your add-in project in the ~/Desktop/add-ins folder and go to that folder in the command prompt/terminal. Next, run the Yeoman generator for Office Add-ins to create the project scaffolding. Use the following command: `yo office`
 3. When prompted, supply the following information:
   * Name of the add-in — **myHelloWorldAddin**
