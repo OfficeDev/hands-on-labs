@@ -4,7 +4,7 @@ This lab will teach you how to create an add-in using only the shell and a brows
 ## Exercise 1: Create an add-in with the Yeoman generator
 
 1. Open a terminal/command prompt.
-1. Go to the C:\lab\ folder on Windows or the ~/Desktop/add-ins directory on Mac.
+1. Go to the C:\Dev\ folder on Windows or the ~/Desktop/add-ins directory on Mac.
 1. Create a new folder for your add-in project with the command `mkdir <your-name>` and go to that folder.
 1. Run the Office yeoman generator by entering the command `yo office`.
 1. Provide the following information about your add-in:
