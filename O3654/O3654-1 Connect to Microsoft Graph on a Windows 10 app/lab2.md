@@ -12,7 +12,7 @@ You'll use the Microsoft Graph SDK to handle user authentication and manipulatio
 
 The app you'll build requires the user to sign in with either their personal or work or school Microsoft account. The app then authenticates the user. The user can then have the app connect to their Outlook email account, and have the app send a sample email from their account to the specified recipient.
 
-![Microsoft Graph sample app user interface](./images/StartScreen.png)
+![Microsoft Graph sample app user interface](./StartScreen.png)
 
 ## Get a work or school or personal Microsoft account
 
