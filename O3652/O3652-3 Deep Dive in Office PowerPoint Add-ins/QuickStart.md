@@ -12,7 +12,7 @@ To complete the exercises below, you will require an Office 365 developer enviro
 ### Exercise 1: Create your first add-in
 *In this exercise you will learn how to use Visual Studio to create your first add-in and you will learn about the files that are created for you.  You will also learn about how to customize buttons on the ribbon. *
 
-1. Launch Visual Studio 2015 as administrator.
+1. Launch Visual Studio 2015
 2. From the **File** menu, select the **New Project** command. When the **New Project** dialog appears, select the **PowerPoint Add-in** project template from the **Office/SharePoint** template folder, as shown below. Name the new project **HelloWorld** and click **OK** to create the new project.
 
     ![](Images/Fig01.PNG)
@@ -289,4 +289,4 @@ Congratulations on completing this quick start challenge!
 One common scenario that might come to mind is to connect PowerPoint to Excel data. 
 
 1. Check out the **Excel Rest API** quick start and see how to use the Microsoft Graph.
-1. Try out this code sample at http://aka.ms/excel-chart-picker which lets you insert pictures of charts from Excel files stored in OneDrive.
+
