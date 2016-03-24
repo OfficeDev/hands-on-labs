@@ -37,19 +37,18 @@ Next, you'll use the NuGet Package Manager to add the Microsoft Graph SDK and Mi
 
 1. In **Solution Explorer**, choose the project, and from the short-cut menu, choose **Manage NuGet Packages...**
 2. In the **NuGet** dialog box, in the Search box, enter Microsoft.Graph.
-	The Microsoft.Graph and Microsoft.Graph.OAuth2 packages should be displayed in the search results.
-3. Choose the Microsoft.Graph.OAuth2 package. 
+	The Microsoft.Graph package should be displayed in the search results.
+3. Choose the Microsoft.Graph package. 
 4. In the package details pane, make sure your project is checked, and then choose **Install**.
-	The Microsoft.Graph and Microsoft.Graph.OAuth2 packages are both installed. (Microsoft.Graph is automatically installed since it is listed as a dependency of Microsoft.Graph.OAuth2.)
-4. In **Solution Explorer**, expand the **Reference** node. You should see references to both `Microsoft.Graph` and `Microsoft.Graph.OAuth2`.
+	The Microsoft.Graph package is installed.
+4. In **Solution Explorer**, expand the **Reference** node. You should see a reference to `Microsoft.Graph`.
 
-	In addition, both packages have been added as dependencies in the project's `project.json` file:
+	In addition, the package has been added as a dependency in the project's `project.json` file:
 	
 	```
 	{
   	"dependencies": {
     	"Microsoft.Graph": "1.0.3-rc",
-    	"Microsoft.Graph.OAuth2": "1.0.1-rc",
     	"Microsoft.NETCore.UniversalWindowsPlatform": "5.0.0"
   	},
   	
