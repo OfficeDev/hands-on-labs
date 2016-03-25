@@ -23,7 +23,7 @@ To complete the exercises below, you will require an Office 365 developer enviro
 
 ##Setting up the code
 1.  Open Visual Studio and click **File->Open->Project/Solution**.
-2.  Navigate to `C:\\Projects\Build2016\LabA\LabAWeb.sln`.
+2.  Navigate to `C:\git\trainingcontent-nda\O3659\O3659-1 WebSDK\Starter Solution\Lab A\LabAWeb.sln`.
 3.  Navigate to [https://msdn.microsoft.com/en-us/office/office365/howto/add-common-consent-manually] to create your application in Azure and attain your **Client ID**.  Note this ID as it will be used later in the lab.
 4.  Add your http://localhost address to your RedirectURI list in Azure.
 5.  Add the same address as above /Home.html.
