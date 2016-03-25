@@ -39,11 +39,11 @@ In this lab you will get hands-on experience developing an Excel add-in with Sky
 
 1.  Open Visual Studio and click **File>Open>Project/Solution**.
 
-2.  Navigate to `C:\\Projects\SkypeO365\ExcelAddIn\ExcelAddIn.sln`.
+2.  Navigate to `C:\git\trainingcontent-nda\O3659\O3659-2 OfficeAddinWebSDK\Starter Solution\ExcelAddIn.sln`.
 
 3.  Right click the ExcelAddIn App for Office project and Select **Add>Existing Item**.
 
-4.  Browse to `C:\\ExcelTemplates\TestExcel.xlsx` and press OK.
+4.  Browse to `C:\git\trainingcontent-nda\O3659\O3659-2 OfficeAddinWebSDK\Starter Solution\ExcelAddIn\TestExcel.xlsx` and press OK.
 
 5.  Click the ExcelAddIn App for Office project.  In the properties window, set the Start Document to **TestExcel.xlsx**.
 
