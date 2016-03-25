@@ -1,10 +1,5 @@
 # Get notified when data changes through Microsoft Graph Webhooks
 
-<!-- TODO  
-- changes from beta -> v1.0 path  
-- changes to JSON Attributes on model for subscriptionExpirationDateTime -> expirationDateTime and subscriptionId -> id - should be in prod 3/21
-- change Notification.subscriptionExpirationDateTime (217617 currently returns as string) to DateTimeOffset -->
-
 ## What You'll Learn
 In this lab, you'll create an ASP.NET MVC application that subscribes for Microsoft Graph webhooks and receives change notifications. You'll use the Microsoft Graph API to create a subscription, and you'll create a public endpoint that receives change notifications. 
 
@@ -261,7 +256,7 @@ using System.Threading.Tasks;
 
    ```c#
     // Build the request.
-    string subscriptionsEndpoint = "https://graph.microsoft.com/beta/subscriptions/";
+    string subscriptionsEndpoint = "https://graph.microsoft.com/v1.0/subscriptions/";
     HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, subscriptionsEndpoint);
     var subscription = new Subscription
     {
@@ -276,7 +271,7 @@ using System.Threading.Tasks;
     request.Content = new StringContent(contentString, System.Text.Encoding.UTF8, "application/json");
    ```
 
-This sample creates a subscription for the *me/mailFolders('Inbox')/messages* resource for *Created* change type. See the [docs](http://graph.microsoft.io/en-us/docs/api-reference/beta/resources/subscription) for other supported resources and change types. 
+This sample creates a subscription for the *me/mailFolders('Inbox')/messages* resource for *Created* change type. See the [docs](http://graph.microsoft.io/en-us/docs/api-reference/v1.0/resources/subscription) for other supported resources and change types. 
 
 ### Send the request and parse the response
 
@@ -325,7 +320,7 @@ This sample creates a subscription for the *me/mailFolders('Inbox')/messages* re
 
         if (!string.IsNullOrEmpty(subscriptionId))
         {
-            string serviceRootUrl = "https://graph.microsoft.com/beta/subscriptions/";
+            string serviceRootUrl = "https://graph.microsoft.com/v1.0/subscriptions/";
 
             // Get an access token and add it to the client.
             string accessToken;
@@ -512,7 +507,7 @@ using Newtonsoft.Json;
         // The date and time when the webhooks subscription expires.
         // The time is in UTC, and can be up to three days from the time of subscription creation.
         [JsonProperty(PropertyName = "subscriptionExpirationDateTime")]
-        public string SubscriptionExpirationDateTime { get; set; }
+        public DateTimeOffset SubscriptionExpirationDateTime { get; set; }
 
         // The unique identifier for the webhooks subscription.
         [JsonProperty(PropertyName = "subscriptionId")]
