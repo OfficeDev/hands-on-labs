@@ -15,18 +15,18 @@ To complete the exercises below, you will require an Office 365 developer enviro
 1. Launch Visual Studio 2015
 2. From the **File** menu, select the **New Project** command. When the **New Project** dialog appears, select the **PowerPoint Add-in** project template from the **Office/SharePoint** template folder, as shown below. Name the new project **HelloWorld** and click **OK** to create the new project.
 
-    ![](Images/Fig01.PNG)
+    ![Screenshot of creating project in Visual Studio](Images/Fig01.PNG)
 
 3. When you create a new **PowerPoint Add-in** project, Visual Studio prompts you with the **Choose the add-in type** page of the **Create Office Add-in** dialog. This is the point where you select the type of add-in you want to create. Leave the default setting with the radio button titled **Add new functionalities to PowerPoint** and select **Finish** to continue.
 
-    ![](Images/Fig02.PNG)
+    ![Screenshot of creating project in Visual Studio](Images/Fig02.PNG)
 
 4. Visual Studio will create the project. There are a few parts that are created for you:
 	- A manifest xml file - this holds the metadata that your add-in needs to run in Office, including how it will present itself on the ribbon.
 	- A HelloWorldWeb project with a Home.html and Home.js - The HelloWorldWeb project in the solution contains the HTLM and Javascript you need to run your Office Add-in.
 5. Use the Solution Explorer to drill down into the **HelloWorld.xml** file.
 
-    ![](Images/Fig03.PNG)
+    ![Screenshot of choosing HelloWorld.xml file](Images/Fig03.PNG)
 
 6. Now, find the XML block that looks like this. Take a minute and read through it as it describes how add-ins can integrate with the Office UI. The example below demonstrates how an add-in can add a button to the PowerPoint ribbon's Home tab.
 
@@ -177,20 +177,20 @@ To complete the exercises below, you will require an Office 365 developer enviro
 1. Next, we will create the web service to make the call to get Bing's photo of the day.
 1. Add a new folder to the **HelloWorldWeb** project named **Controllers**.  
 
-	![](Images/Fig04.PNG)  
+	![Screenshot of controllers folder](Images/Fig04.PNG)  
 
 1. Right-click the **Controllers** folder and select **Add > New Scaffolded Item...**.
 1. In the **Add Scaffold** dialog, select **Web API 2 Controller - Empty** and click the **Add** button.  
 
-	![](Images/Fig05.PNG)  
+	![Screenshot of creating a new scaffolded item](Images/Fig05.PNG)  
 
 1. On the **AddController** dialog, enter a name of **PhotoController** and click the **Add** button. 
 
-	![](Images/Fig06.PNG)  
+	![Screenshot of the Add Controller](Images/Fig06.PNG)  
 
 1. You should now see that the Web API controller has been added to a file named **PhotoController.cs**. You can also see that Visual Studio has added a few extra files, such as **Global.asax** and **WebApiConfig.cs**, to provide support for the Web API.  
 
-	![](Images/Fig07.PNG)  
+	![Screenshot of VS project](Images/Fig07.PNG)  
 
 1. Examine what's inside **PhotoController.cs**. You can see that there is an **ApiController**-derived class named **PhotoController**, which is initially empty.
 
@@ -276,12 +276,12 @@ To complete the exercises below, you will require an Office 365 developer enviro
 
 1. Press F5 to start the project. When Powerpoint loads, click the *Daily Photo* button on the home tab.
 
-	![](Images/Fig08.PNG)  
+	![Screenshot of PowerPoint](Images/Fig08.PNG)  
 
 1. Then click the insert image button and you should see the Bing Photo of the Day added.
 1. You can then use the designer in PowerPoint to customize the slide deck with designs based on the photo.
 
-	![](Images/Fig09.PNG)  
+	![Screenshot of photo added into PowerPoint](Images/Fig09.PNG)  
     
 Congratulations on completing this quick start challenge!
 
