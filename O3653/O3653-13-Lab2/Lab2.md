@@ -119,7 +119,7 @@ endpoint and work with Office 365 and Outlook Calendar. You will be retrieving a
   1. Find the **Views** folder under **FindMeetingTimesLab**.
   1. Open **Shared -> _Layout.cshtml**.
   1. Change the name - Replace **Graph and AAD Auth Starter** with **Find Meeting Times Starter**. You would need to do this at 3 places in the file. 
-  1. In the `<body>` section, find the place where the labels for the tabbed experience are listed. They will look like `<li>@Html.ActionLink("Home", "Index", "Home")</li>`. 
+  1. In the `<body>` section, find the place where the labels for the tabbed experience are listed. They will look like ```<li>@Html.ActionLink("Home", "Index", "Home")</li>```. 
   1. Add the following to that section
   ```asp
 	    <li>@Html.ActionLink("FindMeetingTimes", "Index", "FindMeetingTimes")</li>
@@ -424,7 +424,9 @@ You will add input parameters to the form and use that as input to the API.
                 payloadBuilder.Append(AttendeeStart);
                 payloadBuilder.Append(e);
                 payloadBuilder.Append(AttendeeEnd);
+                payloadBuilder.Append(',');
             }
+            payloadBuilder.Remove(payloadBuilder.Length-1, 1);
             payloadBuilder.Append(AttendeesListEnd);
 
             payloadBuilder.Append(payloadEnd);
@@ -433,6 +435,7 @@ You will add input parameters to the form and use that as input to the API.
         }
    ```
 
+1. Modify the View to add an input for the attendees. 
   1. Find the **Views/FindMeetingTimes** folder in the project.
   1. Open the **Index.cshtml** file found in the folder.
   1. Locate the part of the file that includes the form at the top of the page. It should look similar to the following code:
@@ -460,14 +463,23 @@ You will add input parameters to the form and use that as input to the API.
             </div>
         </div>
    ```
+1. Modify the Controller 
   1. Find the **FindMeetingTimesController.cs** file and open it. 
-  1. Locate the **Index** function definition. It should look like the following
+  1. Locate the **Index** definition. It should look like the following
    ```csharp
 	 public async Task<ActionResult> Index()
    ```
-  1. Replace that line with the following
+     Replace that line with the following
    ```csharp
         public async Task<ActionResult> Index(string attendees)
+   ```
+  1. In the **Index**action, locate the below line
+   ```csharp
+        string payload = "";
+   ```
+   and replace it with 
+   ```csharp
+        string payload = client.GeneratePayload(attendees);
    ```
 ### Run the app
 

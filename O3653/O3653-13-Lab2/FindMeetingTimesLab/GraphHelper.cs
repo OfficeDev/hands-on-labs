@@ -145,7 +145,9 @@ namespace FindMeetingTimesLab
                 payloadBuilder.Append(AttendeeStart);
                 payloadBuilder.Append(e);
                 payloadBuilder.Append(AttendeeEnd);
+                payloadBuilder.Append(',');
             }
+            payloadBuilder.Remove(payloadBuilder.Length - 1, 1);
             payloadBuilder.Append(AttendeesListEnd);
 
             payloadBuilder.Append(payloadEnd);
