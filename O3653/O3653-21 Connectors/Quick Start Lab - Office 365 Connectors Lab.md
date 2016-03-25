@@ -185,7 +185,8 @@ If you don’t have an Office 365 Group, this is how you create one:
 10. Build your project. Get ready to publish your project
  
 	**Publish the app using trial Azurewebsites service**
-	Note: If you already have an Azure subscription and familiar with publishing your website to Azurewebsites, then right-click on the Visual studio project and select **Publish**. Select the Microsoft Azure Web Apps option and sign in to your Azure subscription (as  needed) and follow simple steps to host ASP.net application in Azurewebsites. 
+
+	**Note:** If you already have an Azure subscription and familiar with publishing your website to Azurewebsites, then right-click on the Visual studio project and select **Publish**. Select the Microsoft Azure Web Apps option and sign in to your Azure subscription (as  needed) and follow simple steps to host ASP.net application in Azurewebsites. 
 	
 	Browse to https://tryappservice.azure.com/ to create a temporary test site. Choose **Web App** as the app type, then choose **Next**. Change the language dropdown to **C#**, then choose **ASP.NET Empty Site** and choose **Create**. Sign in with an account 	to complete the creation process.
 	
