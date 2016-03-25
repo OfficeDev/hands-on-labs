@@ -55,7 +55,7 @@ In this lab you will get hands-on experience developing an Excel add-in with Sky
 
 
 
-	![image](Screenshots/Add-in.png)
+	![Screenshot of the Office Add-in Drop Down selection](Screenshots/Add-in.png)
 
 
 
@@ -71,7 +71,7 @@ In this lab you will get hands-on experience developing an Excel add-in with Sky
 
 8.  Press **F5** or the **Start** button in Visual Studio.  The Excel sheet should appear:
 
-    ![image](Screenshots/launch_excel.PNG)
+    ![Screenshot of Excel Spreadsheet with an Add-in blank frame](Screenshots/launch_excel.PNG)
 
 
 
@@ -155,7 +155,7 @@ This method will display the standard Azure authentication page.  On successful 
 
 
 
-	![image](Screenshots/azure_login.PNG)
+	![Screenshot of an Azure AD login screen](Screenshots/azure_login.PNG)
 
 
 
@@ -411,7 +411,7 @@ The **signIn()** method will take the access_token value returned from the user'
 
 
 
-	![image](Screenshots/login_success_blank.PNG)
+	![Screenshot of successful Skype login in Office Add-in](Screenshots/login_success_blank.PNG)
 
 
 
@@ -675,7 +675,7 @@ Now that the functionality for getting selected information from Excel is setup,
 
 
 
-	![image](Screenshots/contact_card.PNG)
+	![screenshot of Skype user contact card](Screenshots/contact_card.PNG)
 
 
 
@@ -905,7 +905,7 @@ A new feature in the Skype for Business Online SDK is the Conversation Control. 
 
 9. Type a message in the Skype for Business Client and press **Enter**.  You should see your first chat interaction.
 
-![image](Screenshots/conversation.PNG)
+![screenshot of the Skype for Business conversation control](Screenshots/conversation.PNG)
 
     
 
@@ -945,7 +945,7 @@ For other users in your organization to use the add-in you just created, the add
 
 
 
-	![image](Screenshots/publish_setup.png)
+	![screenshot of publishing your app in Visual Studio](Screenshots/publish_setup.png)
 
 
 
@@ -953,7 +953,7 @@ For other users in your organization to use the add-in you just created, the add
 
 
 
-	![image](Screenshots/publish_path.PNG)
+	![screenshot of importing publishing profile in Visual Studio](Screenshots/publish_path.PNG)
 
 
 
@@ -963,7 +963,7 @@ For other users in your organization to use the add-in you just created, the add
 
 
 
-	![image](Screenshots/allowed_domains.PNG)
+	![Screenshot of Allowed Domains in Visual Studio](Screenshots/allowed_domains.PNG)
 
 
 
@@ -971,7 +971,7 @@ For other users in your organization to use the add-in you just created, the add
 
 
 
-	![image](Screenshots/package_app.PNG)
+	![Screenshot of packing app in Visual Studio](Screenshots/package_app.PNG)
 
 
 
@@ -979,7 +979,7 @@ For other users in your organization to use the add-in you just created, the add
 
 
 
-	![image](Screenshots/deploy.PNG)
+	![Screenshot of deploying your web project in Visual Studio](Screenshots/deploy.PNG)
 
 
 
