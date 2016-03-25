@@ -166,13 +166,13 @@ using Newtonsoft.Json;
         [JsonProperty(PropertyName = "resource")]
         public string Resource { get; set; }
 
-        // The date and time when the webhooks subscription expires.
+        // The date and time when the webhook subscription expires.
         // The time is in UTC, and can be up to three days from the time of subscription creation.
-        [JsonProperty(PropertyName = "subscriptionExpirationDateTime")]
+        [JsonProperty(PropertyName = "expirationDateTime")]
         public DateTimeOffset? ExpirationDateTime { get; set; }
 
-        // The unique identifier for the webhooks subscription.
-        [JsonProperty(PropertyName = "subscriptionId")]
+        // The unique identifier for the webhook subscription.
+        [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }
     }
 
@@ -266,7 +266,7 @@ using System.Threading.Tasks;
     var subscription = new Subscription
     {
         Resource = "me/mailFolders('Inbox')/messages",
-        ChangeType = "Created",
+        ChangeType = "created",
         NotificationUrl = ConfigurationManager.AppSettings["ida:NotificationUrl"],
         ClientState = Guid.NewGuid().ToString(),
         ExpirationDateTime = DateTime.UtcNow + new TimeSpan(3, 0, 0, 0)
@@ -395,13 +395,13 @@ In this step you'll create a view for the app start page and a view that display
     <code>
         {<br />
         &nbsp;&nbsp;"resource": "me/mailFolders('Inbox')/messages",<br />
-        &nbsp;&nbsp;"changeType": "Created",<br />
+        &nbsp;&nbsp;"changeType": "created",<br />
         &nbsp;&nbsp;"notificationUrl": "https://your-notification-endpoint",<br />
         &nbsp;&nbsp;"clientState": "your-client-state",<br />
         &nbsp;&nbsp;"expirationDateTime": "2016-03-14T03:13:29.4232606+00:00"<br />
         }
     </code>
-    <p>See the <a href="http://graph.microsoft.io/en-us/docs/api-reference/beta/resources/subscription">docs</a> for other supported resources and change types.</p>
+    <p>See the <a href="http://graph.microsoft.io/en-us/docs/api-reference/v1.0/resources/subscription">docs</a> for other supported resources and change types.</p>
     <br />
     @using (Html.BeginForm("CreateSubscription", "Subscription"))
     {
@@ -633,14 +633,14 @@ using System.Threading.Tasks;
                             }
                         }
                     }
-                    return new HttpStatusCodeResult(200);
+                    return new HttpStatusCodeResult(202);
                 }
                 catch (Exception)
                 {
 
                     // TODO: Handle the exception.
-                    // Return a 200 so the service doesn't resend the notification.
-                    return new HttpStatusCodeResult(200);
+                    // Return a 202 so the service doesn't resend the notification.
+                    return new HttpStatusCodeResult(202);
                 }
             }
         }
@@ -752,7 +752,7 @@ In this step you'll create a view that displays some properties of the changed m
 
 1. Select the **Empty (without model)** template, and then click **Add**.
 
-1. In the **Notification.cshtml** file that's created, replace the content with the following code:
+1. In the **Notification.cshtml** file that's created, replace the entire contents of the file with the following code:
 
    ```html
 @model Microsoft.Graph.Message
