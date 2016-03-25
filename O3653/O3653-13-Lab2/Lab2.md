@@ -85,12 +85,13 @@ endpoint and work with Office 365 and Outlook Calendar. You will be retrieving a
                 return View();
             }			
   ```
-1. Create a new model class.
+###  Create a new model and view.
+1. Create a model class
   1. Find the **Models** folder under **FindMeetingTimesLab**, right-click it and select **Add>New Item**.
   1. Select **Visual C# -> Code** and click **Class** in the middle pane.
   1. Change the name to **MeetingTimeCandidate.cs** and click **Add**.
 
-1. Open the **MeetingTimeCandidate.cs** file and replace the content with the below.
+  1. Open the **MeetingTimeCandidate.cs** file and replace the content with the below.
 
 	```csharp
 	using System;
@@ -186,7 +187,7 @@ endpoint and work with Office 365 and Outlook Calendar. You will be retrieving a
 		</div>
 	</div>
   ```
-   1. Add the following in the `<tbody>` section of the `<table>` element
+  1. Add the following in the `<tbody>` section of the `<table>` element
 	  ```asp
 		@if (Model != null)
 		{
@@ -225,12 +226,12 @@ endpoint and work with Office 365 and Outlook Calendar. You will be retrieving a
 		}
 	 ```
    
-	1. Add a Graph Helper file.
-	  1. Right click on **FindMeetingTimesLab** project and select **Add -> New Item**.
-	  1. Select **Visual C# -> Code** and click **Class** in the middle pane.
-	  1. Change the name to **GraphHelper.cs** and click **Add**.
-	  1. Open the **GraphHelper.cs** file you just created and add replace the contents with the following
-	  ```csharp
+1. Add a Graph Helper file.
+  1. Right click on **FindMeetingTimesLab** project and select **Add -> New Item**.
+  1. Select **Visual C# -> Code** and click **Class** in the middle pane.
+  1. Change the name to **GraphHelper.cs** and click **Add**.
+  1. Open the **GraphHelper.cs** file you just created and add replace the contents with the following
+	```csharp
 		using System;
 		using System.Collections.Generic;
 		using System.Linq;
@@ -257,9 +258,9 @@ endpoint and work with Office 365 and Outlook Calendar. You will be retrieving a
 				}
 			}
 		}			  
-	 ```
+	```
 
-1. Add a method in the **GraphHelper** class to Make the API call. 
+  1. Add a method in the **GraphHelper** class to Make the API call. 
    ```csharp
     public async Task<HttpResponseMessage> MakeGraphApiCall(string method, string token, string apiUrl, string userEmail, string payload, Dictionary<string, string> preferHeaders)
     {
@@ -297,7 +298,7 @@ endpoint and work with Office 365 and Outlook Calendar. You will be retrieving a
     }			   
 	```
 
-1. Add a method in the **GraphHelper** class to Get Meeting times. 
+  1. Add a method in the **GraphHelper** class to Get Meeting times. 
    ```csharp
 	public async Task<object> GetMeetingTimes(string token, string userEmail, string payload)
     {
@@ -338,7 +339,7 @@ endpoint and work with Office 365 and Outlook Calendar. You will be retrieving a
     }			   
    ```
 
-1. Add a method in the **GraphHelper** class to build the Address string. 
+  1. Add a method in the **GraphHelper** class to build the Address string. 
    ```csharp
 	public String BuildAddressString(JToken address)
 	{
@@ -358,7 +359,7 @@ endpoint and work with Office 365 and Outlook Calendar. You will be retrieving a
 	}
    ```
 
-1. Add a method in the **GraphHelper** class to build the coordinates string. 
+  1. Add a method in the **GraphHelper** class to build the coordinates string. 
    ```csharp
 	public String BuildCoordinatesString(JToken coordinates)
 	{
@@ -373,7 +374,7 @@ endpoint and work with Office 365 and Outlook Calendar. You will be retrieving a
 	}		
    ```
 
-1. Add the following code to the **FindMeetingTimesController** class to use **GraphHelper** and call the API. Replace `return View()` at the end of the file with the following
+  1. Add the following code to the **FindMeetingTimesController** class to use **GraphHelper** and call the API. Replace `return View()` at the end of the file with the following
 
   ```csharp
     try
@@ -401,8 +402,9 @@ endpoint and work with Office 365 and Outlook Calendar. You will be retrieving a
 In this section, you'll add to the code you already created in the previous section.
 You will add input parameters to the form and use that as input to the API. 
 
-1. Locate the **GraphHelper.cs** file.
-1. Add a method to build the payload string. 
+1. Update the helper file
+  1. Locate the **GraphHelper.cs** file.
+  1. Add a method to build the payload string. 
    ```csharp
 		public string GeneratePayload(string attendees)
         {
@@ -473,7 +475,7 @@ You will add input parameters to the form and use that as input to the API.
    ```csharp
         public async Task<ActionResult> Index(string attendees)
    ```
-  1. In the **Index**action, locate the below line
+  1. In the **Index** action, locate the below line
    ```csharp
         string payload = "";
    ```
