@@ -38,10 +38,10 @@ If you don’t have an Office 365 Group, this is how you create one:
 
 5. When the page loads, add the following details:
 	- **Operation**: **POST**
-	- **Destination Address**: **webhook URL** from **Step 3**
+	- **Destination Address**: **paste the webhook URL** from **Step 3**
 	- **Headers**: **Content-Type: application/json** 
 	- **Body**: **{ "text": "Hello from Build 2016" }**
-	- **Copy and paste the sample JSON payload (see below these instructions)**
+	- **Copy and paste the Sample Connector Card Message JSON payload (see below these instructions)**
 
 	![Manual Webhook](http://i.imgur.com/vV8FKeD.png)
 	
@@ -58,7 +58,7 @@ If you don’t have an Office 365 Group, this is how you create one:
 9. To learn more about the connector card format, visit https://dev.outlook.com/Connectors/GetStarted.
 	
 	
-Sample Connector Card Message JSON Payload
+### Sample Connector Card Message JSON Payload
 
 	{  
 	  "summary": "New Comment by Ben Quillen on \"Fabrikam Forum\"",
@@ -111,9 +111,9 @@ Sample Connector Card Message JSON Payload
 **Exercise 2: Build an ASP.net application to receive incoming notifications from Github service and post them as connector card messages in Office 365 groups**
 ------------------------------------------------------------------------
 	
-1. Start Visual Studio 2015 and select **New>Project**. Select the ASP.net Web application template. Provide a project name. Select **empty** for the ASP.net type and select the Web API checkbox. This will pull down the necessary nugets for you.
+1. Start Visual Studio 2015 and select **New>Project**. Under Templates for Visual C#, select **Web** and select the **ASP.net Web application** template. Provide a project name. Select **empty** for the ASP.net template type and select the **Web API** checkbox. On the right, look under Microsoft Azure and uncheck the **Host in the Cloud** checkbox.  This will pull down the necessary nugets for you.
 
-2. Right-click on the project, select **Add>Connected Service**. Select ASP.net on the left side of the dialog box and select the ASP.net Webhooks. Click the **Configure** button. This will generate code into your project, so you can host and receive webhooks.
+2. Click on **Tools>Extensions and Updates** in Visual Studio, select Online on left and in the search box, search for ASP.NET Webhooks Connected Service. If you do not have ASP.Net WebhHooks Connected Services installed, follow the steps to download and install it. Now right-click on the Visual Studio project, select **Add>Connected Service**. Select ASP.Net on the left, select **ASP.net WebHooks** click configure. OThis will generate code into your project, so you can host and receive webhooks.
 
 3. Select Github in the **Enable incoming webhooks** dialog box. Provide a secret for your GitHub application. Let's generate a new secret. Go to sha1-online.com and generate a new SHA key. Copy this key into your clipboard and also save it in Notepad temporarily. Paste this secret into Github text box in Visual Studio.
 
@@ -129,7 +129,7 @@ Sample Connector Card Message JSON Payload
 
 6. Navigate to “C:\git\trainingcontent-nda\O3653\O3653-21 Connectors\Completed Projects\Github Webhooks\WebApplication1\Models\” in Windows Explorer. 
 
-7. Copy all the files in this directory that begin with “Swift” to the Models folder in your Visual Studio project. Right-click the Models folder, select Add>Existing item and add these files into your Visual Studio project. Do the same for GithubIssueEvent.cs, ConnectorCard.cs and add them to your Visual Studio project.
+7. Copy all the files in this directory that begin with “Swift” to the Models directory in your Visual Studio project. Do the same for  GithubIssueEvent.cs, ConnectorCard.cs, ModelBuilder.cs and copy them to the same Models directory. In Visual Studio, right click on the Models folder, select **Add>Existing** item and add all these files into your Visual Studio project.
 	        
 8. Open the GitHubWebHookHandler.cs file under WebHandlers folder in your Visual Studio project.  Replace the existing code in this file with the code listed below. Fix the namespace (see curly braces), so it continues to bear the same name as your Visual Studio project.
 
@@ -143,7 +143,7 @@ Sample Connector Card Message JSON Payload
 		using System;
 		using System.Text;
 		
-		namespace {Use the project name as namespace}.WebHookHandlers
+		namespace MyTestConnectorForGithub.WebHookHandlers
 		{
 		    public class GitHubWebHookHandler : WebHookHandler
 		    {
@@ -182,22 +182,23 @@ Sample Connector Card Message JSON Payload
 	
 9. In the same GitHubWebHookHandler.cs file, find the string variable groupWebHookURL.  Copy and paste the Office 365 group webhook URL that you previously got from Exercise #1 (Step 3).
 
-10. Build your project.  Right-click the project and select **Publish**.  
+10. Build your project. Get ready to publish your project
+ 
+	**Publish the app using trial Azurewebsites service**
+	Note: If you already have an Azure subscription and familiar with publishing your website to Azurewebsites, then right-click on the Visual studio project and select **Publish**. Select the Microsoft Azure Web Apps option and sign in to your Azure subscription (as  needed) and follow simple steps to host ASP.net application in Azurewebsites. 
 	
-	a. Select the Microsoft Azure Web Apps option and sign in to your Azure subscription (if needed). 
+	Browse to https://tryappservice.azure.com/ to create a temporary test site. Choose **Web App** as the app type, then choose **Next**. Change the language dropdown to **C#**, then choose **ASP.NET Empty Site** and choose **Create**. Sign in with an account 	to complete the creation process.
 	
-	b. Create a new web app.  Choose a web app name and app service plan location. Click **Create**. Select  "Settings" on the left side, choose the Debug configuration (so you can debug your web application in Visual Studio) and select all the checkboxes under file publish options. 
+	When the site is created, copy the site URL, then choose the **Download publishing profile** link and save the file to the local machine. 
 	
-	c. Click **Publish** to publish the webapp to Azure websites. This will open a browser and take you to the Azure websites hosting your web application (for example, http://mywebhookspreview.azurewebsites.net). Copy this URL.
+	In Visual Studio, open the **Build** menu and choose **Publish**.
+		
+	Select **Import** under **Select a publish target**. Browse to the publishing profile you downloaded in the previous step. Choose the **Validate Connection** button to make sure the settings work.
 	
-		Note: If you don’t have an Azure subscription, get one free by signing up @ https://tryappservice.azure.com/
-		This allows you to host you web application on Azure for up to 24 hours, no credit card required.   
-		Choose **Web App** as the app type, then click **Next**.  
-		Change the language dropdown to **C#**, then choose **ASP.NET Empty Site** and click **Create**.  
-		Choose to download publishing profile.  
-		When using Visual Studio to publish your project, choose the import option to import the publishing profile, 
-		follow the same a, b, and c steps above to create the webapp.
-	
+	Choose the **Settings** item in the left navigation. Select **Debug**. Expand **File Publish Options** and put a check in 	the **Remove additional files at destination** checkbox.
+		
+	Choose **Publish** to publish the app to Azure. Once the publishing process is complete, a new browser window will open to the newly published site.
+
 11. Go to github.com. Create a new github repo (unless you already have one for testing purposes). Navigate to the repo. Click  **Settings**. Select Webhooks & Services on the left side. Click the **Add webhook** button. Provide the full webhook URL of your ASP.net application. To get this url, append "/api/webhooks/incoming/Github" to the URL of your Azure web application (as an example, the full webhook URL would be http://mywebhookspreview.azurewebsites.net/api/webhooks/incoming/Github). You will receive notifications from Github service at this URL.  
 
 12. For the secret, enter the SHA1 key you got earlier.
