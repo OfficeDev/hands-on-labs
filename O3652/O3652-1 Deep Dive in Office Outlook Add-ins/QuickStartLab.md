@@ -18,7 +18,7 @@ In this exercise you will create a new project using the Outlook add-in template
   1. Press F5 to begin debugging.
   1. When prompted, enter the email address and password of your Office 365 account. Visual Studio will install the add-in for that user.
   
-    ![The Connect to Exchange email account dialog](./Images/deploy-addin.PNG)
+    ![](./Images/deploy-addin.PNG)
     
   1. With the app running, open Outlook 2016 and log on to the user's mailbox. You should see a **Display all properties** button on the ribbon when you select or open a message.
   
