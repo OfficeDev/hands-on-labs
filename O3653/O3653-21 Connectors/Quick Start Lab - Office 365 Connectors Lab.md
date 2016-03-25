@@ -126,11 +126,11 @@ Sample Connector Card Message JSON Payload
 	            GlobalConfiguration.Configure(WebApiConfig.Register);
 	            GlobalConfiguration.Configure(WebHookConfig.Register);
 	        }
+
+6. Navigate to “C:\git\trainingcontent-nda\O3653\O3653-21 Connectors\Completed Projects\Github Webhooks\WebApplication1\Models\” in Windows Explorer. 
+
+7. Copy all the files in this directory that begin with “Swift” to the Models folder in your Visual Studio project. Right-click the Models folder, select Add>Existing item and add these files into your Visual Studio project. Do the same for GithubIssueEvent.cs, ConnectorCard.cs and add them to your Visual Studio project.
 	        
-6. Find the "Completed Projects" folder under lab "O3653-21". You will find this folder in the same Github repo location that host the instructions for this exercise.  You will need to copy a few files from this already completed projects folder in order to complete this exercise.
-
-7. Find all the Swift\*.cs files under the Models folder in "Completed Projects". Copy these files to the Models folder in your Visual Studio project.  Right-click the Models folder, select **Add>Existing** item and add these files into your Visual Studio project. Do the same for GithubIssueEvent.cs, ConnectorCard.cs and add them to your Visual Studio project. 
-
 8. Open the GitHubWebHookHandler.cs file under WebHandlers folder in your Visual Studio project.  Replace the existing code in this file with the code listed below. Fix the namespace (see curly braces), so it continues to bear the same name as your Visual Studio project.
 
 		using Microsoft.AspNet.WebHooks;
