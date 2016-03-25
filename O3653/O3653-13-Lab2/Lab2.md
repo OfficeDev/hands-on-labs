@@ -303,9 +303,7 @@ endpoint and work with Office 365 and Outlook Calendar. You will be retrieving a
 	public async Task<object> GetMeetingTimes(string token, string userEmail, string payload)
     {
         string findMeetingTimesEndpoint = this.apiEndpoint + "/Me/FindMeetingTimes";
-
-        //var jsonPayload = await Task.Run(() => JsonConvert.SerializeObject(payload));
-
+		
         var result = await MakeGraphApiCall("POST", token, findMeetingTimesEndpoint, userEmail, payload, null);
 
         var response = await result.Content.ReadAsStringAsync();
