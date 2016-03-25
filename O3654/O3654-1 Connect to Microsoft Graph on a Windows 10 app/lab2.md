@@ -633,7 +633,6 @@ With that in mind, it's worth looking at two methods in the helper classes in a 
 <a name="additional-resources"></a>
 ## Additional resources ##
 
-- [Microsoft Graph UWP Connect SDK](https://github.com/OfficeDev/Microsoft-Graph-UWP-Connect-SDK/) code sample on [GitHub](https://github.com) 
 - [Microsoft Graph overview](http://graph.microsoft.io)
 - [Office 365 API code samples and videos](https://msdn.microsoft.com/office/office365/howto/starter-projects-and-code-samples)
 - [Office developer code samples](http://dev.office.com/code-samples)
