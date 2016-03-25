@@ -57,7 +57,6 @@ namespace GraphWebhooks.Controllers
                             foreach (var notification in value)
                             {
                                 Notification current = JsonConvert.DeserializeObject<Notification>(notification.ToString());
-                                current.ResourceData = JsonConvert.DeserializeObject<ResourceData>(notification["resourceData"].ToString());
 
                                 var subscriptionParams = (Tuple<string, string>)HttpRuntime.Cache.Get("subscriptionId_" + current.SubscriptionId);
                                 if (subscriptionParams != null)
