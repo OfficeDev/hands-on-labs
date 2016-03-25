@@ -145,29 +145,28 @@ for calling the Graph API.
     1. Locate the part of the file that includes a few links at the top of the
        page. It should look similar to the following code:
   
-   ```asp
-    <ul class="nav navbar-nav">
-        <li>@Html.ActionLink("Home", "Index", "Home")</li>
-        <li>@Html.ActionLink("About", "About", "Home")</li>
-        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-        <li>@Html.ActionLink("Graph API", "Graph", "Home")</li>
-    </ul>
-   ```
+     ```asp
+      <ul class="nav navbar-nav">
+         <li>@Html.ActionLink("Home", "Index", "Home")</li>
+         <li>@Html.ActionLink("About", "About", "Home")</li>
+         <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+         <li>@Html.ActionLink("Graph API", "Graph", "Home")</li>
+      </ul>
+      ```
    
-   
-   2. Update that navigation to replace the "Graph API" link with "People"
+    2.  Update that navigation to replace the "Graph API" link with "People"
        and connect this to the controller you just created.
        
        
 
-   ```asp
-   <ul class="nav navbar-nav">
-       <li>@Html.ActionLink("Home", "Index", "Home")</li>
-       <li>@Html.ActionLink("About", "About", "Home")</li>
-       <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-       <li>@Html.ActionLink("People", "Index", "People")</li>
-   </ul>
-   ```
+      ```asp
+      <ul class="nav navbar-nav">
+         <li>@Html.ActionLink("Home", "Index", "Home")</li>
+          <li>@Html.ActionLink("About", "About", "Home")</li>
+          <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+          <li>@Html.ActionLink("People", "Index", "People")</li>
+      </ul>
+      ```
    
 
 ### Verify that the project works
