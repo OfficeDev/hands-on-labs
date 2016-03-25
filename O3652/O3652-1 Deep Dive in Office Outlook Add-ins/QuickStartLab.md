@@ -12,7 +12,7 @@ In this exercise you will create a new project using the Outlook add-in template
 1. Launch Visual Studio 2015 and select **New**, **Project**.
   1. Expand **Templates**, **Visual C#**, **Office/SharePoint** ,**Web add-ins**. Select **Outlook Add-in**. Name the project **Translator** and click **OK**.
   
-    ![The new project dialog using the Outlook add-in template](./Images/create-project.PNG)
+    ![The new project dialog using the Outlook add-in template](Images/create-project.PNG)
   
 1. Run the app to verify it works.
   1. Press F5 to begin debugging.
