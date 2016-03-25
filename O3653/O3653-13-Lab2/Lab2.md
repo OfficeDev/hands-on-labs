@@ -436,7 +436,7 @@ You will add input parameters to the form and use that as input to the API.
   1. Find the **Views/FindMeetingTimes** folder in the project.
   1. Open the **Index.cshtml** file found in the folder.
   1. Locate the part of the file that includes the form at the top of the page. It should look similar to the following code:
-	```asp
+   ```asp
 		<div class="panel panel-default">
 		<div class="panel-body">
 			<form class="form-inline" action="/FindMeetingTimes/Index" method="post">
@@ -445,9 +445,9 @@ You will add input parameters to the form and use that as input to the API.
 			</form>
 		</div>
 		</div>
-	```
+   ```
   1. Replace this with the following
-  ```asp
+   ```asp
         <div class="panel panel-default">
             <div class="panel-body">
                 <form class="form-inline" action="/FindMeetingTimes/Index" method="post">
@@ -459,16 +459,16 @@ You will add input parameters to the form and use that as input to the API.
                 </form>
             </div>
         </div>
-	```
+   ```
   1. Find the **FindMeetingTimesController.cs** file and open it. 
   1. Locate the **Index** function definition. It should look like the following
-	```csharp
+   ```csharp
 	 public async Task<ActionResult> Index()
-	```
+   ```
   1. Replace that line with the following
-  	```csharp
+   ```csharp
         public async Task<ActionResult> Index(string attendees)
-	```
+   ```
 ### Run the app
 
 1. Press **F5** to begin debugging.
