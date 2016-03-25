@@ -264,7 +264,7 @@ using System.Threading.Tasks;
         ChangeType = "created",
         NotificationUrl = ConfigurationManager.AppSettings["ida:NotificationUrl"],
         ClientState = Guid.NewGuid().ToString(),
-        ExpirationDateTime = DateTime.UtcNow + new TimeSpan(3, 0, 0, 0)
+        ExpirationDateTime = DateTime.UtcNow + new TimeSpan(0, 0, 4230, 0)
     };
 
     string contentString = JsonConvert.SerializeObject(subscription, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
