@@ -25,7 +25,7 @@ endpoint and work with Office 365 and Outlook Calendar. You will be retrieving a
 
 ## Working with Calendar through REST API  
   
-### Create the FindMeetingTime controller and use the Graph endpoint
+### Create the FindMeetingTime controller
 
 1. Create a new controller to process the requests and send them to the REST API endpoint.
   1. Find the **Controllers** folder under **FindMeetingTimesLab**, right-click it and select **Add>Controller**.
@@ -51,9 +51,10 @@ endpoint and work with Office 365 and Outlook Calendar. You will be retrieving a
   using FindMeetingTimesLab.Auth;
   ```
   
-1. Add the following code to the `FindMeetingTimesController` class to generate an access token for the Graph API:
+1. Add the following code to the `FindMeetingTimesController` class to generate an access token:
 
   ```csharp
+		[Authorize]
         public async Task<ActionResult> Index()
         {
             string userObjId = System.Security.Claims.ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
@@ -114,21 +115,19 @@ endpoint and work with Office 365 and Outlook Calendar. You will be retrieving a
 	}
 	```
 		
-1. Create a new tab for displaying Meeting Times
+1. Create a new navigation link in the navigation bar for displaying Meeting Times
   1. Find the **Views** folder under **FindMeetingTimesLab**.
   1. Open **Shared -> _Layout.cshtml**.
   1. Change the name - Replace **Graph and AAD Auth Starter** with **Find Meeting Times Starter**. You would need to do this at 3 places in the file. 
-  1. In the **<body>** section, find the section where the labels for the tabbed experience are listed. They will look like **<li>@Html.ActionLink("Home", "Index", "Home")</li>**. 
+  1. In the `<body>` section, find the place where the labels for the tabbed experience are listed. They will look like `<li>@Html.ActionLink("Home", "Index", "Home")</li>`. 
   1. Add the following to that section
   ```asp
 	    <li>@Html.ActionLink("FindMeetingTimes", "Index", "FindMeetingTimes")</li>
-	```
+  ```
 
 1. Add a View for FindMeetingTimes
   1. Find the **Views** folder under **FindMeetingTimesLab**.
-  1. Right click on it and select **Add -> New Folder**.
-  1. Change the name to **FindMeetingTimes**. 
-  1. Right click on the **FindMeetingTimes** folder you just created, and select **Add -> View**.
+  1. Right click on the **FindMeetingTimes** folder and select **Add -> View**.
   1. Change the name to **Index**.
   1. Select **List** in the **Template** dropdown. 
   1. In the **Model class** dropdown, select **MeetingTimeCandidate**. 
@@ -175,227 +174,223 @@ endpoint and work with Office 365 and Outlook Calendar. You will be retrieving a
 ### Work with FindMeetingTimes API 
 
 1. Add a button to call **FindMeetingTimes** API.
-  1. Open the Index.cshtml file you just created and add the following code. Add it above the table you created previously. 
+  1. Open the **Index.cshtml** file you just created and add the following code. Add it above the table you created previously. 
 
   ```asp
-<div class="panel panel-default">
-    <div class="panel-body">
-        <form class="form-inline" action="/FindMeetingTimes/Index" method="post">
-            <input type="hidden" name="eventId" value="@Request.Params["eventId"]" />
-            <button type="submit" class="btn btn-default">Find Meeting Times</button>
-        </form>
-    </div>
-</div>
- ```
-   1. Add the following in the **<tbody>** section of the **<table>** element
-  ```asp
-    @if (Model != null)
-    {
-        foreach (var meetingTimeCandidate in Model)
-        {
-            <tr>
-                <td>
-                    @meetingTimeCandidate.StartDate
-                </td>
-                <td>
-                    @meetingTimeCandidate.StartTime
-                </td>                        
-                <td>
-                    @meetingTimeCandidate.EndDate
-                </td>
-                <td>
-                    @meetingTimeCandidate.EndTime
-                </td>                 
-                <td>
-                    @meetingTimeCandidate.Confidence
-                </td>
-                <td>
-                    @meetingTimeCandidate.Score
-                </td>
-                <td>
-                    @meetingTimeCandidate.LocationDisplayName
-                </td>
-                <td>
-                    @meetingTimeCandidate.LocationAddress
-                </td>            
-                <td>
-                    @meetingTimeCandidate.LocationCoordinates
-                </td>            
-            </tr>
-        }
-    }
- ```
-   
-1. Add a Graph Helper file.
-  1. Right click on **FindMeetingTimesLab** project and select **Add -> New Item**.
-  1. Select **Visual C# -> Code** and click **Class** in the middle pane.
-  1. Change the name to **GraphHelper.cs** and click **Add**.
-  1. Open the **GraphHelper.cs** file you just created and add replace the contents with the following
-  ```csharp
-	using System;
-	using System.Collections.Generic;
-	using System.Linq;
-	using System.Web;
-	using System.Threading.Tasks;
-	using System.Net.Http;
-	using Newtonsoft.Json.Linq;
-	using FindMeetingTimesLab.Models;
-	using Newtonsoft.Json;
-	using System.Text;
-
-	namespace FindMeetingTimesLab
-	{
-		public class GraphHelper
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<form class="form-inline" action="/FindMeetingTimes/Index" method="post">
+				<input type="hidden" name="eventId" value="@Request.Params["eventId"]" />
+				<button type="submit" class="btn btn-default">Find Meeting Times</button>
+			</form>
+		</div>
+	</div>
+  ```
+   1. Add the following in the `<tbody>` section of the `<table>` element
+	  ```asp
+		@if (Model != null)
 		{
-			// Used to set the base API endpoint, e.g. "https://outlook.office.com/api/beta"
-			public string apiEndpoint { get; set; }
-			public string anchorMailbox { get; set; }
-
-			public GraphHelper()
+			foreach (var meetingTimeCandidate in Model)
 			{
-				apiEndpoint = "https://outlook.office.com/api/beta";
-				anchorMailbox = string.Empty;
+				<tr>
+					<td>
+						@meetingTimeCandidate.StartDate
+					</td>
+					<td>
+						@meetingTimeCandidate.StartTime
+					</td>                        
+					<td>
+						@meetingTimeCandidate.EndDate
+					</td>
+					<td>
+						@meetingTimeCandidate.EndTime
+					</td>                 
+					<td>
+						@meetingTimeCandidate.Confidence
+					</td>
+					<td>
+						@meetingTimeCandidate.Score
+					</td>
+					<td>
+						@meetingTimeCandidate.LocationDisplayName
+					</td>
+					<td>
+						@meetingTimeCandidate.LocationAddress
+					</td>            
+					<td>
+						@meetingTimeCandidate.LocationCoordinates
+					</td>            
+				</tr>
 			}
 		}
-	}			  
- ```
+	 ```
+   
+	1. Add a Graph Helper file.
+	  1. Right click on **FindMeetingTimesLab** project and select **Add -> New Item**.
+	  1. Select **Visual C# -> Code** and click **Class** in the middle pane.
+	  1. Change the name to **GraphHelper.cs** and click **Add**.
+	  1. Open the **GraphHelper.cs** file you just created and add replace the contents with the following
+	  ```csharp
+		using System;
+		using System.Collections.Generic;
+		using System.Linq;
+		using System.Web;
+		using System.Threading.Tasks;
+		using System.Net.Http;
+		using Newtonsoft.Json.Linq;
+		using FindMeetingTimesLab.Models;
+		using Newtonsoft.Json;
+		using System.Text;
 
-1. Add a method to Make the API call. 
+		namespace FindMeetingTimesLab
+		{
+			public class GraphHelper
+			{
+				// Used to set the base API endpoint, e.g. "https://outlook.office.com/api/beta"
+				public string apiEndpoint { get; set; }
+				public string anchorMailbox { get; set; }
+
+				public GraphHelper()
+				{
+					apiEndpoint = "https://outlook.office.com/api/beta";
+					anchorMailbox = string.Empty;
+				}
+			}
+		}			  
+	 ```
+
+1. Add a method in the **GraphHelper** class to Make the API call. 
    ```csharp
-        public async Task<HttpResponseMessage> MakeGraphApiCall(string method, string token, string apiUrl, string userEmail, string payload, Dictionary<string, string> preferHeaders)
+    public async Task<HttpResponseMessage> MakeGraphApiCall(string method, string token, string apiUrl, string userEmail, string payload, Dictionary<string, string> preferHeaders)
+    {
+        using (var httpClient = new HttpClient())
         {
-            using (var httpClient = new HttpClient())
+            var request = new HttpRequestMessage(new HttpMethod(method), apiUrl);
+
+            // Headers
+            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            request.Headers.UserAgent.Add(new System.Net.Http.Headers.ProductInfoHeaderValue("FindMeetingTimesLab", "beta"));
+            request.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+            request.Headers.Add("client-request-id", Guid.NewGuid().ToString());
+            request.Headers.Add("return-client-request-id", "true");
+            request.Headers.Add("X-AnchorMailbox", userEmail);
+
+            if (preferHeaders != null)
             {
-                var request = new HttpRequestMessage(new HttpMethod(method), apiUrl);
-
-                // Headers
-                request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-                request.Headers.UserAgent.Add(new System.Net.Http.Headers.ProductInfoHeaderValue("FindMeetingTimesLab", "beta"));
-                request.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-                request.Headers.Add("client-request-id", Guid.NewGuid().ToString());
-                request.Headers.Add("return-client-request-id", "true");
-                request.Headers.Add("X-AnchorMailbox", userEmail);
-
-                if (preferHeaders != null)
+                foreach (KeyValuePair<string, string> header in preferHeaders)
                 {
-                    foreach (KeyValuePair<string, string> header in preferHeaders)
-                    {
-                        request.Headers.Add("Prefer", string.Format("{0}=\"{1}\"", header.Key, header.Value));
-                    }
+                    request.Headers.Add("Prefer", string.Format("{0}=\"{1}\"", header.Key, header.Value));
                 }
-
-                // Content
-                if ((method.ToUpper() == "POST" || method.ToUpper() == "PATCH") &&
-                    !string.IsNullOrEmpty(payload))
-                {
-                    request.Content = new StringContent(payload);
-                    request.Content.Headers.ContentType.MediaType = "application/json";
-                }
-
-                var apiResult = await httpClient.SendAsync(request);
-                return apiResult;
             }
-        }			   
+
+            // Content
+            if ((method.ToUpper() == "POST" || method.ToUpper() == "PATCH") &&
+                !string.IsNullOrEmpty(payload))
+            {
+                request.Content = new StringContent(payload);
+                request.Content.Headers.ContentType.MediaType = "application/json";
+            }
+
+            var apiResult = await httpClient.SendAsync(request);
+            return apiResult;
+        }
+    }			   
 	```
 
-1. Add a method to Get Meeting times. 
+1. Add a method in the **GraphHelper** class to Get Meeting times. 
    ```csharp
-		public async Task<object> GetMeetingTimes(string token, string userEmail, string payload)
+	public async Task<object> GetMeetingTimes(string token, string userEmail, string payload)
+    {
+        string findMeetingTimesEndpoint = this.apiEndpoint + "/Me/FindMeetingTimes";
+
+        //var jsonPayload = await Task.Run(() => JsonConvert.SerializeObject(payload));
+
+        var result = await MakeGraphApiCall("POST", token, findMeetingTimesEndpoint, userEmail, payload, null);
+
+        var response = await result.Content.ReadAsStringAsync();
+
+        JObject responseJson = JObject.Parse(response);
+        JArray eventJson = (JArray)responseJson["value"];
+
+        List<MeetingTimeCandidate> meetingTimes = new List<MeetingTimeCandidate>();
+        foreach (var e in eventJson)
         {
-            string findMeetingTimesEndpoint = this.apiEndpoint + "/Me/FindMeetingTimes";
+            MeetingTimeCandidate nextItem = new MeetingTimeCandidate();
 
-            //var jsonPayload = await Task.Run(() => JsonConvert.SerializeObject(payload));
-
-            var result = await MakeGraphApiCall("POST", token, findMeetingTimesEndpoint, userEmail, payload, null);
-
-            var response = await result.Content.ReadAsStringAsync();
-
-            JObject responseJson = JObject.Parse(response);
-            JArray eventJson = (JArray)responseJson["value"];
-
-            List<MeetingTimeCandidate> meetingTimes = new List<MeetingTimeCandidate>();
-            foreach (var e in eventJson)
+            //add all the values
+            nextItem.StartDate = DateTime.Parse((string)e["MeetingTimeSlot"]["Start"]["Date"]);
+            nextItem.StartTime = DateTime.Parse((string)e["MeetingTimeSlot"]["Start"]["Time"]);
+            nextItem.EndDate = DateTime.Parse((string)e["MeetingTimeSlot"]["End"]["Date"]);
+            nextItem.EndTime = DateTime.Parse((string)e["MeetingTimeSlot"]["End"]["Time"]);
+            nextItem.Confidence = int.Parse((string)e["Confidence"]);
+            nextItem.Score = int.Parse((string)e["Score"]);
+            if (e["MeetingTimeSlot"]["Location"] != null)
             {
-                MeetingTimeCandidate nextItem = new MeetingTimeCandidate();
-
-                //add all the values
-                nextItem.StartDate = DateTime.Parse((string)e["MeetingTimeSlot"]["Start"]["Date"]);
-                nextItem.StartTime = DateTime.Parse((string)e["MeetingTimeSlot"]["Start"]["Time"]);
-                nextItem.EndDate = DateTime.Parse((string)e["MeetingTimeSlot"]["End"]["Date"]);
-                nextItem.EndTime = DateTime.Parse((string)e["MeetingTimeSlot"]["End"]["Time"]);
-                nextItem.Confidence = int.Parse((string)e["Confidence"]);
-                nextItem.Score = int.Parse((string)e["Score"]);
-                if (e["MeetingTimeSlot"]["Location"] != null)
-                {
-                    nextItem.LocationDisplayName = (string)e["MeetingTimeSlot"]["Location"]["Time"];
-                    nextItem.LocationAddress = BuildAddressString(e["MeetingTimeSlot"]["Location"]["Address"]);
-                    nextItem.LocationCoordinates = BuildCoordinatesString(e["MeetingTimeSlot"]["Location"]["Coordinates"]);
-                }
-
-                meetingTimes.Add(nextItem);
+                nextItem.LocationDisplayName = (string)e["MeetingTimeSlot"]["Location"]["Time"];
+                nextItem.LocationAddress = BuildAddressString(e["MeetingTimeSlot"]["Location"]["Address"]);
+                nextItem.LocationCoordinates = BuildCoordinatesString(e["MeetingTimeSlot"]["Location"]["Coordinates"]);
             }
 
-            return meetingTimes;
-        }			   
+            meetingTimes.Add(nextItem);
+        }
+
+        return meetingTimes;
+    }			   
    ```
 
-1. Add a method to build the Address string. 
+1. Add a method in the **GraphHelper** class to build the Address string. 
    ```csharp
-			public String BuildAddressString(JToken address)
-			{
-				if (address == null)
-				{
-					return "null";
-				}
-				else {
-					return String.Format("{0}, {1}, {2}, {3}, {4}",
-						(string)address["Street"] == "" ? "<No Street>" : (string)address["Street"],
-						(string)address["City"] == "" ? "<No City>" : (string)address["City"],
-						(string)address["State"] == "" ? "<No State>" : (string)address["State"],
-						(string)address["CountryOrRegion"] == "" ? "<No Country Or Region>" : (string)address["CountryOrRegion"],
-						(string)address["PostalCode"] == "" ? "<No Postal Code>" : (string)address["PostalCode"]
-						);
-				}
-			}
-   ```
-
-1. Add a method to build the coordinates string. 
-   ```csharp
-			public String BuildCoordinatesString(JToken coordinates)
-			{
-				if (coordinates == null)
-				{
-					return "null";
-				}
-				else
-				{
-					return String.Format("{0}, {1}", (string)coordinates["Latitude"], (string)coordinates["Longitude"]);
-				}
-			}
-
+	public String BuildAddressString(JToken address)
+	{
+		if (address == null)
+		{
+			return "null";
 		}
+		else {
+			return String.Format("{0}, {1}, {2}, {3}, {4}",
+				(string)address["Street"] == "" ? "<No Street>" : (string)address["Street"],
+				(string)address["City"] == "" ? "<No City>" : (string)address["City"],
+				(string)address["State"] == "" ? "<No State>" : (string)address["State"],
+				(string)address["CountryOrRegion"] == "" ? "<No Country Or Region>" : (string)address["CountryOrRegion"],
+				(string)address["PostalCode"] == "" ? "<No Postal Code>" : (string)address["PostalCode"]
+				);
+		}
+	}
    ```
 
-1. Add the following code to the `FindMeetingTimesController` class to use 'GraphHelper' and call the API. Replace 'return (View()' at the end of the file with the following
+1. Add a method in the **GraphHelper** class to build the coordinates string. 
+   ```csharp
+	public String BuildCoordinatesString(JToken coordinates)
+	{
+		if (coordinates == null)
+		{
+			return "null";
+		}
+		else
+		{
+			return String.Format("{0}, {1}", (string)coordinates["Latitude"], (string)coordinates["Longitude"]);
+		}
+	}		
+   ```
+
+1. Add the following code to the **FindMeetingTimesController** class to use **GraphHelper** and call the API. Replace `return View()` at the end of the file with the following
 
   ```csharp
-        FindMeetingTimesPayload payload = new FindMeetingTimesPayload();
-
-        try
-        {
-            var client = new GraphHelper();
-            client.anchorMailbox = (string)Session["user_name"];
-            ViewBag.UserName = client.anchorMailbox;
-			string payload = "";
+    try
+    {
+        var client = new GraphHelper();
+        client.anchorMailbox = (string)Session["user_name"];
+        ViewBag.UserName = client.anchorMailbox;
+		string payload = "";
                 
-            var results = await client.GetMeetingTimes(accessToken, client.anchorMailbox, payload);
+        var results = await client.GetMeetingTimes(accessToken, client.anchorMailbox, payload);
 
-            return View(results);
-        }
-        catch (Exception ex)
-        {
-            return RedirectToAction("Index", "Error", new { message = ex.Message });
-        }
+        return View(results);
+    }
+    catch (Exception ex)
+    {
+        return RedirectToAction("Index", "Error", new { message = ex.Message });
+    }
   ```
 1. Run your application by pressing F5. 
 1. You should be able to sign-in, click on the FindMeetingTimes tab and see the page with the button and empty table. 
@@ -403,7 +398,7 @@ endpoint and work with Office 365 and Outlook Calendar. You will be retrieving a
   
 ### Get Meeting times for specific attendees 
 
-In this section, you'll add to the code you already created in the previous section
+In this section, you'll add to the code you already created in the previous section.
 You will add input parameters to the form and use that as input to the API. 
 
 1. Locate the **GraphHelper.cs** file.
@@ -439,9 +434,8 @@ You will add input parameters to the form and use that as input to the API.
    ```
 
   1. Find the **Views/FindMeetingTimes** folder in the project.
-  1. Open the **index.cshtml** file found in the folder.
-  1. Locate the part of the file that includes the form at the
-      page. It should look similar to the following code:
+  1. Open the **Index.cshtml** file found in the folder.
+  1. Locate the part of the file that includes the form at the top of the page. It should look similar to the following code:
 	```asp
 		<div class="panel panel-default">
 		<div class="panel-body">
@@ -452,8 +446,8 @@ You will add input parameters to the form and use that as input to the API.
 		</div>
 		</div>
 	```
-	1. Replace this with the following
-		```asp
+  1. Replace this with the following
+  ```asp
         <div class="panel panel-default">
             <div class="panel-body">
                 <form class="form-inline" action="/FindMeetingTimes/Index" method="post">
@@ -467,7 +461,7 @@ You will add input parameters to the form and use that as input to the API.
         </div>
 	```
   1. Find the **FindMeetingTimesController.cs** file and open it. 
-  1. Locate the index function definition. It should look like the following
+  1. Locate the **Index** function definition. It should look like the following
 	```csharp
 	 public async Task<ActionResult> Index()
 	```
@@ -483,10 +477,9 @@ You will add input parameters to the form and use that as input to the API.
 1. Try the app!
 
 **Congratulations dedicated quick start developer!** In this exercise, you created an MVC application that uses REST APIs to view and manage meeting times.
-This quick start ends here. You can continue to add more fields to the input. Don't stop here - there's plenty more to explore with the Microsoft Graph.
+This quick start ends here. You can continue to add more fields to the input. Don't stop here - there's plenty more to explore with the Microsoft Graph endpoint as well.
 
 Next Steps and Additional Resources:
 
 See this training and more on http://dev.office.com/ and http://dev.outlook.com
 Learn about and connect to the Microsoft Graph at https://graph.microsoft.io
-
