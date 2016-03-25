@@ -106,9 +106,38 @@ After you've loaded the solution in Visual Studio, configure the sample to use t
 	
 	</Application>
 ```
+<a name="addAuthFiles"></a>
+## Exercise 4: Add files to handle authentication
+
+Next, you'll include files in your project that will handle the authentication process.
+
+###Add the Authentication folder and its files
+
+1. In **Solution Explorer**, choose the project and, from the short-cut menu, choose **Add** > **New Folder**.
+2. Name the folder Authentication.
+3. Choose the Authentication folder and, from the short-cut menu, choose **Add** > **Existing item**.
+4. Navigate to the folder in this Code Challenge named Authentication, and choose all the files contained in it:
+	- AccountSession.cs
+	- AppConfig.cs
+	- IOAuthRequestStringBuilder.cs
+	- OAuth2AuthenticationProvider.cs
+	- OAuthErrorHandler.cs
+	- OAuthRequestStringBuilder.cs
+5. Choose **Add**.
+
+###Add the Web folder and its files
+
+1. In **Solution Explorer**, choose the project and, from the short-cut menu, choose **Add** > **New Folder**.
+2. Name the folder Web.
+3. Choose the Web folder and, from the short-cut menu, choose **Add** > **Existing item**.
+4. Navigate to the folder in this Code Challenge named Web, and choose all the files contained in it:
+	- IWebAuthenticationUi.cs
+	- WebAuthenticationBrokerWebAuthenticationUi.cs
+5. Choose **Add**.
+
 
 <a name="createFiles"></a>
-## Exercise 4: Create helper classes for authentication and sending email
+## Exercise 5: Create helper classes for authentication and sending email
 
 Next, you'll add two helper classes: one that handles authenticating the user, and another that composes and sends the sample email the app creates.
 
@@ -119,7 +148,6 @@ Next, you'll add two helper classes: one that handles authenticating the user, a
 3. Add using directives for the Microsoft.Graph and Microsoft.Graph.OAuth2 namespaces:
 	
 	```	
-	using Microsoft.Graph.OAuth2;	
 	using Microsoft.Graph;
 	```
 	
@@ -137,7 +165,6 @@ Next, you'll add two helper classes: one that handles authenticating the user, a
 	using Windows.Security.Authentication.Web.Core;
 	using Windows.Security.Credentials;
 	using Windows.Storage;
-	using Microsoft.Graph.OAuth2;
 	using Microsoft.Graph;
 
 	namespace Microsoft_Graph_UWP_Connect_SDK
@@ -293,7 +320,7 @@ Next, you'll add a resource file that contains strings used in the app UI, as we
 	The Resources file is added to the Assets folder.
 
 <a name="createMain"></a>
-## Exercise 5: Create the app UI and code
+## Exercise 6: Create the app UI and code
 
 Now it's time to create the UI for the app, as well as the code the event handlers that enable the user to sign in and send email.
 
@@ -557,7 +584,7 @@ namespace Microsoft_Graph_UWP_Connect_SDK
 ``` 
 
 <a name="test"></a>
-## Exercise 6: Test the app 
+## Exercise 7: Test the app 
 
 1. In Visual Studio 2015, from the **Debug** menu, choose **Start Debugging**.
 	
