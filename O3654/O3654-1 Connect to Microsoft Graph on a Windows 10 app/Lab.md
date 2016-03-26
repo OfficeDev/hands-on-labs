@@ -48,7 +48,7 @@ Next, you'll use the NuGet Package Manager to add the Microsoft Graph SDK and Mi
 	```
 	{
   	"dependencies": {
-    	"Microsoft.Graph": "1.0.3-rc",
+    	"Microsoft.Graph": "1.0.5-rc",
     	"Microsoft.NETCore.UniversalWindowsPlatform": "5.0.0"
   	},
   	
@@ -99,7 +99,6 @@ After you've loaded the solution in Visual Studio, configure the sample to use t
 	
 	<Application.Resources>
 		<!-- Add your client id here. -->
-		<!--<x:String x:Key="ida:ClientID">aed1bde9-797f-4f5c-b65b-211585f9cdfe</x:String>-->
 		<x:String x:Key="ida:ClientID"></x:String>
 		<x:String x:Key="ida:ReturnUrl">urn:ietf:wg:oauth:2.0:oob</x:String>
     	</Application.Resources>
@@ -216,8 +215,6 @@ namespace Microsoft_Graph_UWP_Connect_SDK
         /// </summary>
         public static void SignOut()
         {
-            //Dispose Graph client
-            graphClient.Dispose();
             graphClient = null;
 
         }
