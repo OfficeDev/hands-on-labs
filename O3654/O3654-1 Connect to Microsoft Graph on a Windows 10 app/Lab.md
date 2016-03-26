@@ -282,7 +282,7 @@ namespace Microsoft_Graph_UWP_Connect_SDK
                     Body = new ItemBody
                     {
                         Content = bodyContent,
-                        ContentType = BodyType.html,
+                        ContentType = BodyType.Html,
                     },
                     Subject = subject,
                     ToRecipients = recipientList,
