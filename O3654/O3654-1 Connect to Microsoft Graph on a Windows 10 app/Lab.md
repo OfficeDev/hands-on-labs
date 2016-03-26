@@ -88,7 +88,7 @@ After you've loaded the solution in Visual Studio, configure the sample to use t
 1. In the **Solution Explorer**, double-click the App.xaml file.
 2. In the App.xaml file, in the Application element, add a new element named Application.Resources that contains your app's client id and redirectURI values.
 	
-	The Application element should now look like this:
+	The Application element should now look like this, except with your specific client id specified for the ClientID value:
 	```
 	<Application
 	x:Class="Microsoft_Graph_UWP_Connect_SDK.App"
