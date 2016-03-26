@@ -135,6 +135,9 @@ Next, you'll include files in your project that will handle the authentication p
 	- WebAuthenticationBrokerWebAuthenticationUi.cs
 5. Choose **Add**.
 
+###Add the Constants file
+1. In **Solution Explorer**, choose the project and, from the short-cut menu, choose **Add** > **Existing Item**.
+4. Navigate to the root directory of this Code Challenge, and choose the Constants.cs file. Click **Add**.
 
 <a name="createFiles"></a>
 ## Exercise 5: Create helper classes for authentication and sending email
@@ -145,9 +148,10 @@ Next, you'll add two helper classes: one that handles authenticating the user, a
 
 1. In the **Solution Explorer**, choose the project, and from the short-cut menu, choose **Add** > **Class**. 
 2. Name the new class **AuthenticationHelper.cs**, and choose **Add**.
-3. Add using directives for the Microsoft.Graph and Microsoft.Graph.OAuth2 namespaces:
+3. Add using directives for the Microsoft.Graph and Microsoft.Graph.Authentication namespaces:
 	
 	```	
+	using Microsoft.Graph.Authentication;
 	using Microsoft.Graph;
 	```
 	
@@ -156,30 +160,31 @@ Next, you'll add two helper classes: one that handles authenticating the user, a
 	The finished class should look like this:
 
 	```
-	using System;
-	using System.Diagnostics;
-	using System.Net.Http;
-	using System.Linq;
-	using System.Threading.Tasks;
-	using Windows.Security.Authentication.Web;
-	using Windows.Security.Authentication.Web.Core;
-	using Windows.Security.Credentials;
-	using Windows.Storage;
-	using Microsoft.Graph;
 
-	namespace Microsoft_Graph_UWP_Connect_SDK
-	{
+using System;
+using System.Diagnostics;
+using System.Net.Http;
+using System.Linq;
+using System.Threading.Tasks;
+using Windows.Security.Authentication.Web;
+using Windows.Security.Authentication.Web.Core;
+using Windows.Security.Credentials;
+using Windows.Storage;
+using Microsoft.Graph.Authentication;
+using Microsoft.Graph;
+
+namespace Microsoft_Graph_UWP_Connect_SDK
+{
     internal static class AuthenticationHelper
     {
-        // The Client ID is used by the application to uniquely identify itself to the v2.0 auth endpoint.
+        // The Client ID is used by the application to uniquely identify itself to the v2.0 authentication endpoint.
         static string clientId = App.Current.Resources["ida:ClientID"].ToString();
 
         static string returnUrl = App.Current.Resources["ida:ReturnUrl"].ToString();
 
         private static GraphServiceClient graphClient = null;
 
-        // Get an access token for the given context and resourceId. An attempt is first made to 
-        // acquire the token silently. If that fails, then we try to acquire the token by prompting the user.
+        // Get a Graph client.
         public static async Task<GraphServiceClient> GetAuthenticatedClientAsync()
         {
             if (graphClient == null)
@@ -211,14 +216,16 @@ Next, you'll add two helper classes: one that handles authenticating the user, a
         /// </summary>
         public static void SignOut()
         {
-            //Clear stored values from last authentication.
+            //Dispose Graph client
             graphClient.Dispose();
             graphClient = null;
 
         }
 
     }
-	}
+}
+
+
 	```
 
 ### Create the MailHelper class
