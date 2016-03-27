@@ -4,9 +4,6 @@ Office Add-ins let you add your solution where ever they run. In PowerPoint, add
 
 This quick start will start with an excersize that will guide you through creating a PowerPoint add-in starting from Visual Studio. We will use Bing.com's Photo of the day. This add-in will expose you to the tools we use to create add-ins and the Office.js 1.1 API. In particular, we'll use the **document.setSelectedDataAsync** API to insert pictures into the user's current PowerPoint deck and customize the UI with add-in commands.
 
-## Get an Office 365 developer environment
-To complete the exercises below, you will require an Office 365 developer environment. Navigate to https://tryoffice.azurewebsites.net and use the code `BuildChallenge` to get an administrator username and password to one. 
-
 ## Instructions
 
 ### Exercise 1: Create your first add-in
@@ -285,8 +282,4 @@ To complete the exercises below, you will require an Office 365 developer enviro
     
 Congratulations on completing this quick start challenge!
 
-## BONUS: Insert photos of charts stored in a user's OneDrive
-One common scenario that might come to mind is to connect PowerPoint to Excel data. 
-
-1. Check out the **Excel Rest API** quick start and see how to use the Microsoft Graph.
 
