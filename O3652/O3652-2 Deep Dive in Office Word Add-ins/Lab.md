@@ -1,10 +1,6 @@
 # Deep Dive into Office Word Add-ins (using 1.2 and 1.3 Requirement Sets)
 In this lab, you will get hands-on experience developing a Word add-in by using the 1.3 requirement set of the Word JavaScript API.
 
-## Get an Office 365 developer environment
-To complete the exercises below, you will require an Office 365 developer environment. Navigate to https://tryoffice.azurewebsites.net and use the code `BuildChallenge` to get an administrator username and password to one. 
-
-
 ##Exercise 1:Creating the Statement of Work Wizard Add-in Project and Hello World!
 *In this exercise, you will create a new Office Add-in project in Visual Studio so that you can begin to write, test and debug a Word add-in. The user interface of the Office Add-in you will create in this lab will not be very complicated as it will just contain HTML buttons and JavaScript command handlers. You will also code your first  "Hello World!" sample!*
 
