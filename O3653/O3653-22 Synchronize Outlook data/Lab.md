@@ -274,7 +274,9 @@ Once you've signed up and created a database, you can get the connection details
   httpContext.Session["user_id"] = user.Id.ToString();
   ```
 
-1. Right-click the **Controllers** folder and choose **Add**, then **Controller**. Name the controller `MailController` and choose **Add**. Replace the entire contents of the file with the following.
+1. Right-click the **Controllers** folder and choose **Add** > **New Scaffolded Item...**. 
+2. In the **Add Scaffold** dialog, select **MVC 5 Controller - Empty**, name the controller `MailController` and choose the **Add** button.
+3. Replace the entire contents of the file with the following.
 
   ```csharp
   using System.Threading.Tasks;
