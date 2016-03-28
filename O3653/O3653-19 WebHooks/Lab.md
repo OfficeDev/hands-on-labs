@@ -271,7 +271,7 @@ using System.Threading.Tasks;
     request.Content = new StringContent(contentString, System.Text.Encoding.UTF8, "application/json");
    ```
 
-This sample creates a subscription for the *me/mailFolders('Inbox')/messages* resource for *Created* change type. See the [docs](http://graph.microsoft.io/en-us/docs/api-reference/v1.0/resources/subscription) for other supported resources and change types. 
+This sample creates a subscription for the *me/mailFolders('Inbox')/messages* resource for the *created* change type. See the [docs](http://graph.microsoft.io/en-us/docs/api-reference/v1.0/resources/subscription) for other supported resources and change types. 
 
 ### Send the request and parse the response
 
@@ -412,7 +412,7 @@ In this step you'll create a view for the app start page and a view that display
 
 1. Name the view **Subscription**.
 
-1. Select the **Empty** template, select **SubscriptionViewModel (GraphWebhooks.Models)**, and then click **Add**.
+1. Select the **Empty** template, select the **SubscriptionViewModel (GraphWebhooks.Models)** model, and then click **Add**.
 
 1. In the **Subscription.cshtml** file, update the HTML as follows:
 
@@ -805,7 +805,7 @@ Congratulations! In this exercise you created an MVC application that subscribes
 
 1. Sign in with your Office 365 administrator account.
 
-1. Click the **Create subscription** button. The **Subscription** page loads with information about the subscripton.
+1. Click the **Create subscription** button. The **Subscription** page loads with information about the subscription.
 
 1. Click the **Watch for notifications** button.
 
