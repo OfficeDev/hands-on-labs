@@ -544,9 +544,9 @@ In this step you'll create a controller that exposes the notification endpoint.
 
 ### Create the controller class
 
-1. Right-click the **Controllers** folder and choose **Add/Controller**. 
+1. Right-click the **Controllers** folder and choose **Add > New Scaffolded Item...** 
 
-1. Select **MVC 5 Controller - Empty** and click **Add**.
+1. In the "Add Scaffold" dialog, select **MVC 5 Controller - Empty** and click **Add**.
 
 1. Name the controller **NotificationController** and click **Add**.
 
