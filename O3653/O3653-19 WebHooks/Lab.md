@@ -183,9 +183,9 @@ In this step you'll create a controller that will send a **POST /subscriptions**
 
 ### Create the controller class
 
-1. Right-click the **Controllers** folder and choose **Add/Controller**. 
+1. Right-click the **Controllers** folder and choose **Add > New Scaffolded Item...** 
 
-1. Select **MVC 5 Controller - Empty** and click **Add**.
+1. In the **Add Scaffolded** dialog, select **MVC 5 Controller - Empty** and click **Add**.
 
 1. Name the controller **SubscriptionController** and click **Add**.
 
