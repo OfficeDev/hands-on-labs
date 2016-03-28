@@ -1,9 +1,6 @@
 ##Build an Expense Report with the new Excel JavaScript APIs in Office 2016
 In this exercise, you will create an Excel add-in that uses the Excel JavaScript API included in Excel 2016. 
 
-## Get an Office 365 developer environment
-To complete the exercises below, you will require an Office 365 developer environment. Navigate to https://tryoffice.azurewebsites.net and use the code `BuildChallenge` to get an administrator username and password to one. 
-
 ###Part 1: Create a basic add-in
 1. Launch Visual Studio 2015 as administrator.
 1. From the **File** menu select the **New Project** command. When the **New Project** dialog appears, select the **Excel Add-in** project template from the **Office/SharePoint** template folder, as shown below. Name the new project **ExpenseReport** and click **OK** to create the new project.
