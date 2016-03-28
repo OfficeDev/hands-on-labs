@@ -37,7 +37,7 @@ for calling the Graph API.
 
 
 ## Exercise 3: Add the people controller and call the People API.
-1. Right-click the **Controllers** folder and select **Add...** > **Controller...**. 
+1. Right-click the **Controllers** folder and select *Add > New Scaffolded Item...** 
    1. Select **MVC5 Controller - Empty** and click **Add**.
    2. Name the controller **PeopleController** and click **Add**.
 2. Edit the using statements:
