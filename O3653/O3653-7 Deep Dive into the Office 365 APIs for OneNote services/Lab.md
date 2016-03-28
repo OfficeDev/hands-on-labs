@@ -362,7 +362,7 @@ In this step you will create a link on the home page to navigate to notebooks li
 ### Add Notebook Controller and View
 In this step you will create the ASP.NET MVC controller and view for OneNote notebooks.
 
-1. Right-click the **Controllers** folder in the project and select **Add / Controller**.
+1. Right-click the **Controllers** folder and choose **Add** > **New Scaffolded Item...**.
 	1. In the **Add Scaffold** dialog, select **MVC 5 Controller - Empty**.
 	
 	1. Click **Add**.
@@ -462,7 +462,7 @@ using OneNoteDev.TokenStorage;
 ### Add Section Controller and View
 In this step you will create the ASP.NET MVC controller and view for OneNote notebook sections.
 
-1. Right-click the **Controllers** folder in the project and select **Add / Controller**.
+1. Right-click the **Controllers** folder and choose **Add** > **New Scaffolded Item...**.
 	1. In the **Add Scaffold** dialog, select **MVC 5 Controller - Empty**.
 	
 	1. Click **Add**.
@@ -576,7 +576,7 @@ using OneNoteDev.TokenStorage;
 ### Add Pages Controller and View
 In this step you will create the ASP.NET MVC controller and view for pages within OneNote notebook sections.
 
-1. Right-click the **Controllers** folder in the project and select **Add / Controller**.
+1. Right-click the **Controllers** folder and choose **Add** > **New Scaffolded Item...**.
 	1. In the **Add Scaffold** dialog, select **MVC 5 Controller - Empty**.
 	
 	1. Click **Add**.
