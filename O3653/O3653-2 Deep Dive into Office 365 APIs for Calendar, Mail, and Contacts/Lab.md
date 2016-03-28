@@ -76,9 +76,9 @@ SDK and work with Office 365 and Outlook Mail
   1. Select the Microsoft Graph SDK and click **Install**.
 
 1. Create a new controller to process the requests for files and send them to Graph API.
-  1. Find the **Controllers** folder under **QuickStartMailWebApp**, right click on it and select **Add** then **Controller**.
-  1. Select **MVC 5 Controller - Empty** and click **Add**.
-  1. Change the name of the controller to **MailController** and click **Add**.
+  1. Find the **Controllers** folder under **QuickStartMailWebApp**, right-click the **Controllers** folder and choose **Add** > **New Scaffolded Item...**.
+  2. In the **Add Scaffold** dialog, select **MVC 5 Controller - Empty**, and choose **Add**.
+  3. In the **Add Controller** dialog, name the controller `MailController` and choose **Add**.
 
 1. **Replace** the following reference to the top of the `CalendarController` class
   ```csharp
