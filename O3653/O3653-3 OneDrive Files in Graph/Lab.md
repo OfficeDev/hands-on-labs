@@ -83,8 +83,8 @@ or OneDrive.
   4. Review the terms and click **I Accept** when prompted with the license agreement.
 
 2. Create a new controller to process the requests for files and send them to Graph API.
-  1. Find the **Controllers** folder under **GraphFilesWeb**, right-click it and select **Add** then **Controller**.
-  2. Select **MVC 5 Controller - Empty** and click **Add**.
+  1. Find the **Controllers** folder under **GraphFilesWeb**, right-click it and select **Add** > **New Scaffolded Item...**.
+  2. In the **Add Scaffold** dialog, select **MVC 5 Controller - Empty**, and choose **Add**
   3. Change the name of the controller to **FilesController** and click **Add**.
 
 3. **Add** the following reference to the top of the `FilesController` class.
