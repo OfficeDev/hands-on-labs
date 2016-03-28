@@ -275,7 +275,8 @@ Once you've signed up and created a database, you can get the connection details
   ```
 
 1. Right-click the **Controllers** folder and choose **Add** > **New Scaffolded Item...**. 
-2. In the **Add Scaffold** dialog, select **MVC 5 Controller - Empty**, name the controller `MailController` and choose the **Add** button.
+2. In the **Add Scaffold** dialog, select **MVC 5 Controller - Empty**, and choose **Add**.
+3. In the **Add Controller** dialog, name the controller `MailController` and choose **Add**. 
 3. Replace the entire contents of the file with the following.
 
   ```csharp
