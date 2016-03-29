@@ -237,7 +237,7 @@ for calling the Graph API.
         public async Task<ActionResult> RelatedPeople(string id)
         {
             var service = await GetService();
-            return View("Index", service.User.ByKey(id).People);
+            return View("Index", service.Users.ByKey(id).People);
         }
   ```
     
