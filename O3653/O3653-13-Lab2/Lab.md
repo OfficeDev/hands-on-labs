@@ -28,7 +28,7 @@ endpoint and work with Office 365 and Outlook Calendar. You will be retrieving a
 ### Create the FindMeetingTime controller
 
 1. Create a new controller to process the requests and send them to the REST API endpoint.
-  1. Find the **Controllers** folder under **FindMeetingTimesLab**, right-click it and select **Add>Controller**.
+  1. Find the **Controllers** folder under **FindMeetingTimesLab**, right-click it and choose **Add** > **New Scaffolded Item...**.
   1. Select **MVC 5 Controller - Empty** and click **Add**.
   1. Change the name of the controller to **FindMeetingTimesController** and click **Add**.
 
