@@ -162,7 +162,8 @@ using Newtonsoft.Json;
         public string Resource { get; set; }
 
         // The date and time when the webhook subscription expires.
-        // The time is in UTC, and can be up to three days from the time of subscription creation.
+        // The time is in UTC, and can be an amount of time from subscription creation that varies for the resource subscribed to. 
+	// See http://graph.microsoft.io/en-us/docs/api-reference/v1.0/api/subscription for maximum values.
         [JsonProperty(PropertyName = "expirationDateTime")]
         public DateTimeOffset? ExpirationDateTime { get; set; }
 
