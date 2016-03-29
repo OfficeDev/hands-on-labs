@@ -25,8 +25,9 @@ In this first step, you will create a new ASP.NET MVC project using the
     2. Click Browse and search for Microsoft.Graph.
     3. Select the Microsoft Graph SDK and click **Install**.
 2. Create a new controller
-    1. Right-click the **Controller** folder and select **Add>Controller**.
-    2. Select **MVC 5 Controller - Empty**, click **Add** and then name the new controller **GroupSearchController**.
+    1. Right-click the **Controllers** folder and choose **Add** > **New Scaffolded Item...**
+    2. In the **Add Scaffold** dialog, select **MVC 5 Controller - Empty**, and choose **Add**.
+    3. In the **Add Controller** dialog, name the controller **GroupSearchController** and choose **Add**..
 3. Create an associated view by right-clicking the function **Index()**, **Add View**, and click **Add**. The view is created at **Views\GroupSearch\Index.cshtml**.
 4. In **GroupSearchController.cs**, replace the auto-generated **using** directives with
     ```c#
@@ -261,7 +262,10 @@ In this step, we'll enable selecting a user from the group members search result
         ViewBag.NextLink = null;
     }
     ```
-2. Create a new controller for user functionality. Right-click the **Controllers** folder and select **Add>Controller**. Select **MVC 5 Controller - Empty**, click **Add** and then name the new controller **UserSearchController**. 
+2. Create a new controller for user functionality.
+     1. Right-click the **Controllers** folder and choose **Add** > **New Scaffolded Item...**
+     2. In the **Add Scaffold** dialog, select **MVC 5 Controller - Empty**, and choose **Add**. 
+     3. In the **Add Controller** dialog, name the controller **UserSearchController** and choose **Add**. 
 
 3. Right-click the folder **Models**, **Add**, **Class**, and name it **Profile.cs**. Replace the contents of this class with the following.
 
