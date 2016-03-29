@@ -65,7 +65,7 @@ SDK and work with Office 365 Groups.
     ```
 
 1. Create a new controller to process the requests for files and send them to Graph API.
-  1. Find the **Controllers** folder under **GroupsWebApp**, right click on it and select **Add** then **Controller**.
+  1. Right-click the **Controllers** folder and choose **Add** > **New Scaffolded Item...**.
   1. Select **MVC 5 Controller - Empty** and click **Add**.
   1. Change the name of the controller to **GroupsController** and click **Add**.
 
