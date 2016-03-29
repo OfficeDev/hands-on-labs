@@ -79,7 +79,7 @@ In this exercise, you will extend the page layout so that it displays a new link
 ## Exercise 4: Create a controller for displaying trending documents
 In this exercise, you will code the **TrendingController** of the MVC application to display trending documents.
 
-1. Right-click the **Controllers** folder and select **Add/Controller**.
+1. Right-click the **Controllers** folder and choose **Add** > **New Scaffolded Item...**.
    1. In the **Add Scaffold** dialog, select **MVC 5 Controller - Empty**.
    2. Click **Add**.
    3. When prompted for a name, enter **TrendingController**.
