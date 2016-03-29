@@ -1,0 +1,20 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+    <h1>Graph and AAD Auth Endpoint Starter</h1>
+    <p class="lead">This sample uses OpenID Connect to authenticate the user with Azure AD, and requests OAuth2 access tokens for the Microsoft Graph API.</p>
+    @if (ViewBag.Message != null)
+    {
+        <p class="alert alert-warning">@ViewBag.Message</p>
+    }
+    @if (Request.IsAuthenticated)
+    {
+        <p>Welcome @(System.Security.Claims.ClaimsPrincipal.Current.FindFirst("name").Value)!</p>
+    }
+    else
+    {
+        <p><a class="btn btn-primary btn-lg" href="@Url.Action("SignIn", "Account")">Click here to sign in</a></p>
+    }
+</div>
