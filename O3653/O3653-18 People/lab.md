@@ -124,7 +124,8 @@ for calling the Graph API.
           <th></th>
       </tr>
       
-  @foreach (var item in Model) {
+  @foreach (var item in Model) 
+  {
       <tr>
          <td>
              @Html.DisplayFor(modelItem => item.DisplayName)
