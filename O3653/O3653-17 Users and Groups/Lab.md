@@ -27,7 +27,7 @@ In this first step, you will create a new ASP.NET MVC project using the
 2. Create a new controller
     1. Right-click the **Controllers** folder and choose **Add** > **New Scaffolded Item...**
     2. In the **Add Scaffold** dialog, select **MVC 5 Controller - Empty**, and choose **Add**.
-    3. In the **Add Controller** dialog, name the controller **GroupSearchController** and choose **Add**..
+    3. In the **Add Controller** dialog, name the controller `GroupSearchController` and choose **Add**..
 3. Create an associated view by right-clicking the function **Index()**, **Add View**, and click **Add**. The view is created at **Views\GroupSearch\Index.cshtml**.
 4. In **GroupSearchController.cs**, replace the auto-generated **using** directives with
     ```c#
@@ -265,7 +265,7 @@ In this step, we'll enable selecting a user from the group members search result
 2. Create a new controller for user functionality.
      1. Right-click the **Controllers** folder and choose **Add** > **New Scaffolded Item...**
      2. In the **Add Scaffold** dialog, select **MVC 5 Controller - Empty**, and choose **Add**. 
-     3. In the **Add Controller** dialog, name the controller **UserSearchController** and choose **Add**. 
+     3. In the **Add Controller** dialog, name the controller `UserSearchController` and choose **Add**. 
 
 3. Right-click the folder **Models**, **Add**, **Class**, and name it **Profile.cs**. Replace the contents of this class with the following.
 
