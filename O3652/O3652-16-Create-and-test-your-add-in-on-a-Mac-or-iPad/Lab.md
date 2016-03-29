@@ -48,6 +48,54 @@ The following prerequisies have already been installed on Mac you are currently 
 **Optional**
 Install the office.js plug-in for Vorlon and use it to test Office APIs from this blog post: http://blogs.msdn.com/b/mim/archive/2016/02/18/vorlonjs-plugin-for-debugging-office-addin.aspx
 
+## Exercise 4: Edit the add-in code
 
+An Office Add-in is just a web app that is displayed within the Office UI and can interact with Office content using Office.js APIs. In this exercise, you'll edit the HTML and JavaScript of the add-in to get a sense for the entire lifecycle of an add-in project.
 
+1. Launch VS Code.
+2. Open the home.html file found in ~/Desktop/add-ins/your-project-folder/app/home/. 
+3. Add a new button after the "Get data from selection" button:
+
+ ```
+ <br />
+ <button id="write-data-to-selection">Write data to selection</button>
+ ```
+4. Save the home.html file.
+5. Open the home.js file from the same folder.
+6. Add a click handler for your new button in the Office.initialize function:
+
+ ```javascript
+ Office.initialize = function(reason){
+    jQuery(document).ready(function(){
+      app.initialize();
+
+      jQuery('#get-data-from-selection').click(getDataFromSelection);
+      //Add this line:
+      jQuery('#write-data-to-selection').click(writeDataToSelection);
+    });
+  };
+ ```
+7. Add the function for the click to perform, which in this case is to write a message to the current location in the document:
+
+ ```javascript
+ function writeDataToSelection(){
+     Office.context.document.setSelectedDataAsync("Office add-ins are awesome!",
+      function(result){
+        if (result.status === Office.AsyncResultStatus.Succeeded) {
+          app.showNotification('Data successfully written.', "");
+          console.log("Writing to the document succeeded!");
+        } else {
+          app.showNotification('Error:', result.error.message);
+          console.log("Writing to the document failed: " + result.error.message);
+        }
+      }
+    );
+ }
+ ```
+8. Save the home.js file. Console.log statements above should be visible in the VorlonJS console.
+9. Go back to Excel, click on the "i" in the top right corner of the add-in pane and then select "Reload". You should see the new button in your add-in.
+10. Select an empty cell in the worksheet and click the new button that says "Write data to selection". You should see "Office add-ins are awesome!" written to the cell.
+ 
+
+You have now completed building and debugging a new add-in entirely on the Mac. This Office add-in will run on all platform where Office supports add-ins.
 
