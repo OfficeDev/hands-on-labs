@@ -12,7 +12,7 @@ The following prerequisies have already been installed on Mac you are currently 
 1. Create a folder for your add-in project in the ~/Desktop/add-ins folder and go to that folder in the command prompt/terminal. 
 2. Run the Yeoman generator for Office Add-ins to create the project scaffolding. Use the following command: `yo office`
 3. When prompted, supply the following information:
-  * Name of the add-in — **myHelloWorldAddin**
+  * Name of the add-in — **<yourname>HelloWorldAddin**
   * Type of add-in — **Task Pane**
   * Technology to use — **HTML, CSS, and JavaScript**
   * Supported Office application — **Excel** (and/or others as desired). The Yeoman generator creates the structure and basic files for your add-in.
@@ -29,7 +29,7 @@ The following prerequisies have already been installed on Mac you are currently 
 
 2. You might have to create the wef folder if it doesn't already exist.
 3. Type `open .` to open Finder
-4. Copy the `manifest-myHelloWorldAddin.xml` file from the root of the sample project folder to this folder.
+4. Copy the `manifest-<yourname>HelloWorldAddin.xml` file from the root of the sample project folder to this folder.
 5. Launch Excel [shortcut on the desktop].
 6. Go to the Insert tab and click on the My Add-ins drop-down. Click on the HelloWorld Add-in to open it Excel.
 
