@@ -142,17 +142,26 @@ or OneDrive.
             request = new DriveItemChildrenCollectionRequest(nextLink, client, null);
         }
 
-        var results = await request.GetAsync();
-        if (null != results.NextPageRequest)
+        try 
         {
-            ViewBag.NextLink = results.NextPageRequest.GetHttpRequestMessage().RequestUri;
-        }
-        else
-        {
-            ViewBag.NextLink = null;
-        }
+           var results = await request.GetAsync();
+           
+           if (null != results.NextPageRequest)
+           {
+               ViewBag.NextLink = results.NextPageRequest.GetHttpRequestMessage().RequestUri;
+           }
+           else
+           {
+              ViewBag.NextLink = null;
+           }
 
-        return View(results);
+           return View(results);
+        }
+        catch (ServiceException ex)
+         {
+             if (ex.Error.Code == "InvalidAuthenticationToken") { return new EmptyResult(); }
+             return RedirectToAction("Index", "Error", new { message = ex.Error.Message });
+         }
     }
     ```
 
