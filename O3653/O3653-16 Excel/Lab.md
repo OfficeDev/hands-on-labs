@@ -21,11 +21,7 @@ In this first step, you will create a new ASP.NET MVC project using the **Graph 
   1. Once the Graph and AAD Auth Endpoint Starter page appears, click **Sign in** and login to your Office 365 administrator account.
   2. Review the permissions the application is requesting, and click **Accept**.
   3. Now that you are signed into your application, exercise 1 is complete!
-  4. Note that this sample only ensured that you were able to launch the project and use the login using the pre-defined client Id and secret. If you wish to use your own client Id and secret, edit the webconf.xml and add your own values under `configuration` > `appSettings` segment. 
   
-![](images/webconfig1.JPG)   
-![](images/webconfig2.JPG)
-
 ## Exercise 2: Access the Excel file in OneDrive for Business through Microsoft Graph SDK
 
 ### Add ToDo file 
