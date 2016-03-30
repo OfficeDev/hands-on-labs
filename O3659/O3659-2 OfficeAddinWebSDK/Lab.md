@@ -1,7 +1,7 @@
 #Skype for Business Office 365 Add-in
 
 ## Get an Office 365 developer environment
-To complete the exercises below, you will require an Office 365 developer environment. Navigate to https://tryoffice.azurewebsites.net and use the code `BuildChallenge` to get an administrator username and password to one. 
+To complete the exercises below, you will require an Office 365 developer environment. Navigate to https://tryoffice.azurewebsites.net and use the code `Build02` to get an administrator username and password to two accounts. 
 
 In this lab you will get hands-on experience developing an Excel add-in with Skype for Business integration.  The sample add-in will allow an Office 365 user to perform the following from within Excel:
 
@@ -61,9 +61,9 @@ In this lab you will get hands-on experience developing an Excel add-in with Sky
 
 9.  The add in should now appear in the right task pane.  Click close and save your Excel file.
 
-6.  Navigate to [https://msdn.microsoft.com/en-us/office/office365/howto/add-common-consent-manually] to create your application in Azure and attain your **Client ID**.  Note this ID as it will be used later in the lab.
+6.  Your **Client ID**: 6fd45769-7a1e-4dc5-a876-90fa781b3d3e. Note this ID as it will be used later in the lab.
 
-7.  Add your http://localhost address to your RedirectURI in Azure.  
+7.  Please use the following redirect URI in your code: http://localhost:55073
 
 8.  Double-click the ExcelAddIn App for Office project.
 
