@@ -114,7 +114,7 @@ SDK and work with Office 365 Groups.
   
 ### Work with groups
   
-1. Replace the existing `Index` function in the `GroupsController` class with the following code to get all Office 365 groups.
+1. **Replace** the existing `Index` function in the `GroupsController` class with the following code to get all Office 365 groups.
 
   ```csharp
   // GET: Groups
@@ -130,7 +130,7 @@ SDK and work with Office 365 Groups.
     var request = client.Groups.Request().Top(pageSize.Value).Filter("groupTypes/any(c:c+eq+'Unified')");
     if (!string.IsNullOrEmpty(nextLink))
     {
-      request = new GroupsCollectionRequest(nextLink, client, null);
+      request = new GraphServiceGroupsCollectionRequest(nextLink, client, null);
     }
 
     try
