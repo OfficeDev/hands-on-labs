@@ -110,21 +110,20 @@ namespace GraphWebhooks.Controllers
                 string refreshToken = subscriptionParams.Item2;
                 AuthenticationResult authResult = await authContext.AcquireTokenByRefreshTokenAsync(refreshToken, credential, "https://graph.microsoft.com");
 
-                using (var graphClient = new GraphServiceClient(new DelegateAuthenticationProvider(requestMessage =>
+                var graphClient = new GraphServiceClient(new DelegateAuthenticationProvider(requestMessage =>
                 {
                     requestMessage.Headers.Authorization = new AuthenticationHeaderValue("bearer", authResult.AccessToken);
                     return Task.FromResult(0);
-                })))
+                }));
+
+                var request = new MessageRequest(graphClient.BaseUrl + "/" + notification.Resource, graphClient, null);
+                try
                 {
-                    var request = new MessageRequest(graphClient.BaseUrl + "/" + notification.Resource, graphClient, null);
-                    try
-                    {
-                        messages.Add(await request.GetAsync());
-                    }
-                    catch (Exception)
-                    {
-                        continue;
-                    }
+                    messages.Add(await request.GetAsync());
+                }
+                catch (Exception)
+                {
+                    continue;
                 }
             }
             if (messages.Count > 0)
