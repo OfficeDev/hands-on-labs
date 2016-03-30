@@ -117,9 +117,8 @@ In this exercise, you will code the **TrendingController** of the MVC applicatio
         return await authHelper.GetUserAccessToken(Url.Action("Index", "Home", null, Request.Url.Scheme));
     }
 
-    public async Task<Service.GraphService> GetService()
+    public Service.GraphService GetService(string token)
     {
-        string token = await GetToken();
         Service.GraphService service = new Service.GraphService(new Uri("https://graph.microsoft.com/beta/"));
         service.BuildingRequest += (sender, e) => e.Headers.Add("Authorization", "Bearer " + token);
         return service;
@@ -132,13 +131,17 @@ In this exercise, you will code the **TrendingController** of the MVC applicatio
     ````c#
     [Authorize]
     public async Task<ActionResult> Index(string userId)
-    {            
-        var service = await GetService();
-
-        if (String.IsNullOrEmpty(userId))
-            return View(service.Me.TrendingAround);
-        else
-            return View(service.Users.ByKey(userId).TrendingAround);
+    {
+        var token = await GetToken();
+        if (!string.IsNullOrEmpty(token))
+        {
+            var service = GetService(token);
+            if (String.IsNullOrEmpty(userId))
+                return View(service.Me.TrendingAround);
+            else
+                return View(service.Users.ByKey(userId).TrendingAround);
+        }
+        return RedirectToAction("SignOut", "Account");
     }
    
     ````
@@ -196,7 +199,7 @@ Now that we have a controller, we need a view that displays the trending documen
       }
       ````  
    5. Save the file.   
-   6. Test the view by pressing Ctrl (Command) + F5.
+   6. Test the view by pressing Ctrl (Command) + F5. Sign in again if prompted.
    7. Return back to Visual Studio.
   
 Now we have a page that displays trending documents ready. Let's now list the users in your Office 365 tenant and see their trending documents!
@@ -209,8 +212,13 @@ Now we have a page that displays trending documents ready. Let's now list the us
     [Authorize]
     public async Task<ActionResult> Users()
     {
-        var service = await GetService();
-        return View(service.Users);
+        var token = await GetToken();
+        if (!string.IsNullOrEmpty(token))
+        {
+            var service = GetService(token);
+            return View(service.Users);
+        }
+        return RedirectToAction("SignOut", "Account");         
     }
     ````
    2. Save the file.    
@@ -266,7 +274,7 @@ Now we have a page that displays trending documents ready. Let's now list the us
 3. Save the file.  
        
 1. Test the new view:
-   1. Launch the application with **Ctrl (Command) + F5**.
+   1. Launch the application with **Ctrl (Command) + F5**. Sign in again if prompted.
    2. Once the application is loaded click the **Users** link in the top menu bar.
    3. You should see a couple of users from your Office 365 tenant.
    4. Click on **See Trending Documents** next to one of the users.
