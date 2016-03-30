@@ -20,7 +20,7 @@ In this exercise you will create a new project using the Outlook add-in template
   
     ![](./Images/deploy-addin.PNG)
     
-  1. With the app running, open Outlook 2016 and log on to the user's mailbox. You should see a **Display all properties** button on the ribbon when you select or open a message.
+  1. With the app running, open Outlook 2016 and log on to the user's mailbox. You should see a **Display all properties** button on the ribbon when you select or open a message. (Note that if this is the first time you are running Outlook on that box you need to go through the typical Outlook configuration to connect to Exchange)
   
     ![A message in Outlook 2016 with the add-in button on the ribbon](./Images/default-button.PNG)
     
