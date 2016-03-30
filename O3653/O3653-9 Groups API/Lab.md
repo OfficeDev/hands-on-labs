@@ -269,7 +269,8 @@ SDK and work with Office 365 Groups.
     var request = client.Groups[groupId].Members.Request().Top(pageSize.Value);
     if (!string.IsNullOrEmpty(nextLink))
     {
-      request = new MembersCollectionWithReferencesRequest(nextLink, client, null);
+      request = (IGroupMembersCollectionWithReferencesRequest)
+        new GroupMembersCollectionReferencesRequest(nextLink, client, null);
     }
 
     try
@@ -351,7 +352,7 @@ SDK and work with Office 365 Groups.
     var request = client.Groups[groupId].Conversations.Request().Top(pageSize.Value);
     if (!string.IsNullOrEmpty(nextLink))
     {
-      request = new ConversationsCollectionRequest(nextLink, client, null);
+      request = new GroupConversationsCollectionRequest(nextLink, client, null);
     }
 
     try
@@ -394,17 +395,17 @@ SDK and work with Office 365 Groups.
       {
         Topic = topic,
         // Conversations have threads
-        Threads = new ThreadsCollectionPage()
+        Threads = new ConversationThreadsCollectionPage()
       };
       conversation.Threads.Add(new ConversationThread()
       {
         // Threads contain posts
-        Posts = new PostsCollectionPage()
+        Posts = new ConversationThreadPostsCollectionPage()
       });
       conversation.Threads[0].Posts.Add(new Post()
       {
         // Posts contain the actual content
-        Body = new ItemBody() { Content = message, ContentType = BodyType.text }
+        Body = new ItemBody() { Content = message, ContentType = BodyType.Text }
       });
 
       try
@@ -458,7 +459,7 @@ SDK and work with Office 365 Groups.
     var request = client.Groups[groupId].CalendarView.Request(viewOptions).Top(pageSize.Value);
     if (!string.IsNullOrEmpty(nextLink))
     {
-      request = new CalendarViewCollectionRequest(nextLink, client, null);
+      request = new GroupCalendarViewCollectionRequest(nextLink, client, null);
     }
 
     try
@@ -541,7 +542,7 @@ SDK and work with Office 365 Groups.
     var request = client.Groups[groupId].Drive.Root.Children.Request().Top(pageSize.Value);
     if (!string.IsNullOrEmpty(nextLink))
     {
-      request = new ChildrenCollectionRequest(nextLink, client, null);
+      request = new DriveItemChildrenCollectionRequest(nextLink, client, null);
     }
 
     try
