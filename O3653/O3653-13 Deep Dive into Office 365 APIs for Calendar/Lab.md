@@ -213,7 +213,7 @@ SDK and work with Office 365 and Outlook Calendar.
             var request = client.Me.CalendarView.Request(viewOptions).Top(pageSize.Value);
             if (!string.IsNullOrEmpty(nextLink))
             {
-                request = new CalendarViewCollectionRequest(nextLink, client, null);
+                request = new UserCalendarViewCollectionRequest(nextLink, client, null);
             }
 
             try
