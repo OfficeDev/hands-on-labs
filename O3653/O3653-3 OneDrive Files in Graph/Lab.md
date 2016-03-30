@@ -139,7 +139,7 @@ or OneDrive.
         IChildrenCollectionRequest request = client.Me.Drive.Root.Children.Request().Top(pageSize.Value);
         if (nextLink != null)
         {
-            request = new ChildrenCollectionRequest(nextLink, client, null);
+            request = new DriveItemChildrenCollectionRequest(nextLink, client, null);
         }
 
         var results = await request.GetAsync();
