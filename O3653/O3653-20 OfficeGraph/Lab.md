@@ -277,7 +277,7 @@ Now we have a page that displays trending documents ready. Let's now list the us
    1. Launch the application with **Ctrl (Command) + F5**. Sign in again if prompted.
    2. Once the application is loaded click the **Users** link in the top menu bar.
    3. You should see a couple of users from your Office 365 tenant.
-   4. Click on **See Trending Documents** next to one of the users.
+   4. Click on **See Trending Documents** next to one of the users, for example Garth.
    5. You will see a number of documents currently trending around the current user.
    6. Close the browser window and return to Visual Studio.
 
