@@ -163,7 +163,7 @@ using Newtonsoft.Json;
 
         // The amount of time in UTC format when the webhook subscription expires, based on the subscription creation time.
         // The maximum time varies for the resource subscribed to. This sample sets it to the 4230 minute maximum for messages.
-        // See http://graph.microsoft.io/en-us/docs/api-reference/v1.0/api/subscription for maximum values for resources.
+        // See http://graph.microsoft.io/en-us/docs/api-reference/v1.0/resources/subscription for maximum values for resources.
         [JsonProperty(PropertyName = "expirationDateTime")]
         public DateTimeOffset? ExpirationDateTime { get; set; }
 
@@ -567,7 +567,7 @@ using System.Threading.Tasks;
 
 ### Create the notification endpoint
 
-1. Replace the **Notification** class with the following code. This adds the **Listen** callback method you'll register for notifications.
+1. Replace the **NotificationController** class with the following code. This adds the **Listen** callback method you'll register for notifications.
 
    ```c#
     public class NotificationController : Controller
@@ -700,7 +700,7 @@ This app uses SignalR to notify the client to refresh its view.
 
 1. Right-click the **GraphWebhooks** project and create a folder named **SignalR**.
 
-1. Right-click the **SignalR** folder and choose **Add/Class** and then type **SignalR Hub** in the search bar to find **SignalR Hub Class (v2)**. 
+1. Right-click the **SignalR** folder and choose **Add/New Item** and then type **SignalR Hub** in the search bar to find **SignalR Hub Class (v2)**. 
 
 1. Name the class **NotificationHub**, and click **OK**. This sample doesn't add any functionality to the hub.
 
