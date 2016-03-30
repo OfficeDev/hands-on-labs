@@ -123,8 +123,8 @@ In this first step, you will create a new ASP.NET MVC project using the
         // Show the profile of a user after a user is clicked from the search.
         var client = GetGraphServiceClient();
         List<User> userMembers = new List<User>();
-        IMembersCollectionWithReferencesPage members = new MembersCollectionWithReferencesPage();
-        IMembersCollectionWithReferencesRequest membersRequest = null;
+        IGroupMembersCollectionWithReferencesPage members = new GroupMembersCollectionWithReferencesPage();
+        IGroupMembersCollectionWithReferencesRequest membersRequest = null;
 
         try
         {
@@ -250,7 +250,7 @@ In this step, we'll enable selecting a user from the group members search result
     ```csharp
     if (nextLink != null)
     {
-        membersRequest = new MembersCollectionWithReferencesRequest(nextLink, client, null);
+        membersRequest = new GroupMembersCollectionWithReferencesRequest(nextLink, client, null);
     }
     members = await membersRequest.GetAsync();
     if (members.NextPageRequest != null)
