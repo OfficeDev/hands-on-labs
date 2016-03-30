@@ -3,7 +3,7 @@
 In this lab you will get hands-on experience developing a website with Skype for Business integration.  The sample website will allow an Office 365 user to perform the following from within their website:
 
 ## Get an Office 365 developer environment
-To complete the exercises below, you will require an Office 365 developer environment. Navigate to https://tryoffice.azurewebsites.net and use the code `BuildChallenge` to get an administrator username and password to one. 
+To complete the exercises below, you will require an Office 365 developer environment. Navigate to https://tryoffice.azurewebsites.net and use the code `Build02` to get an administrator username and password to two Skype for Business users. 
 
 1.  Sign into Skype for Business.
 2.  View own presence and set status.
@@ -24,10 +24,9 @@ To complete the exercises below, you will require an Office 365 developer enviro
 ##Setting up the code
 1.  Open Visual Studio and click **File->Open->Project/Solution**.
 2.  Navigate to `C:\git\trainingcontent-nda\O3659\O3659-1 WebSDK\Starter Solution\Lab A\LabAWeb.sln`.
-3.  Navigate to [https://msdn.microsoft.com/en-us/office/office365/howto/add-common-consent-manually] to create your application in Azure and attain your **Client ID**.  Note this ID as it will be used later in the lab.
-4.  Add your http://localhost address to your RedirectURI list in Azure.
-5.  Add the same address as above /Home.html.
-7.  Hit **F5** or **the Start Button** in Visual Studio.  The website should launch in Internet Explorer.
+3.  Your **Client ID** : 6fd45769-7a1e-4dc5-a876-90fa781b3d3e.  Note this ID as it will be used later in the lab.
+4.  Please use the following redirect URI in your code: http://localhost:62754
+5.  Hit **F5** or **the Start Button** in Visual Studio.  The website should launch in Edge.
 
 ##Signing into Skype for Business
 This section will instruct a user on how to add code to your website in order to connect to Skype for Business Online.
