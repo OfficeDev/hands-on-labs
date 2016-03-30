@@ -76,9 +76,8 @@ for calling the Graph API.
              return await authHelper.GetUserAccessToken(Url.Action("Index", "Home", null, Request.Url.Scheme));
          }
   
-         public async Task<Service.GraphService> GetService()
+          public Service.GraphService GetService(string token)
           {
-             string token = await GetToken();
               Service.GraphService service = new Service.GraphService(new Uri("https://graph.microsoft.com/beta/"));
               service.BuildingRequest += (sender, e) => e.Headers.Add("Authorization", "Bearer " + token);
               return service;
@@ -97,8 +96,13 @@ for calling the Graph API.
           [Authorize]
           public async Task<ActionResult> Index()
           {
-              var service = await GetService();
-              return View(service.Me.People.ToList());
+              var token = await GetToken();
+              if (!string.IsNullOrEmpty(token))
+              {
+                  var service = GetService(token);
+                  return View(service.Me.People.ToList());                
+              }
+              return RedirectToAction("SignOut", "Account");
           }
   ```
 
@@ -182,16 +186,26 @@ for calling the Graph API.
         [Authorize]
         public async Task<ActionResult> Search(string searchText, string topic)
         {
-            var service = await GetService();
-            var searchString = string.IsNullOrWhiteSpace(topic) ? searchText : searchText + " topic:" + topic;
-            return View("Index", Search(service, service.Me.People, searchString));
+            var token = await GetToken();
+            if (!string.IsNullOrEmpty(token))
+            {
+                var service = GetService(token);
+                var searchString = string.IsNullOrWhiteSpace(topic) ? searchText : searchText + " topic:" + topic;
+                return View("Index", Search(service, service.Me.People, searchString));
+            }
+            return RedirectToAction("SignOut", "Account");
         }
   
         [Authorize]
         public async Task<ActionResult> Details(string id)
         {
-            var service = await GetService();
-            return View(service.Me.People.ByKey(id).GetValue());
+            var token = await GetToken();
+            if (!string.IsNullOrEmpty(token))
+            {
+                var service = GetService(token);
+                return View(service.Me.People.ByKey(id).GetValue());
+            }
+            return RedirectToAction("SignOut", "Account");
         }
   ```
   
@@ -236,8 +250,13 @@ for calling the Graph API.
         [Authorize]
         public async Task<ActionResult> RelatedPeople(string id)
         {
-            var service = await GetService();
-            return View("Index", service.Users.ByKey(id).People);
+            var token = await GetToken();
+            if (!string.IsNullOrEmpty(token))
+            {
+                var service = GetService(token);
+                return View("Index", service.Users.ByKey(id).People);               
+            }
+            return RedirectToAction("SignOut", "Account");
         }
   ```
     
