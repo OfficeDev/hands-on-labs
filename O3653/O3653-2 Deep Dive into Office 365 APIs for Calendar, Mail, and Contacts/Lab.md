@@ -164,7 +164,7 @@ SDK and work with Office 365 and Outlook Mail
             var request = client.Me.MailFolders.Inbox.Messages.Request().Top(pageSize.Value);
             if (!string.IsNullOrEmpty(nextLink))
             {
-                request = new MessagesCollectionRequest(nextLink, client, null);
+                request = new MailFolderMessagesCollectionRequest(nextLink, client, null);
             }
 
             try
