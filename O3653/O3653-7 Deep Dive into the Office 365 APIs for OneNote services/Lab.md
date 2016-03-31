@@ -37,14 +37,14 @@ Congratulations... at this point your app is configured with Azure AD and levera
 ### Create the Notebook Repository
 In this step you will create a repository class that will handle all communication with the Microsoft Graph API to interact with notebooks in your OneDrive for Business store.
 
-1. To simplify working with the REST services, we will use the popular [JSON.NET](http://www.newtonsoft.com/json) JSON framework for .NET.
+1. To simplify working with the REST services, we will use the popular JSON.NET framework for .NET.
 	1. In Solution Explorer, right-click the project's **Models** folder and choose **Add / New Folder**. Name the folder **JsonHelpers**.
 	
-	1. Copy all the C# files provided with this lab, located in the [\\\O3653\O3653-7 Deep Dive into the Office 365 APIs for OneNote services\Labs\Labfiles](Labs/Labfiles/JsonHelpers) folder, into the **JsonHelpers** folder that you just added to your project.
+	1. Copy all the C# files provided with this lab, located in the `C:\git\O3653\O3653-7 Deep Dive into the Office 365 APIs for OneNote services\Labs\Labfiles` folder, into the **JsonHelpers** folder that you just added to your project.
 
     1. Right-click the **JsonHelpers** folder and choose **Add / Existing Item**. Select all the files you just copied to the folder and click **Add**.
 
-		> **Note:** These files were created using the handy utility in Visual Studio: [Paste JSON as Classes](http://blogs.msdn.com/b/webdev/archive/2012/12/18/paste-json-as-classes-in-asp-net-and-web-tools-2012-2-rc.aspx).
+		> **Note:** These files were created using the handy utility in Visual Studio: **Paste JSON as Classes**.
 
 1. Create model objects for the OneNote notebook, section, and page:
 	1. Add a new class named **Notebook** to the **Models** folder in the project.
