@@ -20,7 +20,7 @@ for calling the Graph API.
     **Graph AAD Auth v2 Starter Project** template.
   1. Name the new project **QuickStartCalendarWebApp** and click **OK**.
   1. Open the **Web.config** file and find the **appSettings** element. This is where you will need to add your appId and app secret you will generate in the next step.
-1. Launch the [Application Registration Portal](https://apps.dev.microsoft.com)
+1. Launch the Application Registration Portal by navigating your web browser and going to **apps.dev.microsoft.com**.
    to register a new application.
   1. Sign into the portal using your Office 365 username and password.
   1. Click **Add an App** and type **GraphCalendarQuickStart** for the application name.
