@@ -27,7 +27,7 @@ for calling the Graph API.
   1. Copy the **Application Id** and paste it into the value for **ida:AppId** in your project **web.config** file.
   1. Under **Application Secrets** click **Generate New Password** to create a new client secret for your app.
   1. Copy the displayed app password and paste it into the value for **ida:AppSecret** in your project **web.config** file.
-  1. Modify the **ida:AppScopes** value to include the required `https://graph.microsoft.com/calendars.readwrite`  and https://graph.microsoft.com/calendars.read scopes.
+  1. Modify the **ida:AppScopes** value to include the required `https://graph.microsoft.com/calendars.readwrite`  and `https://graph.microsoft.com/calendars.read` scopes.
 
   ```xml
   <configuration>
@@ -749,5 +749,5 @@ $(function () {
 
 Next Steps and Additional Resources:
 
-See this training and more on http://dev.office.com/ and http://dev.outlook.com
-Learn about and connect to the Microsoft Graph at https://graph.microsoft.io
+See this training and more on 'http://dev.office.com/' and 'http://dev.outlook.com'
+Learn about and connect to the Microsoft Graph at 'https://graph.microsoft.io'
