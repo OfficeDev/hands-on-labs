@@ -3,7 +3,7 @@
 In this lab, you will use Microsoft Graph to integrate the Office 365 People API with an ASP.NET MVC application.
 
 ## Get an Office 365 developer environment
-To complete the exercises below, you will require an Office 365 developer environment. Navigate to https://tryoffice.azurewebsites.net and use the code `BuildChallenge` to get an administrator username and password to one. 
+To complete the exercises below, you will require an Office 365 developer environment. Navigate to **tryoffice.azurewebsites.net** in a browser to sign-in and use the code `BuildChallenge` to get an administrator username and password to one. 
 
 ## Prerequisites
   1. You must have the OData v4 Client Code Generator add-in installed. In Visual Studio, go to **Tools** > **Extensions and Updates**, select "Online" from the left-most treeview, then search for "Odata v4 Client Code Generator", and click install.
