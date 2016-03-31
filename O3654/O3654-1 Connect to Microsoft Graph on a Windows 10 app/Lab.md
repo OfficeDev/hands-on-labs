@@ -18,7 +18,7 @@ The app you'll build requires the user to sign in with either their personal or 
 
 To complete the exercises below, you will need one of the following accounts:
 - An Office 365 developer environment. Navigate to **tryoffice.azurewebsites.net** in a browser to sign-in and use the code BuildChallenge to get an administrator username and password to one.
-- A personal Microsoft email account, such as `user@live.com` or `user@outlook.com`. Visit [Outlook.com](http://outlook.com) to create a new personal account if necessary.
+- A personal Microsoft email account, such as `user@live.com` or `user@outlook.com`. Visit **Outlook.com** to create a new personal account if necessary.
 
 <a name="create"></a>
 ##Exercise 1: Create the app
@@ -617,19 +617,3 @@ With that in mind, it's worth looking at two methods in the helper classes in a 
 	This method of the **MailHelper** class uses the Microsoft Graph SDK to authenticate the user with the v2.0 authentication service, compose a sample email, and then send the email using the user's account.
 
 	It does this by declaring a **GraphClient** object and setting it equal to the return value of **AuthenticationHelper.GetAuthenticatedClientAsync**. The method then composes the sample email, using various objects in the **Microsoft.Graph** namespace. Finally, it calls the **SendMail** method.
-
-
-<a name="additional-resources"></a>
-## Additional resources ##
-
-- [Microsoft Graph overview](http://graph.microsoft.io)
-- [Office 365 API code samples and videos](https://msdn.microsoft.com/office/office365/howto/starter-projects-and-code-samples)
-- [Office developer code samples](http://dev.office.com/code-samples)
-- [Office dev center](http://dev.office.com/)
-
-Connect with us on [Stack Overflow](http://stackoverflow.com/questions/tagged/office365+or+microsoftgraph). Tag your questions with [MicrosoftGraph] and [office365].
-
-## Copyright
-Copyright (c) 2016 Microsoft. All rights reserved.
-
-
