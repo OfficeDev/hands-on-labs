@@ -166,10 +166,10 @@ Now that the buttons are showing up in Outlook, Exercise 2 is complete!
   
 ## Exercise 3: Add translation
 
-In this exercise you will implement the functions to call the [Yandex Translate API](https://translate.yandex.com/developers) and replace selected text in the message that is being composed.
+In this exercise you will implement the functions to call the Yandex Translate API at **translate.yandex.com/developers** and replace selected text in the message that is being composed.
 
 1. Obtain a free Yandex API key.
-  1. Go to https://translate.yandex.com/developers in your browser.
+  1. Go to **translate.yandex.com/developers** in your browser.
   1. Under **Getting Started**, click the **Get a free API key** link.
   1. Register and get your API key. Copy this key, you will need it later.
 
@@ -196,7 +196,7 @@ In this exercise you will implement the functions to call the [Yandex Translate 
       }
 
       // API Key for the yandex service
-      // Get one at https://translate.yandex.com/developers
+      // Get one at translate.yandex.com/developers
       var apiKey = 'PASTE YOUR YANDEX API KEY HERE';
 
       var langspec = sourcelang.length > 0 ? sourcelang + '-' + targetlang : targetlang;
@@ -582,7 +582,7 @@ In this exercise you will implement the functions to call the [Yandex Translate 
     ```
     
   1. Add the Fabric UI Dropdown plugin
-    1. Download the [Jquery.Dropdown.js file](https://github.com/OfficeDev/Office-UI-Fabric/blob/master/src/components/Dropdown/Jquery.Dropdown.js) from GitHub.
+    1. Download the Jquery.Dropdown.js file  at **github.com/OfficeDev/Office-UI-Fabric/blob/master/src/components/Dropdown/Jquery.Dropdown.js** from GitHub.
     1. Move the file into the **TranslatorWeb/Scripts/FabricUI** folder in the project.
     1. Right-click the **TranslatorWeb/Scripts/FabricUI**, choose **Add**, then **Existing item**. Browse to the **Jquery.Dropdown.js** file in the **FabricUI** folder and click **Add**.
     
