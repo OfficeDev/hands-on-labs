@@ -17,7 +17,7 @@ The app you'll build requires the user to sign in with either their personal or 
 ## Get a work or school or personal Microsoft account
 
 To complete the exercises below, you will need one of the following accounts:
-- An Office 365 developer environment. Navigate to https://tryoffice.azurewebsites.net and use the code BuildChallenge to get an administrator username and password to one.
+- An Office 365 developer environment. Navigate to **tryoffice.azurewebsites.net** in a browser to sign-in and use the code BuildChallenge to get an administrator username and password to one.
 - A personal Microsoft email account, such as `user@live.com` or `user@outlook.com`. Visit [Outlook.com](http://outlook.com) to create a new personal account if necessary.
 
 <a name="create"></a>
