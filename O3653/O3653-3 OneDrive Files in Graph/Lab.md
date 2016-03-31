@@ -10,7 +10,7 @@ group entity. You can navigate the hierarchy of a drive by path or by enumeratin
 the contents of folders
 
 ## Get an Office 365 developer environment
-To complete the exercises below, you will require an Office 365 developer environment. Navigate to https://tryoffice.azurewebsites.net and use the code `BuildChallenge` to get an administrator username and password to one. 
+To complete the exercises below, you will require an Office 365 developer environment. Navigate to **tryoffice.azurewebsites.net** in a browser to sign-in and use the code `BuildChallenge` to get an administrator username and password to one. 
 
 ## Exercise 1: Create a new project using Azure Active Directory v2 authentication
 
