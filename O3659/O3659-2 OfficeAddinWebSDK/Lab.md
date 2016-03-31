@@ -29,9 +29,9 @@ In this lab you will get hands-on experience developing an Excel add-in with Sky
 
 >4.  Skype for Business Client application.
 
->5.  **(Optional)** A web application created in Azure to host the add-in [https://azure.microsoft.com/en-us/documentation/articles/web-sites-dotnet-get-started/]
+>5.  **(Optional)** A web application created in Azure to host the add-in. Learn more at `https://azure.microsoft.com/en-us/documentation/articles/web-sites-dotnet-get-started/`.
 
->6.  **(Optional)** Publish profile settings from the Azure web application [https://msdn.microsoft.com/en-us/library/dn385850(v=nav.70).aspx]
+>6.  **(Optional)** Publish profile settings from the Azure web application. Learn more at `https://msdn.microsoft.com/en-us/library/dn385850(v=nav.70).aspx`
 
 
 
@@ -928,71 +928,3 @@ A new feature in the Skype for Business Online SDK is the Conversation Control. 
     ```
 
     **#selectedCall** and **#selectedVideo** are both anchor tags on the `Home.html` page.  What the code above is doing is adding a **Callto:sip:yourperson@example.com** to the anchor tag.  When clicking these links, the callto is a command that launches the Skype for Business Client with a message directed to the sip specified in the command.  This is similar to a **mailto:** command that will launch a users default email client from a web page.
-
-
-
-##Publishing the Add-in (Optional)
-
-
-
-For other users in your organization to use the add-in you just created, the add-in must be published to your tenants Office 365 App Store.  This section will guide the user on how to test the application in a browser and then publish it for others to use.
-
-
-
-1. Right-click the **ExcelAddIn** App for Office project and select Publish.
-
-2. In the **Current Profile** drop-down menu, select **New**.
-
-
-
-	![screenshot of publishing your app in Visual Studio](Screenshots/publish_setup.png)
-
-
-
-3. Select **Import publishing profile** and browse to the downloaded Azure Publish Profile from the pre-requisites.  Click Finish.
-
-
-
-	![screenshot of importing publishing profile in Visual Studio](Screenshots/publish_path.PNG)
-
-
-
-4. Double-click the ExcelAddinManifest file and be sure the source location is set to `https://[yourwebsitedomain]/App/Home/Home.html`
-
-5. Add your Office 365 tenant domain to the AppDomains list on the **ExcelAddInManifest>App** Domains tab.
-
-
-
-	![Screenshot of Allowed Domains in Visual Studio](Screenshots/allowed_domains.PNG)
-
-
-
-6. On the Publish screen, click the **Package the app** option.
-
-
-
-	![Screenshot of packing app in Visual Studio](Screenshots/package_app.PNG)
-
-
-
-7. Next, click the **Deploy your web project** button on the Publish screen.
-
-
-
-	![Screenshot of deploying your web project in Visual Studio](Screenshots/deploy.PNG)
-
-
-
-8. Use the Web Deploy Option and follow the wizard.
-
-9. Follow the steps at this link to publish your add-in to the add-in catalog [https://msdn.microsoft.com/en-us/library/office/fp123515.aspx]
-
-
-
-10. Login to the Office 365 portal [https://portal.officeppe.com].
-
-11. Open a new Excel document.
-
-12. On the Insert Tab, select **Add-ins**
-
-13. Select the Add-in you just created.  You should now be able to use your add-in in your Office 365 environment.
