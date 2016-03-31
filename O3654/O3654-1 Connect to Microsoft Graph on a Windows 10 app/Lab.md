@@ -110,28 +110,14 @@ After you've loaded the solution in Visual Studio, configure the sample to use t
 
 Next, you'll include files in your project that will handle the authentication process.
 
-###Add the Authentication folder and its files
+###Add the Authentication folder and its file
 
 1. In **Solution Explorer**, choose the project and, from the short-cut menu, choose **Add** > **New Folder**.
 2. Name the folder Authentication.
 3. Choose the Authentication folder and, from the short-cut menu, choose **Add** > **Existing item**.
-4. Navigate to the folder in this Code Challenge named Authentication, and choose all the files contained in it:
-	- AccountSession.cs
-	- AppConfig.cs
-	- IOAuthRequestStringBuilder.cs
+4. Navigate to the folder in this Code Challenge named Authentication (C:\git\training-nda\O3654\O365f-1 Connect to Microsoft Graph on a Windows 10 app\Authentication), and choose this file:
 	- OAuth2AuthenticationProvider.cs
-	- OAuthErrorHandler.cs
-	- OAuthRequestStringBuilder.cs
-5. Choose **Add**.
 
-###Add the Web folder and its files
-
-1. In **Solution Explorer**, choose the project and, from the short-cut menu, choose **Add** > **New Folder**.
-2. Name the folder Web.
-3. Choose the Web folder and, from the short-cut menu, choose **Add** > **Existing item**.
-4. Navigate to the folder in this Code Challenge named Web, and choose all the files contained in it:
-	- IWebAuthenticationUi.cs
-	- WebAuthenticationBrokerWebAuthenticationUi.cs
 5. Choose **Add**.
 
 ###Add the Constants file
