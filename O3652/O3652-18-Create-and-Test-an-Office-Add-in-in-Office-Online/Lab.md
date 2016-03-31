@@ -31,7 +31,7 @@ This lab will teach you how to create an add-in using only the shell and a brows
 
 An Office Add-in is just a web app that is displayed within the Office UI and can interact with Office content using Office.js APIs. In this exercise, you'll edit the HTML and JavaScript of the add-in, see your changes reflected, and use a debugger to verify that your code is running properly.
 
-1. Launch Visual Studio Code.
+1. Download, install and run **Visual Studio Code** from  `code.visualstudio.com`
 2. Open the home.html file found in your-project-folder/app/home/. 
 3. Add a new button after the "Get data from selection" button:
 
