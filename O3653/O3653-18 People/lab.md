@@ -31,7 +31,7 @@ for calling the Graph API.
    1. Select **Visual C#** > **Code** > **Odata Client**.
    2. Name the file Graph.tt and click **Add**.
 2. Edit the Graph.tt file.
-   1. Edit MetadataDocumentUri to be "https://graph.microsoft.com/beta/$metadata".
+   1. Edit MetadataDocumentUri to be `https://graph.microsoft.com/beta/$metadata`.
    2. Edit NamespacePrefix to be "PeopleGraphWeb.Service".
 3. Build the project.
 
@@ -307,5 +307,5 @@ for calling the Graph API.
 Congratulations, dedicated quick start developer! In this exercise, you have created an application that uses Microsoft Graph People API. This quick start ends here.  But don't stop here - there's plenty more to explore with the Microsoft Graph.
 
 ## Next Steps and Additional Resources:  
-- See this training and more on http://dev.office.com/
-- Learn about and connect to the Microsoft Graph at https://graph.microsoft.io
+- See this training and more on `http://dev.office.com/`
+- Learn about and connect to the Microsoft Graph at `https://graph.microsoft.io`
