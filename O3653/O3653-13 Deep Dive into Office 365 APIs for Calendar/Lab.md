@@ -749,5 +749,5 @@ $(function () {
 
 Next Steps and Additional Resources:
 
-See this training and more on 'http://dev.office.com/' and 'http://dev.outlook.com'
-Learn about and connect to the Microsoft Graph at 'https://graph.microsoft.io'
+See this training and more on `http://dev.office.com/` and `http://dev.outlook.com`
+Learn about and connect to the Microsoft Graph at `https://graph.microsoft.io`
