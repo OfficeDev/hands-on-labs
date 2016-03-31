@@ -49,7 +49,7 @@ for calling the Graph API.
   1. Scroll to the bottom of the page and click **Save**.
 
 1. Set Startup page to Signout page (to avoid stale token error) 
-  1. Right-click **QuickStartCalendarWebApp** and click **Properties** to open the project properties.
+  1. Right-click **QuickStartMailWebApp** and click **Properties** to open the project properties.
   1. Click **Web** in the left navigation.
   1. Under **Start Action** Choose **Specific Page** option and Type its value as **Account/SignOut**  
 
@@ -80,7 +80,7 @@ SDK and work with Office 365 and Outlook Mail
   2. In the **Add Scaffold** dialog, select **MVC 5 Controller - Empty**, and choose **Add**.
   3. In the **Add Controller** dialog, name the controller `MailController` and choose **Add**.
 
-1. **Replace** the following reference to the top of the `CalendarController` class
+1. **Replace** the following reference to the top of the `MailController` class
   ```csharp
   using System;
   using System.Collections.Generic;
@@ -138,7 +138,7 @@ SDK and work with Office 365 and Outlook Mail
 1. Replace the following code in the `MailController` class 
 
   ```csharp
-        // GET: Calendar
+        // GET: Mail
         public ActionResult Index()
         {
             return View();
@@ -416,7 +416,7 @@ to an MVC view that will display all your Inbox messages and allow you to send a
       </ul>
   ```
 1. Create a new **View** for MailList.
-  1. Expand **Views** folder in **QuickStartCalendarWebApp** and select the folder **Mail**.  
+  1. Expand **Views** folder in **QuickStartMailWebApp** and select the folder **Mail**.  
   1. Right-click **Mail** and select **Add** then **New Item**.
   1. Select **MVC 5 View Page (Razor)** and change the filename **Index.cshtml** and click **Add**.
   1. **Replace** all of the code in the **Mail/Index.cshtml** with the following:
