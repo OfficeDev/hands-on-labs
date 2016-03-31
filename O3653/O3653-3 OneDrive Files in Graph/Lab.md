@@ -28,7 +28,7 @@ for calling the Graph API.
 
     ![Create Project Dialog](Images/01-1-CreateProject.png)
 
-2. Launch the [Application Registration Portal](https://apps.dev.microsoft.com)
+2. Launch the Application Registration Portal by opening your browser and navigating to **apps.dev.microsoft.com**
    to register a new application.
       1. Sign in to the portal using your Office 365 user name and password.
       2. Click **Add an App** and type **Graph Files Quick Start** for the application name.
