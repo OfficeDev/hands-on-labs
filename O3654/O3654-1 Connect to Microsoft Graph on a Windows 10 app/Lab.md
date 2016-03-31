@@ -160,6 +160,9 @@ Next, you'll add two helper classes: one that handles authenticating the user, a
 
 	```
 
+//Copyright (c) Microsoft. All rights reserved. Licensed under the MIT license.
+//See LICENSE in the project root for license information.
+
 using System;
 using System.Diagnostics;
 using System.Net.Http;
@@ -189,17 +192,13 @@ namespace Microsoft_Graph_UWP_Connect_SDK
             if (graphClient == null)
             {
                 var authenticationProvider = new OAuth2AuthenticationProvider(
-                    new AppConfig
+                    clientId,
+                    returnUrl,
+                    new string[]
                     {
-                        ClientId = clientId,
-                        ReturnUrl = returnUrl,
-                        Scopes = new string[]
-                        {
-                        "openid",
                         "offline_access",
                         "https://graph.microsoft.com/User.Read",
                         "https://graph.microsoft.com/Mail.Send",
-                        },
                     });
 
                 await authenticationProvider.AuthenticateAsync();
