@@ -136,7 +136,7 @@ or OneDrive.
 
         pageSize = pageSize ?? 25;
 
-        IChildrenCollectionRequest request = client.Me.Drive.Root.Children.Request().Top(pageSize.Value);
+        var request = client.Me.Drive.Root.Children.Request().Top(pageSize.Value);
         if (nextLink != null)
         {
             request = new DriveItemChildrenCollectionRequest(nextLink, client, null);
