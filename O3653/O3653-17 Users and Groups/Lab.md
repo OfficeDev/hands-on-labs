@@ -3,7 +3,7 @@
 In this lab, you will create an ASP.NET MVC application that uses the Microsoft Graph client SDK to create a basic group management experience. It will search for groups in your tenant's directory, show their members, and get member details such as their photo. In a bonus excercise, you will learn how to add more users to a group (through a people picker) and remove users from a group.
 
 ## Get an Office 365 developer environment
-To complete the exercises below, you will require an Office 365 developer environment. Navigate to https://tryoffice.azurewebsites.net and use the code `BuildChallenge` to get an administrator username and password to one. 
+To complete the exercises below, you will require an Office 365 developer environment. Navigate to **tryoffice.azurewebsites.net** in a browser to sign-in and use the code `BuildChallenge` to get an administrator username and password to one. 
 
 ## Exercise 1: Create a new project using Graph AAD Auth v1 Starter Project template
 In this first step, you will create a new ASP.NET MVC project using the
