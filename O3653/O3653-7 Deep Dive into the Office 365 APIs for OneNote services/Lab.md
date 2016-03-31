@@ -24,8 +24,6 @@ Your user must have at least one OneNote notebook with a section and a page.
     
 1. At this point you can test the authentication flow for your application. In Visual Studio, press **F5**. The browser will automatically open to the start page for the web application.
 
-   > **Note:** If you receive an error that indicates ASP.NET could not connect to the SQL database, please see the [SQL Server Database Connection Error Resolution document](../../SQL-DB-Connection-Error-Resolution.md) to quickly resolve the issue. 
-
 1. Click the **Click here to sign in** button, and sign in with your Office 365 administrator account. If prompted, consent to the requested permissions.
 
    You will be redirected back to your web application. Notice that your email address displays at the top of the page next to the **Sign out** link.
@@ -724,8 +722,6 @@ using OneNoteDev.TokenStorage;
 The last step is to test the application you just created! First, make sure you have at least one notebook with a section and a page.
 
 1. Press **F5** in Visual Studio to launch the application.
-
- > **Note:** If you receive an error that indicates ASP.NET could not connect to the SQL database, please see the [SQL Server Database Connection Error Resolution document](../../SQL-DB-Connection-Error-Resolution.md) to quickly resolve the issue. 
 
 1. When the browser loads, click the **Click here to sign in** button and sign in using your Office 365 administrator credentials if you're not already signed in.
 
