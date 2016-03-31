@@ -728,5 +728,5 @@ $(function () {
 Congratulations!, dedicated quick start developer. In this exercise you have created an MVC application that uses Microsoft Graph to view and manage Mail in your mailbox. This quick start ends here.  But don't stop here - there's plenty more to explore with the Microsoft Graph.
 
 ## Next Steps and Additional Resources:  
-- See this training and more on http://dev.office.com/ and http://dev.outlook.com
-- Learn about and connect to the Microsoft Graph at https://graph.microsoft.io
+- See this training and more on `http://dev.office.com/` and `http://dev.outlook.com`
+- Learn about and connect to the Microsoft Graph at `https://graph.microsoft.io`
