@@ -38,7 +38,7 @@ In this first exercise, you will create a new ASP.NET MVC project using the
    1. Select **Visual C# -> Code -> OData Client**.
    2. Name the file Graph.tt and click **Add**.
 2. Edit the Graph.tt file
-   1. Edit **MetadataDocumentUri** to be "https://graph.microsoft.com/beta/$metadata"
+   1. Edit **MetadataDocumentUri** to be `https://graph.microsoft.com/beta/$metadata`
    2. Edit **NamespacePrefix** to be "OfficeGraphLab.Service"
 3. Click **Build -> Build solution**.
 
@@ -285,5 +285,5 @@ Congratulations! You have created an MVC application that displays documents tre
 
 ## Next Steps and Additional Resources:  
 - See our blog post on Office Graph.
-- See this training and more on http://dev.office.com/
-- Learn about and connect to the Microsoft Graph at https://graph.microsoft.io
+- See this training and more on `http://dev.office.com/`
+- Learn about and connect to the Microsoft Graph at `https://graph.microsoft.io`
