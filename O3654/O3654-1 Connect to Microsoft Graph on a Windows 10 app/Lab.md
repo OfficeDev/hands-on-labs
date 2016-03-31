@@ -115,14 +115,14 @@ Next, you'll include files in your project that will handle the authentication p
 1. In **Solution Explorer**, choose the project and, from the short-cut menu, choose **Add** > **New Folder**.
 2. Name the folder Authentication.
 3. Choose the Authentication folder and, from the short-cut menu, choose **Add** > **Existing item**.
-4. Navigate to the folder in this Code Challenge named Authentication (C:\git\training-nda\O3654\O365f-1 Connect to Microsoft Graph on a Windows 10 app\Authentication), and choose this file:
+4. Navigate to the folder in this Code Challenge named Authentication (C:\git\training-nda\O3654\O3654-1 Connect to Microsoft Graph on a Windows 10 app\Authentication), and choose this file:
 	- OAuth2AuthenticationProvider.cs
 
 5. Choose **Add**.
 
 ###Add the Constants file
 1. In **Solution Explorer**, choose the project and, from the short-cut menu, choose **Add** > **Existing Item**.
-4. Navigate to the root directory of this Code Challenge, and choose the Constants.cs file. Click **Add**.
+4. Navigate to the root directory of this Code Challenge (C:\git\training-nda\O3654\O3654-1 Connect to Microsoft Graph on a Windows 10 app), and choose the Constants.cs file. Click **Add**.
 
 <a name="createFiles"></a>
 ## Exercise 5: Create helper classes for authentication and sending email
@@ -304,7 +304,7 @@ namespace Microsoft_Graph_UWP_Connect_SDK
 Next, you'll add a resource file that contains strings used in the app UI, as well as the sample email the app sends.
 
 1. In **Solution Explorer**, choose the **Assets** folder, and from the short-cut menu, choose **Add** > **Existing Item**.
-2. Navigate to the **Resources.rsw** file, located in the Assets folder of this repo. Choose **Add**.
+2. Navigate to the **Resources.rsw** file, located in the Assets folder of this challenge (C:\git\training-nda\O3654\O3654-1 Connect to Microsoft Graph on a Windows 10 app\Assets). Choose **Add**.
 
 	The Resources file is added to the Assets folder.
 
