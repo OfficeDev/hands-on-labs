@@ -22,7 +22,7 @@ for calling the Graph API.
     **Graph AAD Auth v2 Starter Project** template.
   1. Name the new project **InboxSync** and choose **OK**.
   1. Open the **Web.config** file and find the **appSettings** element. This is where you will need to add your appId and app secret you will generate in the next step.
-1. Start the [Application Registration Portal](https://apps.dev.microsoft.com)
+1. Start the Application Registration Portal by opening your browser and navigating to **apps.dev.microsoft.com**
    to register a new application.
   1. Sign into the portal using your Office 365 username and password.
   1. Choose **Add an App** and type **Inbox Sync Demo** for the application name.
