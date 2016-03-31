@@ -1,6 +1,10 @@
 # Find Meeting Times with the Outlook REST API
 Learn how to use Outlook REST API  to find the best meeting times between attendees.
 
+## Get an Office 365 developer environment
+To complete the exercises below, you will require an Office 365 developer environment. Navigate to **tryoffice.azurewebsites.net** in a browser to sign-in and use the code `BuildChallenge` to get an administrator username and password to one. 
+
+
 ## Exercise 1: Create a new project using Azure Active Directory v1 authentication
 
 In this first step, you will create a new ASP.NET MVC project using the
