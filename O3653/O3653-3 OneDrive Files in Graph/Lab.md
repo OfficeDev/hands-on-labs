@@ -35,7 +35,7 @@ for calling the Graph API.
       3. Copy the **Application Id** and paste it into the value for **ida:AppId** in your project's **web.config** file.
       3. Under **Application Secrets**, click **Generate New Password** to create a new client secret for your app.
       4. Copy the displayed app password and paste it into the value for **ida:AppSecret** in your project's **web.config** file.
-      5. Modify the **ida:AppScopes** value to include the required **https://graph.microsoft.com/files.readwrite** scope.
+      5. Modify the **ida:AppScopes** value to include the required `https://graph.microsoft.com/files.readwrite` scope.
 
     ![App registration portal](Images/01-02-NewApplicationRegistration.png)
 
