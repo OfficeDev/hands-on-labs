@@ -37,7 +37,7 @@ An Office Add-in is just a web app that is displayed within the Office UI and ca
 
  ```
  <br />
- <button id="write-data-to-selection">Write data to selection</button>
+ <button id="write-to-console">Write to debug console</button>
  ```
 4. Save the home.html file.
 5. Open the home.js file from the same folder.
@@ -50,31 +50,20 @@ An Office Add-in is just a web app that is displayed within the Office UI and ca
 
       jQuery('#get-data-from-selection').click(getDataFromSelection);
       //Add this line:
-      jQuery('#write-data-to-selection').click(writeDataToSelection);
+      jQuery('#write-to-console').click(writeToConsole);
     });
   };
  ```
-7. Add the function for the click to perform, which in this case is to write a message to the current location in the document (and to the debug console):
+7. Add the function for the click to perform, which in this case is to write a message to the debug console:
 
  ```javascript
- function writeDataToSelection(){
-     Office.context.document.setSelectedDataAsync("Office add-ins are awesome!",
-      function(result){
-        if (result.status === Office.AsyncResultStatus.Succeeded) {
-          app.showNotification('Data successfully written.', "");
-          console.log("Writing to the document succeeded!");
-        } else {
-          app.showNotification('Error:', result.error.message);
-          console.log("Writing to the document failed: " + result.error.message);
-        }
-      }
-    );
+ function writeToConsole(){
+   console.log("Office add-ins are awesome!");
  }
  ```
 8. Save the home.js file.
 9. Go back to Excel Online and refresh the page. You should see the new button in your add-in.
-10. Select an empty cell in the worksheet and click the new button that says "Write data to selection". You should see "Office add-ins are awesome!" written to the cell.
-11. Open the browser's developer tools (this can be done by pressing F12 for most browsers), and go to the Console. You should see a message written to the console by the button.
+10. Open the browser's developer tools (this can be done by pressing F12 for most browsers), and go to the Console. Click the button that says "Write to debug console" and you should see "Office add-ins are awesome!" appear in the console.
  
 
 You've now completed the entire lifecycle of add-in development: new project creation, code editing, hosting, loading the add-in into Office, testing, and debugging. You can use this method to create add-ins for any Office application, on any platform that supports add-ins.
