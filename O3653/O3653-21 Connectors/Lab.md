@@ -16,7 +16,7 @@ To complete the exercises below, you will require an Office 365 developer enviro
 
 If you don’t have an Office 365 Group, this is how you create one:
 
-1. Sign in to Outlook Web App @ http://Outlook.Office.com using your Office 365 administrator or user credentials.
+1. Sign in to Outlook Web App @ `http://Outlook.Office.com` using your Office 365 administrator or user credentials.
 
 2. Browse to the Groups and click the **plus (+)** button to create a new Office 365 group. Give a name for the group, and you may keep it public.
 
@@ -34,7 +34,7 @@ If you don’t have an Office 365 Group, this is how you create one:
 	
 3. Copy the generated URL and save it-as you will need it later. Select **Done** to create the incoming webhook.
 	
-4. Open a new browser tab and navigate to https://www.hurl.it, which is an in-browser web request composer similar to what Fiddler offers.
+4. Open a new browser tab and navigate to `https://www.hurl.it`, which is an in-browser web request composer similar to what Fiddler offers.
 
 5. When the page loads, add the following details:
 	- **Operation**: **POST**
@@ -55,7 +55,7 @@ If you don’t have an Office 365 Group, this is how you create one:
 
 8. Optional: Change the JSON card format to further customize the layout, buttons, and colors.  For example, under potential actions, rename the button or change the target URL.
 
-9. To learn more about the connector card format, visit https://dev.outlook.com/Connectors/GetStarted.
+9. To learn more about the connector card format, visit `https://dev.outlook.com/Connectors/GetStarted`.
 	
 	
 ### Sample Connector Card Message JSON Payload
@@ -200,7 +200,7 @@ If you don’t have an Office 365 Group, this is how you create one:
 		
 	Choose **Publish** to publish the app to Azure. Once the publishing process is complete, a new browser window will open to the newly published site.
 
-11. Go to github.com. Create a new github repo (unless you already have one for testing purposes). Navigate to the repo. Click  **Settings**. Select Webhooks & Services on the left side. Click the **Add webhook** button. Provide the full webhook URL of your ASP.net application. To get this url, append "/api/webhooks/incoming/Github" to the URL of your Azure web application (as an example, the full webhook URL would be http://mywebhookspreview.azurewebsites.net/api/webhooks/incoming/Github). You will receive notifications from Github service at this URL.  
+11. Go to github.com. Create a new github repo (unless you already have one for testing purposes). Navigate to the repo. Click  **Settings**. Select Webhooks & Services on the left side. Click the **Add webhook** button. Provide the full webhook URL of your ASP.net application. To get this url, append "/api/webhooks/incoming/Github" to the URL of your Azure web application (as an example, the full webhook URL would be `http://mywebhookspreview.azurewebsites.net/api/webhooks/incoming/Github`). You will receive notifications from Github service at this URL.  
 
 12. For the secret, enter the SHA1 key you got earlier.
 
