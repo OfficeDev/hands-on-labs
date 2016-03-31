@@ -18,14 +18,13 @@ To complete the exercises below, you will require an Office 365 developer enviro
 >2.  At least (2) Office 365 user credentials.
 >3.  Each user has the other user added to his or her contacts.
 >6.  Skype for Business Web Plug-in
->	Windows Users: [Download Here](https://mlccdn.blob.core.windows.net/prod/LWA/plugins/windows/archive/SkypeForBusinessPlugin-16.0.0.101.msi)
->	Mac Users: [Download Here](https://mlccdn.blob.core.windows.net/prod/LWA/plugins/mac/archive/SkypeForBusinessPlugin-16.0.0.63.pkg)
+>	Windows Users: Download at `https://mlccdn.blob.core.windows.net/prod/LWA/plugins/windows/archive/SkypeForBusinessPlugin-16.0.0.101.msi`
 
 ##Setting up the code
 1.  Open Visual Studio and click **File->Open->Project/Solution**.
 2.  Navigate to `C:\git\trainingcontent-nda\O3659\O3659-1 WebSDK\Starter Solution\Lab A\LabAWeb.sln`.
 3.  Your **Client ID** : 6fd45769-7a1e-4dc5-a876-90fa781b3d3e.  Note this ID as it will be used later in the lab.
-4.  Please use the following redirect URI in your code: http://localhost:62754
+4.  Please use the following redirect URI in your code: `http://localhost:62754`
 5.  Hit **F5** or **the Start Button** in Visual Studio.  The website should launch in Edge.
 
 ##Signing into Skype for Business
