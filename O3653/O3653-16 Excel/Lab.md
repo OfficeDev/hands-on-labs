@@ -1117,7 +1117,7 @@ As a last step, you can login to the OneDrive Business account and open the `ToD
 * User authorizes a web/mobile application to read/update OneDrive file contents.
 * App can access the Excel file contents and make updates over the OneDrive files REST API available through Microsoft Graph. 
 * A `/workbook` segment is added in the URL at the end of file identifier to distinguish the Excel API call and access workbook's data model. Example: 
-https://graph.microsoft.com/v1.0/me/files/{id}/workbook/worksheets/Sheet1/tables
+`https://graph.microsoft.com/v1.0/me/files/{id}/workbook/worksheets/Sheet1/tables`
 * Using Excel REST API, App reads or updates the Excel file content as necessary. Any updates made to the file is saved to the document on OneDrive. 
 
 Note: 
