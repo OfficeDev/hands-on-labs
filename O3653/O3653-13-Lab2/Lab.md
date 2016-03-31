@@ -11,7 +11,7 @@ In this first step, you will create a new ASP.NET MVC project using the
     **Graph AAD Auth v1 Starter Project** template.
   1. Name the new project **FindMeetingTimesLab** and click **OK**.
   1. Find the **Auth** folder uunder **FindMeetingTimesLab** and open the **AuthHelper.cs** file. 
-  1. Search for and replace **https://graph.microsoft.com** with **https://outlook.office.com**. 
+  1. Search for and replace `https://graph.microsoft.com` with `https://outlook.office.com`. 
 1. Press **F5** to compile and launch your new application in the default browser.
   1. The missing NuGet packages should be restored and the app should launch. 
   1. Once the Home page appears, click **Sign in** and login to your Office 365 account.
