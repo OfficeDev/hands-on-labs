@@ -2,9 +2,9 @@
 In this lab, you will use the Outlook Mail REST API to synchronize messages from a user's inbox with a MongoDB database.
 
 ## Overview 
-The [Outlook Mail REST API](https://msdn.microsoft.com/office/office365/APi/mail-rest-operations) now has the capabilities to [synchronize messages](https://msdn.microsoft.com/office/office365/APi/mail-rest-operations#Synchronizemessagespreview) with your application's data store. This allows your app to retrieve only the changes to a message collection since the last sync.
+The Outlook Mail REST API now has the capabilities to synchronize messageswith your application's data store. This allows your app to retrieve only the changes to a message collection since the last sync.
 
-This can be paired with the [Outlook Notifications API](https://msdn.microsoft.com/office/office365/APi/notify-rest-operations) to get near real-time updates and keep your data store in constant sync with the user's mailbox.
+This can be paired with the Outlook Notifications API to get near real-time updates and keep your data store in constant sync with the user's mailbox.
 
 
 ## Get an Office 365 developer environment
@@ -67,7 +67,7 @@ This app will work with any MongoDB database, so if you already have access to a
 
 If you have an Azure subscription, you can sign up using the following steps.
 
-> If you do not have an Azure subscription, you can visit the [MongoLab website](https://mongolab.com/) and sign up for an account. Once you've signed up you can create a sandbox database hosted on Azure. 
+> If you do not have an Azure subscription, you can visit the MongoLab website and sign up for an account. Once you've signed up you can create a sandbox database hosted on Azure. 
 
 1. Open your browser and browse to https://ms.portal.azure.com. Login with your Azure subscription account.
 1. In the left navigation bar, choose the **New** button. Choose the **Data + Storage**, then locate and choose on the **MongoLab** app.
@@ -881,7 +881,7 @@ At this point you should be able to browse to your Azure web site and log in. Th
 
 ### Add the webhook
 
-In this section we'll implement a webhook along with the code to subscribe for notifications to be sent to the webhook. We'll also add [SignalR](https://www.nuget.org/packages/Microsoft.AspNet.SignalR/) to the project, which will be used to notify the client to refresh its view.
+In this section we'll implement a webhook along with the code to subscribe for notifications to be sent to the webhook. We'll also add SignalR to the project, which will be used to notify the client to refresh its view.
 
 1. Open the **Helpers\OutlookHelper.cs** file. Add the following methods to the `OutlookHelper class:
   
@@ -1226,7 +1226,7 @@ Now that the app is published with the webhook, you can test that notifications 
 1. Browse to the published app and login. Choose on the **Inbox** link in the top navigation bar.
 1. Choose the **Sync Now** button to sync your inbox.
 1. Choose the **Subscribe for updates** button to create a subscription.
-1. In a separate browser window or tab, open https://outlook.office.com and login with the same user.
+1. In a separate browser window or tab, open `https://outlook.office.com` and login with the same user.
 1. Try different actions in the Outlook Web app to generate notifications. For example:
   - Mark a message as read or unread
   - Delete messages
