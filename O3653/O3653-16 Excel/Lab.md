@@ -26,9 +26,9 @@ In this first step, you will create a new ASP.NET MVC project using the **Graph 
 
 ### Add ToDo file 
 
-For the purpose of this demo, we will use an empty Excel file to store the tasks and create charts. In real apps, you could upload a new file using OneDrive API or target an existing file that contains needed data. 
+For the purpose of this demo, we will use an empty Excel file to store the tasks and create charts. In real world apps, you could upload a new file using OneDrive API or target an existing file that contains needed data. 
 
-In your project, add an *Assets* folder to your project, drop the empty ToDo.xlsx file included in this lab into that new folder, and add the file to your project. Note that the app looks for a file named ToDo.xlsx to upload as part of setup.
+Open Excel application and create a blank workbook and save it locally and name it aas ToDo.xlsx. In your project, add an *Assets* folder to your project and add the empty ToDo.xlsx file into the assets folder. Note that the app looks for a file named ToDo.xlsx to upload as part of this setup step. If it is named differently, it will not work.
 
 ![](images/ToDoworkbook.JPG)
 
