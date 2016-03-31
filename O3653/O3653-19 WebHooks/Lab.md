@@ -22,7 +22,7 @@ To complete the exercises below, you will require an Office 365 developer enviro
 
 1. Build the solution (**Build/Build Solution**) to restore the NuGet packages required by the project. This should remove all of the solution's initial red squigglies.
 
-1. Open **Tools/Nuget Package Manager/Package Manager Console**, and run the following commands. These install [AspNet.SignalR](http://go.microsoft.com/fwlink/?LinkID=615530), which is used to notify the client to refresh its view, and an SDK for communicating with the Microsoft Graph.
+1. Open **Tools/Nuget Package Manager/Package Manager Console**, and run the following commands. These install AspNet.SignalR, which is used to notify the client to refresh its view, and an SDK for communicating with the Microsoft Graph.
 
    ```
 Install-Package Microsoft.AspNet.SignalR
@@ -82,7 +82,7 @@ This application uses SignalR, which doesn't support ASP.NET session state. So y
    ```
 
 ## Step 2: Set up the ngrok proxy and notification URL data
-You must expose a public HTTPS endpoint to create a subscription and receive notifications from Microsoft Graph. While testing, you can use ngrok to temporarily allow messages from Microsoft Graph to tunnel to a port on your local computer. This makes it easier to test and debug webhooks. To learn more about using ngrok, see the [ngrok website](https://ngrok.com/) [https://ngrok.com/](https://ngrok.com/).  
+You must expose a public HTTPS endpoint to create a subscription and receive notifications from Microsoft Graph. While testing, you can use ngrok to temporarily allow messages from Microsoft Graph to tunnel to a port on your local computer. This makes it easier to test and debug webhooks. To learn more about using ngrok, see the ngrok website at `https://ngrok.com/` 
 
 1. In Solution Explorer, select the **GraphWebhooks** project.
 
@@ -90,7 +90,7 @@ You must expose a public HTTPS endpoint to create a subscription and receive not
 
 	![URL port number in the Properties window](images/PortNumber.png)
 
-1. [Download ngrok](https://ngrok.com/download) for Windows.  
+1. Download ngrok at `https://ngrok.com/download` for Windows.  
 
 1. Unzip the package and run ngrok.exe.
 
@@ -132,7 +132,7 @@ In this step you'll create a model that represents a Subscription object.
 
 1. Name the model **Subscription.cs** and click **Add**.
 
-1. Add the following **using** statement. The samples uses the [Json.NET](http://www.newtonsoft.com/json) framework to deserialize JSON responses.
+1. Add the following **using** statement. The samples uses the Json.NET framework to deserialize JSON responses.
 
    ```c#
 using Newtonsoft.Json;
@@ -272,7 +272,7 @@ using System.Threading.Tasks;
     request.Content = new StringContent(contentString, System.Text.Encoding.UTF8, "application/json");
    ```
 
-This sample creates a subscription for the *me/mailFolders('Inbox')/messages* resource for the *created* change type. See the [docs](http://graph.microsoft.io/en-us/docs/api-reference/v1.0/resources/subscription) for other supported resources and change types. 
+This sample creates a subscription for the *me/mailFolders('Inbox')/messages* resource for the *created* change type. See the docs at `http://graph.microsoft.io/en-us/docs/api-reference/v1.0/resources/subscription` for other supported resources and change types. 
 
 ### Send the request and parse the response
 
@@ -481,7 +481,7 @@ In this step you'll create a model that represents a Notification object.
 
 1. Name the model **Notification.cs** and click **Add**.
 
-1. Add the following **using** statement. The sample uses the [Json.NET](http://www.newtonsoft.com/json) framework to deserialize JSON responses.
+1. Add the following **using** statement. The sample uses the Json.NET framework to deserialize JSON responses.
 
   ```c#
 using Newtonsoft.Json;
@@ -814,5 +814,5 @@ Congratulations! In this exercise you created an MVC application that subscribes
 1. Click the **Delete subscription and sign out** button. 
 
 ## Next Steps and Additional Resources:  
-- See this training and more on http://dev.office.com/
-- Learn about and connect to the Microsoft Graph at https://graph.microsoft.io
+- See this training and more on `http://dev.office.com/`
+- Learn about and connect to the Microsoft Graph at `https://graph.microsoft.io`
