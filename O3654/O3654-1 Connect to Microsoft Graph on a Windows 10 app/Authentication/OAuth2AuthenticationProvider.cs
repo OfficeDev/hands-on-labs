@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 //  Copyright (c) 2016 Microsoft Corporation
 // 
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,6 +24,7 @@ namespace Microsoft.Graph.Authentication
 {
     using System;
     using System.Collections.Generic;
+    using System.Net;
     using System.Net.Http;
     using System.Net.Http.Headers;
     using System.Text;
@@ -32,29 +33,30 @@ namespace Microsoft.Graph.Authentication
 
     public class OAuth2AuthenticationProvider : IAuthenticationProvider
     {
-        private AppConfig appConfig;
+        private const string authenticationServiceUrl = "https://login.microsoftonline.com/common/oauth2/v2.0/authorize";
+        private const string tokenServiceUrl = "https://login.microsoftonline.com/common/oauth2/v2.0/token";
+
+        private string clientId;
+        private string[] scopes;
+        private string returnUrl;
+
+        private string accessToken;
+        private string refreshToken;
+
+        private DateTimeOffset expiration;
+
         private IHttpProvider httpProvider;
-        private IOAuthRequestStringBuilder oAuthRequestStringBuilder;
-        private IWebAuthenticationUi webAuthenticationUi;
 
         /// <summary>
         /// Creates a new instance of <see cref="OAuth2AuthenticationProvider"/> for authentication in Windows Store applications.
         /// </summary>
-        /// <param name="appConfig">The configuration details for authenticating the application.</param>
-        /// <param name="httpProvider">The HTTP provider for sending HTTP requests.</param>
-        public OAuth2AuthenticationProvider(AppConfig appConfig, IHttpProvider httpProvider = null)
+        public OAuth2AuthenticationProvider(
+            string clientId,
+            string returnUrl,
+            string[] scopes,
+            IHttpProvider httpProvider = null)
         {
-            if (appConfig == null)
-            {
-                throw new ServiceException(
-                    new Error
-                    {
-                        Code = GraphErrorCode.InvalidRequest.ToString(),
-                        Message = "AppConfig is required to authenticate using OAuth2AuthenticationProvider.",
-                    });
-            }
-
-            if (string.IsNullOrEmpty(appConfig.ClientId))
+            if (string.IsNullOrEmpty(clientId))
             {
                 throw new ServiceException(
                     new Error
@@ -64,17 +66,17 @@ namespace Microsoft.Graph.Authentication
                     });
             }
 
-            if (string.IsNullOrEmpty(appConfig.AuthenticationServiceUrl))
+            if (string.IsNullOrEmpty(returnUrl))
             {
                 throw new ServiceException(
                     new Error
                     {
                         Code = GraphErrorCode.InvalidRequest.ToString(),
-                        Message = "Authentication service URL is required to authenticate using OAuth2AuthenticationProvider.",
+                        Message = "Return URL is required to authenticate using OAuth2AuthenticationProvider.",
                     });
             }
 
-            if (appConfig.Scopes == null)
+            if (scopes == null || scopes.Length == 0)
             {
                 throw new ServiceException(
                     new Error
@@ -84,49 +86,10 @@ namespace Microsoft.Graph.Authentication
                     });
             }
 
-            this.appConfig = appConfig;
+            this.clientId = clientId;
+            this.returnUrl = returnUrl;
+            this.scopes = scopes;
             this.httpProvider = httpProvider ?? new HttpProvider();
-        }
-
-        /// <summary>
-        /// Gets the current authenticated account session.
-        /// </summary>
-        public AccountSession AuthenticatedSession { get; internal set; }
-
-        internal IOAuthRequestStringBuilder OAuthRequestStringBuilder
-        {
-            get
-            {
-                if (this.oAuthRequestStringBuilder == null)
-                {
-                    this.oAuthRequestStringBuilder = new OAuthRequestStringBuilder(this.appConfig);
-                }
-
-                return this.oAuthRequestStringBuilder;
-            }
-
-            set
-            {
-                this.oAuthRequestStringBuilder = value;
-            }
-        }
-
-        internal IWebAuthenticationUi WebAuthenticationUi
-        {
-            get
-            {
-                if (this.webAuthenticationUi == null)
-                {
-                    this.webAuthenticationUi = new WebAuthenticationBrokerWebAuthenticationUi();
-                }
-
-                return this.webAuthenticationUi;
-            }
-
-            set
-            {
-                this.webAuthenticationUi = value;
-            }
         }
 
         /// <summary>
@@ -135,62 +98,19 @@ namespace Microsoft.Graph.Authentication
         /// <returns>The task to await.</returns>
         public async Task AuthenticateAsync()
         {
-            var authResult = await this.ProcessCachedAccountSessionAsync();
-
-            if (authResult != null)
+            if (string.IsNullOrEmpty(this.accessToken) || this.expiration <= DateTimeOffset.Now.UtcDateTime.AddMinutes(5))
             {
-                return;
-            }
+                await this.GetAuthenticationResultAsync();
 
-            authResult = await this.GetAuthenticationResultAsync();
-
-            if (authResult == null || string.IsNullOrEmpty(authResult.AccessToken))
-            {
-                throw new ServiceException(
-                    new Error
-                    {
-                        Code = GraphErrorCode.AuthenticationFailure.ToString(),
-                        Message = "Failed to retrieve a valid authentication token for the user."
-                    });
-            }
-
-            this.AuthenticatedSession = authResult;
-        }
-
-        /// <summary>
-        /// Refreshes the current account session using the refresh token stored in AuthenticatedSession (if available).
-        /// </summary>
-        /// <returns>The task to await.</returns>
-        public Task RedeemRefreshTokenAsync()
-        {
-            return this.RedeemRefreshTokenAsync(null);
-        }
-
-        /// <summary>
-        /// Redeems the provided refresh token for an access token. If no refresh token is provided the refresh is
-        /// performed using the refresh token stored in AuthenticatedSession (if available).
-        /// </summary>
-        /// <param name="refreshToken">The refresh token to redeem for an access token.</param>
-        /// <returns>The task to await.</returns>
-        public async Task RedeemRefreshTokenAsync(string refreshToken)
-        {
-            if (string.IsNullOrEmpty(refreshToken))
-            {
-                if (this.AuthenticatedSession == null || string.IsNullOrEmpty(this.AuthenticatedSession.RefreshToken))
+                if (string.IsNullOrEmpty(accessToken))
                 {
                     throw new ServiceException(
                         new Error
                         {
-                            Code = GraphErrorCode.InvalidRequest.ToString(),
-                            Message = "Refresh token is required to refresh authentication."
+                            Code = GraphErrorCode.AuthenticationFailure.ToString(),
+                            Message = "Failed to retrieve a valid authentication token for the user."
                         });
                 }
-
-                this.AuthenticatedSession = await this.RefreshAccessTokenAsync(this.AuthenticatedSession.RefreshToken);
-            }
-            else
-            {
-                this.AuthenticatedSession = await this.RefreshAccessTokenAsync(refreshToken);
             }
         }
 
@@ -203,109 +123,87 @@ namespace Microsoft.Graph.Authentication
         /// <returns>The task to await.</returns>
         public async Task AuthenticateRequestAsync(HttpRequestMessage request)
         {
-            var authResult = await this.ProcessCachedAccountSessionAsync();
-
-            if (authResult == null)
+            if (!string.IsNullOrEmpty(this.accessToken) && !(this.expiration <= DateTimeOffset.Now.UtcDateTime.AddMinutes(5)))
             {
-                throw new ServiceException(
-                    new Error
-                    {
-                        Code = GraphErrorCode.InvalidRequest.ToString(),
-                        Message = "The current authentication token has expired and a new one cannot be silently retrieved. Please re-authenticate the user.",
-                    });
+                request.Headers.Authorization = new AuthenticationHeaderValue("bearer", this.accessToken);
             }
-
-            if (!string.IsNullOrEmpty(authResult.AccessToken))
+            else
             {
-                var tokenTypeString = string.IsNullOrEmpty(authResult.AccessTokenType)
-                    ? Constants.Headers.Bearer
-                    : authResult.AccessTokenType;
-                request.Headers.Authorization = new AuthenticationHeaderValue(tokenTypeString, authResult.AccessToken);
+                this.accessToken = null;
+
+                await this.RefreshAccessTokenAsync();
+
+                if (!string.IsNullOrEmpty(this.accessToken))
+                {
+                    request.Headers.Authorization = new AuthenticationHeaderValue("bearer", this.accessToken);
+                }
+                else
+                {
+                    throw new ServiceException(
+                        new Error
+                        {
+                            Code = "authenticationRequired",
+                            Message = "Please call AuthenticateAsync to prompt the user for authentication.",
+                        });
+                }
             }
         }
 
-        internal Task<AccountSession> GetAuthenticationResultAsync()
+        private async Task GetAuthenticationResultAsync()
         {
-            return this.GetAccountSessionAsync();
-        }
-
-        internal async Task<AccountSession> GetAccountSessionAsync()
-        {
-            var returnUrl = string.IsNullOrEmpty(this.appConfig.ReturnUrl)
-                ? WebAuthenticationBroker.GetCurrentApplicationCallbackUri().ToString()
-                : this.appConfig.ReturnUrl;
-
             // Log the user in if we haven't already pulled their credentials from the cache.
             var code = await this.GetAuthorizationCodeAsync(returnUrl);
 
             if (!string.IsNullOrEmpty(code))
             {
-                var authResult = await this.SendTokenRequestAsync(this.OAuthRequestStringBuilder.GetCodeRedemptionRequestBody(code, returnUrl));
-
-                return authResult;
+                await this.SendTokenRequestAsync(this.GetCodeRedemptionRequestBody(code));
             }
-
-            return null;
         }
 
-        internal async Task<string> GetAuthorizationCodeAsync(string returnUrl = null)
+        private async Task<string> GetAuthorizationCodeAsync(string returnUrl = null)
         {
-            if (this.WebAuthenticationUi != null)
+            var requestUri = new Uri(this.GetAuthorizationCodeRequestUrl(returnUrl));
+
+            var result = await WebAuthenticationBroker.AuthenticateAsync(WebAuthenticationOptions.None, requestUri, new Uri(this.returnUrl));
+
+            IDictionary<string, string> authenticationResponseValues = null;
+            if (result != null && !string.IsNullOrEmpty(result.ResponseData))
             {
-                returnUrl = returnUrl ?? this.appConfig.ReturnUrl;
+                authenticationResponseValues = UrlHelper.GetQueryOptions(new Uri(result.ResponseData));
 
-                var requestUri = new Uri(this.OAuthRequestStringBuilder.GetAuthorizationCodeRequestUrl(returnUrl));
-
-                var authenticationResponseValues = await this.WebAuthenticationUi.AuthenticateAsync(
-                    requestUri,
-                    new Uri(returnUrl));
-                OAuthErrorHandler.ThrowIfError(authenticationResponseValues);
-
-                string code;
-                if (authenticationResponseValues != null && authenticationResponseValues.TryGetValue("code", out code))
-                {
-                    return code;
-                }
+                this.ThrowIfError(authenticationResponseValues);
             }
-
-            return null;
-        }
-
-        internal async Task<AccountSession> ProcessCachedAccountSessionAsync()
-        {
-            if (this.AuthenticatedSession != null)
+            else if (result != null && result.ResponseStatus == WebAuthenticationStatus.UserCancel)
             {
-                // If we have cached credentials and they're not expiring, return them.
-                if (!string.IsNullOrEmpty(this.AuthenticatedSession.AccessToken) && !this.AuthenticatedSession.IsExpiring())
-                {
-                    return this.AuthenticatedSession;
-                }
-
-                // If we don't have an access token or it's expiring, see if we can refresh the access token.
-                if (!string.IsNullOrEmpty(this.AuthenticatedSession.RefreshToken))
-                {
-                    this.AuthenticatedSession = await this.RefreshAccessTokenAsync(this.AuthenticatedSession.RefreshToken);
-
-                    if (this.AuthenticatedSession != null && !string.IsNullOrEmpty(this.AuthenticatedSession.AccessToken))
-                    {
-                        return this.AuthenticatedSession;
-                    }
-                }
-
-                this.AuthenticatedSession = null;
+                throw new ServiceException(new Error { Code = GraphErrorCode.AuthenticationCancelled.ToString() });
+            }
+            
+            string code;
+            if (authenticationResponseValues != null && authenticationResponseValues.TryGetValue("code", out code))
+            {
+                return code;
             }
 
             return null;
         }
 
-        internal Task<AccountSession> RefreshAccessTokenAsync(string refreshToken)
+        /// <summary>
+        /// Refresh the current access token, if possible.
+        /// </summary>
+        /// <returns>The task to await.</returns>
+        private Task RefreshAccessTokenAsync()
         {
-            return this.SendTokenRequestAsync(this.OAuthRequestStringBuilder.GetRefreshTokenRequestBody(refreshToken));
+            if (!string.IsNullOrEmpty(this.refreshToken))
+            {
+                return this.SendTokenRequestAsync(this.GetRefreshTokenRequestBody(refreshToken));
+            }
+
+            return Task.FromResult(0);
         }
 
-        internal async Task<AccountSession> SendTokenRequestAsync(string requestBodyString)
+        private async Task SendTokenRequestAsync(string requestBodyString)
         {
-            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, this.appConfig.TokenServiceUrl);
+            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, OAuth2AuthenticationProvider.tokenServiceUrl);
 
             httpRequestMessage.Content = new StringContent(requestBodyString, Encoding.UTF8, Constants.Headers.FormUrlEncodedContentType);
 
@@ -318,17 +216,100 @@ namespace Microsoft.Graph.Authentication
 
                 if (responseValues != null)
                 {
-                    OAuthErrorHandler.ThrowIfError(responseValues);
-                    return new AccountSession(responseValues, this.appConfig.ClientId);
-                }
+                    this.ThrowIfError(responseValues);
 
-                throw new ServiceException(
-                    new Error
-                    {
-                        Code = GraphErrorCode.AuthenticationFailure.ToString(),
-                        Message = "Authentication failed. No response values returned from token authentication flow."
-                    });
+                    this.refreshToken = responseValues[Constants.Authentication.RefreshTokenKeyName];
+                    this.accessToken = responseValues[Constants.Authentication.AccessTokenKeyName];
+                    this.expiration = DateTimeOffset.UtcNow.Add(new TimeSpan(0, 0, int.Parse(responseValues[Constants.Authentication.ExpiresInKeyName])));
+                }
+                else
+                {
+                    throw new ServiceException(
+                        new Error
+                        {
+                            Code = GraphErrorCode.AuthenticationFailure.ToString(),
+                            Message = "Authentication failed. No response values returned from token authentication flow."
+                        });
+                }
             }
+        }
+
+        /// <summary>
+        /// Gets the request URL for OAuth authentication using the code flow.
+        /// </summary>
+        /// <param name="returnUrl">The return URL for the request. Defaults to the service info value.</param>
+        /// <returns>The OAuth request URL.</returns>
+        private string GetAuthorizationCodeRequestUrl(string returnUrl = null)
+        {
+            var requestUriStringBuilder = new StringBuilder();
+            requestUriStringBuilder.Append(OAuth2AuthenticationProvider.authenticationServiceUrl);
+            requestUriStringBuilder.AppendFormat("?{0}={1}", Constants.Authentication.RedirectUriKeyName, returnUrl);
+            requestUriStringBuilder.AppendFormat("&{0}={1}", Constants.Authentication.ClientIdKeyName, this.clientId);
+            requestUriStringBuilder.AppendFormat("&{0}={1}", Constants.Authentication.ResponseTypeKeyName, Constants.Authentication.CodeKeyName);
+            requestUriStringBuilder.AppendFormat("&{0}={1}", Constants.Authentication.ScopeKeyName, WebUtility.UrlEncode(string.Join(" ", this.scopes)));
+
+            return requestUriStringBuilder.ToString();
+        }
+
+        /// <summary>
+        /// Gets the request body for redeeming an authorization code for an access token.
+        /// </summary>
+        /// <param name="code">The authorization code to redeem.</param>
+        /// <param name="returnUrl">The return URL for the request. Defaults to the service info value.</param>
+        /// <returns>The request body for the code redemption call.</returns>
+        private string GetCodeRedemptionRequestBody(string code)
+        {
+            var requestBodyStringBuilder = new StringBuilder();
+            requestBodyStringBuilder.AppendFormat("{0}={1}", Constants.Authentication.RedirectUriKeyName, this.returnUrl);
+            requestBodyStringBuilder.AppendFormat("&{0}={1}", Constants.Authentication.ClientIdKeyName, this.clientId);
+            requestBodyStringBuilder.AppendFormat("&{0}={1}", Constants.Authentication.CodeKeyName, code);
+            requestBodyStringBuilder.AppendFormat("&{0}={1}", Constants.Authentication.GrantTypeKeyName, Constants.Authentication.AuthorizationCodeGrantType);
+            requestBodyStringBuilder.AppendFormat("&{0}={1}", Constants.Authentication.ScopeKeyName, WebUtility.UrlEncode(string.Join(" ", this.scopes)));
+
+            return requestBodyStringBuilder.ToString();
+        }
+
+        /// <summary>
+        /// Gets the request body for redeeming a refresh token for an access token.
+        /// </summary>
+        /// <param name="refreshToken">The refresh token to redeem.</param>
+        /// <returns>The request body for the redemption call.</returns>
+        private string GetRefreshTokenRequestBody(string refreshToken)
+        {
+            var requestBodyStringBuilder = new StringBuilder();
+            requestBodyStringBuilder.AppendFormat("{0}={1}", Constants.Authentication.RedirectUriKeyName, this.returnUrl);
+            requestBodyStringBuilder.AppendFormat("&{0}={1}", Constants.Authentication.ClientIdKeyName, this.clientId);
+            requestBodyStringBuilder.AppendFormat("&{0}={1}", Constants.Authentication.RefreshTokenKeyName, refreshToken);
+            requestBodyStringBuilder.AppendFormat("&{0}={1}", Constants.Authentication.GrantTypeKeyName, Constants.Authentication.RefreshTokenKeyName);
+            requestBodyStringBuilder.AppendFormat("&{0}={1}", Constants.Authentication.ScopeKeyName, WebUtility.UrlEncode(string.Join(" ", this.scopes)));
+
+            return requestBodyStringBuilder.ToString();
+        }
+
+        private void ThrowIfError(IDictionary<string, string> responseValues)
+        {
+            if (responseValues != null)
+            {
+                string error = null;
+                string errorDescription = null;
+
+                if (responseValues.TryGetValue(Constants.Authentication.ErrorDescriptionKeyName, out errorDescription) ||
+                    responseValues.TryGetValue(Constants.Authentication.ErrorKeyName, out error))
+                {
+                    this.ParseAuthenticationError(error, errorDescription);
+                }
+            }
+        }
+
+        private void ParseAuthenticationError(string error, string errorDescription)
+        {
+            throw new ServiceException(
+                new Error
+                {
+                    Code = GraphErrorCode.AuthenticationFailure.ToString(),
+                    Message = errorDescription ?? error
+                });
         }
     }
 }
+
