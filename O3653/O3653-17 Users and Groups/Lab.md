@@ -460,8 +460,8 @@ In this step, we'll enable selecting a user from the group members search result
 
 ***
 **Congratulations on creating your GraphUsersGroups app!** You created an MVC application that uses Microsoft Graph to search groups and view users in your tenant. Don't stop here - there's plenty more to explore with the Microsoft Graph.  
-- See this training and more on http://dev.office.com/
-- Learn about and connect to the Microsoft Graph at https://graph.microsoft.io
+- See this training and more on `http://dev.office.com/`
+- Learn about and connect to the Microsoft Graph at `https://graph.microsoft.io`
 - Or try some option bonus exercises below
 
 ## Exercise 4: Optional Bonus
@@ -630,5 +630,5 @@ This step is entirely optional. Here we'll add code that will allow you to add n
 **Congratulations, dedicated quick start developer!** This quick start ends here. Don't stop here - there's plenty more to explore with the Microsoft Graph.
 
 ## Next Steps and Additional Resources:  
-- See this training and more on http://dev.office.com/
-- Learn about and connect to the Microsoft Graph at https://graph.microsoft.io
+- See this training and more on `http://dev.office.com/`
+- Learn about and connect to the Microsoft Graph at `https://graph.microsoft.io`
