@@ -77,11 +77,10 @@ This section will instruct a user on how to add code to your website in order to
     function signIn() {
         var params =
      {
-         "auth": null,
          "client_id": config.clientId,
          "origins": ["https://webdir.online.lync.com/autodiscover/autodiscoverservice.svc/root"],
          "cors": true,
-         "version": 'secondonlineapp/1.0.0.0',
+         "version": 'buildapp/1.0.0.0',
          "redirect_uri": "/9c967f6b-a846-4df2-b43d-5167e47d81e1/oauth2/token/index.html",
      };
         console.log(params);
