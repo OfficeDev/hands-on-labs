@@ -243,7 +243,7 @@
 
     function onaddOpenDoc() {
         Word.run(function (context) {
-            var myNewDoc = context.application.createDoc(getDocumentAsBase64());
+            var myNewDoc = context.application.createDocument(getDocumentAsBase64());
             context.load(myNewDoc);
 
             return context.sync()
