@@ -749,7 +749,7 @@ function onaddHighlights() {
 	````
 	
 
-4. This code sample is implementing both highlight and increase the font size word by word of the last paragraph of the document. SO once we have a handle of that paragrpah we are using the *splitTextRanges* methods to get, as a collection of ranges, each word (by spacifying a space (" ") delimiter. once we have the Range collection we are traversining it in order to hichlight word by word.
+4. This code sample is implementing both highlight and increase the font size word by word of the last paragraph of the document. SO once we have a handle of that paragrpah we are using the *split()* method to get, as a collection of ranges, each word (by spacifying a space (" ") delimiter. once we have the Range collection we are traversining it in order to hichlight word by word.
 
 5. Test your work by pressing F5 to start a debug session and then click the **Step 1: Starting SOW** button. After the starting document gets inserted, try your code by clicking  on the  **Step 6: Highlight Word by Word!** to start the animation. Notice how each word will get highlighted in the last paragraph!
 
