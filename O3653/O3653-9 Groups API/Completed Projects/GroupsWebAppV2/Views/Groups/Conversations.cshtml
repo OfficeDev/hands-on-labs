@@ -1,0 +1,66 @@
+﻿@model IEnumerable<Microsoft.Graph.Conversation>
+
+@{ ViewBag.Title = "Conversations"; }
+
+<h2>Conversations</h2>
+
+<div class="row" style="margin-top:50px;">
+    <div class="col-sm-12">
+        @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+        {
+            <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
+        }
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <form class="form-inline" action="/Groups/AddConversation" method="post">
+                    <div class="form-group">
+                        <label for="topic">Topic</label>
+                        <input type="text" class="form-control" name="topic" id="topic" placeholder="Enter a topic for this conversation" />
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <input type="text" class="form-control" name="message" id="message" placeholder="Enter a message" />
+                    </div>
+                    <input type="hidden" name="groupId" value="@Request.Params["groupId"]" />
+                    <button type="submit" class="btn btn-default">Add Conversation</button>
+                </form>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table id="conversationsTable" class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Topic</th>
+                        <th>Preview</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var convo in Model)
+                    {
+                        <tr>
+                            <td>
+                                @(string.IsNullOrEmpty(convo.Topic) ? "(No subject)" : convo.Topic)
+                            </td>
+                            <td>
+                                @convo.Preview
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="btn btn-group-sm">
+            @{
+                Dictionary<string, object> attributes = new Dictionary<string, object>();
+                attributes.Add("class", "btn btn-default");
+
+                if (null != ViewBag.NextLink)
+                {
+                    RouteValueDictionary routeValues = new RouteValueDictionary();
+                    routeValues.Add("nextLink", ViewBag.NextLink);
+                    @Html.ActionLink("Next Page", "Conversations", "Groups", routeValues, attributes);
+                }
+            }
+        </div>
+    </div>
+</div>

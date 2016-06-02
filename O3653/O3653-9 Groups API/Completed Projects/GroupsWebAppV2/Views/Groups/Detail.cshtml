@@ -1,0 +1,29 @@
+﻿@model Microsoft.Graph.Group
+
+@{ ViewBag.Title = "Group Detail"; }
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        <hr />
+        <div class="media">
+            <div class="media-left">
+                @{
+                    RouteValueDictionary idVal = new RouteValueDictionary();
+                    idVal.Add("groupId", Model.Id);
+                    <img src="@Url.Action("Photo", idVal)" style="height: 128px; width: 128px;" />
+                }
+            </div>
+            <div class="media-body">
+                <h4 class="media-heading">@Model.DisplayName</h4>
+                <p>@Model.Description</p>
+            </div>
+        </div>
+        <hr />
+        <ul class="list-group">
+            <li class="list-group-item">@Html.ActionLink("View Members", "Members", idVal)</li>
+            <li class="list-group-item">@Html.ActionLink("View Conversations", "Conversations", idVal)</li>
+            <li class="list-group-item">@Html.ActionLink("View Calendar", "Calendar", idVal)</li>
+            <li class="list-group-item">@Html.ActionLink("View Files", "Files", idVal)</li>
+        </ul>
+    </div>
+</div>
