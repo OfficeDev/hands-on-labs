@@ -8,13 +8,49 @@ To complete the exercises below, you will require an Office 365 developer enviro
 ## Exercise 1: Create a new project using Azure Active Directory authentication
 
 In this first step, you will create a new ASP.NET MVC project using the
-**Graph AAD Auth v1 Starter Project** template and log in to your app and generate access tokens
+**Graph AAD Auth v2 Starter Project** template and log in to your app and generate access tokens
 for calling the Graph API.
 
 1. Launch Visual Studio 2015 and select **New**, **Project**.
   1. Search the installed templates for **Graph** and select the
-    **Graph AAD Auth v1 Starter Project** template.
+    **Graph AAD Auth v2 Starter Project** template.
   1. Name the new project **GroupsWebApp** and click **OK**.
+  1. Open the **Web.config** file and find the **appSettings** element. This is where you will need to add your appId and app secret you will generate in the next step.
+  
+1. Launch the Application Registration Portal by opening a browser and navigating to **apps.dev.microsoft.com**
+   to register a new application.
+  1. Sign into the portal using your Office 365 username and password.
+  1. Click **Add an App** and type **GroupsWebApp** for the application name.
+  1. Copy the **Application Id** and paste it into the value for **ida:AppId** in your project's **Web.config** file.
+  1. Under **Application Secrets** click **Generate New Password** to create a new client secret for your app.
+  1. Copy the displayed app password and paste it into the value for **ida:AppSecret** in your project's **web.config** file.
+  1. Modify the **ida:AppScopes** value to include the required `https://graph.microsoft.com/user.read.all` and `https://graph.microsoft.com/group.readwrite.all` scopes.
+
+  ```xml
+  <configuration>
+    <appSettings>
+      <!-- ... -->
+      <add key="ida:AppId" value="paste application id here" />
+      <add key="ida:AppSecret" value="paste application password here" />
+      <!-- ... -->
+      <!-- Specify scopes in this value. Multiple values should be comma separated. -->
+      <add key="ida:AppScopes" value="https://graph.microsoft.com/user.read.all, https://graph.microsoft.com/group.readwrite.all" />
+    </appSettings>
+    <!-- ... -->
+  </configuration>
+  ```
+1. Add a redirect URL to enable testing on your localhost.
+  1. Right click on **GroupsWebApp** and click on **Properties** to open the project properties.
+  1. Click on **Web** in the left navigation.
+  1. Copy the **Project Url** value.
+  1. Back on the Application Registration Portal page, click **Add Platform** and then **Web**.
+  1. Paste the value of **Project Url** into the **Redirect URIs** field.
+  1. Scroll to the bottom of the page and click **Save**.
+
+1. Set Startup page to Signout page (to avoid stale token error) 
+  1. Right-click **GroupsWebApp** and click **Properties** to open the project properties.
+  1. Click **Web** in the left navigation.
+  1. Under **Start Action** Choose **Specific Page** option and Type its value as **Account/SignOut**  
    
 1. Press F5 to compile and launch your new application in the default browser.
   1. Once the Graph and AAD Auth Endpoint Starter page appears, click **Sign in** and login to your Office 365 adminsitrator account.
@@ -31,7 +67,7 @@ SDK and work with Office 365 Groups.
 1. Add a reference to the Microsoft Graph SDK to your project
   1. In the **Solution Explorer** right click on the **GroupsWebApp** project and select **Manage NuGet Packages...**.
   1. Click **Browse** and search for **Microsoft.Graph**.
-  1. Select the Microsoft Graph SDK and click **Install**.
+  1. Select the **Microsoft.Graph** and click **Install**.
   
 1. Add a reference to the Bootstrap DateTime picker to your project
   1. In the **Solution Explorer** right click on the **GroupsWebApp** project and select **Manage NuGet Packages...**.
@@ -64,7 +100,7 @@ SDK and work with Office 365 Groups.
               "~/Content/site.css"));
     ```
 
-1. Create a new controller to process the requests for files and send them to Graph API.
+1. Create a new controller to process the requests for groups and send them to Graph API.
   1. Right-click the **Controllers** folder and choose **Add** > **New Scaffolded Item...**.
   1. Select **MVC 5 Controller - Empty** and click **Add**.
   1. Change the name of the controller to **GroupsController** and click **Add**.
@@ -655,7 +691,7 @@ to an MVC view that will display the organization's groups.
 1. Create a new **View** for groups.
   1. Expand the **Views** folder in **GroupsWebApp**. Right-click **Groups** and select
       **Add** then **New Item**.
-  1. Select **MVC View Page** and change the filename **Index.cshtml** and click **Add**.
+  1. Select **MVC 5 View Page (Razor)** and change the filename **Index.cshtml** and click **Add**.
   1. **Replace** all of the code in the **Groups/Index.cshtml** with the following:
   
   ```asp
@@ -737,7 +773,7 @@ to an MVC view that will display the organization's groups.
 1. Create a new **View** for group detail.
   1. Expand the **Views** folder in **GroupsWebApp**. Right-click **Groups** and select
       **Add** then **New Item**.
-  1. Select **MVC View Page** and change the filename **Detail.cshtml** and click **Add**.
+  1. Select **MVC 5 View Page (Razor)** and change the filename **Detail.cshtml** and click **Add**.
   1. **Replace** all of the code in the **Groups/Detail.cshtml** with the following:
   
   ```asp
@@ -775,7 +811,7 @@ to an MVC view that will display the organization's groups.
 1. Create a new **View** for group members.
   1. Expand the **Views** folder in **GroupsWebApp**. Right-click **Groups** and select
       **Add** then **New Item**.
-  1. Select **MVC View Page** and change the filename **Members.cshtml** and click **Add**.
+  1. Select **MVC 5 View Page (Razor)** and change the filename **Members.cshtml** and click **Add**.
   1. **Replace** all of the code in the **Groups/Members.cshtml** with the following:
   
   ```asp
@@ -846,7 +882,7 @@ to an MVC view that will display the organization's groups.
 1. Create a new **View** for group conversations.
   1. Expand the **Views** folder in **GroupsWebApp**. Right-click **Groups** and select
       **Add** then **New Item**.
-  1. Select **MVC View Page** and change the filename **Conversations.cshtml** and click **Add**.
+  1. Select **MVC 5 View Page (Razor)** and change the filename **Conversations.cshtml** and click **Add**.
   1. **Replace** all of the code in the **Groups/Conversations.cshtml** with the following:
   
   ```asp
@@ -921,7 +957,7 @@ to an MVC view that will display the organization's groups.
 1. Create a new **View** for group calendar.
   1. Expand the **Views** folder in **GroupsWebApp**. Right-click **Groups** and select
       **Add** then **New Item**.
-  1. Select **MVC View Page** and change the filename **Calendar.cshtml** and click **Add**.
+  1. Select **MVC 5 View Page (Razor)** and change the filename **Calendar.cshtml** and click **Add**.
   1. **Replace** all of the code in the **Groups/Calendar.cshtml** with the following:
   
   ```asp
@@ -1032,7 +1068,7 @@ to an MVC view that will display the organization's groups.
 1. Create a new **View** for group files.
   1. Expand the **Views** folder in **GroupsWebApp**. Right-click **Groups** and select
       **Add** then **New Item**.
-  1. Select **MVC View Page** and change the filename **Files.cshtml** and click **Add**.
+  1. Select **MVC 5 View Page (Razor)** and change the filename **Files.cshtml** and click **Add**.
   1. **Replace** all of the code in the **Groups/Files.cshtml** with the following:
   
   ```asp
@@ -1133,7 +1169,6 @@ to an MVC view that will display the organization's groups.
 1. When prompted, login with your Office 365 administrator account.
 1. Click the **Groups** link in the navigation bar at the top of the page.
 1. Try out the app!
-
 
 ***
 Congratulations!, dedicated quick start developer. In this exercise you have created an MVC application that uses Microsoft Graph to view and manage groups in Office 365. This quick start ends here.  But don't stop here - there's plenty more to explore with the Microsoft Graph.
