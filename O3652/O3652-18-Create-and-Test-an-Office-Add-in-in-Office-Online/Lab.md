@@ -14,7 +14,7 @@ This lab will teach you how to create an add-in using only the shell and a brows
   * Technology to use: HTML, CSS, & JavaScript
   * Supported Office application: uncheck all options except Excel
 1. The yeoman generator will then create all the necessary files for your Excel task pane add-in. You may see some warnings about deprecated components, which you can ignore. When it's done, the add-in can already be used. Run the following command to host the add-in locally: `gulp serve-static`
-1. Open a browser and make sure the add-in is working by going to **localhost:8443/app/home/home.html**  (Note: make sure it you navigate to **https://**).
+1. Open a browser and make sure the add-in is working by going to [https://localhost:8443/app/home/home.html]().
 1. If you see a security certificate warning, use Chrome and trust the certificate.
 
 ## Exercise 2: Load the add-in in Excel Online
