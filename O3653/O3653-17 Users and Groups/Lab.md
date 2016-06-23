@@ -14,7 +14,7 @@ In this first step, you will create a new ASP.NET MVC project using the
       **Graph AAD Auth v1 Starter Project** template. This starter project template scaffolds some auth infrastructure for you, so that you can focus on calling the Microsoft Graph.
 3. Name the new project **GraphUsersGroups** and click **OK**.<br>
 **NOTE:** Be sure you use the exact same name that is specified in these instructions for your Visual Studio project. Otherwise, your namespace name will differ from the one in these instructions and your code will not compile.
-    ![](images/VSProject.JPG)
+    ![Screenshot of the Visual Studio Project](images/VSProject.JPG)
 4. Your new application is ready to go!<br> 
 **Required**: Press **F5** to to restore the NuGet packages required by the project. This will compile and launch your new application in the default browser.  You can sign in to the app using the Office 365 tenant administrator account provided to you.
 
@@ -242,7 +242,7 @@ In this first step, you will create a new ASP.NET MVC project using the
 
 8. Press **F5** to debug your app! First sign in, then explore the navbar **Group Management** link. Search for groups by complete or incomplete name or email. Try typing *a* and pressing the search button. Then click a group to expand its group memberships. You should see something like this:
     
-    ![](images/GroupMembership.JPG)
+    ![Group Membership](images/GroupMembership.JPG)
     
 ## Exercise 3: Paged members and a detailed user profile page
 In this step, we'll enable selecting a user from the group members search results table, for whom we'll show more details.  We'll also add in paging and a new button to allow you to page through the results. 
