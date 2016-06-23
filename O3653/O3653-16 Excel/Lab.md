@@ -15,7 +15,7 @@ In this first step, you will create a new ASP.NET MVC project using the **Graph 
   1. Search the installed templates for **Graph** and select the **Graph AAD Auth v1 Starter Project** template.
   2. Name the new project **ExcelRestAPI-ToDoList** and click **OK**.
 
-![](images/start.JPG)
+![Screenshot of Visual Studio](images/start.JPG)
    
 2. Press F5 to compile and launch your new application in the default browser.
   1. Once the Graph and AAD Auth Endpoint Starter page appears, click **Sign in** and login to your Office 365 administrator account.
@@ -30,7 +30,7 @@ For the purpose of this demo, we will use an empty Excel file to store the tasks
 
 Open Excel application and create a blank workbook and save it locally and name it aas ToDo.xlsx. In your project, add an *Assets* folder to your project and add the empty ToDo.xlsx file into the assets folder. Note that the app looks for a file named ToDo.xlsx to upload as part of this setup step. If it is named differently, it will not work.
 
-![](images/ToDoworkbook.JPG)
+![Screenshot of the ToDo.xlsx workbook](images/ToDoworkbook.JPG)
 
 ### Use Excel REST API
 
@@ -50,7 +50,7 @@ In order to achieve above functions, the app calls Excel API as described in bel
   1. ToDoListController.cs - this is the controller that manages the main page actions.
   1. ChartController.cs - this is the controlled that manages the chart page actions. 
 
-![](images/todo1.JPG)
+![Screensot of adding a new controller in Visual Studio](images/todo1.JPG)
 
 ##### `ToDoListController.cs` contents 
    
@@ -184,7 +184,7 @@ namespace Microsoft_Graph_ExcelRest_ToDo.Controllers
 
 Add a new file under `Models` folder called `ToDoItem.cs`
 
-![](images/model.JPG)
+![Screenshot of adding a new file in Visual Studio](images/model.JPG)
 
 ##### `ToDoItem.cs` contents 
 ```csharp
@@ -256,7 +256,7 @@ namespace Microsoft_Graph_ExcelRest_ToDo.Models
 
 Create new views for To-Do list and Chart pages. 
 
-![](images/views.JPG)
+![Screenshot of Visual Studio](images/views.JPG)
 
 ##### Create `Chart` folder and add view `View.cshtml`
 
@@ -462,7 +462,7 @@ Create new views for To-Do list and Chart pages.
 
 #### Update Shared folder
 
-![](images/shared.JPG)
+![Screenshot of updating the shared folder in Visual Studio](images/shared.JPG)
 
 Open the _Layout.cshtml file and find this block:
 
@@ -485,7 +485,7 @@ Create a new project folder called `Helpers` and add a file named `ExcelAPIHelpe
 
 A detailed explanation is provided for each of the important functions of this helper class. 
 
-![](images/helper.JPG)
+![Screenshot of the new folder in Visual Studio](images/helper.JPG)
 
 ##### `ExcelAPIHelper.cs` contents
 
@@ -1076,37 +1076,37 @@ namespace Microsoft_Graph_ExcelRest_ToDo
 Once above updates are made, run the project (F5 or Press Run Project button). Preferably use private browser mode to experience the full application flow. 
 
 The application launches on your local host and shows the starter page. 
-![](images/app1.JPG)
+![Screeshot of the application](images/app1.JPG)
 
 Proceed to sign-in and authorize the app. Once authorized, the application shows the greeting page with menu options. Click on the `ToDoList` link from the top menu bar.    
-![](images/app2.JPG)
+![Screeshot of the application. User is signing in.](images/app2.JPG)
 
 The app uploads `ToDoList.xlsx` and displays task listing page. Since there are no tasks added yet, you will see blank listing.  
-![](images/app3.JPG)
+![Screeshot of the application](images/app3.JPG)
 
 Click on the `Add new` link to create a new task. Add few tasks with various stages of status. 
-![](images/app4.JPG)
+![Screeshot of the application](images/app4.JPG)
 
 After adding each task, the app shows the updated task listing. If the newly added task is not updated, click the `Refresh` link after few moments. 
 
 A sample list tasks are shown below.  
-![](images/app5.JPG)
+![Screeshot of the application](images/app5.JPG)
 
 Click on the `Charts' link to see the breakdown of tasks using a pie chart created and downloaded (as image) using the Excel API.
  
-![](images/app6a.JPG)
+![Screeshot of the application](images/app6a.JPG)
 
-![](images/app6.JPG)
+![Screeshot of the application](images/app6.JPG)
 
 #### View source Excel file
 
 As a last step, you can login to the OneDrive Business account and open the `ToDoList.xlsx` in the browser to see the updates made by the app. **Do not open the file using the Excel desktop application as it will result in edit conflict for future updates made using the app**. 
 
-![](images/app7.JPG)
+![Screeshot of the ToDoList.xlsx file.](images/app7.JPG)
 
-![](images/app8.JPG)
+![Screeshot of the ToDoList.xlsx file.](images/app8.JPG)
 
-![](images/app10.JPG)
+![Screeshot of the ToDoList.xlsx file.](images/app10.JPG)
 
 
 ## Overview of Excel API
