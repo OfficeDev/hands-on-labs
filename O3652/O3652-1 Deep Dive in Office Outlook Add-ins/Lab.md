@@ -582,8 +582,7 @@ In this exercise you will implement the functions to call the Yandex Translate A
     ```
     
   1. Add the Fabric UI Dropdown plugin
-    1. Download the Jquery.Dropdown.js file  at **github.com/OfficeDev/Office-UI-Fabric/blob/master/src/components/Dropdown/Jquery.Dropdown.js** from GitHub.
-    1. Move the file into the **TranslatorWeb/Scripts/FabricUI** folder in the project.
+    1. Copy the Jquery.Dropdown.js file at **C:\git\trainingcontent-nda\O3652\O3652-1 Deep Dive in Office Outlook Add-ins\Completed Projects\Translator\TranslatorWeb\Scripts\FabricUI** to the **TranslatorWeb/Scripts/FabricUI** folder in the project.
     1. Right-click the **TranslatorWeb/Scripts/FabricUI**, choose **Add**, then **Existing item**. Browse to the **Jquery.Dropdown.js** file in the **FabricUI** folder and click **Add**.
     
   1. Run the add-in
