@@ -14,7 +14,7 @@ This lab will teach you how to create an add-in using only the shell and a brows
   * Technology to use: HTML, CSS, & JavaScript
   * Supported Office application: uncheck all options except Excel
 1. The yeoman generator will then create all the necessary files for your Excel task pane add-in. You may see some warnings about deprecated components, which you can ignore. When it's done, the add-in can already be used. Run the following command to host the add-in locally: `gulp serve-static`
-1. Open a browser and make sure the add-in is working by going to **localhost:8443/app/home/home.html**  (Note: make sure it you navigate to **https://**).
+1. Open a browser and make sure the add-in is working by going to [https://localhost:8443/app/home/home.html]().
 1. If you see a security certificate warning, use Chrome and trust the certificate.
 
 ## Exercise 2: Load the add-in in Excel Online
@@ -34,36 +34,47 @@ An Office Add-in is just a web app that is displayed within the Office UI and ca
 1. Open NotePad (Note: you can use any text editor, we recommend **Visual Studio Code**)
 2. Open the home.html file found in your-project-folder/app/home/. 
 3. Add a new button after the "Get data from selection" button:
-
+ 
  ```
  <br />
- <button id="write-to-console">Write to debug console</button>
+ <button id="write-data-to-selection">Write data to selection</button>
  ```
 4. Save the home.html file.
 5. Open the home.js file from the same folder.
 6. Add a click handler for your new button in the Office.initialize function:
-
+ 
  ```javascript
  Office.initialize = function(reason){
     jQuery(document).ready(function(){
       app.initialize();
-
+ 
       jQuery('#get-data-from-selection').click(getDataFromSelection);
       //Add this line:
-      jQuery('#write-to-console').click(writeToConsole);
+      jQuery('#write-data-to-selection').click(writeDataToSelection);
     });
   };
  ```
-7. Add the function for the click to perform, which in this case is to write a message to the debug console:
-
+7. Add the function for the click to perform, which in this case is to write a message to the current location in the document (and to the debug console):
+ 
  ```javascript
- function writeToConsole(){
-   console.log("Office add-ins are awesome!");
+ function writeDataToSelection(){
+     Office.context.document.setSelectedDataAsync("Office add-ins are awesome!",
+      function(result){
+        if (result.status === Office.AsyncResultStatus.Succeeded) {
+          app.showNotification('Data successfully written.', "");
+          console.log("Writing to the document succeeded!");
+        } else {
+          app.showNotification('Error:', result.error.message);
+          console.log("Writing to the document failed: " + result.error.message);
+        }
+      }
+    );
  }
  ```
 8. Save the home.js file.
 9. Go back to Excel Online and refresh the page. You should see the new button in your add-in.
-10. Open the browser's developer tools (this can be done by pressing F12 for most browsers), and go to the Console. Click the button that says "Write to debug console" and you should see "Office add-ins are awesome!" appear in the console.
+10. Select an empty cell in the worksheet and click the new button that says "Write data to selection". You should see "Office add-ins are awesome!" written to the cell.
+11. Open the browser's developer tools (this can be done by pressing F12 for most browsers), and go to the Console. You should see a message written to the console by the button.
  
-
+ 
 You've now completed the entire lifecycle of add-in development: new project creation, code editing, hosting, loading the add-in into Office, testing, and debugging. You can use this method to create add-ins for any Office application, on any platform that supports add-ins.
