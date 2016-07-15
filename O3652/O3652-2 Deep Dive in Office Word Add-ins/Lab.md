@@ -720,7 +720,7 @@ function onaddHighlights() {
             ctx.load(myParagraphs);
             return ctx.sync()
                             .then(function () {
-                                var myWords = myParagraphs.items[3].split([" "], false, false);
+                                var myWords = myParagraphs.items[17].split([" "], false, false);
                                 ctx.load(myWords, { expand: 'font' });
                                 ctx.sync().then(function () {
 
