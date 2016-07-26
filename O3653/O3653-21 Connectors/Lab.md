@@ -4,7 +4,7 @@ Office 365 Connectors are a great way to get useful information and content into
 In this lab, you will learn how to post messages to Office 365 Groups using incoming webhooks.  To illustrate using a real world scenario, you will also build an application that receives Github notifications from your favorite repos and post them as connector messages to your Office 365 group. 
 
 ## Get an Office 365 developer environment
-To complete the exercises below, you will require an Office 365 developer environment. Navigate to **tryoffice.azurewebsites.net** in a browser to sign-in and use the code `BuildChallenge` to get an administrator username and password to one. 
+To complete the exercises below, you will require an Office 365 developer environment. Use the Office 365 tenant that you have been provided with for Tech Ready.
 
 **Pre-requisites**
 ------------------
