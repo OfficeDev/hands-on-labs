@@ -4,7 +4,7 @@ Learn how to read, send, reply and forward messages in Office 365 Outlook and Ou
 [//]: # (Remove if doing v1)
 
 ## Get an Office 365 developer environment
-To complete the exercises below, you will require an Office 365 developer environment. Navigate to **tryoffice.azurewebsites.net** in a browser to sign-in and use the code `BuildChallenge` to get an administrator username and password to one. 
+To complete the exercises below, you will require an Office 365 developer environment. Use the Office 365 tenant that you have been provided with for Tech Ready.
 
 ## Exercise 1: Create a new project using Azure Active Directory v2 authentication
 
