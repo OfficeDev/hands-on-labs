@@ -3,28 +3,27 @@
 In this lab, you will use the Microsoft Graph to integrate the Office 365 People API with an ASP.NET MVC application.
 
 ## Get an Office 365 developer environment
-To complete the exercises below, you will require an Office 365 developer environment. Use the Office 365 tenant that you have been provided with for Tech Ready.
+To complete the exercises below, you will require an Office 365 developer environment. Use the Office 365 tenant that you have been provided with for Microsoft Ignite.
 
 ## Prerequisites
-  1. You must have the OData v4 Client Code Generator add-in installed. In Visual Studio, go to **Tools** > **Extensions and Updates**, select "Online" from the left-most treeview, then search for "Odata v4 Client Code Generator", and click install.
+  1. You must have the OData v4 Client Code Generator add-in installed. In Visual Studio, go to **Tools** > **Extensions and Updates**, select **Online** from the left-most treeview, and search for *OData v4 Client Code Generator*.
 
 ## Exercise 1: Create a new project using Azure Active Directory v2 authentication
 
-In this first step, you will create a new ASP.NET MVC project using the
-**Graph AAD Auth v2 Starter Project** template, register a new application
+In this first step, you will create a new ASP.NET MVC project using the **Graph AAD Auth v2 Starter Project** template, register a new application
 in the developer portal, and log in to your app and generate access tokens
 for calling the Graph API.
 
-1. Launch Visual Studio 2015 and select **New** > **Project**.
+1. Launch Visual Studio 2015 and select **File** > **New** > **Project**.
   1. Search the installed templates for **Graph** and select the **Graph AAD Auth v2 Starter Project** template.
   1. Name the new project **PeopleGraphWeb** and click **OK**.
-  1. Open the **Web.config** file and find the **appSettings** element. This is where you will need to add your appId and app secret you will generate in the next step.
+  1. Open the **Web.config** file in the root directory and find the **appSettings** element. This is where you will add the app ID and app secret that you will generate in the next step.
 
-2. Launch the Application Registration Portal by opening a browser and navigating to **apps.dev.microsoft.com**
+2. Launch the Application Registration Portal by opening a browser to https://apps.dev.microsoft.com
    to register a new application.
   1. Sign into the portal using your Office 365 username and password.
-  1. Click **Add an App** and type **PeopleGraphQuickStart** for the application name.
-  1. Copy the **Application Id** and paste it into the value for **ida:AppId** in your project's **web.config** file.
+  1. Click **Add an app** and type **PeopleGraphQuickStart** for the application name.
+  1. Copy the **Application Id** and paste it into the value for **ida:AppId** in your project's **Web.config** file.
   1. Under **Application Secrets** click **Generate New Password** to create a new client secret for your app.
   1. Copy the displayed app password and paste it into the value for **ida:AppSecret** in your project's **web.config** file.
   1. Modify the **ida:AppScopes** value to include the required `People.Read` and `User.ReadBasic.All` scopes. //todo: check which is preferred
@@ -33,8 +32,8 @@ for calling the Graph API.
   <configuration>
     <appSettings>
       <!-- ... -->
-      <add key="ida:AppId" value="paste application id here" />
-      <add key="ida:AppSecret" value="paste application password here" />
+      <add key="ida:AppId" value="APP ID HERE" />
+      <add key="ida:AppSecret" value="APP SECRET HERE" />
       <!-- ... -->
       <!-- Specify scopes in this value. Multiple values should be comma separated. -->
       <add key="ida:AppScopes" value="People.Read" />
@@ -44,38 +43,38 @@ for calling the Graph API.
   ```
 
 3. Add a redirect URL to enable testing on your localhost.
-  1. Right click on **PeopleGraphWeb** and click on **Properties** to open the project properties.
-  1. Click on **Web** in the left navigation.
+  1. In Visual Studio, right-click **PeopleGraphWeb** and click **Properties** to open the project properties.
+  1. Click **Web** in the left navigation.
   1. Copy the **Project Url** value.
   1. Back on the Application Registration Portal page, click **Add Platform** and then **Web**.
   1. Paste the value of **Project Url** into the **Redirect URIs** field.
-  1. Scroll to the bottom of the page and click **Save**.
+  1. At the bottom of the page, click **Save**.
 
-4. Set Startup page to Signout page (to avoid stale token error) 
+4. Set the Signout page as the **Startup** page (to avoid a stale token error) 
   1. Right-click **PeopleGraphWeb** and click **Properties** to open the project properties.
   1. Click **Web** in the left navigation.
-  1. Under **Start Action** Choose **Specific Page** option and Type its value as **Account/SignOut**  
+  1. Under **Start Action** choose the **Specific Page** option and enter *Account/SignOut*. 
 
 5. Press F5 to compile and launch your new application in the default browser.
-  1. Once the Graph and AAD v2 Auth Endpoint Starter page appears, click **Sign in** and login to your Office 365 account.
+  1. Once the Graph and AAD v2 Auth Endpoint Starter page appears, click **Click here to sign in** and log in to your Office 365 account.
   1. Review the permissions the application is requesting, and click **Accept**.
   1. Now that you are signed into your application, exercise 1 is complete!
 
 ## Exercise 2: Add a reference to the Graph API beta namespace
 
-1. Right-click the project and select **add item**.
-   1. Select **Visual C#** > **Code** > **Odata Client**.
-   2. Name the file Graph.tt and click **Add**.
+1. In Visual Studio, right-click the project and select **Add** > **New Item**.
+   1. Select **Visual C#** > **Code** > **OData Client**.
+   2. Name the file *Graph.tt* and click **Add**.
 
 2. Edit the Graph.tt file.
-   1. Edit MetadataDocumentUri to be `https://graph.microsoft.com/beta/$metadata`.
-   2. Edit NamespacePrefix to be "PeopleGraphWeb.Service".
+   1. Set **MetadataDocumentUri** to *https://graph.microsoft.com/beta/$metadata*.
+   2. Set **NamespacePrefix** to *PeopleGraphWeb.Service*.
 
 3. Build the project.
 
-## Exercise 3: Add the people controller and call the People API.
+## Exercise 3: Add the PeopleController and call the People API.
 
-1. Right-click the **Controllers** folder and select **Add > New Scaffolded Item...** 
+1. Right-click the **Controllers** folder and select **Add > New Scaffolded Item**. 
    1. Select **MVC5 Controller - Empty** and click **Add**.
    2. Name the controller **PeopleController** and click **Add**.
 
@@ -97,55 +96,55 @@ for calling the Graph API.
 3. Add the following helper functions to the PeopleController class:
   
   ```C#
-public async Task<string> GetToken()
-{
-    string userObjId = System.Security.Claims.ClaimsPrincipal.Current
-        .FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
+    public async Task<string> GetToken()
+    {
+        string userObjId = System.Security.Claims.ClaimsPrincipal.Current
+            .FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
   
-    SessionTokenCache tokenCache = new SessionTokenCache(userObjId, HttpContext);
+        SessionTokenCache tokenCache = new SessionTokenCache(userObjId, HttpContext);
   
-    string tenantId = System.Security.Claims.ClaimsPrincipal.Current
-        .FindFirst("http://schemas.microsoft.com/identity/claims/tenantid").Value;
+        string tenantId = System.Security.Claims.ClaimsPrincipal.Current
+            .FindFirst("http://schemas.microsoft.com/identity/claims/tenantid").Value;
   
-    string authority = string.Format(ConfigurationManager.AppSettings["ida:AADInstance"], tenantId, "");
+        string authority = string.Format(ConfigurationManager.AppSettings["ida:AADInstance"], tenantId, "");
   
-    AuthHelper authHelper = new AuthHelper(authority, ConfigurationManager.AppSettings["ida:AppId"],
-        ConfigurationManager.AppSettings["ida:AppSecret"], tokenCache);
+        AuthHelper authHelper = new AuthHelper(authority, ConfigurationManager.AppSettings["ida:AppId"],
+            ConfigurationManager.AppSettings["ida:AppSecret"], tokenCache);
   
-    return await authHelper.GetUserAccessToken(Url.Action("Index", "Home", null, Request.Url.Scheme));
-}
+        return await authHelper.GetUserAccessToken(Url.Action("Index", "Home", null, Request.Url.Scheme));
+    }
 
-public Service.GraphService GetService(string token)
-{
-    Service.GraphService service = new Service.GraphService(new Uri("https://graph.microsoft.com/beta/"));
-    service.BuildingRequest += (sender, e) => e.Headers.Add("Authorization", "Bearer " + token);
-    return service;
-}
+    public Service.GraphService GetService(string token)
+    {
+        Service.GraphService service = new Service.GraphService(new Uri("https://graph.microsoft.com/beta/"));
+        service.BuildingRequest += (sender, e) => e.Headers.Add("Authorization", "Bearer " + token);
+        return service;
+    }
 
-private IEnumerable<T> Search<T>(
-    Microsoft.OData.Client.DataServiceContext dataServiceContext,
-    Microsoft.OData.Client.DataServiceQuery<T> path,
-    string searchString)
-{
-    return dataServiceContext.Execute<T>(new Uri(path.RequestUri, "?$search=\"" + searchString + "\""));
-}
+    private IEnumerable<T> Search<T>(
+        Microsoft.OData.Client.DataServiceContext dataServiceContext,
+        Microsoft.OData.Client.DataServiceQuery<T> path,
+        string searchString)
+    {
+        return dataServiceContext.Execute<T>(new Uri(path.RequestUri, "?$search=\"" + searchString + "\""));
+    }
   ```
   
   
 4. Add the index action that will list the relevant people for the logged-in user.
   
   ```c#
-[Authorize]
-public async Task<ActionResult> Index()
-{
-    var token = await GetToken();
-    if (!string.IsNullOrEmpty(token))
+    [Authorize]
+    public async Task<ActionResult> Index()
     {
-        var service = GetService(token);
-        return View(service.Me.People.ToList());                
+        var token = await GetToken();
+        if (!string.IsNullOrEmpty(token))
+        {
+            var service = GetService(token);
+            return View(service.Me.People.ToList());                
+        }
+        return RedirectToAction("SignOut", "Account");
     }
-    return RedirectToAction("SignOut", "Account");
-}
   ```
 
 5. Add the view for the index controller. 
