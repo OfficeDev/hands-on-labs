@@ -36,7 +36,7 @@ for calling the Graph API.
       <add key="ida:AppSecret" value="APP SECRET HERE" />
       <!-- ... -->
       <!-- Specify scopes in this value. Multiple values should be comma separated. -->
-      <add key="ida:AppScopes" value="People.Read" />
+      <add key="ida:AppScopes" value="User.ReadBasic.All,People.Read" />
     </appSettings>
     <!-- ... -->
   </configuration>
@@ -281,28 +281,28 @@ for calling the Graph API.
 
 ## Exercise 5: Add support for working with related people
 
-1. Add the following method to the people controller:
+1. Add the following method to the PeopleController class:
   ```c#
-        [Authorize]
-        public async Task<ActionResult> RelatedPeople(string id)
+    [Authorize]
+    public async Task<ActionResult> RelatedPeople(string id)
+    {
+        var token = await GetToken();
+        if (!string.IsNullOrEmpty(token))
         {
-            var token = await GetToken();
-            if (!string.IsNullOrEmpty(token))
-            {
-                var service = GetService(token);
-                return View("Index", service.Users.ByKey(id).People);               
-            }
-            return RedirectToAction("SignOut", "Account");
+            var service = GetService(token);
+            return View("Index", service.Users.ByKey(id).People);               
         }
+        return RedirectToAction("SignOut", "Account");
+    }
   ```
     
-  Notice the code re-uses the index view to display the results so another view is not needed.
+  Notice the code re-uses the Index view to display the results so another view is not needed.
   
-2. Edit the People index view and add a new column to the table that links to the related people action:
+2. Edit **Views/People/Index.cshtml** and add a new column to the table that links to the related people action:
   ```asp
-        <td>
-            @Html.ActionLink("Related People", "RelatedPeople", new { id=item.Id }) 
-        </td> 
+<td>
+    @Html.ActionLink("Related People", "RelatedPeople", new { id=item.Id }) 
+</td> 
   ```
 
   The table should now look like this:
@@ -330,14 +330,14 @@ for calling the Graph API.
             </td> 
         </tr>
     }
+
 </table>
     ```
       
 3. Verify the search and details features work.
-   1. In **Visual Studio**, hit **F5** to begin debugging.
-   2. When prompted, log in with your Office 365 Account.
-   3. Click the link **People** on the top of the home page.
-   4. Selected **RelatedPeople** for a user and verify the related contacts are shown.
+  1. Press F5 to begin debugging.
+  2. Sign in with your Office 365 account and click the **People** link on the top of the home page.
+  3. Click **RelatedPeople** for a user and verify the related contacts are shown.
 
 ***
 Congratulations, dedicated quick start developer! In this exercise, you have created an application that uses the Microsoft Graph People API. This quick start ends here. But don't stop here - there's plenty more to explore with the Microsoft Graph.
