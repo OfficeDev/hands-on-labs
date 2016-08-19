@@ -26,7 +26,7 @@ for calling the Graph API.
   1. Copy the **Application Id** and paste it into the value for **ida:AppId** in your project's **Web.config** file.
   1. Under **Application Secrets** click **Generate New Password** to create a new client secret for your app.
   1. Copy the displayed app password and paste it into the value for **ida:AppSecret** in your project's **web.config** file.
-  1. Modify the **ida:AppScopes** value to include the required `People.Read` and `User.ReadBasic.All` scopes. //todo: check which is preferred
+  1. Set the **ida:AppScopes** value to *People.Read*.
 
   ```xml
   <configuration>
@@ -43,20 +43,20 @@ for calling the Graph API.
   ```
 
 3. Add a redirect URL to enable testing on your localhost.
-  1. In Visual Studio, right-click **PeopleGraphWeb** and click **Properties** to open the project properties.
+  1. In Visual Studio, right-click **PeopleGraphWeb** > **Properties** to open the project properties.
   1. Click **Web** in the left navigation.
   1. Copy the **Project Url** value.
-  1. Back on the Application Registration Portal page, click **Add Platform** and then **Web**.
-  1. Paste the value of **Project Url** into the **Redirect URIs** field.
+  1. Back on the Application Registration Portal page, click **Add Platform** > **Web**.
+  1. Paste the project URL into the **Redirect URIs** field.
   1. At the bottom of the page, click **Save**.
 
-4. Set the Signout page as the **Startup** page (to avoid a stale token error) 
-  1. Right-click **PeopleGraphWeb** and click **Properties** to open the project properties.
+4. Set the Signout page as the **Startup** page (to avoid a stale token error). 
+  1. Right-click **PeopleGraphWeb** > **Properties** to open the project properties.
   1. Click **Web** in the left navigation.
   1. Under **Start Action** choose the **Specific Page** option and enter *Account/SignOut*. 
 
 5. Press F5 to compile and launch your new application in the default browser.
-  1. Once the Graph and AAD v2 Auth Endpoint Starter page appears, click **Click here to sign in** and log in to your Office 365 account.
+  1. Once the Graph and AAD v2 Auth Endpoint Starter page appears, click **Click here to sign in** and log in with your Office 365 account.
   1. Review the permissions the application is requesting, and click **Accept**.
   1. Now that you are signed into your application, exercise 1 is complete!
 
@@ -72,11 +72,11 @@ for calling the Graph API.
 
 3. Build the project.
 
-## Exercise 3: Add the PeopleController and call the People API.
+## Exercise 3: Add the PeopleController and call the People API
 
 1. Right-click the **Controllers** folder and select **Add > New Scaffolded Item**. 
    1. Select **MVC5 Controller - Empty** and click **Add**.
-   2. Name the controller **PeopleController** and click **Add**.
+   2. Name the controller *PeopleController* and click **Add**.
 
 2. Edit the using statements:
       
@@ -131,7 +131,7 @@ for calling the Graph API.
   ```
   
   
-4. Add the index action that will list the relevant people for the logged-in user.
+4. Edit the **Index** action that will list the relevant people for the logged-in user.
   
   ```c#
     [Authorize]
@@ -147,12 +147,11 @@ for calling the Graph API.
     }
   ```
 
-5. Add the view for the index controller. 
-   1. Right-click the views folder and click **add** > **new folder**.
-   2. Rename the folder to People.
-   3. Right-click People and select **Add** > **View...**.
-   4. Name the view "Index" and select Template "Empty".
-   5. Set the contents of the file to the following:
+5. Add the view for the Index action. 
+   1. In the **Views** folder, right-click the **People** folder and select **Add** > **View.**.
+   2. Set **View name** to *Index*.
+   3. Set **Template** to *Empty (without model)* and click **Add**.
+   3. Replace the contents of the file with the following:
   
   ```asp
   @model IEnumerable<PeopleGraphWeb.Service.Person>
@@ -180,85 +179,80 @@ for calling the Graph API.
           </td>
       </tr>
   }
-      
-  </table>
 
+  </table>
     ```
 
 ### Edit the default layout to point to our new controller
 
-1. Locate the **Views/Shared** folder in the project.
-2. Open the **_Layout.cshtml** file found in the **Views/Shared** folder.
-    1. Locate the part of the file that includes a few links at the top of the
-       page. It should look similar to the following code:
+1. In the **Views/Shared** folder, open the **_Layout.cshtml** file.
+2. Locate the part of the file that includes a few links at the top of the page. It should look similar to the following code:
   
-     ```asp
-      <ul class="nav navbar-nav">
-         <li>@Html.ActionLink("Home", "Index", "Home")</li>
-         <li>@Html.ActionLink("About", "About", "Home")</li>
-         <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-         <li>@Html.ActionLink("Graph API", "Graph", "Home")</li>
-      </ul>
-      ```
-   
-    2.  Update that navigation to replace the "Graph API" link with "People"
-       and connect this to the controller you just created.
-       
-      ```asp
-      <ul class="nav navbar-nav">
-         <li>@Html.ActionLink("Home", "Index", "Home")</li>
-          <li>@Html.ActionLink("About", "About", "Home")</li>
-          <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-          <li>@Html.ActionLink("People", "Index", "People")</li>
-      </ul>
-      ```
+    ```asp
+    <ul class="nav navbar-nav">
+        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+        <li>@Html.ActionLink("About", "About", "Home")</li>
+        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+        <li>@Html.ActionLink("Graph API", "Graph", "Home")</li>
+    </ul>
+    ```
+
+3.  Replace the "Graph API" link with a "People" link that connects to the controller you just created.
+    
+    ```asp
+    <ul class="nav navbar-nav">
+        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+        <li>@Html.ActionLink("About", "About", "Home")</li>
+        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+        <li>@Html.ActionLink("People", "Index", "People")</li>
+    </ul>
+    ```
 
 ### Verify that the project works
 
-1. In **Visual Studio**, hit **F5** to begin debugging.
-2. When prompted, log in with your Office 365 Account.
-3. Click the link **People** on the top of the home page.
-4. Verify that your application displays the top relevant people for the current logged-in user.
+1. Press F5 to begin debugging.
+2. Sign in with your Office 365 account and click the **People** link on the top of the home page.
+3. Verify that your application displays the top relevant people for the current logged-in user.
 
 ## Exercise 4: Add support for people search and the details page
 
-1. Add the Search and Details controller actions:
+1. In PeopleController, add the Search and Details actions:
+
   ```c#
-        [Authorize]
-        public async Task<ActionResult> Search(string searchText, string topic)
+    [Authorize]
+    public async Task<ActionResult> Search(string searchText, string topic)
+    {
+        var token = await GetToken();
+        if (!string.IsNullOrEmpty(token))
         {
-            var token = await GetToken();
-            if (!string.IsNullOrEmpty(token))
-            {
-                var service = GetService(token);
-                var searchString = string.IsNullOrWhiteSpace(topic) ? searchText : searchText + " topic:" + topic;
-                return View("Index", Search(service, service.Me.People, searchString));
-            }
-            return RedirectToAction("SignOut", "Account");
+            var service = GetService(token);
+            var searchString = string.IsNullOrWhiteSpace(topic) ? searchText : searchText + " topic:" + topic;
+            return View("Index", Search(service, service.Me.People, searchString));
         }
-  
-        [Authorize]
-        public async Task<ActionResult> Details(string id)
+        return RedirectToAction("SignOut", "Account");
+    }
+
+    [Authorize]
+    public async Task<ActionResult> Details(string id)
+    {
+        var token = await GetToken();
+        if (!string.IsNullOrEmpty(token))
         {
-            var token = await GetToken();
-            if (!string.IsNullOrEmpty(token))
-            {
-                var service = GetService(token);
-                return View(service.Me.People.ByKey(id).GetValue());
-            }
-            return RedirectToAction("SignOut", "Account");
+            var service = GetService(token);
+            return View(service.Me.People.ByKey(id).GetValue());
         }
+        return RedirectToAction("SignOut", "Account");
+    }
   ```
   
-2. Add the details view.
-   1. Right-click on the People folder under views and select **Add** > **View…**. 
-      1. Set **View Name** to "Details".
-      2. Set **Template** to "Details".
-      3. Set **Model Class** to "Person (PersonGraphWeb.Service)".
+2. Add the Details view.
+   1. Right-click **Views/People** folder and select **Add** > **View**. 
+      1. Set **View name** to *Details*.
+      2. Set **Template** to *Details*.
+      3. Set **Model class** to *Person (PersonGraphWeb.Service)* and click **Add**.
 
-3. Update the index view to support search.
-   2. Edit the **Views/People/Index.cshtml**.
-      1. Locate the table element and add the following code right above it:
+3. Update the Index view to support search.
+   1. In **Views/People/Index.cshtml**, locate the table element and add the following code right above it:
   
   ```asp
 @{ using (Html.BeginForm("Search", "People", FormMethod.Get))
@@ -272,19 +266,18 @@ for calling the Graph API.
 }
   ```
   
-  This will allow the user to enter search strings that will be passed to the search controller.
+  This will allow the user to enter search strings that will be passed to the search action.
 
 4. Verify the search and details features work.
-  1. In **Visual Studio**, hit **F5** to begin debugging.
-  2. When prompted, log in with your Office 365 Account.
-  3. Click the link **People** on the top of the home page.
-  4. Verify that your application displays the top relevant people for the current logged-in user.
-  5. Click **details** to and verify the details are shown.
-  6. Go back to the index and enter a search term into the search field, then click **Search**.
+  1. Press F5 to begin debugging.
+  2. Sign in with your Office 365 account and click the **People** link on the top of the home page.
+  3. Verify that your application displays the top relevant people for the current logged-in user.
+  4. Click **Details** for a user and verify the details are shown.
+  5. Go back to the index page and enter a search term into the **Search** field, then click **Search**.
     For example: 
-      * Search with the text: "Dennis Dehin" and see the fuzzy matched result Denis Dehenne is returned.
-      * Search with the text: "Azis Hasoneh" and see the fuzzy matched result Aziz Hassouneh is returned.
-      * Search with the topic: XT2000
+      * Search with the text: *Dennis Dehin* and see the fuzzy matched result Denis Dehenne is returned.
+      * Search with the text: *Azis Hasoneh* and see the fuzzy matched result Aziz Hassouneh is returned.
+      * Search with the topic: *XT2000*
 
 ## Exercise 5: Add support for working with related people
 
@@ -317,7 +310,7 @@ for calling the Graph API.
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayName("Display Name");
+            @Html.DisplayName("Display Name")
         </th>
         <th></th>
         <th></th>
