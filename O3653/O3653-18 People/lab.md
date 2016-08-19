@@ -25,8 +25,8 @@ for calling the Graph API.
   1. Click **Add an app** and type **PeopleGraphQuickStart** for the application name.
   1. Copy the **Application Id** and paste it into the value for **ida:AppId** in your project's **Web.config** file.
   1. Under **Application Secrets** click **Generate New Password** to create a new client secret for your app.
-  1. Copy the displayed app password and paste it into the value for **ida:AppSecret** in your project's **web.config** file.
-  1. Set the **ida:AppScopes** value to *People.Read*.
+  1. Copy the displayed app password and paste it into the value for **ida:AppSecret** in your project's **Web.config** file.
+  1. Set the **ida:AppScopes** value to *User.ReadBasic.All,People.Read*.
 
   ```xml
   <configuration>
@@ -50,19 +50,19 @@ for calling the Graph API.
   1. Paste the project URL into the **Redirect URIs** field.
   1. At the bottom of the page, click **Save**.
 
-4. Set the Signout page as the **Startup** page (to avoid a stale token error). 
-  1. Right-click **PeopleGraphWeb** > **Properties** to open the project properties.
+4. Set the Start action to the **Account/Signout** action (to avoid a stale token error). 
+  1. In Visual Studio, right-click **PeopleGraphWeb** > **Properties** to open the project properties.
   1. Click **Web** in the left navigation.
-  1. Under **Start Action** choose the **Specific Page** option and enter *Account/SignOut*. 
+  1. Under **Start Action** choose **Specific Page** and enter *Account/SignOut*. 
 
 5. Press F5 to compile and launch your new application in the default browser.
-  1. Once the Graph and AAD v2 Auth Endpoint Starter page appears, click **Click here to sign in** and log in with your Office 365 account.
+  1. Once the Graph and AAD v2 Auth Endpoint Starter page appears, and sign in with your Office 365 account.
   1. Review the permissions the application is requesting, and click **Accept**.
   1. Now that you are signed into your application, exercise 1 is complete!
 
 ## Exercise 2: Add a reference to the Graph API beta namespace
 
-1. In Visual Studio, right-click the project and select **Add** > **New Item**.
+1. In Visual Studio, right-click **PeopleGraphWeb** and select **Add** > **New Item**.
    1. Select **Visual C#** > **Code** > **OData Client**.
    2. Name the file *Graph.tt* and click **Add**.
 
@@ -131,7 +131,7 @@ for calling the Graph API.
   ```
   
   
-4. Edit the **Index** action that will list the relevant people for the logged-in user.
+4. Edit the **Index** action to list the relevant people for the logged-in user:
   
   ```c#
     [Authorize]
@@ -148,7 +148,7 @@ for calling the Graph API.
   ```
 
 5. Add the view for the Index action. 
-   1. In the **Views** folder, right-click the **People** folder and select **Add** > **View.**.
+   1. In the **Views** folder, right-click the **People** folder and select **Add** > **View**.
    2. Set **View name** to *Index*.
    3. Set **Template** to *Empty (without model)* and click **Add**.
    3. Replace the contents of the file with the following:
@@ -211,7 +211,7 @@ for calling the Graph API.
 ### Verify that the project works
 
 1. Press F5 to begin debugging.
-2. Sign in with your Office 365 account and click the **People** link on the top of the home page.
+2. Sign in with your Office 365 account and click the **People** link at the top of the page.
 3. Verify that your application displays the top relevant people for the current logged-in user.
 
 ## Exercise 4: Add support for people search and the details page
@@ -266,14 +266,15 @@ for calling the Graph API.
 }
   ```
   
-  This will allow the user to enter search strings that will be passed to the search action.
+  This allows the user to enter search strings that will be passed to the search action.
 
 4. Verify the search and details features work.
   1. Press F5 to begin debugging.
-  2. Sign in with your Office 365 account and click the **People** link on the top of the home page.
+  2. Sign in with your Office 365 account and click the **People** link at the top of the page.
   3. Verify that your application displays the top relevant people for the current logged-in user.
   4. Click **Details** for a user and verify the details are shown.
   5. Go back to the index page and enter a search term into the **Search** field, then click **Search**.
+
     For example: 
       * Search with the text: *Dennis Dehin* and see the fuzzy matched result Denis Dehenne is returned.
       * Search with the text: *Azis Hasoneh* and see the fuzzy matched result Aziz Hassouneh is returned.
@@ -298,7 +299,7 @@ for calling the Graph API.
     
   Notice the code re-uses the Index view to display the results so another view is not needed.
   
-2. Edit **Views/People/Index.cshtml** and add a new column to the table that links to the related people action:
+2. In **Views/People/Index.cshtml**, add a new column to the table that links to the related people action:
   ```asp
 <td>
     @Html.ActionLink("Related People", "RelatedPeople", new { id=item.Id }) 
@@ -336,8 +337,8 @@ for calling the Graph API.
       
 3. Verify the search and details features work.
   1. Press F5 to begin debugging.
-  2. Sign in with your Office 365 account and click the **People** link on the top of the home page.
-  3. Click **RelatedPeople** for a user and verify the related contacts are shown.
+  2. Sign in with your Office 365 account and click the **People** link at the top of the page.
+  3. Click **Related People** for a user and verify the related contacts are shown.
 
 ***
 Congratulations, dedicated quick start developer! In this exercise, you have created an application that uses the Microsoft Graph People API. This quick start ends here. But don't stop here - there's plenty more to explore with the Microsoft Graph.
