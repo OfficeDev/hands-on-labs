@@ -1,46 +1,91 @@
 # Microsoft Graph for OneNote Services
-In this lab, you will use Microsoft Graph to program against the Office 365 OneNote Service as part of an ASP.NET MVC5 application.
+In this lab, you will use the Microsoft Graph to integrate the Office 365 OneNote Service with an ASP.NET MVC5 application.
 
 ## Get an Office 365 developer environment
 To complete the exercises below, you will require an Office 365 developer environment. Use the Office 365 tenant that you have been provided with for Tech Ready.
 
-## Exercise 1: Use the Microsoft Graph API to access Notebooks in OneDrive for Business (Office 365)
-In this exercise you will use the Microsoft Graph API to access OneNote notebooks that are stored in the user's OneDrive for Business in Office 365.
-
+## Prerequisites
 Your user must have at least one OneNote notebook with a section and a page.
 
-### Create an ASP.NET MVC application
-1. Open Visual Studio and select **File / New / Project**. 
+## Exercise 1: Create a new project that uses Azure Active Directory v2 authentication
+In this first step, you will create a new ASP.NET MVC project using the **Graph AAD Auth v2 Starter Project** template, register a new application
+in the developer portal, and log in to your app and generate access tokens
+for calling the Graph API.
 
-1. In the **New Project** dialog, select **Templates / Visual C# / Graph AAD Auth v1 Starter Project**. If you don't see the template, try searching for *Graph*. The starter project template scaffolds some auth infrastructure for you.
-   
-1. Name the new project **OneNoteDev**, and then click **OK**.  
-    
-   > **Note**: Make sure you use the exact same name that is specified in these instructions for your Visual Studio project. Otherwise, your namespace name will differ from the one in these instructions and your code will not compile.
- 
-    ![Creating the project in Visual Studio](Images/VSProject.png)
+1. Launch Visual Studio 2015 and select **File** > **New** > **Project**.
+  1. Search the installed templates for **Graph** and select the **Graph AAD Auth v2 Starter Project** template.
 
-1. Build the solution (**Build / Build Solution**) to restore the NuGet packages required by the project. This should remove all of the solution's initial red squigglies.
-    
-1. At this point you can test the authentication flow for your application. In Visual Studio, press **F5**. The browser will automatically open to the start page for the web application.
+  1. Name the new project **OneNoteDev**, and then click **OK**.  
 
-1. Click the **Click here to sign in** button, and sign in with your Office 365 administrator account. If prompted, consent to the requested permissions.
+     > **Note**: Make sure you use the exact name specified in these instructions for your Visual Studio project. Otherwise, your namespace name will differ from the one in these instructions and your code will not compile.
 
-   You will be redirected back to your web application. Notice that your email address displays at the top of the page next to the **Sign out** link.
-  
-1. In Visual Studio, press **Shift+F5** to stop debugging.
+  1. Open the **Web.config** file in the root directory and find the **appSettings** element. This is where you will add the app ID and app secret that you will generate in the next step.
 
-Congratulations... at this point your app is configured with Azure AD and leverages OpenID Connect and OWIN to facilitate the authentication process!
+2. Launch the Application Registration Portal by opening a browser to [apps.dev.microsoft.com](https://apps.dev.microsoft.com)
+   to register a new application.
+  1. Sign into the portal using your Office 365 username and password. The **Graph AAD Auth v2 Starter Project** template allows you to sign in with either a Microsoft account or an Office 365 for business account, but the "People" features work only with business and school accounts.
 
-### Create the Notebook Repository
+  1. Click **Add an app** and type **OneNoteGraphQuickStart** for the application name.
+
+  1. Copy the **Application Id** and paste it into the value for **ida:AppId** in your project's **Web.config** file.
+
+  1. Under **Application Secrets** click **Generate New Password** to create a new client secret for your app.
+
+  1. Copy the displayed app password and paste it into the value for **ida:AppSecret** in your project's **Web.config** file.
+
+  1. Set the **ida:AppScopes** value to *Notes.ReadWrite*. ////////////////////test
+
+  ```xml
+  <configuration>
+    <appSettings>
+      <!-- ... -->
+      <add key="ida:AppId" value="APP ID HERE" />
+      <add key="ida:AppSecret" value="APP SECRET HERE" />
+      <!-- ... -->
+      <!-- Specify scopes in this value. Multiple values should be comma separated. -->
+      <add key="ida:AppScopes" value="Notes.ReadWrite" />
+    </appSettings>
+    <!-- ... -->
+  </configuration>
+  ```
+
+3. Add a redirect URL to enable testing on your localhost.
+  1. In Visual Studio, right-click **OneNoteDev** > **Properties** to open the project properties.
+
+  1. Click **Web** in the left navigation.
+
+  1. Copy the **Project Url** value.
+
+  1. Back on the Application Registration Portal page, click **Add Platform** > **Web**.
+
+  1. Paste the project URL into the **Redirect URIs** field.
+
+  1. At the bottom of the page, click **Save**.
+
+4. Set the Start action to the **Account/Signout** action (to avoid a stale token error). 
+  1. In Visual Studio, right-click **OneNoteDev** > **Properties** to open the project properties.
+
+  1. Click **Web** in the left navigation.
+
+  1. Under **Start Action** choose **Specific Page** and enter *Account/SignOut*. 
+
+5. Press F5 to compile and launch your new application in the default browser.
+  1. Once the Graph and AAD v2 Auth Endpoint Starter page appears, and sign in with your Office 365 account.
+
+  1. Review the permissions the application is requesting, and click **Accept**.
+
+  1. Now that you are signed into your application, exercise 1 is complete!
+
+
+### Exercise 2: Create the Notebook repository
 In this step you will create a repository class that will handle all communication with the Microsoft Graph API to interact with notebooks in your OneDrive for Business store.
 
 1. To simplify working with the REST services, we will use the popular JSON.NET framework for .NET.
-	1. In Solution Explorer, right-click the project's **Models** folder and choose **Add / New Folder**. Name the folder **JsonHelpers**.
+	1. In Solution Explorer, right-click the project's **Models** folder and choose **Add** > **New Folder**. Name the folder **JsonHelpers**.
 	
 	1. Copy all the C# files provided with this lab, located in the `C:\git\O3653\O3653-7 Deep Dive into the Office 365 APIs for OneNote services\Labs\Labfiles` folder, into the **JsonHelpers** folder that you just added to your project.
 
-    1. Right-click the **JsonHelpers** folder and choose **Add / Existing Item**. Select all the files you just copied to the folder and click **Add**.
+    1. Right-click the **JsonHelpers** folder and choose **Add** > **Existing Item**. Select all the files you just copied to the folder and click **Add**.
 
 		> **Note:** These files were created using the handy utility in Visual Studio: **Paste JSON as Classes**.
 
@@ -114,7 +159,7 @@ In this step you will create a repository class that will handle all communicati
 1. Create the repository class for communicating with the OneNote service using the Microsoft Graph API.
 	1. Add a new class to the **Models** folder named **NotebookRepository**.
 	
-	1. Ensure the following `using` statements are present at the top of the **NotebookRepository** class:
+	1. Ensure the following **using** statements are present at the top of the **NotebookRepository** class:
 
 		````c#
     using System.Collections.Generic;
@@ -340,27 +385,13 @@ In this step you will create a repository class that will handle all communicati
             await _client.SendAsync(request);
         }
 		````
-
-### Add Navigation
-In this step you will create a link on the home page to navigate to notebooks list page.
-
-1. Open the **_Layout.cshtml** file found in the **Views / Shared** folder.
-    1. Locate the navigation links and add a **Notebooks** link, as shown below:
-
-    ````asp
-    <ul class="nav navbar-nav">
-        <li>@Html.ActionLink("Home", "Index", "Home")</li>
-        <li>@Html.ActionLink("About", "About", "Home")</li>
-        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-        <li>@Html.ActionLink("Graph API", "Graph", "Home")</li>
-        <li>@Html.ActionLink("Notebooks", "Index", "Notebook")</li>
-    </ul>
-    ````
     
-### Add Notebook Controller and View
-In this step you will create the ASP.NET MVC controller and view for OneNote notebooks.
+## Exercise 3: 
+In this step you will create the ASP.NET MVC controllers and views and then add a navigation link to access the UI.
 
-1. Right-click the **Controllers** folder and choose **Add** > **New Scaffolded Item...**.
+### Add Notebook Controller and View
+
+1. Right-click the **Controllers** folder and choose **Add** > **New Scaffolded Item**.
 	1. In the **Add Scaffold** dialog, select **MVC 5 Controller - Empty**.
 	
 	1. Click **Add**.
@@ -457,10 +488,26 @@ using OneNoteDev.TokenStorage;
 	</table>
 	````
 
+### Add Navigation
+In this step you will create a link on the home page to navigate to the notebooks list page.
+
+1. Open the **_Layout.cshtml** file found in the **Views** > **Shared** folder.
+    1. Locate the navigation links and add a **Notebooks** link, as shown below:
+
+    ````asp
+    <ul class="nav navbar-nav">
+        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+        <li>@Html.ActionLink("About", "About", "Home")</li>
+        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+        <li>@Html.ActionLink("Graph API", "Graph", "Home")</li>
+        <li>@Html.ActionLink("Notebooks", "Index", "Notebook")</li>
+    </ul>
+    ````
+
 ### Add Section Controller and View
 In this step you will create the ASP.NET MVC controller and view for OneNote notebook sections.
 
-1. Right-click the **Controllers** folder and choose **Add** > **New Scaffolded Item...**.
+1. Right-click the **Controllers** folder and choose **Add** > **New Scaffolded Item**.
 	1. In the **Add Scaffold** dialog, select **MVC 5 Controller - Empty**.
 	
 	1. Click **Add**.
@@ -559,7 +606,7 @@ using OneNoteDev.TokenStorage;
 	````
 
 1. For this controller you will need to create a special route.
-	1. Open the file **App_Start / RouteConfig.cs**.
+	1. Open the file **App_Start** > **RouteConfig.cs**.
 	
 	1. Add the following code above the existing *default* route:
 
@@ -574,7 +621,7 @@ using OneNoteDev.TokenStorage;
 ### Add Pages Controller and View
 In this step you will create the ASP.NET MVC controller and view for pages within OneNote notebook sections.
 
-1. Right-click the **Controllers** folder and choose **Add** > **New Scaffolded Item...**.
+1. Right-click the **Controllers** folder and choose **Add** > **New Scaffolded Item**.
 	1. In the **Add Scaffold** dialog, select **MVC 5 Controller - Empty**.
 	
 	1. Click **Add**.
@@ -706,7 +753,7 @@ using OneNoteDev.TokenStorage;
 	````
 
 1. For this controller you will need to create a special route.
-	1. Open the file **App_Start / RouteConfig.cs**.
+	1. Open the file **App_Start** > **RouteConfig.cs**.
 	
 	1. Add the following code above the route you previously added for the sections:
 
@@ -718,26 +765,26 @@ using OneNoteDev.TokenStorage;
 		);
 		````
 
-### Test the Application
+## Exercise 4: Test the Application
 The last step is to test the application you just created! First, make sure you have at least one notebook with a section and a page.
 
 1. Press **F5** in Visual Studio to launch the application.
 
-1. When the browser loads, click the **Click here to sign in** button and sign in using your Office 365 administrator credentials if you're not already signed in.
+1. When the browser loads, click the **Click here to sign in** button and sign in using your Office 365 credentials if you're not already signed in.
 
 	After logging in you will be taken back to your ASP.NET MVC application. 
 
-1. Click the **Notebooks** link in the top navigation bar. You will see a list of notebooks that are currently in your OneDrive for Business store listed.
+1. Click the **Notebooks** link in the top navigation bar. You will see a list of notebooks that are currently in your OneDrive for Business store.
 
-1. Click one of the notebook's **View Sections** links. You will see a list of the sections within the selected notebook.
+1. Click a **View Sections** link for a notebook. You will see a list of the sections within the selected notebook.
 
-1. Click one of the section's **View Pages** links. You will see a list of the pages within that section.
+1. Click a **View Pages** link for a section. You will see a list of the pages within that section.
 
-1. Click one of the page's **View in OneNote Web Client** links to see a new browser window load the notebook's page within the browser.
+1. Click a **View in OneNote Web Client** link for a page. This opens the OneNote page in a new browser window.
 
-1. Go back to your application and click one of the page's **Delete** links. The page will be deleted and you will be taken back to the homepage of the application. If you navigate back to the list of pages within the section, you will see the page is no longer listed.
+1. Go back to your application and click **Delete** for a page. The page will be deleted and you will be taken back to the homepage of the application. If you navigate back to the list of pages within the section, you will see the page is no longer listed.
 
-Congratulations! You have created an ASP.NET MVC application that uses the Microsoft Graph to interact with OneNote Notebooks found within a user's OneDrive for Business store.
+Congratulations! You have created an ASP.NET MVC application that uses the Microsoft Graph to interact with OneNote notebooks in a user's OneDrive for Business store.
 
 
 
