@@ -11,8 +11,9 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Notifications;
 using Microsoft.Owin.Security.OpenIdConnect;
 using Microsoft.IdentityModel.Protocols;
+using System.Security.Claims;
 using OneNoteDev.TokenStorage;
-using ADAL = Microsoft.IdentityModel.Clients.ActiveDirectory;
+using OneNoteDev.Auth;
 
 [assembly: OwinStartup(typeof(OneNoteDev.Startup))]
 
@@ -24,6 +25,9 @@ namespace OneNoteDev
         public static string appSecret = ConfigurationManager.AppSettings["ida:AppSecret"];
         public static string aadInstance = ConfigurationManager.AppSettings["ida:AADInstance"];
 
+        public static string[] scopes = ConfigurationManager.AppSettings["ida:AppScopes"]
+          .Replace(' ', ',').Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+
         public void Configuration(IAppBuilder app)
         {
             app.SetDefaultSignInAsAuthenticationType(CookieAuthenticationDefaults.AuthenticationType);
@@ -33,19 +37,39 @@ namespace OneNoteDev
             app.UseOpenIdConnectAuthentication(
               new OpenIdConnectAuthenticationOptions
               {
-            // The `Authority` represents the auth endpoint - https://login.microsoftonline.com/common/
+            // The `Authority` represents the v2.0 endpoint - https://login.microsoftonline.com/common/v2.0
+            // The `Scope` describes the permissions that your app will need.  
+            // See https://azure.microsoft.com/documentation/articles/active-directory-v2-scopes/
             // The 'ResponseType' indicates that we want an authorization code and an ID token 
             // In a real application you could use issuer validation for additional checks, like making 
             // sure the user's organization has signed up for your app, for instance.
 
             ClientId = appId,
-                  Authority = string.Format(CultureInfo.InvariantCulture, aadInstance, "common", ""),
+                  Authority = string.Format(CultureInfo.InvariantCulture, aadInstance, "common", "/v2.0"),
+                  Scope = "openid offline_access profile " + string.Join(" ", scopes),
                   ResponseType = "code id_token",
+                  RedirectUri = "http://localhost:21942/",
                   PostLogoutRedirectUri = "/",
                   TokenValidationParameters = new TokenValidationParameters
                   {
-                      ValidateIssuer = false,
-                  },
+                // For demo purposes only, see below
+                ValidateIssuer = false
+
+                // In a real multitenant app, you would add logic to determine whether the
+                // issuer was from an authorized tenant
+                //ValidateIssuer = true,
+                //IssuerValidator = (issuer, token, tvp) =>
+                //{
+                //  if (MyCustomTenantValidation(issuer))
+                //  {
+                //    return issuer;
+                //  }
+                //  else
+                //  {
+                //    throw new SecurityTokenInvalidIssuerException("Invalid issuer");
+                //  }
+                //}
+            },
                   Notifications = new OpenIdConnectAuthenticationNotifications
                   {
                       AuthenticationFailed = OnAuthenticationFailed,
@@ -66,23 +90,21 @@ namespace OneNoteDev
         private async Task OnAuthorizationCodeReceived(AuthorizationCodeReceivedNotification notification)
         {
             // Get the user's object id (used to name the token cache)
-            string userObjId = notification.AuthenticationTicket.Identity
-              .FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
+            // Get the user's object id (used to name the token cache)
+            ClaimsPrincipal principal = new ClaimsPrincipal(notification.AuthenticationTicket.Identity);
+            string userObjId = AuthHelper.GetUserId(principal);
 
             // Create a token cache
             HttpContextBase httpContext = notification.OwinContext.Get<HttpContextBase>(typeof(HttpContextBase).FullName);
             SessionTokenCache tokenCache = new SessionTokenCache(userObjId, httpContext);
 
             // Exchange the auth code for a token
-            ADAL.ClientCredential clientCred = new ADAL.ClientCredential(appId, appSecret);
-
-            // Create the auth context
-            ADAL.AuthenticationContext authContext = new ADAL.AuthenticationContext(
+            AuthHelper authHelper = new AuthHelper(
               string.Format(CultureInfo.InvariantCulture, aadInstance, "common", ""),
-              false, tokenCache);
+              appId, appSecret, tokenCache);
 
-            ADAL.AuthenticationResult authResult = await authContext.AcquireTokenByAuthorizationCodeAsync(
-              notification.Code, notification.Request.Uri, clientCred, "https://graph.microsoft.com");
+            var response = await authHelper.GetTokensFromAuthority("authorization_code", notification.Code,
+              notification.Request.Uri.ToString());
         }
     }
 }

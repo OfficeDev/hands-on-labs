@@ -75,7 +75,7 @@ for calling the Graph API.
   1. Now that you are signed into your application, exercise 1 is complete!
 
 
-### Exercise 2: Create the Notebook repository
+## Exercise 2: Create the Notebook Repository Class
 In this step you will create a repository class that will handle all communication with the Microsoft Graph API to interact with OneNote notebooks in your OneDrive for Business store.
 
 1. To simplify working with the REST services, we will use the popular JSON.NET framework for .NET.
@@ -385,18 +385,14 @@ In this step you will create a repository class that will handle all communicati
 		````
     
 ## Exercise 3: Create Controllers and Views
-In this step you will create the ASP.NET MVC controllers and views and then add a navigation link to access the UI.
+In this step you will create the ASP.NET MVC controllers and views for notebooks, sections, and pages.
 
 ### Add Notebook Controller and View
 
 1. Right-click the **Controllers** folder and choose **Add** > **New Scaffolded Item**.
-	1. In the **Add Scaffold** dialog, select **MVC 5 Controller - Empty**.
+	1. In the **Add Scaffold** dialog, select **MVC 5 Controller - Empty** and then click **Add**.
 	
-	1. Click **Add**.
-	
-	1. When prompted for a name, enter **NotebookController**.
-	
-	1. Click **Add**.
+	1. When prompted for a name, enter **NotebookController** and then click **Add**.
 	
 1. In the **NotebookController** class, add the following **using** statements:
 
@@ -434,17 +430,16 @@ using OneNoteDev.TokenStorage;
 1. Now add a view to render a list of the notebooks.
 	1. Right-click in the **Index** method and select **Add View**.
 	
-    1. Within the **Add View** dialog, set the following values:
+    1. Within the **Add View** dialog, set the following values and then click **Add**.
 	
-        - View Name: **Index**.
-        - Template: **List**.
-        - Model class: **Notebook (OneNoteDev.Models)**.
+        - View Name: **Index**
+        - Template: **List**
+        - Model class: **Notebook (OneNoteDev.Models)**
         - Create as partial view: **checked**
         - Reference script libraries: **unchecked**
 		
-    1. Click **Add**.
 	
-1. Replace all of the code in the file with the following:
+1. Replace all of the code in the new view with the following:
 
 	````html
 	@model IEnumerable<OneNoteDev.Models.Notebook>
@@ -486,33 +481,28 @@ using OneNoteDev.TokenStorage;
 	</table>
 	````
 
-### Add Navigation
-In this step you will create a link on the home page to navigate to the notebooks list page.
+1. Now you will create a link on the home page to navigate to the notebooks list page.
+  1. Open the **_Layout.cshtml** file found in the **Views** > **Shared** folder.
 
-1. Open the **_Layout.cshtml** file found in the **Views** > **Shared** folder.
-    1. Locate the navigation links and add a **Notebooks** link, as shown below:
+  1. Locate the navigation links and add a **Notebooks** link, as shown below:
 
-    ````asp
-    <ul class="nav navbar-nav">
-        <li>@Html.ActionLink("Home", "Index", "Home")</li>
-        <li>@Html.ActionLink("About", "About", "Home")</li>
-        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-        <li>@Html.ActionLink("Graph API", "Graph", "Home")</li>
-        <li>@Html.ActionLink("Notebooks", "Index", "Notebook")</li>
-    </ul>
-    ````
+  ````asp
+  <ul class="nav navbar-nav">
+      <li>@Html.ActionLink("Home", "Index", "Home")</li>
+      <li>@Html.ActionLink("About", "About", "Home")</li>
+      <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+      <li>@Html.ActionLink("Graph API", "Graph", "Home")</li>
+      <li>@Html.ActionLink("Notebooks", "Index", "Notebook")</li>
+  </ul>
+  ````
 
 ### Add Section Controller and View
-In this step you will create the ASP.NET MVC controller and view for OneNote notebook sections.
+In this step you will create the ASP.NET MVC controller and view for OneNote sections.
 
 1. Right-click the **Controllers** folder and choose **Add** > **New Scaffolded Item**.
-	1. In the **Add Scaffold** dialog, select **MVC 5 Controller - Empty**.
+	1. In the **Add Scaffold** dialog, select **MVC 5 Controller - Empty** and then click **Add**.
 	
-	1. Click **Add**.
-	
-	1. When prompted for a name, enter **SectionController**.
-	
-	1. Click **Add**.
+	1. When prompted for a name, enter **SectionController** and then click **Add**.
 	
 1. In the **SectionController** class, add the following **using** statements:
 
@@ -524,7 +514,7 @@ using OneNoteDev.Models;
 using OneNoteDev.TokenStorage;
 	````
 
-1. Replace the **Index** action with the following code to support viewing all notebook sections:
+1. Replace the **Index** action with the following code to support viewing all sections:
 
     ````c#
     [Authorize]
@@ -549,19 +539,17 @@ using OneNoteDev.TokenStorage;
     }
     ````
 
-1. Now add a view to render a list of the notebook sections.
+1. Now add a view to render a list of sections.
 	1. Right-click in the **Index** method and select **Add View**.
 	
-    1. Within the **Add View** dialog, set the following values:
-        - View Name: **Index**.
-        - Template: **List**.
-        - Model class: **Section (OneNoteDev.Models)**.
-        - Create as partial view: **checked**
-        - Reference script libraries: **unchecked**
-		
-    1. Click **Add**.
+  1. In the **Add View** dialog, set the following values and then click **Add**.
+      - View Name: **Index**
+      - Template: **List**
+      - Model class: **Section (OneNoteDev.Models)**
+      - Create as partial view: **checked**
+      - Reference script libraries: **unchecked**
 	
-1. Replace all of the code in the file with the following:
+1. Replace all of the code in the new view with the following:
 
 	````html
 	@model IEnumerable<OneNoteDev.Models.Section>
@@ -606,7 +594,7 @@ using OneNoteDev.TokenStorage;
 1. For this controller you will need to create a special route.
 	1. Open the file **App_Start** > **RouteConfig.cs**.
 	
-	1. Add the following code above the existing *default* route:
+	1. Add the following code above the existing *Default* route:
 
 		````c#
 		routes.MapRoute(
@@ -617,16 +605,12 @@ using OneNoteDev.TokenStorage;
 		````
 
 ### Add Pages Controller and View
-In this step you will create the ASP.NET MVC controller and view for pages within OneNote notebook sections.
+In this step you will create the ASP.NET MVC controller and view for pages within OneNote sections.
 
 1. Right-click the **Controllers** folder and choose **Add** > **New Scaffolded Item**.
-	1. In the **Add Scaffold** dialog, select **MVC 5 Controller - Empty**.
+	1. In the **Add Scaffold** dialog, select **MVC 5 Controller - Empty** and then click **Add**.
 	
-	1. Click **Add**.
-	
-	1. When prompted for a name, enter **PageController**.
-	
-	1. Click **Add**.
+	1. When prompted for a name, enter **PageController** and then click **Add**.
 	
 1. In the **PageController** class, add the following **using** statements:
 
@@ -638,7 +622,7 @@ using OneNoteDev.Models;
 using OneNoteDev.TokenStorage;
 	````
 
-1. Replace the **Index** action with the following code to support viewing all pages within a notebook section:
+1. Replace the **Index** action with the following code to support viewing all pages within a section:
 
 	````c#
     [Authorize]
@@ -695,19 +679,17 @@ using OneNoteDev.TokenStorage;
     }
 	````
 
-1. Now add a view to render a list of the notebook pages.
+1. Now add a view to render a list of pages.
 	1. Right-click in the **Index** method and select **Add View**.
 	
-    1. Within the **Add View** dialog, set the following values:
-        - View Name: **Index**.
-        - Template: **List**.
-        - Model class: **NotePage (OneNoteDev.Models)**.
+    1. Within the **Add View** dialog, set the following values and then click **Add**.
+        - View Name: **Index**
+        - Template: **List**
+        - Model class: **NotePage (OneNoteDev.Models)**
         - Create as partial view: **checked**
         - Reference script libraries: **unchecked**
-		
-    1. Click **Add**.
 	
-1. Replace all of the code in the file with the following:
+1. Replace all of the code in the new view with the following:
 
 	````html
 	@model IEnumerable<OneNoteDev.Models.NotePage>
@@ -753,7 +735,7 @@ using OneNoteDev.TokenStorage;
 1. For this controller you will need to create a special route.
 	1. Open the file **App_Start** > **RouteConfig.cs**.
 	
-	1. Add the following code above the route you previously added for the sections:
+	1. Add the following code above the **Section** route you previously added:
 
 		````c#
 		routes.MapRoute(
@@ -778,7 +760,7 @@ The last step is to test the application you just created! First, make sure you 
 
 1. Click a **View Pages** link for a section. You will see a list of the pages within that section.
 
-1. Click a **View in OneNote Web Client** link for a page. This opens the OneNote page in a new browser window.
+1. Click a **View in OneNote Web Client** link for a page. This opens the OneNote page in a new browser tab.
 
 1. Go back to your application and click **Delete** for a page. The page will be deleted and you will be taken back to the homepage of the application. If you navigate back to the list of pages within the section, you will see the page is no longer listed.
 

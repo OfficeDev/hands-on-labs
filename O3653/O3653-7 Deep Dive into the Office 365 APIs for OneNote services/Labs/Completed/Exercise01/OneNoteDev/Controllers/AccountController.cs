@@ -3,6 +3,8 @@ using System.Web.Mvc;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OpenIdConnect;
+using System.Security.Claims;
+using OneNoteDev.Auth;
 using OneNoteDev.TokenStorage;
 
 namespace OneNoteDev.Controllers
@@ -25,8 +27,7 @@ namespace OneNoteDev.Controllers
             if (Request.IsAuthenticated)
             {
                 // Get the user's token cache and clear it
-                string userObjId = System.Security.Claims.ClaimsPrincipal.Current
-                  .FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
+                string userObjId = AuthHelper.GetUserId(ClaimsPrincipal.Current);
 
                 SessionTokenCache tokenCache = new SessionTokenCache(userObjId, HttpContext);
                 tokenCache.Clear();

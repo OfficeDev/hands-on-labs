@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using OneNoteDev.TokenStorage;
 using System.Configuration;
 using System.Threading.Tasks;
+using System.Security.Claims;
 using OneNoteDev.Auth;
 
 namespace OneNoteDev.Controllers
@@ -33,18 +34,14 @@ namespace OneNoteDev.Controllers
         [Authorize]
         public async Task<ActionResult> Graph()
         {
-            string userObjId = System.Security.Claims.ClaimsPrincipal.Current
-              .FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
+            string userObjId = AuthHelper.GetUserId(ClaimsPrincipal.Current);
 
             SessionTokenCache tokenCache = new SessionTokenCache(userObjId, HttpContext);
 
-            string tenantId = System.Security.Claims.ClaimsPrincipal.Current
-                .FindFirst("http://schemas.microsoft.com/identity/claims/tenantid").Value;
-
-            string authority = string.Format(ConfigurationManager.AppSettings["ida:AADInstance"], tenantId, "");
+            string authority = string.Format(ConfigurationManager.AppSettings["ida:AADInstance"], "common/", "");
 
             AuthHelper authHelper = new AuthHelper(authority, ConfigurationManager.AppSettings["ida:AppId"],
-              ConfigurationManager.AppSettings["ida:AppSecret"], tokenCache);
+               ConfigurationManager.AppSettings["ida:AppSecret"], tokenCache);
 
             ViewBag.AccessToken = await authHelper.GetUserAccessToken(Url.Action("Index", "Home", null, Request.Url.Scheme));
             if (null == ViewBag.AccessToken)
