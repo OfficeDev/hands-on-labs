@@ -19,8 +19,7 @@ namespace OneNoteDev.Controllers
             // Get an access token for the request.
             string userObjId = System.Security.Claims.ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
             SessionTokenCache tokenCache = new SessionTokenCache(userObjId, HttpContext);
-            string tenantId = System.Security.Claims.ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/tenantid").Value;
-            string authority = string.Format(ConfigurationManager.AppSettings["ida:AADInstance"], tenantId, "");
+            string authority = string.Format(ConfigurationManager.AppSettings["ida:AADInstance"], "common", "");
 
             AuthHelper authHelper = new AuthHelper(authority, ConfigurationManager.AppSettings["ida:AppId"], ConfigurationManager.AppSettings["ida:AppSecret"], tokenCache);
             string accessToken = await authHelper.GetUserAccessToken("/Notebook/Index");
