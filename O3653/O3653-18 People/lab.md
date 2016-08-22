@@ -19,9 +19,9 @@ for calling the Graph API.
   1. Name the new project **PeopleGraphWeb** and click **OK**.
   1. Open the **Web.config** file in the root directory and find the **appSettings** element. This is where you will add the app ID and app secret that you will generate in the next step.
 
-2. Launch the Application Registration Portal by opening a browser to https://apps.dev.microsoft.com
+2. Launch the Application Registration Portal by opening a browser to [apps.dev.microsoft.com](https://apps.dev.microsoft.com)
    to register a new application.
-  1. Sign into the portal using your Office 365 username and password.
+  1. Sign into the portal using your Office 365 username and password. The **Graph AAD Auth v2 Starter Project** template allows you to sign in with either a Microsoft account or an Office 365 for business account, but the "People" features work only with business and school accounts.
   1. Click **Add an app** and type **PeopleGraphQuickStart** for the application name.
   1. Copy the **Application Id** and paste it into the value for **ida:AppId** in your project's **Web.config** file.
   1. Under **Application Secrets** click **Generate New Password** to create a new client secret for your app.
