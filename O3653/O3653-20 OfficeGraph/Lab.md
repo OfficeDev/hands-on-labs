@@ -142,7 +142,7 @@ In this exercise, you will code the **TrendingController** of the MVC applicatio
         string tenantId = System.Security.Claims.ClaimsPrincipal.Current
             .FindFirst("http://schemas.microsoft.com/identity/claims/tenantid").Value;
 
-        string authority = string.Format(ConfigurationManager.AppSettings["ida:AADInstance"], tenantId, "");
+        string authority = "common";
 
         AuthHelper authHelper = new AuthHelper(authority, ConfigurationManager.AppSettings["ida:AppId"],
             ConfigurationManager.AppSettings["ida:AppSecret"], tokenCache);
