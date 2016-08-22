@@ -25,7 +25,7 @@ for calling the Graph API.
    to register a new application.
   1. Sign into the portal using your Office 365 username and password. The **Graph AAD Auth v2 Starter Project** template allows you to sign in with either a Microsoft account or an Office 365 for business account, but the "People" features work only with business and school accounts.
 
-  1. Click **Add an app** and type **OneNoteGraphQuickStart** for the application name.
+  1. Click **Add an app**, type **OneNoteGraphQuickStart** for the application name, and then click **Create application**.
 
   1. Copy the **Application Id** and paste it into the value for **ida:AppId** in your project's **Web.config** file.
 
@@ -33,14 +33,14 @@ for calling the Graph API.
 
   1. Copy the displayed app password and paste it into the value for **ida:AppSecret** in your project's **Web.config** file.
 
-  1. Set the **ida:AppScopes** value to *Notes.ReadWrite*. ////////////////////test
+  1. Set the **ida:AppScopes** value to *Notes.ReadWrite*.
 
   ```xml
   <configuration>
     <appSettings>
       <!-- ... -->
-      <add key="ida:AppId" value="APP ID HERE" />
-      <add key="ida:AppSecret" value="APP SECRET HERE" />
+      <add key="ida:AppId" value="4b63ba37..." />
+      <add key="ida:AppSecret" value="AthR0e75..." />
       <!-- ... -->
       <!-- Specify scopes in this value. Multiple values should be comma separated. -->
       <add key="ida:AppScopes" value="Notes.ReadWrite" />
@@ -63,14 +63,12 @@ for calling the Graph API.
   1. At the bottom of the page, click **Save**.
 
 4. Set the Start action to the **Account/Signout** action (to avoid a stale token error). 
-  1. In Visual Studio, right-click **OneNoteDev** > **Properties** to open the project properties.
-
-  1. Click **Web** in the left navigation.
+  1. Return to the **Web** tab of the project properties page in Visual Studio.
 
   1. Under **Start Action** choose **Specific Page** and enter *Account/SignOut*. 
 
 5. Press F5 to compile and launch your new application in the default browser.
-  1. Once the Graph and AAD v2 Auth Endpoint Starter page appears, and sign in with your Office 365 account.
+  1. When the Graph and AAD v2 Auth Endpoint Starter page appears, sign in with your Office 365 account.
 
   1. Review the permissions the application is requesting, and click **Accept**.
 
@@ -78,14 +76,14 @@ for calling the Graph API.
 
 
 ### Exercise 2: Create the Notebook repository
-In this step you will create a repository class that will handle all communication with the Microsoft Graph API to interact with notebooks in your OneDrive for Business store.
+In this step you will create a repository class that will handle all communication with the Microsoft Graph API to interact with OneNote notebooks in your OneDrive for Business store.
 
 1. To simplify working with the REST services, we will use the popular JSON.NET framework for .NET.
-	1. In Solution Explorer, right-click the project's **Models** folder and choose **Add** > **New Folder**. Name the folder **JsonHelpers**.
+	1. In Visual Studio, right-click the project's **Models** folder and choose **Add** > **New Folder**. Name the folder **JsonHelpers**.
 	
-	1. Copy all the C# files provided with this lab, located in the `C:\git\O3653\O3653-7 Deep Dive into the Office 365 APIs for OneNote services\Labs\Labfiles` folder, into the **JsonHelpers** folder that you just added to your project.
+	1. In File Explorer, copy all the C# files provided with this lab, located in the `...\O3653-7 Deep Dive into the Office 365 APIs for OneNote services\Labs\Labfiles` folder, into the **JsonHelpers** folder that you just added to your project.
 
-    1. Right-click the **JsonHelpers** folder and choose **Add** > **Existing Item**. Select all the files you just copied to the folder and click **Add**.
+  1. In Visual Studio, right-click the **JsonHelpers** folder and choose **Add** > **Existing Item**. Select all the files you just copied to the folder and click **Add**.
 
 		> **Note:** These files were created using the handy utility in Visual Studio: **Paste JSON as Classes**.
 
@@ -95,25 +93,25 @@ In this step you will create a repository class that will handle all communicati
 	1. Replace the **Notebook** class with the following code:
 
 	   ```c#
-	public class Notebook
-	{
-		public Notebook()
-		{
-			Sections = new List<Section>();
-		}
+    public class Notebook
+    {
+		    public Notebook()
+		    {
+    			Sections = new List<Section>();
+    		}
 
-		public string Id { get; set; }
-		public string Name { get; set; }
-		public string NotebookUrl { get; set; }
-		public string ClientUrl { get; set; }
-		public string WebUrl { get; set; }
-		public bool IsDefault { get; set; }
-		public DateTime CreatedDateTime { get; set; }
-		public DateTime LastModifiedDateTime { get; set; }
-		public string SectionsUrl { get; set; }
-		public string SectionGroupsUrl { get; set; }
-		public List<Section> Sections { get; set; }
-	}
+    		public string Id { get; set; }
+    		public string Name { get; set; }
+    		public string NotebookUrl { get; set; }
+    		public string ClientUrl { get; set; }
+    		public string WebUrl { get; set; }
+    		public bool IsDefault { get; set; }
+    		public DateTime CreatedDateTime { get; set; }
+    		public DateTime LastModifiedDateTime { get; set; }
+    		public string SectionsUrl { get; set; }
+    		public string SectionGroupsUrl { get; set; }
+    		public List<Section> Sections { get; set; }
+    }
 	   ```
 
 	1. Add a new class named **Section** to the **Models** folder in the project.
@@ -121,20 +119,20 @@ In this step you will create a repository class that will handle all communicati
 	1. Replace the **Section** class with the following code:
 
 	   ```c#
-	public class Section
-	{
-		public Section()
-		{
-			Pages = new List<NotePage>();
-		}
+    public class Section
+    {
+	    	public Section()
+	    	{
+	    		Pages = new List<NotePage>();
+	    	}
 
-		public string Id { get; set; }
-		public string Name { get; set; }
-		public DateTime CreatedDateTime { get; set; }
-		public DateTime LastModifiedDateTime { get; set; }
-		public string PagesUrl { get; set; }
-		public List<NotePage> Pages { get; set; }
-	}
+    		public string Id { get; set; }
+    		public string Name { get; set; }
+    		public DateTime CreatedDateTime { get; set; }
+    		public DateTime LastModifiedDateTime { get; set; }
+    		public string PagesUrl { get; set; }
+    		public List<NotePage> Pages { get; set; }
+    }
 	   ```
 
 	1. Add a new class named **NotePage** to the **Models** folder in the project.
@@ -142,18 +140,18 @@ In this step you will create a repository class that will handle all communicati
 	1. Replace the **NotePage** class with the following code:
 
 	   ```c#
-	public class NotePage
-	{
-		public string Id { get; set; }
-		public string Name { get; set; }
-		public DateTime CreatedDateTime { get; set; }
-		public DateTime LastModifiedDateTime { get; set; }
-		public string ContentUrl { get; set; }
-		public string Content { get; set; }
-		public string PageUrl { get; set; }
-		public string WebUrl { get; set; }
-		public string ClientUrl { get; set; }
-	}
+    public class NotePage
+    {
+    		public string Id { get; set; }
+    		public string Name { get; set; }
+    		public DateTime CreatedDateTime { get; set; }
+    		public DateTime LastModifiedDateTime { get; set; }
+    		public string ContentUrl { get; set; }
+    		public string Content { get; set; }
+    		public string PageUrl { get; set; }
+    		public string WebUrl { get; set; }
+    		public string ClientUrl { get; set; }
+    }
 	   ```
 
 1. Create the repository class for communicating with the OneNote service using the Microsoft Graph API.
@@ -386,7 +384,7 @@ In this step you will create a repository class that will handle all communicati
         }
 		````
     
-## Exercise 3: 
+## Exercise 3: Create Controllers and Views
 In this step you will create the ASP.NET MVC controllers and views and then add a navigation link to access the UI.
 
 ### Add Notebook Controller and View
@@ -768,7 +766,7 @@ using OneNoteDev.TokenStorage;
 ## Exercise 4: Test the Application
 The last step is to test the application you just created! First, make sure you have at least one notebook with a section and a page.
 
-1. Press **F5** in Visual Studio to launch the application.
+1. Press F5 in Visual Studio to launch the application.
 
 1. When the browser loads, click the **Click here to sign in** button and sign in using your Office 365 credentials if you're not already signed in.
 
