@@ -13,7 +13,7 @@ To complete the exercises below, you will require an Office 365 developer enviro
 ![Installing ODaata v4 Client Code Generator](images/1_Odata.PNG) 
    
 
-## Exercise 1: Create a new project using Azure Active Directory authentication
+## Exercise 1: Create a new project using Azure Active Directory v2 authentication
 
 In this first step, you will create a new ASP.NET MVC project using the
 **Graph AAD Auth v2 Starter Project** template and log in to your app and generate access tokens
