@@ -1,15 +1,27 @@
-﻿using System.Web;
+﻿using System;
+using System.Web;
 using Newtonsoft.Json;
-using Microsoft.IdentityModel.Clients.ActiveDirectory;
+using OneNoteDev.Auth;
 
 namespace OneNoteDev.TokenStorage
 {
-    public class SessionTokenCache : TokenCache
+    public class SessionTokenEntry
+    {
+        [JsonProperty("access_token")]
+        public string AccessToken;
+        [JsonProperty("expires_on")]
+        public DateTime ExpiresOn;
+        [JsonProperty("refresh_token")]
+        public string RefreshToken;
+    }
+
+    public class SessionTokenCache
     {
         private HttpContextBase context;
         private static readonly object FileLock = new object();
         private readonly string CacheId = string.Empty;
-        public string UserObjectId = string.Empty;
+        private string UserObjectId = string.Empty;
+        public SessionTokenEntry Tokens { get; private set; }
 
         public SessionTokenCache(string userId, HttpContextBase context)
         {
@@ -17,8 +29,6 @@ namespace OneNoteDev.TokenStorage
             this.UserObjectId = userId;
             this.CacheId = UserObjectId + "_TokenCache";
 
-            AfterAccess = AfterAccessNotification;
-            BeforeAccess = BeforeAccessNotification;
             Load();
         }
 
@@ -26,7 +36,11 @@ namespace OneNoteDev.TokenStorage
         {
             lock (FileLock)
             {
-                Deserialize((byte[])context.Session[CacheId]);
+                string jsonCache = (string)context.Session[CacheId];
+                if (!string.IsNullOrEmpty(jsonCache))
+                {
+                    Tokens = JsonConvert.DeserializeObject<SessionTokenEntry>(jsonCache);
+                }
             }
         }
 
@@ -34,43 +48,34 @@ namespace OneNoteDev.TokenStorage
         {
             lock (FileLock)
             {
-                // reflect changes in the persistent store
-                var bytes = Serialize();
-                var x = System.Text.Encoding.UTF8.GetString(bytes);
-                context.Session[CacheId] = Serialize();
-                // once the write operation took place, restore the HasStateChanged bit to false
-                HasStateChanged = false;
+                if (null != Tokens)
+                {
+                    context.Session[CacheId] = JsonConvert.SerializeObject(Tokens);
+                }
             }
         }
 
-        // Empties the persistent store.
-        public override void Clear()
+        public void Clear()
         {
-            base.Clear();
-            context.Session.Remove(CacheId);
-        }
-
-        public override void DeleteItem(TokenCacheItem item)
-        {
-            base.DeleteItem(item);
-            Persist();
-        }
-
-        // Triggered right before ADAL needs to access the cache.
-        // Reload the cache from the persistent store in case it changed since the last access.
-        private void BeforeAccessNotification(TokenCacheNotificationArgs args)
-        {
-            Load();
-        }
-
-        // Triggered right after ADAL accessed the cache.
-        private void AfterAccessNotification(TokenCacheNotificationArgs args)
-        {
-            // if the access operation resulted in a cache update
-            if (HasStateChanged)
+            lock (FileLock)
             {
-                Persist();
+                context.Session.Remove(CacheId);
             }
+        }
+
+        public void UpdateTokens(TokenRequestSuccessResponse tokenResponse)
+        {
+            double expireSeconds = double.Parse(tokenResponse.ExpiresIn);
+            expireSeconds += -300;
+
+            Tokens = new SessionTokenEntry()
+            {
+                AccessToken = tokenResponse.AccessToken,
+                RefreshToken = tokenResponse.RefreshToken,
+                ExpiresOn = DateTime.UtcNow.AddSeconds(expireSeconds)
+            };
+
+            Persist();
         }
     }
 }
