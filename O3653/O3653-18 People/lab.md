@@ -32,8 +32,8 @@ for calling the Graph API.
   <configuration>
     <appSettings>
       <!-- ... -->
-      <add key="ida:AppId" value="APP ID HERE" />
-      <add key="ida:AppSecret" value="APP SECRET HERE" />
+      <add key="ida:AppId" value="4b63ba37..." />
+      <add key="ida:AppSecret" value="AthR0e75..." />
       <!-- ... -->
       <!-- Specify scopes in this value. Multiple values should be comma separated. -->
       <add key="ida:AppScopes" value="User.ReadBasic.All,People.Read" />
