@@ -2,7 +2,7 @@
 In this lab, you will use the Microsoft Graph to integrate the Office 365 OneNote Service with an ASP.NET MVC5 application.
 
 ## Get an Office 365 developer environment
-To complete the exercises below, you will require an Office 365 developer environment. Use the Office 365 tenant that you have been provided with for Tech Ready.
+To complete the exercises below, you will require an Office 365 developer environment. Use the Office 365 tenant that you have been provided with for Microsoft Ignite.
 
 ## Prerequisites
 Your user must have at least one OneNote notebook with a section and a page.
@@ -413,8 +413,7 @@ using OneNoteDev.TokenStorage;
         // Get an access token for the request.
         string userObjId = System.Security.Claims.ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
         SessionTokenCache tokenCache = new SessionTokenCache(userObjId, HttpContext);
-        string tenantId = System.Security.Claims.ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/tenantid").Value;
-        string authority = string.Format(ConfigurationManager.AppSettings["ida:AADInstance"], tenantId, "");
+        string authority = string.Format(ConfigurationManager.AppSettings["ida:AADInstance"], "common", "");
 
         AuthHelper authHelper = new AuthHelper(authority, ConfigurationManager.AppSettings["ida:AppId"], ConfigurationManager.AppSettings["ida:AppSecret"], tokenCache);
         string accessToken = await authHelper.GetUserAccessToken("/Notebook/Index");
@@ -523,8 +522,7 @@ using OneNoteDev.TokenStorage;
         // Get an access token for the request.
         string userObjId = System.Security.Claims.ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
         SessionTokenCache tokenCache = new SessionTokenCache(userObjId, HttpContext);
-        string tenantId = System.Security.Claims.ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/tenantid").Value;
-        string authority = string.Format(ConfigurationManager.AppSettings["ida:AADInstance"], tenantId, "");
+        string authority = string.Format(ConfigurationManager.AppSettings["ida:AADInstance"], "common", "");
 
         AuthHelper authHelper = new AuthHelper(authority, ConfigurationManager.AppSettings["ida:AppId"], ConfigurationManager.AppSettings["ida:AppSecret"], tokenCache);
         string accessToken = await authHelper.GetUserAccessToken("/Section/Index");
@@ -632,8 +630,7 @@ using OneNoteDev.TokenStorage;
         // Get an access token for the request.
         string userObjId = System.Security.Claims.ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
         SessionTokenCache tokenCache = new SessionTokenCache(userObjId, HttpContext);
-        string tenantId = System.Security.Claims.ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/tenantid").Value;
-        string authority = string.Format(ConfigurationManager.AppSettings["ida:AADInstance"], tenantId, "");
+        string authority = string.Format(ConfigurationManager.AppSettings["ida:AADInstance"], "common", "");
 
         AuthHelper authHelper = new AuthHelper(authority, ConfigurationManager.AppSettings["ida:AppId"], ConfigurationManager.AppSettings["ida:AppSecret"], tokenCache);
         string accessToken = await authHelper.GetUserAccessToken("/Page/Index");
@@ -663,8 +660,7 @@ using OneNoteDev.TokenStorage;
         // Get an access token for the request.
         string userObjId = System.Security.Claims.ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
         SessionTokenCache tokenCache = new SessionTokenCache(userObjId, HttpContext);
-        string tenantId = System.Security.Claims.ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/tenantid").Value;
-        string authority = string.Format(ConfigurationManager.AppSettings["ida:AADInstance"], tenantId, "");
+        string authority = string.Format(ConfigurationManager.AppSettings["ida:AADInstance"], "common", "");
 
         AuthHelper authHelper = new AuthHelper(authority, ConfigurationManager.AppSettings["ida:AppId"], ConfigurationManager.AppSettings["ida:AppSecret"], tokenCache);
         string accessToken = await authHelper.GetUserAccessToken("/Page/Delete");
