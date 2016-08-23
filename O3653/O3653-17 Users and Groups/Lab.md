@@ -5,18 +5,57 @@ In this lab, you will create an ASP.NET MVC application that uses the Microsoft 
 ## Get an Office 365 developer environment
 To complete the exercises below, you will require an Office 365 developer environment. Use the Office 365 tenant that you have been provided with for Tech Ready.
 
-## Exercise 1: Create a new project using Graph AAD Auth v1 Starter Project template
-In this first step, you will create a new ASP.NET MVC project using the
-**Graph AAD Auth v1 Starter Project** template.
+## Exercise 1: Create a new project using Azure Active Directory v2 authentication
 
-1. Open Visual Studio 2015 and select **File>New>Project**.
-2. Search the installed templates for **Graph** and select the
-      **Graph AAD Auth v1 Starter Project** template. This starter project template scaffolds some auth infrastructure for you, so that you can focus on calling the Microsoft Graph.
-3. Name the new project **GraphUsersGroups** and click **OK**.<br>
-**NOTE:** Be sure you use the exact same name that is specified in these instructions for your Visual Studio project. Otherwise, your namespace name will differ from the one in these instructions and your code will not compile.
-    ![Screenshot of the Visual Studio Project](images/VSProject.JPG)
-4. Your new application is ready to go!<br> 
-**Required**: Press **F5** to to restore the NuGet packages required by the project. This will compile and launch your new application in the default browser.  You can sign in to the app using the Office 365 tenant administrator account provided to you.
+In this first step, you will create a new ASP.NET MVC project using the
+**Graph AAD Auth v2 Starter Project** template and log in to your app and generate access tokens
+for calling the Graph API.
+
+1. Launch Visual Studio 2015 and select **New**, **Project**.
+  1. Search the installed templates for **Graph** and select the
+    **Graph AAD Auth v2 Starter Project** template.
+  1. Name the new project **OfficeGraphLab** and click **OK**.
+  1. Open the **Web.config** file and find the **appSettings** element. This is where you will need to add your appId and app secret you will generate in the next step.
+  
+1. Launch the Application Registration Portal by opening a browser and navigating to **apps.dev.microsoft.com**
+   to register a new application.
+  1. Sign into the portal using your Office 365 work account username and password. The **Graph AAD Auth v2 Starter Project** template allows you to sign in with either a Microsoft account or an Office 365 for business account, but the groups features used in this sample currently work only with business and school accounts.
+  1. Click **Add an App** and type **OfficeGraphLab** for the application name.
+  1. Copy the **Application Id** and paste it into the value for **ida:AppId** in your project's **Web.config** file.
+  1. Under **Application Secrets** click **Generate New Password** to create a new client secret for your app.
+  1. Copy the displayed app password and paste it into the value for **ida:AppSecret** in your project's **web.config** file.
+  1. Modify the **ida:AppScopes** value to include the required `User.Read`, `User.ReadBasic.All`,  and `Group.ReadWrite.All` scopes.
+
+  ```xml
+  <configuration>
+    <appSettings>
+      <!-- ... -->
+      <add key="ida:AppId" value="paste application id here" />
+      <add key="ida:AppSecret" value="paste application password here" />
+      <!-- ... -->
+      <!-- Specify scopes in this value. Multiple values should be comma separated. -->
+      <add key="ida:AppScopes" value="User.Read, User.ReadBasic.All, Group.ReadWrite.All" />
+    </appSettings>
+    <!-- ... -->
+  </configuration>
+  ```
+1. Add a redirect URL to enable testing on your localhost.
+  1. Right click on **OfficeGraphLab** and click on **Properties** to open the project properties.
+  1. Click on **Web** in the left navigation.
+  1. Copy the **Project Url** value.
+  1. Back on the Application Registration Portal page, click **Add Platform** and then **Web**.
+  1. Paste the value of **Project Url** into the **Redirect URIs** field.
+  1. Scroll to the bottom of the page and click **Save**.
+
+1. Set Startup page to Signout page (to avoid stale token error) 
+  1. Right-click **OfficeGraphLab** and click **Properties** to open the project properties.
+  1. Click **Web** in the left navigation.
+  1. Under **Start Action** Choose **Specific Page** option and Type its value as **Account/SignOut**  
+   
+1. Press F5 to compile and launch your new application in the default browser.
+  1. Once the Graph and AAD Auth Endpoint Starter page appears, click **Sign in** and sign in to the app using the Office 365 tenant administrator account provided to you. Because of the required permissions, only administrators can sign in to this app.
+  1. Review the permissions the application is requesting, and click **Accept**.
+  1. Now that you are signed into your application, exercise 1 is complete!
 
 ## Exercise 2: Implement group search bar and view group memberships using the Microsoft Graph SDK
 
@@ -30,6 +69,7 @@ In this first step, you will create a new ASP.NET MVC project using the
     3. In the **Add Controller** dialog, name the controller `GroupSearchController` and choose **Add**..
 3. Create an associated view by right-clicking the function **Index()**, **Add View**, and click **Add**. The view is created at **Views\GroupSearch\Index.cshtml**.
 4. In **GroupSearchController.cs**, replace the auto-generated **using** directives with
+
     ```c#
     using System;
     using System.Collections.Generic;
@@ -150,7 +190,7 @@ In this first step, you will create a new ASP.NET MVC project using the
         }
         return View(userMembers);
     }
-        ```
+    ```
 6. Replace the contents of **Views\GroupSearch\Index.cshtml** with the following code. This renders a search bar and a table to display the group results.
 
     ```xml
@@ -285,6 +325,7 @@ In this step, we'll enable selecting a user from the group members search result
     }
     ```
 3. Replace the existing `using` directives in **UserSearchController.cs** with the following:
+
     ```csharp
     using System;
     using System.IO;
