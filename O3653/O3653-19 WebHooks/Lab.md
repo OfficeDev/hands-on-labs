@@ -7,61 +7,123 @@ In this lab, you'll create an ASP.NET MVC application that subscribes for Micros
 A webhooks subscription allows a client app to receive notifications about mail, events, and contacts from the Microsoft Graph. Microsoft Graph implements a poke-pull model: it sends notifications when changes are made to messages, events, or contacts, and then you query the Microsoft Graph for the details you need. 
 
 ## Get an Office 365 developer environment
-To complete the exercises below, you will require an Office 365 developer environment. Use the Office 365 tenant that you have been provided with for Tech Ready.
+To complete the exercises below, you will require an Office 365 developer environment. Use the Office 365 tenant that you have been provided with for Microsoft Ignite.
 
-## Step 1: Create an ASP.NET MVC application
-1. Open Visual Studio and select **File/New/Project**. 
+## Exercise 1: Create a new project that uses Azure Active Directory v2 authentication
+In this first step, you will create a new ASP.NET MVC project using the **Graph AAD Auth v2 Starter Project** template, register a new application in the developer portal, and log in to your app and generate access tokens for calling the Graph API.
 
-1. In the **New Project** dialog, select **Templates/Visual C#/Graph AAD Auth v1 Starter Project**. If you don't see the template, try searching for *Graph*. The starter project template scaffolds some auth infrastructure for you.
+1. Launch Visual Studio 2015 and select **File** > **New** > **Project**.
+  1. Search the installed templates for **Graph** and select the **Graph AAD Auth v2 Starter Project** template.
 
-1. Name the new project **GraphWebhooks**, and then click **OK**.  
-    
-   > NOTE: Make sure you use the exact same name that is specified in these instructions for your Visual Studio project. Otherwise, your namespace name will differ from the one in these instructions and your code will not compile.
- 
-    ![Creating the project in Visual Studio](images/VSProject.png)
+  1. Name the new project **GraphWebhooks**, and then click **OK**.  
 
-1. Build the solution (**Build/Build Solution**) to restore the NuGet packages required by the project. This should remove all of the solution's initial red squigglies.
+     > **Note**: Make sure you use the exact name specified in these instructions for your Visual Studio project. Otherwise, your namespace name will differ from the one in these instructions and your code will not compile.
 
-1. Open **Tools/Nuget Package Manager/Package Manager Console**, and run the following commands. These install AspNet.SignalR, which is used to notify the client to refresh its view, and an SDK for communicating with the Microsoft Graph.
+  1. Open the **Web.config** file in the root directory and find the **appSettings** element. This is where you will add the app ID and app secret that you will generate in the next step.
+
+2. Launch the Application Registration Portal by opening a browser to [apps.dev.microsoft.com](https://apps.dev.microsoft.com)
+   to register a new application.
+  1. Sign into the portal using your Office 365 username and password. The **Graph AAD Auth v2 Starter Project** template allows you to sign in with either a Microsoft account or an Office 365 for business account, but the "People" features work only with business and school accounts.
+
+  1. Click **Add an app**, type **WebhooksGraphQuickStart** for the application name, and then click **Create application**.
+
+  1. Copy the **Application Id** and paste it into the value for **ida:AppId** in your project's **Web.config** file.
+
+  1. Under **Application Secrets** in the registration portal, click **Generate New Password** to create a new client secret for your app.
+
+  1. Copy the displayed app password and paste it into the value for **ida:AppSecret** in your project's **Web.config** file.
+
+  1. Set the **ida:AppScopes** value to *Mail.Read*. Your app settings will look something like this:
+
+  ```xml
+  <configuration>
+    <appSettings>
+      <!-- ... -->
+      <add key="ida:AppId" value="4b63ba37..." />
+      <add key="ida:AppSecret" value="AthR0e75..." />
+      <!-- ... -->
+      <!-- Specify scopes in this value. Multiple values should be comma separated. -->
+      <add key="ida:AppScopes" value="Mail.Read" />
+    </appSettings>
+    <!-- ... -->
+  </configuration>
+  ```
+
+3. Add a redirect URL to enable testing on your localhost.
+  1. In Visual Studio, right-click **GraphWebhooks** > **Properties** to open the project properties.
+
+  1. Click **Web** in the left navigation.
+
+  1. Copy the **Project Url** value.
+
+  1. Back on the Application Registration Portal page, click **Add Platform** > **Web**.
+
+  1. Paste the project URL into the **Redirect URIs** field.
+
+  1. At the bottom of the page, click **Save**.
+
+4. Set the Start action to the **Account/Signout** action (to avoid a stale token error). 
+  1. In Visual Studio, return to the **Web** tab of the project properties page.
+
+  1. Under **Start Action** choose **Specific Page** and enter *Account/SignOut*. 
+
+
+## Exercise 2: Install SignalR and the Microsoft Graph .NET Client Library
+1. Open **Tools** > **NuGet Package Manager** > **Package Manager Console**, and run the following commands. These install AspNet.SignalR, which is used to notify the client to refresh its view, and an SDK for communicating with the Microsoft Graph.
 
    ```
 Install-Package Microsoft.AspNet.SignalR
 Install-Package Microsoft.Graph
    ```
    
-    > NOTE: In the Package Manager Console, make sure you use the set the package source to: *nuget.org*. 
+    > **NOTE:** In the Package Manager Console, make sure you use the set the package source to: *nuget.org*. 
 
-### Configure authorization
-This application uses SignalR, which doesn't support ASP.NET session state. So you'll need to reconfigure the **AuthenticationContext** to use the default token cache instead of the **SessionTokenCache** that's provided in the starter template. However, production applications should implement a custom token cache that derives from the ADAL **TokenCache** class. 
+2. Configure the app to use the default token cache. This application uses SignalR, which doesn't support ASP.NET session state. So you'll need to reconfigure the **AuthenticationContext** to use the default token cache instead of the **SessionTokenCache** that's provided in the starter template. 
 
-1. Open **Startup.cs** in the root directory of the project.
+  > **NOTE:** Production applications should implement a custom token cache that derives from the MSAL **TokenCache** class. 
 
-1. Replace the **OnAuthorizationCodeReceived** method with the following code.
+  1. Open **Startup.cs** in the root directory of the project.
+
+  1. Replace the **OnAuthorizationCodeReceived** method with the following code.
  
 
    ```c#
     private async Task OnAuthorizationCodeReceived(AuthorizationCodeReceivedNotification notification)
     {
-        // Get the user's object id (used to name the token cache)
-        string userObjId = notification.AuthenticationTicket.Identity
-            .FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
 
         // Exchange the auth code for a token
         ADAL.ClientCredential clientCred = new ADAL.ClientCredential(appId, appSecret);
 
         // Create the auth context
         ADAL.AuthenticationContext authContext = new ADAL.AuthenticationContext(
-            string.Format(CultureInfo.InvariantCulture, aadInstance, "common", ""),
+            string.Format(CultureInfo.InvariantCulture, aadInstance, "common", "/v2.0"),
             false);
 
         ADAL.AuthenticationResult authResult = await authContext.AcquireTokenByAuthorizationCodeAsync(
             notification.Code, notification.Request.Uri, clientCred, "https://graph.microsoft.com");
+
+        // Get the user's object id (used to name the token cache)
+        ClaimsPrincipal principal = new ClaimsPrincipal(notification.AuthenticationTicket.Identity);
+        string userObjId = AuthHelper.GetUserId(principal);
+
+        // Create a token cache
+        HttpContextBase httpContext = notification.OwinContext.Get<HttpContextBase>(typeof(HttpContextBase).FullName);
+        TokenCache tokenCache = new TokenCache(userObjId, httpContext);
+
+        // Exchange the auth code for a token
+        AuthHelper authHelper = new AuthHelper(
+            string.Format(CultureInfo.InvariantCulture, aadInstance, "common", ""),
+            appId, appSecret, null);
+
+        var response = await authHelper.GetTokensFromAuthority("authorization_code", notification.Code,
+            notification.Request.Uri.ToString());
     }
    ```
 
-1. Open **AccountController.cs** in the Controllers folder.
+3. Edit the **SignOut** action.
+  1. Open **AccountController.cs** in the Controllers folder.
  
-1. Replace the **SignOut** method with the following code:
+  1. Replace the **SignOut** method with the following code:
 
 
    ```c#
@@ -81,12 +143,20 @@ This application uses SignalR, which doesn't support ASP.NET session state. So y
     }
    ```
 
-## Step 2: Set up the ngrok proxy and notification URL data
+4. Press F5 to compile and launch your new application in the default browser.
+  1. When the Graph and AAD v2 Auth Endpoint Starter page appears, sign in with your Office 365 account.
+
+  1. Review the permissions the application is requesting, and click **Accept**.
+
+  1. Now that you are signed into your application, exercise 1 is complete!
+
+
+## Exercise 3: Set up the ngrok proxy and notification URL data
 You must expose a public HTTPS endpoint to create a subscription and receive notifications from Microsoft Graph. While testing, you can use ngrok to temporarily allow messages from Microsoft Graph to tunnel to a port on your local computer. This makes it easier to test and debug webhooks. To learn more about using ngrok, see the ngrok website at `https://ngrok.com/` 
 
 1. In Solution Explorer, select the **GraphWebhooks** project.
 
-1. Copy the **URL** port number from the **Properties** window.  If the **Properties** window isn't showing, choose **View/Properties Window**. 
+1. Copy the **URL** port number from the **Properties** window.  If the **Properties** window isn't showing, choose **View** > **Properties Window**. 
 
 	![URL port number in the Properties window](images/PortNumber.png)
 
@@ -112,23 +182,14 @@ ngrok http <port-number> -host-header=localhost:<port-number>
     <add key="ida:NotificationUrl" value="ENTER_YOUR_PROXY_URL/notification/listen" />
    ```
 
-   > NOTE: Keep the console open while testing. If you close it, the tunnel also closes and you'll need to generate a new URL and update the sample.
+   > **NOTE:** Keep the console open while testing. If you close it, the tunnel also closes and you'll need to generate a new URL and update the sample.
 
-## Step 3: Configure routing
-1. In the **App_Start** folder, open RouteConfig.cs and replace the Default route with the following:
 
-   ```c#
-routes.MapRoute(
-    name: "Default",
-    url: "{controller}/{action}",
-    defaults: new { controller = "Subscription", action = "Index" }
-);
-   ```
+## Exercise 4:  Create the Subscription model
 
-## Step 4: Create the Subscription model
 In this step you'll create a model that represents a Subscription object. 
 
-1. Right-click the **Models** folder and choose **Add/Class**. 
+1. Right-click the **Models** folder and choose **Add** > **Class**. 
 
 1. Name the model **Subscription.cs** and click **Add**.
 
@@ -179,12 +240,12 @@ using Newtonsoft.Json;
     }
    ```
 
-## Step 5: Create the Subscription controller
+## Exercise 5: Create the Subscription controller
 In this step you'll create a controller that will send a **POST /subscriptions** request to Microsoft Graph on behalf of the signed in user. 
 
 ### Create the controller class
 
-1. Right-click the **Controllers** folder and choose **Add > New Scaffolded Item...** 
+1. Right-click the **Controllers** folder and choose **Add** > **New Scaffolded Item**. 
 
 1. In the **Add Scaffolded** dialog, select **MVC 5 Controller - Empty** and click **Add**.
 
@@ -219,8 +280,7 @@ using System.Threading.Tasks;
         try
         {
             string userObjId = System.Security.Claims.ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
-            string tenantId = System.Security.Claims.ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/tenantid").Value;
-            string authority = string.Format(ConfigurationManager.AppSettings["ida:AADInstance"], tenantId, "");
+            string authority = string.Format(ConfigurationManager.AppSettings["ida:AADInstance"], "common");
             AuthenticationContext authContext = new AuthenticationContext(authority, false);
             ClientCredential credential = new ClientCredential(ConfigurationManager.AppSettings["ida:AppId"], ConfigurationManager.AppSettings["ida:AppSecret"]);
             try
@@ -328,8 +388,7 @@ This sample creates a subscription for the *me/mailFolders('Inbox')/messages* re
             try
             {
                 string userObjId = System.Security.Claims.ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
-                string tenantId = System.Security.Claims.ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/tenantid").Value;
-                string authority = string.Format(ConfigurationManager.AppSettings["ida:AADInstance"], tenantId, "");
+                string authority = string.Format(ConfigurationManager.AppSettings["ida:AADInstance"], "common");
                 AuthenticationContext authContext = new AuthenticationContext(authority, false);
                 ClientCredential credential = new ClientCredential(ConfigurationManager.AppSettings["ida:AppId"], ConfigurationManager.AppSettings["ida:AppSecret"]);
                 AuthenticationResult authResult = null;
@@ -369,12 +428,12 @@ This sample creates a subscription for the *me/mailFolders('Inbox')/messages* re
     }
    ```
 
-## Step 6: Create the Index and Subscription views
+## Exercise 6: Create the Index and Subscription views
 In this step you'll create a view for the app start page and a view that displays the properties of the subscription you create. You'll also edit the Error view to show a description.
 
 ### Create the Index view
 
-1. Right-click the **Views/Subscription** folder and choose **Add/View**. 
+1. Right-click the **Views/Subscription** folder and choose **Add** > **View**. 
 
 1. Name the view **Index**. 
 
@@ -409,7 +468,7 @@ In this step you'll create a view for the app start page and a view that display
 
 ### Create the Subscription view
 
-1. Right-click the **Views/Subscription** folder and choose **Add/View**. 
+1. Right-click the **Views/Subscription** folder and choose **Add** > **View**. 
 
 1. Name the view **Subscription**.
 
@@ -472,7 +531,19 @@ In this step you'll create a view for the app start page and a view that display
     </div>
    ```
 
-## Step 7: Create the Notification model
+### Configure routing
+
+1. In the **App_Start** folder, open RouteConfig.cs and replace the Default route with the following:
+
+   ```c#
+routes.MapRoute(
+    name: "Default",
+    url: "{controller}/{action}",
+    defaults: new { controller = "Subscription", action = "Index" }
+);
+   ```
+
+## Exercise 7: Create the Notification model
 In this step you'll create a model that represents a Notification object. 
 
 ### Create the Notification model
@@ -539,12 +610,12 @@ using Newtonsoft.Json;
     }
   ```
 
-## Step 8: Create the Notification controller
+## Exercise 8: Create the Notification controller
 In this step you'll create a controller that exposes the notification endpoint. 
 
 ### Create the controller class
 
-1. Right-click the **Controllers** folder and choose **Add > New Scaffolded Item...** 
+1. Right-click the **Controllers** folder and choose **Add** > **New Scaffolded Item**. 
 
 1. In the "Add Scaffold" dialog, select **MVC 5 Controller - Empty** and click **Add**.
 
@@ -694,17 +765,17 @@ using System.Threading.Tasks;
     }
    ```
 
-## Step 9: Set up SignalR
+## Exercise 9: Set up SignalR
 
 This app uses SignalR to notify the client to refresh its view.
 
 1. Right-click the **GraphWebhooks** project and create a folder named **SignalR**.
 
-1. Right-click the **SignalR** folder and choose **Add/New Item** and then type **SignalR Hub** in the search bar to find **SignalR Hub Class (v2)**. 
+1. Right-click the **SignalR** folder and choose **Add** > **New Item** and then type **SignalR Hub** in the search bar to find **SignalR Hub Class (v2)**. 
 
 1. Name the class **NotificationHub**, and click **OK**. This sample doesn't add any functionality to the hub.
 
-1. Right-click the **SignalR** folder and choose **Add/New Item**. Choose the **SignalR/SignalR Persistent Connection Class (v2)** template.
+1. Right-click the **SignalR** folder and choose **Add** > **New Item**. Choose the **SignalR** > **SignalR Persistent Connection Class (v2)** template.
 
 1. Name the class **NotificationService.cs**, and click **Add**.
 
@@ -738,10 +809,10 @@ using Microsoft.Graph;
 app.MapSignalR();
    ```
    
-## Step 10: Create the Notification view
+## Exercise 10: Create the Notification view
 In this step you'll create a view that displays some properties of the changed message. 
 
-1. Right-click the **Views/Notification** folder and choose **Add/View**. 
+1. Right-click the **Views/Notification** folder and choose **Add** > **View**. 
 
 1. Name the view **Notification**.
 
@@ -797,9 +868,9 @@ In this step you'll create a view that displays some properties of the changed m
 </div>
    ```
 
-Congratulations! In this exercise you created an MVC application that subscribes for Microsoft Graph webhooks and receives change notifications! Now you can run the app.
+Congratulations! In this lab you created an MVC application that subscribes for Microsoft Graph webhooks and receives change notifications! Now you can run the app.
 
-## Step 11: Run the application
+## Run the application
 
 1. Make sure that the ngrok console is still running, then press **F5** to begin debugging.
 
@@ -814,5 +885,5 @@ Congratulations! In this exercise you created an MVC application that subscribes
 1. Click the **Delete subscription and sign out** button. 
 
 ## Next Steps and Additional Resources:  
-- See this training and more on `http://dev.office.com/`
-- Learn about and connect to the Microsoft Graph at `https://graph.microsoft.io`
+- See this training and more on http://dev.office.com/
+- Learn about and connect to the Microsoft Graph at https://graph.microsoft.io
