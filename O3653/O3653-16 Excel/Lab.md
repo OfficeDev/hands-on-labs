@@ -1,54 +1,89 @@
 # Microsoft Graph and the Excel REST API 
 
-In this lab, you will read and write into an Excel document stored in your OneDrive Business using new Excel REST APIs. We'll use Visual Studio MVC project to showcase the interaction. 
+In this lab, you will read and write into an Excel document stored in your OneDrive Business using new Excel REST APIs. We'll use a Visual Studio ASP.NET MVC project to showcase the interaction. 
 
 ## Get an Office 365 developer environment
-To complete the exercises below, you will require an Office 365 developer environment. Use the Office 365 tenant that you have been provided with for Tech Ready.
+To complete the exercises below, you will require an Office 365 developer environment. Use the Office 365 tenant that you have been given for Tech Ready.
 
-## Exercise 1: Create a new project using Azure Active Directory v1 authentication
+## Exercise 1: Create a new project using Azure Active Directory v2 authentication
 
-_Use the Office 365 user credentials available during the lab session to sign-in and authorize the app_
-
-In this first step, you will create a new ASP.NET MVC project using the **Graph AAD Auth v1 Starter Project** template and log in to your app and generate access tokens for calling the Graph API.
+In this first step, you will create a new ASP.NET MVC project using the
+**Graph AAD Auth v2 Starter Project** template and log in to your app and generate access tokens
+for calling the Graph API.
 
 1. Launch Visual Studio 2015 and select **New**, **Project**.
-  1. Search the installed templates for **Graph** and select the **Graph AAD Auth v1 Starter Project** template.
-  2. Name the new project **ExcelRestAPI-ToDoList** and click **OK**.
+  1. Search the installed templates for **Graph** and select the
+    **Graph AAD Auth v2 Starter Project** template.
+  1. Name the new project **ExcelRestAPI-ToDoList** and click **OK**.
+  1. Open the **Web.config** file and find the **appSettings** element. This is where you will need to add your appId and app secret you will generate in the next step.
+  
+1. Launch the Application Registration Portal by opening a browser and navigating to **apps.dev.microsoft.com**
+   to register a new application.
+  1. Sign into the portal using your Office 365 work account username and password. The **Graph AAD Auth v2 Starter Project** template allows you to sign in with either a Microsoft account or an Office 365 for business account, but the Excel APIs currently work only with business and school accounts.
+  1. Click **Add an App** and type **ExcelRestAPI-ToDoList** for the application name.
+  1. Copy the **Application Id** and paste it into the value for **ida:AppId** in your project's **Web.config** file.
+  1. Under **Application Secrets** click **Generate New Password** to create a new client secret for your app.
+  1. Copy the displayed app password and paste it into the value for **ida:AppSecret** in your project's **web.config** file.
+  1. Modify the **ida:AppScopes** value to include the required `User.Read`, and `Files.ReadWrite` scopes.
 
-![Screenshot of Visual Studio](images/start.JPG)
+  ```xml
+  <configuration>
+    <appSettings>
+      <!-- ... -->
+      <add key="ida:AppId" value="paste application id here" />
+      <add key="ida:AppSecret" value="paste application password here" />
+      <!-- ... -->
+      <!-- Specify scopes in this value. Multiple values should be comma separated. -->
+      <add key="ida:AppScopes" value="User.Read, Files.ReadWrite" />
+    </appSettings>
+    <!-- ... -->
+  </configuration>
+  ```
+1. Add a redirect URL to enable testing on your localhost.
+  1. Right click on **ExcelRestAPI-ToDoList** and click on **Properties** to open the project properties.
+  1. Click on **Web** in the left navigation.
+  1. Copy the **Project Url** value.
+  1. Back on the Application Registration Portal page, click **Add Platform** and then **Web**.
+  1. Paste the value of **Project Url** into the **Redirect URIs** field.
+  1. Scroll to the bottom of the page and click **Save**.
+
+1. Set Startup page to Signout page (to avoid stale token error) 
+  1. Right-click **ExcelRestAPI-ToDoList** and click **Properties** to open the project properties.
+  1. Click **Web** in the left navigation.
+  1. Under **Start Action** Choose **Specific Page** option and Type its value as **Account/SignOut**  
    
-2. Press F5 to compile and launch your new application in the default browser.
-  1. Once the Graph and AAD Auth Endpoint Starter page appears, click **Sign in** and login to your Office 365 administrator account.
-  2. Review the permissions the application is requesting, and click **Accept**.
-  3. Now that you are signed into your application, exercise 1 is complete!
+1. Press F5 to compile and launch your new application in the default browser.
+  1. Once the Graph and AAD Auth Endpoint Starter page appears, click **Sign in** and login to your Office 365 account.
+  1. Review the permissions the application is requesting, and click **Accept**.
+  1. Now that you are signed into your application, exercise 1 is complete!
   
 ## Exercise 2: Access the Excel file in OneDrive for Business through Microsoft Graph SDK
 
 ### Add ToDo file 
 
-For the purpose of this demo, we will use an empty Excel file to store the tasks and create charts. In real world apps, you could upload a new file using OneDrive API or target an existing file that contains needed data. 
+For the purpose of this demo, we will use an empty Excel file to store the tasks and create charts. In real world apps, you could either upload a new file using the OneDrive API or target an existing file that contains the data you need. 
 
-Open Excel application and create a blank workbook and save it locally and name it aas ToDo.xlsx. In your project, add an *Assets* folder to your project and add the empty ToDo.xlsx file into the assets folder. Note that the app looks for a file named ToDo.xlsx to upload as part of this setup step. If it is named differently, it will not work.
+Open the Excel application, create a blank workbook, and save it locally. Name it **ToDo.xlsx**. In your project, create an *Assets* folder in your project and add the empty ToDo.xlsx file inside the assets folder. Note that the app looks for a file named ToDo.xlsx to upload as part of its initial setup step. If it is named differently, it will not work.
 
-![Screenshot of the ToDo.xlsx workbook](images/ToDoworkbook.JPG)
+![Screenshot of the ToDo.xlsx workbook](images/ToDoworkbook.jpg)
 
 ### Use Excel REST API
 
 Let's create a MVC web application that allows us to create and manage to-do list by storing the content into an Excel file. 
-The high level functions performed by the application includes: 
+The high level functions performed by the application include the following: 
 
 1. Create an Excel file in your personal OneDrive Business account, named `ToDoList.xlsx`. If you run this the second time, it will re-use the file already created. 
-1. Allows you to create new tasks by adding related task details. 
+1. Create new tasks by adding related task details. 
 1. Lists all of the tasks created. 
 1. Get insights into the tasks by viewing the breakdown through an Excel chart image that is created and downloaded using the Excel API. 
 
-In order to achieve above functions, the app calls Excel API as described in below sections. 
+In order to achieve above functions, the app calls Excel API as described in the sections below. 
 
 #### Add new controllers 
 
 1. Under `Controllers` folder, add the following two C# files.
   1. ToDoListController.cs - this is the controller that manages the main page actions.
-  1. ChartController.cs - this is the controlled that manages the chart page actions. 
+  1. ChartController.cs - this is the controller that manages the chart page actions. 
 
 ![Screensot of adding a new controller in Visual Studio](images/todo1.JPG)
 
@@ -76,7 +111,7 @@ namespace Microsoft_Graph_ExcelRest_ToDo.Controllers
             SessionTokenCache tokenCache = new SessionTokenCache(userObjId, HttpContext);
 
             string tenantId = System.Security.Claims.ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/tenantid").Value;
-            string authority = string.Format(ConfigurationManager.AppSettings["ida:AADInstance"], tenantId, "");
+            string authority = "common";
             AuthHelper authHelper = new AuthHelper(authority, ConfigurationManager.AppSettings["ida:AppId"], ConfigurationManager.AppSettings["ida:AppSecret"], tokenCache);
             string accessToken = await authHelper.GetUserAccessToken(Url.Action("Index", "Home", null, Request.Url.Scheme));
 
@@ -120,7 +155,7 @@ namespace Microsoft_Graph_ExcelRest_ToDo.Controllers
                 SessionTokenCache tokenCache = new SessionTokenCache(userObjId, HttpContext);
 
                 string tenantId = System.Security.Claims.ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/tenantid").Value;
-                string authority = string.Format(ConfigurationManager.AppSettings["ida:AADInstance"], tenantId, "");
+                string authority = "common";
                 AuthHelper authHelper = new AuthHelper(authority, ConfigurationManager.AppSettings["ida:AppId"], ConfigurationManager.AppSettings["ida:AppSecret"], tokenCache);
                 string accessToken = await authHelper.GetUserAccessToken(Url.Action("Index", "Home", null, Request.Url.Scheme));
 
@@ -169,7 +204,7 @@ namespace Microsoft_Graph_ExcelRest_ToDo.Controllers
             SessionTokenCache tokenCache = new SessionTokenCache(userObjId, HttpContext);
 
             string tenantId = System.Security.Claims.ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/tenantid").Value;
-            string authority = string.Format(ConfigurationManager.AppSettings["ida:AADInstance"], tenantId, "");
+            string authority = "common";
             AuthHelper authHelper = new AuthHelper(authority, ConfigurationManager.AppSettings["ida:AppId"], ConfigurationManager.AppSettings["ida:AppSecret"], tokenCache);
             string accessToken = await authHelper.GetUserAccessToken(Url.Action("Index", "Home", null, Request.Url.Scheme));
 
@@ -460,7 +495,7 @@ Create new views for To-Do list and Chart pages.
 
 ```
 
-#### Update Shared folder
+#### Update _Layout.cshtml file in the Shared folder
 
 ![Screenshot of updating the shared folder in Visual Studio](images/shared.JPG)
 
@@ -479,7 +514,7 @@ Add this line at the end of that block:
 <li>@Html.ActionLink("ToDoList", "Index", "ToDoList")</li>
 ```
 
-#### Create Helpers
+#### Create Helper class
 
 Create a new project folder called `Helpers` and add a file named `ExcelAPIHelper.cs`. Include below contents. 
 
