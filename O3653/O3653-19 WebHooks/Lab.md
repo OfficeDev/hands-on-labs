@@ -19,6 +19,8 @@ In this first step, you will create a new ASP.NET MVC project using the **Graph 
 
      > **Note**: Make sure you use the exact name specified in these instructions for your Visual Studio project. Otherwise, your namespace name will differ from the one in these instructions and your code will not compile.
 
+  1. Build the solution (**Build** > **Build Solution**) to restore the NuGet packages required by the project.
+
   1. Open the **Web.config** file in the root directory and find the **appSettings** element. This is where you will add the app ID and app secret that you will generate in the next step.
 
 2. Launch the Application Registration Portal by opening a browser to [apps.dev.microsoft.com](https://apps.dev.microsoft.com)
@@ -33,7 +35,9 @@ In this first step, you will create a new ASP.NET MVC project using the **Graph 
 
   1. Copy the displayed app password and paste it into the value for **ida:AppSecret** in your project's **Web.config** file.
 
-  1. Set the **ida:AppScopes** value to *Mail.Read*. Your app settings will look something like this:
+  1. Set the **ida:AppScopes** value to *Mail.Read*
+
+    Your app settings will look something like this:
 
   ```xml
   <configuration>
@@ -41,7 +45,7 @@ In this first step, you will create a new ASP.NET MVC project using the **Graph 
       <!-- ... -->
       <add key="ida:AppId" value="4b63ba37..." />
       <add key="ida:AppSecret" value="AthR0e75..." />
-      <!-- ... -->
+      <add key="ida:AADInstance" value="https://login.microsoftonline.com/{0}{1}" />
       <!-- Specify scopes in this value. Multiple values should be comma separated. -->
       <add key="ida:AppScopes" value="Mail.Read" />
     </appSettings>
@@ -69,14 +73,18 @@ In this first step, you will create a new ASP.NET MVC project using the **Graph 
 
 
 ## Exercise 2: Install SignalR and the Microsoft Graph .NET Client Library
-1. Open **Tools** > **NuGet Package Manager** > **Package Manager Console** make sure the package source is set to *nuget.org*, and run the following commands. The commands install AspNet.SignalR, which is used to notify the client to refresh its view and an SDK for communicating with the Microsoft Graph. 
+1. Open **Tools** > **NuGet Package Manager** > **Package Manager Console** make sure the package source is set to *nuget.org*, and run the following commands.  
 
    ```
 Install-Package Microsoft.AspNet.SignalR
 Install-Package Microsoft.Graph
    ```
 
-2. Configure the app to use a different token cache. This application uses SignalR, which doesn't support ASP.NET session state. So you'll reconfigure the template's AuthHelper to use an **HttpRuntime** cache instead of the **SessionTokenCache** that's provided in the starter template. 
+ The commands install AspNet.SignalR, which is used to notify the client to refresh its view and the Microsoft Graph .NET Client Library (SDK) for communicating with the Microsoft Graph.
+
+2. Configure the app to use a different token cache. 
+
+  This application uses SignalR, which doesn't support ASP.NET session state. So you'll reconfigure the template's AuthHelper to use an **HttpRuntime** cache instead of the **SessionTokenCache** that's provided in the starter template. 
 
   1. Open **Startup.cs** in the root directory of the project.
 
@@ -104,9 +112,9 @@ Install-Package Microsoft.Graph
 
    1. Right-click the TokenStorage folder and choose **Add** > **Class**.
 
-   1. Name the new class *RuntimeTokenCache* and click **OK**.
+   1. Name the class *RuntimeTokenCache* and click **Add**.
 
-   1. Replace the contents with the following code.
+   1. Replace the contents of the class with the following code.
 
    ```c#
     using System;
@@ -197,13 +205,13 @@ Install-Package Microsoft.Graph
    ```c#
     // This is the logon authority
     // i.e. https://login.microsoftonline.com/common
-    public static string authority = string.Format(ConfigurationManager.AppSettings["ida:AADInstance"], "common", "");
+    public string Authority = string.Format(System.Configuration.ConfigurationManager.AppSettings["ida:AADInstance"], "common", "");
     // This is the application ID obtained from registering at
     // https://apps.dev.microsoft.com
-    private string appId = ConfigurationManager.AppSettings["ida:AppId"];
+    private string AppId = System.Configuration.ConfigurationManager.AppSettings["ida:AppId"];
     // This is the application secret obtained from registering at
     // https://apps.dev.microsoft.com
-    private string appSecret = ConfigurationManager.AppSettings["ida:AppSecret"];
+    private string AppSecret = System.Configuration.ConfigurationManager.AppSettings["ida:AppSecret"];
     // This is the token cache
     public RuntimeTokenCache TokenCache { get; set; }
 
@@ -215,7 +223,7 @@ Install-Package Microsoft.Graph
 
   1. Open **AccountController.cs** in the Controllers folder.
  
-  1. Replace the **SignOut** method with the following code:
+  1. Replace the **SignOut** action with the following code:
 
    ```c#
     public void SignOut()
@@ -234,6 +242,30 @@ Install-Package Microsoft.Graph
         Response.Redirect("/");
     }
    ```
+
+   1. Open **HomeController.cs** in the Controllers folder.
+
+   1. Replace the **Graph** action with the following code.
+
+   ```c#
+    [Authorize]
+    public async Task<ActionResult> Graph()
+    {
+        string userObjId = AuthHelper.GetUserId(ClaimsPrincipal.Current);
+
+        RuntimeTokenCache tokenCache = new RuntimeTokenCache(userObjId);
+
+        AuthHelper authHelper = new AuthHelper(tokenCache);
+
+        ViewBag.AccessToken = await authHelper.GetUserAccessToken(Url.Action("Index", "Home", null, Request.Url.Scheme));
+        if (null == ViewBag.AccessToken)
+        {
+            return new EmptyResult();
+        }
+
+        return View();
+    }
+    ```
 
 3. Press F5 to compile and launch your new application in the default browser.
   1. When the Graph and AAD v2 Auth Endpoint Starter page appears, sign in with your Office 365 account.
@@ -268,6 +300,12 @@ You must expose a public HTTPS endpoint to create a subscription and receive not
 ngrok http <port-number> -host-header=localhost:<port-number>
    ```
 
+   For example:
+   
+   ```
+ngrok http 21942 -host-header=localhost:21942
+   ```
+
 	![Running the command in ngrok](images/ngrok1.PNG)
 
 1. Copy the HTTPS URL that's shown in the console. 
@@ -291,7 +329,7 @@ In this step you'll create a model that represents a Subscription object.
 
 1. Name the model **Subscription.cs** and click **Add**.
 
-1. Replace contents with the following code. This code also includes a view model to display subscription properties in the UI.
+1. Replace the contents with the following code. This code also includes a view model to display subscription properties in the UI.
 
    ```c#
     using System;
@@ -345,30 +383,32 @@ In this step you'll create a controller that will send a **POST /subscriptions**
 
 1. Right-click the **Controllers** folder and choose **Add** > **New Scaffolded Item**. 
 
-1. In the **Add Scaffolded** dialog, select **MVC 5 Controller - Empty** and click **Add**.
+1. In the **Add Scaffold** dialog, select **MVC 5 Controller - Empty** and click **Add**.
 
 1. Name the controller **SubscriptionController** and click **Add**.
 
-1. Add the following **using** statements:
+1. Use the following **using** statements:
 
    ```c#
+using System;
+using System.Web;
+using System.Web.Mvc;
 using GraphWebhooks.Models;
-using Microsoft.Owin.Security;
-using Microsoft.Owin.Security.OpenIdConnect;
 using Newtonsoft.Json;
 using System.Configuration;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using GraphWebhooks.Auth;
+using System.Security.Claims;
+using GraphWebhooks.TokenStorage;
    ```
 
 ### Create a webhooks subscription
 
 This app creates a subscription for the *me/mailFolders('Inbox')/messages* resource for the *created* change type. See the docs at http://graph.microsoft.io/en-us/docs/api-reference/v1.0/resources/subscription for other supported resources and change types. 
 
-#### Build the POST /subscriptions request
-
-1. Add the **CreateSubscription** method. This builds the request, gets an access token, and then adds the token to the HTTP client that sends the request.
+1. Add the **CreateSubscription** action. This builds the request, sends the request, and parses the response.
 
    ```c#
     // Create webhooks subscriptions.
@@ -408,47 +448,37 @@ This app creates a subscription for the *me/mailFolders('Inbox')/messages* resou
         }
         
         // Send the request and parse the response.
-    }
-   ```
-
-### Send the request and parse the response
-
-1. Replace the *// Send the request and parse the response* comment with the following code. This sends the request, parses the response, and loads the view.
-
-   ```c#
-    // Send the request and parse the response.
-    HttpResponseMessage response = await client.SendAsync(request);
-    if (response.IsSuccessStatusCode)
-    {
-
-        // Parse the JSON response.
-        string stringResult = await response.Content.ReadAsStringAsync();
-        SubscriptionViewModel viewModel = new SubscriptionViewModel
+        HttpResponseMessage response = await client.SendAsync(request);
+        if (response.IsSuccessStatusCode)
         {
-            Subscription = JsonConvert.DeserializeObject<Subscription>(stringResult)
-        };
+
+            // Parse the JSON response.
+            string stringResult = await response.Content.ReadAsStringAsync();
+            SubscriptionViewModel viewModel = new SubscriptionViewModel
+            {
+                Subscription = JsonConvert.DeserializeObject<Subscription>(stringResult)
+            };
 
 
-        // This app temporarily stores the current subscription ID, client state, and user object ID. 
-        // These are required so the NotificationController, which is not authenticated, can retrieve an access token from the cache.
-        // Production apps typically use some method of persistent storage.
-        HttpRuntime.Cache.Insert("subscriptionId_" + viewModel.Subscription.Id,
-            Tuple.Create(viewModel.Subscription.ClientState, AuthHelper.GetUserId(ClaimsPrincipal.Current)), null, DateTime.MaxValue, new TimeSpan(24, 0, 0), System.Web.Caching.CacheItemPriority.NotRemovable, null);
+            // This app temporarily stores the current subscription ID, client state, and user object ID. 
+            // These are required so the NotificationController, which is not authenticated, can retrieve an access token from the cache.
+            // Production apps typically use some method of persistent storage.
+            HttpRuntime.Cache.Insert("subscriptionId_" + viewModel.Subscription.Id,
+                Tuple.Create(viewModel.Subscription.ClientState, AuthHelper.GetUserId(ClaimsPrincipal.Current)), null, DateTime.MaxValue, new TimeSpan(24, 0, 0), System.Web.Caching.CacheItemPriority.NotRemovable, null);
 
-        // Save the latest subscription ID, so we can delete it later and filter the view on it.
-        Session["SubscriptionId"] = viewModel.Subscription.Id;
-        return View("Subscription", viewModel);
-    }
-    else
-    {
-        string debugString = await response.Content.ReadAsStringAsync();
-        return RedirectToAction("Index", "Error", new { message = response.StatusCode, debug = debugString });
+            // Save the latest subscription ID, so we can delete it later and filter the view on it.
+            Session["SubscriptionId"] = viewModel.Subscription.Id;
+            return View("Subscription", viewModel);
+        }
+        else
+        {
+            string debugString = await response.Content.ReadAsStringAsync();
+            return RedirectToAction("Index", "Error", new { message = response.StatusCode, debug = debugString });
+        }
     }
    ```
 
-### Build the DELETE /subscriptions/id request
-
-1. Add the **DeleteSubscription** method. This deletes the current subscription and signs the user out.
+1. Add the **DeleteSubscription** action. This deletes the current subscription and signs the user out.
 
    ```
     // Delete the current webhooks subscription and sign the user out.
@@ -497,13 +527,13 @@ In this step you'll create a view for the app start page and a view that display
 
 ### Create the Index view
 
-1. Right-click the **Views/Subscription** folder and choose **Add** > **View**. 
+1. Right-click the **Views\Subscription** folder and choose **Add** > **View**. 
 
 1. Name the view **Index**. 
 
 1. Select the **Empty (without model)** template, and then click **Add**.
 
-1. In the **Index.cshtml** file that's created, replace the HTML with the following code:
+1. In the **Index.cshtml** file that's created, replace the contents with the following code:
 
    ```html
 <h2>Microsoft Graph Webhooks</h2>
@@ -532,15 +562,21 @@ In this step you'll create a view for the app start page and a view that display
 
 ### Create the Subscription view
 
-1. Right-click the **Views** > **Subscription** folder and choose **Add** > **View**. 
+1. Right-click the **Views\Subscription** folder and choose **Add** > **View**. 
 
 1. Name the view **Subscription**.
 
 1. Select the **Empty** template, select the **SubscriptionViewModel (GraphWebhooks.Models)** model, and then click **Add**.
 
-1. In the **Subscription.cshtml** file, update the HTML as follows:
+1. In the **Subscription.cshtml** file, replace the contents with the following code.
 
    ```html
+    @model GraphWebhooks.Models.SubscriptionViewModel
+
+    @{
+        ViewBag.Title = "Subscription";
+    }
+
     <h2>Subscription</h2>
     <div>
         <table>
@@ -681,13 +717,14 @@ In this step you'll create a controller that exposes the notification endpoint.
 
 1. Right-click the **Controllers** folder and choose **Add** > **New Scaffolded Item**. 
 
-1. In the "Add Scaffold" dialog, select **MVC 5 Controller - Empty** and click **Add**.
+1. In the **Add Scaffold** dialog, select **MVC 5 Controller - Empty** and click **Add**.
 
 1. Name the controller **NotificationController** and click **Add**.
 
-1. Add the following **using** statements:
+1. Replace the contents with the following code. This adds the **Listen** callback method you'll register for notifications.
 
-  ```c#
+   ```c#
+using System.Web.Mvc;
 using GraphWebhooks.Models;
 using GraphWebhooks.SignalR;
 using Microsoft.Graph;
@@ -697,13 +734,9 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using GraphWebhooks.Auth;
 using GraphWebhooks.TokenStorage;
-  ```
 
-### Create the notification endpoint
-
-1. Replace the **NotificationController** class with the following code. This adds the **Listen** callback method you'll register for notifications.
-
-   ```c#
+namespace GraphWebhooks.Controllers
+{
     public class NotificationController : Controller
     {
         public ActionResult LoadView()
@@ -773,14 +806,15 @@ using GraphWebhooks.TokenStorage;
                 }
             }
         }
-    }
+    }  
+}
    ```
 
 ### Get changed messages
 
 1. Add the **GetChangedMessagesAsync** method to the **NotificationController** class. This queries Microsoft Graph for the changed messages.
 
-   > NOTE: This method uses the Microsoft Graph SDK to access the Outlook message. 
+   > NOTE: This method uses the Microsoft Graph SDK to access Outlook messages. 
 
    ```c#
     // Get information about the changed messages and send to browser via SignalR
@@ -829,31 +863,32 @@ This app uses SignalR to notify the client to refresh its view.
 
 1. Right-click the **GraphWebhooks** project and create a folder named **SignalR**.
 
-1. Right-click the **SignalR** folder and choose **Add** > **New Item** and then type **SignalR Hub** in the search bar to find **SignalR Hub Class (v2)**. 
+1. Right-click the **SignalR** folder and choose **Add** > **SignalR Hub Class (v2)**. 
 
-1. Name the class **NotificationHub**, and click **OK**. This sample doesn't add any functionality to the hub.
+1. Name the class *NotificationHub*, and click **OK**. This sample doesn't add any functionality to the hub.
 
-1. Right-click the **SignalR** folder and choose **Add** > **New Item**. Choose the **SignalR** > **SignalR Persistent Connection Class (v2)** template.
+1. Right-click the **SignalR** folder and choose **Add** > **SignalR Persistent Connection Class (v2)**.
 
-1. Name the class **NotificationService.cs**, and click **Add**.
+1. Name the class *NotificationService.cs*, and click **Add**.
 
-1. In **NotificationService**, add the following **using** statement:
-
-   ```c#
-using Microsoft.Graph;
-   ```
-
-1. Replace the **NotificationService** class with the following code.
+1. Replace the contents with the following code.
 
    ```c#
-    public class NotificationService : PersistentConnection
+    using System.Collections.Generic;
+    using Microsoft.AspNet.SignalR;
+    using Microsoft.Graph;
+
+    namespace GraphWebhooks.SignalR
     {
-      public void SendNotificationToClient(List<Message> messages)
+        public class NotificationService : PersistentConnection
         {
-            var hubContext = GlobalHost.ConnectionManager.GetHubContext<NotificationHub>();
-            if (hubContext != null)
+            public void SendNotificationToClient(List<Message> messages)
             {
-                hubContext.Clients.All.showNotification(messages);
+                var hubContext = GlobalHost.ConnectionManager.GetHubContext<NotificationHub>();
+                if (hubContext != null)
+                {
+                    hubContext.Clients.All.showNotification(messages);
+                }
             }
         }
     }
