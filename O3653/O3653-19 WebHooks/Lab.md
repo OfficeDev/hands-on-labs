@@ -250,6 +250,12 @@ You must expose a public HTTPS endpoint to create a subscription and receive not
 
 1. Unzip the package and run ngrok.exe.
 
+1. In Visual Studio, open the Web.config file in the root directory of the project. Insert the following key in the **appSettings** section.
+
+   ```xml
+    <add key="ida:NotificationUrl" value="ENTER_YOUR_PROXY_URL/notification/listen" />
+   ```
+
 1. In Solution Explorer, select the **GraphWebhooks** project.
 
 1. Copy the **URL** port number from the **Properties** window.  If the **Properties** window isn't showing, choose **View** > **Properties Window**. 
@@ -268,10 +274,10 @@ ngrok http <port-number> -host-header=localhost:<port-number>
 
 	![The HTTPS URL in the ngrok console](images/ngrok2.PNG)
 
-1. In Visual Studio, open the Web.config file in the root directory of the project. Insert the following key in the **appSettings** section, replacing the *ENTER_YOUR_PROXY_URL* placeholder value with the URL you just copied.
+1. In the Web.config file, replace the *ENTER_YOUR_PROXY_URL* placeholder value for the **ida:NotificationUrl** key with the HTTPS URL you just copied. It will look something like this.
 
    ```xml
-    <add key="ida:NotificationUrl" value="ENTER_YOUR_PROXY_URL/notification/listen" />
+    <add key="ida:NotificationUrl" value="https://74c48253.ngrok.io/notification/listen" />
    ```
 
    > **NOTE:** Keep the console open while testing. If you close it, the tunnel also closes and you'll need to generate a new URL and update the sample.
