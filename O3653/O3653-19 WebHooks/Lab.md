@@ -69,18 +69,14 @@ In this first step, you will create a new ASP.NET MVC project using the **Graph 
 
 
 ## Exercise 2: Install SignalR and the Microsoft Graph .NET Client Library
-1. Open **Tools** > **NuGet Package Manager** > **Package Manager Console**, and run the following commands. These install AspNet.SignalR, which is used to notify the client to refresh its view, and an SDK for communicating with the Microsoft Graph.
+1. Open **Tools** > **NuGet Package Manager** > **Package Manager Console** make sure the package source is set to *nuget.org*, and run the following commands. The commands install AspNet.SignalR, which is used to notify the client to refresh its view and an SDK for communicating with the Microsoft Graph. 
 
    ```
 Install-Package Microsoft.AspNet.SignalR
 Install-Package Microsoft.Graph
    ```
-   
-    > **NOTE:** In the Package Manager Console, make sure you use the set the package source to: *nuget.org*. 
 
-2. Configure the app to use the default token cache. This application uses SignalR, which doesn't support ASP.NET session state. So you'll need to reconfigure the **AuthenticationContext** to use the default token cache instead of the **SessionTokenCache** that's provided in the starter template. 
-
-  > **NOTE:** Production applications should implement a custom token cache that derives from the MSAL **TokenCache** class. 
+2. Configure the app to use a different token cache. This application uses SignalR, which doesn't support ASP.NET session state. So you'll reconfigure the template's AuthHelper to use an **HttpRuntime** cache instead of the **SessionTokenCache** that's provided in the starter template. 
 
   1. Open **Startup.cs** in the root directory of the project.
 
@@ -91,40 +87,135 @@ Install-Package Microsoft.Graph
     private async Task OnAuthorizationCodeReceived(AuthorizationCodeReceivedNotification notification)
     {
 
-        // Exchange the auth code for a token
-        ADAL.ClientCredential clientCred = new ADAL.ClientCredential(appId, appSecret);
-
-        // Create the auth context
-        ADAL.AuthenticationContext authContext = new ADAL.AuthenticationContext(
-            string.Format(CultureInfo.InvariantCulture, aadInstance, "common", "/v2.0"),
-            false);
-
-        ADAL.AuthenticationResult authResult = await authContext.AcquireTokenByAuthorizationCodeAsync(
-            notification.Code, notification.Request.Uri, clientCred, "https://graph.microsoft.com");
-
         // Get the user's object id (used to name the token cache)
         ClaimsPrincipal principal = new ClaimsPrincipal(notification.AuthenticationTicket.Identity);
         string userObjId = AuthHelper.GetUserId(principal);
 
         // Create a token cache
-        HttpContextBase httpContext = notification.OwinContext.Get<HttpContextBase>(typeof(HttpContextBase).FullName);
-        TokenCache tokenCache = new TokenCache(userObjId, httpContext);
+        RuntimeTokenCache tokenCache = new RuntimeTokenCache(userObjId);
 
         // Exchange the auth code for a token
-        AuthHelper authHelper = new AuthHelper(
-            string.Format(CultureInfo.InvariantCulture, aadInstance, "common", ""),
-            appId, appSecret, null);
+        AuthHelper authHelper = new AuthHelper(tokenCache);
 
         var response = await authHelper.GetTokensFromAuthority("authorization_code", notification.Code,
             notification.Request.Uri.ToString());
     }
    ```
 
-3. Edit the **SignOut** action.
+   1. Right-click the TokenStorage folder and choose **Add** > **Class**.
+
+   1. Name the new class *RuntimeTokenCache* and click **OK**.
+
+   1. Replace the contents with the following code.
+
+   ```c#
+    using System;
+    using System.Web;
+    using Newtonsoft.Json;
+    using GraphWebhooks.Auth;
+
+    namespace GraphWebhooks.TokenStorage
+    {
+        public class RuntimeTokenEntry
+        {
+            [JsonProperty("access_token")]
+            public string AccessToken;
+            [JsonProperty("refresh_token")]
+            public string RefreshToken;
+            [JsonProperty("expires_on")]
+            public DateTime ExpiresOn;
+        }
+
+        public class RuntimeTokenCache
+        {
+            private static readonly object FileLock = new object();
+            private readonly string CacheId = string.Empty;
+            private string UserObjectId = string.Empty;
+            public RuntimeTokenEntry Tokens { get; private set; }
+
+            public RuntimeTokenCache(string userId)
+            {
+                UserObjectId = userId;
+                CacheId = UserObjectId + "_TokenCache";
+
+                Load();
+            }
+
+            public void Load()
+            {
+                lock (FileLock)
+                {
+                    string jsonCache = (string)HttpRuntime.Cache.Get(CacheId);
+                    if (!string.IsNullOrEmpty(jsonCache))
+                    {
+                        Tokens = JsonConvert.DeserializeObject<RuntimeTokenEntry>(jsonCache);
+                    }
+                }
+            }
+
+            public void Persist()
+            {
+                lock (FileLock)
+                {
+                    if (null != Tokens)
+                    {
+                        HttpRuntime.Cache.Insert(CacheId, JsonConvert.SerializeObject(Tokens));
+                    }
+                }
+            }
+
+            public void Clear()
+            {
+                lock (FileLock)
+                {
+                    HttpRuntime.Cache.Remove(CacheId);
+                }
+            }
+
+            public void UpdateTokens(TokenRequestSuccessResponse tokenResponse)
+            {
+                double expireSeconds = double.Parse(tokenResponse.ExpiresIn);
+                expireSeconds += -300;
+
+                Tokens = new RuntimeTokenEntry()
+                {
+                    AccessToken = tokenResponse.AccessToken,
+                    RefreshToken = tokenResponse.RefreshToken,
+                    ExpiresOn = DateTime.UtcNow.AddSeconds(expireSeconds)
+                };
+
+                Persist();
+            }
+        }
+    }
+   ```
+
+  1. Open **AuthHelper** in the Auth folder.
+
+  1. Replace the fields and constructor with the following code.
+
+   ```c#
+    // This is the logon authority
+    // i.e. https://login.microsoftonline.com/common
+    public static string authority = string.Format(ConfigurationManager.AppSettings["ida:AADInstance"], "common", "");
+    // This is the application ID obtained from registering at
+    // https://apps.dev.microsoft.com
+    private string appId = ConfigurationManager.AppSettings["ida:AppId"];
+    // This is the application secret obtained from registering at
+    // https://apps.dev.microsoft.com
+    private string appSecret = ConfigurationManager.AppSettings["ida:AppSecret"];
+    // This is the token cache
+    public RuntimeTokenCache TokenCache { get; set; }
+
+    public AuthHelper(RuntimeTokenCache tokenCache)
+    {
+        TokenCache = tokenCache;
+    }
+    ```
+
   1. Open **AccountController.cs** in the Controllers folder.
  
   1. Replace the **SignOut** method with the following code:
-
 
    ```c#
     public void SignOut()
@@ -132,9 +223,10 @@ Install-Package Microsoft.Graph
         if (Request.IsAuthenticated)
         {
             // Get the user's token cache and clear it
-            string userObjId = System.Security.Claims.ClaimsPrincipal.Current
-                .FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
+            string userObjId = AuthHelper.GetUserId(ClaimsPrincipal.Current);
 
+            RuntimeTokenCache tokenCache = new RuntimeTokenCache(userObjId);
+            tokenCache.Clear();
         }
         // Send an OpenID Connect sign-out request. 
         HttpContext.GetOwinContext().Authentication.SignOut(
@@ -143,7 +235,7 @@ Install-Package Microsoft.Graph
     }
    ```
 
-4. Press F5 to compile and launch your new application in the default browser.
+3. Press F5 to compile and launch your new application in the default browser.
   1. When the Graph and AAD v2 Auth Endpoint Starter page appears, sign in with your Office 365 account.
 
   1. Review the permissions the application is requesting, and click **Accept**.
@@ -154,15 +246,15 @@ Install-Package Microsoft.Graph
 ## Exercise 3: Set up the ngrok proxy and notification URL data
 You must expose a public HTTPS endpoint to create a subscription and receive notifications from Microsoft Graph. While testing, you can use ngrok to temporarily allow messages from Microsoft Graph to tunnel to a port on your local computer. This makes it easier to test and debug webhooks. To learn more about using ngrok, see the ngrok website at `https://ngrok.com/` 
 
+1. Download ngrok at `https://ngrok.com/download` for Windows.  
+
+1. Unzip the package and run ngrok.exe.
+
 1. In Solution Explorer, select the **GraphWebhooks** project.
 
 1. Copy the **URL** port number from the **Properties** window.  If the **Properties** window isn't showing, choose **View** > **Properties Window**. 
 
 	![URL port number in the Properties window](images/PortNumber.png)
-
-1. Download ngrok at `https://ngrok.com/download` for Windows.  
-
-1. Unzip the package and run ngrok.exe.
 
 1. Replace the two *<port-number>* placeholder values in the following command with the port number you copied, and then run the command in the ngrok console.
 
@@ -193,50 +285,50 @@ In this step you'll create a model that represents a Subscription object.
 
 1. Name the model **Subscription.cs** and click **Add**.
 
-1. Add the following **using** statement. The samples uses the Json.NET framework to deserialize JSON responses.
+1. Replace contents with the following code. This code also includes a view model to display subscription properties in the UI.
 
    ```c#
-using Newtonsoft.Json;
-   ```
+    using System;
+    using Newtonsoft.Json;
 
-1. Replace the **Subscription** class with the following code. This code also includes a view model to display subscription properties in the UI.
-
-   ```c#
-    // A webhooks subscription.
-    public class Subscription
+    namespace GraphWebhooks.Models
     {
-        // The type of change in the subscribed resource that raises a notification.
-        [JsonProperty(PropertyName = "changeType")]
-        public string ChangeType { get; set; }
+        // A webhooks subscription.
+        public class Subscription
+        {
+            // The type of change in the subscribed resource that raises a notification.
+            [JsonProperty(PropertyName = "changeType")]
+            public string ChangeType { get; set; }
 
-        // The string that MS Graph should send with each notification. Maximum length is 255 characters. 
-        // To verify that the notification is from MS Graph, compare the value received with the notification to the value you sent with the subscription request.
-        [JsonProperty(PropertyName = "clientState")]
-        public string ClientState { get; set; }
+            // The string that MS Graph should send with each notification. Maximum length is 255 characters. 
+            // To verify that the notification is from MS Graph, compare the value received with the notification to the value you sent with the subscription request.
+            [JsonProperty(PropertyName = "clientState")]
+            public string ClientState { get; set; }
 
-        // The URL of the endpoint that receives the subscription response and notifications. Requires https.
-        [JsonProperty(PropertyName = "notificationUrl")]
-        public string NotificationUrl { get; set; }
+            // The URL of the endpoint that receives the subscription response and notifications. Requires https.
+            [JsonProperty(PropertyName = "notificationUrl")]
+            public string NotificationUrl { get; set; }
 
-        // The resource to monitor for changes.
-        [JsonProperty(PropertyName = "resource")]
-        public string Resource { get; set; }
+            // The resource to monitor for changes.
+            [JsonProperty(PropertyName = "resource")]
+            public string Resource { get; set; }
 
-        // The amount of time in UTC format when the webhook subscription expires, based on the subscription creation time.
-        // The maximum time varies for the resource subscribed to. This sample sets it to the 4230 minute maximum for messages.
-        // See http://graph.microsoft.io/en-us/docs/api-reference/v1.0/resources/subscription for maximum values for resources.
-        [JsonProperty(PropertyName = "expirationDateTime")]
-        public DateTimeOffset? ExpirationDateTime { get; set; }
+            // The amount of time in UTC format when the webhook subscription expires, based on the subscription creation time.
+            // The maximum time varies for the resource subscribed to. This sample sets it to the 4230 minute maximum for messages.
+            // See http://graph.microsoft.io/en-us/docs/api-reference/v1.0/resources/subscription for maximum values for resources.
+            [JsonProperty(PropertyName = "expirationDateTime")]
+            public DateTimeOffset? ExpirationDateTime { get; set; }
 
-        // The unique identifier for the webhook subscription.
-        [JsonProperty(PropertyName = "id")]
-        public string Id { get; set; }
-    }
+            // The unique identifier for the webhook subscription.
+            [JsonProperty(PropertyName = "id")]
+            public string Id { get; set; }
+        }
 
-    // The data that displays in the Subscription view.
-    public class SubscriptionViewModel
-    {
-        public Subscription Subscription { get; set; }
+        // The data that displays in the Subscription view.
+        public class SubscriptionViewModel
+        {
+            public Subscription Subscription { get; set; }
+        }
     }
    ```
 
@@ -255,7 +347,6 @@ In this step you'll create a controller that will send a **POST /subscriptions**
 
    ```c#
 using GraphWebhooks.Models;
-using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.OpenIdConnect;
 using Newtonsoft.Json;
@@ -267,7 +358,11 @@ using System.Threading.Tasks;
 
 ### Create a webhooks subscription
 
-1. Add the **CreateSubscription** method. This gets an access token, and then adds it to the HTTP client that sends the **POST /subscriptions** request.
+This app creates a subscription for the *me/mailFolders('Inbox')/messages* resource for the *created* change type. See the docs at http://graph.microsoft.io/en-us/docs/api-reference/v1.0/resources/subscription for other supported resources and change types. 
+
+#### Build the POST /subscriptions request
+
+1. Add the **CreateSubscription** method. This builds the request, gets an access token, and then adds the token to the HTTP client that sends the request.
 
    ```c#
     // Create webhooks subscriptions.
@@ -275,64 +370,40 @@ using System.Threading.Tasks;
     public async Task<ActionResult> CreateSubscription()
     {
 
+        // Build the request.
+        HttpClient client = new HttpClient();
+        string subscriptionsEndpoint = "https://graph.microsoft.com/v1.0/subscriptions/";
+        HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, subscriptionsEndpoint);
+
+        var subscription = new Subscription
+        {
+            Resource = "me/mailFolders('Inbox')/messages",
+            ChangeType = "created",
+            NotificationUrl = ConfigurationManager.AppSettings["ida:NotificationUrl"],
+            ClientState = Guid.NewGuid().ToString(),
+            ExpirationDateTime = DateTime.UtcNow + new TimeSpan(0, 0, 4230, 0)
+        };
+        string contentString = JsonConvert.SerializeObject(subscription, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+        request.Content = new StringContent(contentString, System.Text.Encoding.UTF8, "application/json");
+
         // Get an access token and add it to the client.
-        AuthenticationResult authResult = null;
         try
         {
-            string userObjId = System.Security.Claims.ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
-            string authority = string.Format(ConfigurationManager.AppSettings["ida:AADInstance"], "common");
-            AuthenticationContext authContext = new AuthenticationContext(authority, false);
-            ClientCredential credential = new ClientCredential(ConfigurationManager.AppSettings["ida:AppId"], ConfigurationManager.AppSettings["ida:AppSecret"]);
-            try
-            {
-                authResult = await authContext.AcquireTokenSilentAsync("https://graph.microsoft.com", credential,
-                                new UserIdentifier(userObjId, UserIdentifierType.UniqueId));
-            }
-            catch (AdalSilentTokenAcquisitionException)
-            {
-                Request.GetOwinContext().Authentication.Challenge(new AuthenticationProperties { RedirectUri = "/Subscription/CreateSubscription" },
-                                            OpenIdConnectAuthenticationDefaults.AuthenticationType);
-                return new EmptyResult();
-            }
+            string userObjId = AuthHelper.GetUserId(ClaimsPrincipal.Current);
+            AuthHelper authHelper = new AuthHelper(new RuntimeTokenCache(userObjId));
+            string accessToken = await authHelper.GetUserAccessToken("/");
+
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
         catch (Exception ex)
         {
             return RedirectToAction("Index", "Error", new { message = ex.Message, debug = ex.StackTrace });
         }
-
-        HttpClient client = new HttpClient();
-        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authResult.AccessToken);
-        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-        // Build the request.
-
+        
         // Send the request and parse the response.
-
     }
    ```
-
-### Build the POST /subscriptions request
-
-1. Replace the *// Build the request* comment with the following code, which builds the **POST /subscriptions** request. This example uses a random GUID for the client state.
-
-   ```c#
-    // Build the request.
-    string subscriptionsEndpoint = "https://graph.microsoft.com/v1.0/subscriptions/";
-    HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, subscriptionsEndpoint);
-    var subscription = new Subscription
-    {
-        Resource = "me/mailFolders('Inbox')/messages",
-        ChangeType = "created",
-        NotificationUrl = ConfigurationManager.AppSettings["ida:NotificationUrl"],
-        ClientState = Guid.NewGuid().ToString(),
-        ExpirationDateTime = DateTime.UtcNow + new TimeSpan(0, 0, 4230, 0)
-    };
-
-    string contentString = JsonConvert.SerializeObject(subscription, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-    request.Content = new StringContent(contentString, System.Text.Encoding.UTF8, "application/json");
-   ```
-
-This sample creates a subscription for the *me/mailFolders('Inbox')/messages* resource for the *created* change type. See the docs at `http://graph.microsoft.io/en-us/docs/api-reference/v1.0/resources/subscription` for other supported resources and change types. 
 
 ### Send the request and parse the response
 
@@ -351,20 +422,21 @@ This sample creates a subscription for the *me/mailFolders('Inbox')/messages* re
             Subscription = JsonConvert.DeserializeObject<Subscription>(stringResult)
         };
 
-        // This app temporarily stores the current subscription ID, refreshToken and client state. 
-        // These are required so the NotificationController, which is not authenticated can retrieve an access token keyed from subscription id
+
+        // This app temporarily stores the current subscription ID, client state, and user object ID. 
+        // These are required so the NotificationController, which is not authenticated, can retrieve an access token from the cache.
         // Production apps typically use some method of persistent storage.
-        HttpRuntime.Cache.Insert("subscriptionId_" + viewModel.Subscription.Id, 
-            Tuple.Create(viewModel.Subscription.ClientState, authResult.RefreshToken), null, DateTime.MaxValue, new TimeSpan(24, 0, 0), System.Web.Caching.CacheItemPriority.NotRemovable, null);
+        HttpRuntime.Cache.Insert("subscriptionId_" + viewModel.Subscription.Id,
+            Tuple.Create(viewModel.Subscription.ClientState, AuthHelper.GetUserId(ClaimsPrincipal.Current)), null, DateTime.MaxValue, new TimeSpan(24, 0, 0), System.Web.Caching.CacheItemPriority.NotRemovable, null);
 
         // Save the latest subscription ID, so we can delete it later and filter the view on it.
         Session["SubscriptionId"] = viewModel.Subscription.Id;
         return View("Subscription", viewModel);
-
     }
     else
     {
-        return RedirectToAction("Index", "Error", new { message = response.StatusCode, debug = await response.Content.ReadAsStringAsync() });
+        string debugString = await response.Content.ReadAsStringAsync();
+        return RedirectToAction("Index", "Error", new { message = response.StatusCode, debug = debugString });
     }
    ```
 
@@ -377,51 +449,37 @@ This sample creates a subscription for the *me/mailFolders('Inbox')/messages* re
     [Authorize]
     public async Task<ActionResult> DeleteSubscription()
     {
-        string subscriptionId = (string) Session["SubscriptionId"];
+        // Build the request.
+        HttpClient client = new HttpClient();
+        string serviceRootUrl = "https://graph.microsoft.com/v1.0/subscriptions/";
 
+        string subscriptionId = (string)Session["SubscriptionId"];
         if (!string.IsNullOrEmpty(subscriptionId))
         {
-            string serviceRootUrl = "https://graph.microsoft.com/v1.0/subscriptions/";
-
+            
             // Get an access token and add it to the client.
-            string accessToken;
             try
             {
-                string userObjId = System.Security.Claims.ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
-                string authority = string.Format(ConfigurationManager.AppSettings["ida:AADInstance"], "common");
-                AuthenticationContext authContext = new AuthenticationContext(authority, false);
-                ClientCredential credential = new ClientCredential(ConfigurationManager.AppSettings["ida:AppId"], ConfigurationManager.AppSettings["ida:AppSecret"]);
-                AuthenticationResult authResult = null;
-                try
-                {
-                    authResult = await authContext.AcquireTokenSilentAsync("https://graph.microsoft.com", credential,
-                                    new UserIdentifier(userObjId, UserIdentifierType.UniqueId));
-                }
-                catch (AdalSilentTokenAcquisitionException)
-                {
-                    Request.GetOwinContext().Authentication.Challenge(new AuthenticationProperties { RedirectUri = "/Subscription/DeleteSubscription" },
-                                                OpenIdConnectAuthenticationDefaults.AuthenticationType);
-                    return new EmptyResult();
-                }
-                accessToken = authResult?.AccessToken;
+                string userObjId = AuthHelper.GetUserId(ClaimsPrincipal.Current);
+                AuthHelper authHelper = new AuthHelper(new RuntimeTokenCache(userObjId));
+                string accessToken = await authHelper.GetUserAccessToken("/");
 
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             }
             catch (Exception ex)
             {
-                return RedirectToAction("Index", "Error", new { message = ex.Message, debug = "" });
+                return RedirectToAction("Index", "Error", new { message = ex.Message, debug = ex.StackTrace });
             }
-
-            HttpClient client = new HttpClient();
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
+            
             // Send the 'DELETE /subscriptions/id' request.
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Delete, serviceRootUrl + subscriptionId);
             HttpResponseMessage response = await client.SendAsync(request);
 
             if (!response.IsSuccessStatusCode)
             {
-                return RedirectToAction("Index", "Error", new { message = response.StatusCode, debug = response.Content.ReadAsStringAsync() });
+                string debugString = await response.Content.ReadAsStringAsync();
+                return RedirectToAction("Index", "Error", new { message = response.StatusCode, debug = debugString });
             }
         }
         return RedirectToAction("SignOut", "Account");
@@ -429,7 +487,7 @@ This sample creates a subscription for the *me/mailFolders('Inbox')/messages* re
    ```
 
 ## Exercise 6: Create the Index and Subscription views
-In this step you'll create a view for the app start page and a view that displays the properties of the subscription you create. You'll also edit the Error view to show a description.
+In this step you'll create a view for the app start page and a view that displays the properties of the subscription you create.
 
 ### Create the Index view
 
@@ -468,7 +526,7 @@ In this step you'll create a view for the app start page and a view that display
 
 ### Create the Subscription view
 
-1. Right-click the **Views/Subscription** folder and choose **Add** > **View**. 
+1. Right-click the **Views** > **Subscription** folder and choose **Add** > **View**. 
 
 1. Name the view **Subscription**.
 
@@ -536,11 +594,11 @@ In this step you'll create a view for the app start page and a view that display
 1. In the **App_Start** folder, open RouteConfig.cs and replace the Default route with the following:
 
    ```c#
-routes.MapRoute(
-    name: "Default",
-    url: "{controller}/{action}",
-    defaults: new { controller = "Subscription", action = "Index" }
-);
+    routes.MapRoute(
+        name: "Default",
+        url: "{controller}/{action}",
+        defaults: new { controller = "Subscription", action = "Index" }
+    );
    ```
 
 ## Exercise 7: Create the Notification model
@@ -552,61 +610,61 @@ In this step you'll create a model that represents a Notification object.
 
 1. Name the model **Notification.cs** and click **Add**.
 
-1. Add the following **using** statement. The sample uses the Json.NET framework to deserialize JSON responses.
-
-  ```c#
-using Newtonsoft.Json;
-  ```
-
-1. Replace the **Notification** class with the following code. This also defines a class for the **ResourceData** object. 
+1. Replace the contents with the following code. This also defines a class for the **ResourceData** object. 
 
   ```c# 
-    // A change notification.
-    public class Notification
+    using System;
+    using Newtonsoft.Json;
+
+    namespace GraphWebhooks.Models
     {
-        // The type of change.
-        [JsonProperty(PropertyName = "changeType")]
-        public string ChangeType { get; set; }
+        // A change notification.
+        public class Notification
+        {
+            // The type of change.
+            [JsonProperty(PropertyName = "changeType")]
+            public string ChangeType { get; set; }
 
-        // The client state used to verify that the notification is from Microsoft Graph. Compare the value received with the notification to the value you sent with the subscription request.
-        [JsonProperty(PropertyName = "clientState")]
-        public string ClientState { get; set; }
+            // The client state used to verify that the notification is from Microsoft Graph. Compare the value received with the notification to the value you sent with the subscription request.
+            [JsonProperty(PropertyName = "clientState")]
+            public string ClientState { get; set; }
 
-        // The endpoint of the resource that changed. For example, a message uses the format ../Users/{user-id}/Messages/{message-id}
-        [JsonProperty(PropertyName = "resource")]
-        public string Resource { get; set; }
+            // The endpoint of the resource that changed. For example, a message uses the format ../Users/{user-id}/Messages/{message-id}
+            [JsonProperty(PropertyName = "resource")]
+            public string Resource { get; set; }
 
-        // The UTC date and time when the webhooks subscription expires.
-        [JsonProperty(PropertyName = "subscriptionExpirationDateTime")]
-        public DateTimeOffset SubscriptionExpirationDateTime { get; set; }
+            // The UTC date and time when the webhooks subscription expires.
+            [JsonProperty(PropertyName = "subscriptionExpirationDateTime")]
+            public DateTimeOffset SubscriptionExpirationDateTime { get; set; }
 
-        // The unique identifier for the webhooks subscription.
-        [JsonProperty(PropertyName = "subscriptionId")]
-        public string SubscriptionId { get; set; }
+            // The unique identifier for the webhooks subscription.
+            [JsonProperty(PropertyName = "subscriptionId")]
+            public string SubscriptionId { get; set; }
 
-        // Properties of the changed resource.
-        [JsonProperty(PropertyName = "resourceData")]
-        public ResourceData ResourceData { get; set; }
-    }
+            // Properties of the changed resource.
+            [JsonProperty(PropertyName = "resourceData")]
+            public ResourceData ResourceData { get; set; }
+        }
 
-    public class ResourceData
-    {
+        public class ResourceData
+        {
 
-        // The ID of the resource.
-        [JsonProperty(PropertyName = "id")]
-        public string Id { get; set; }
+            // The ID of the resource.
+            [JsonProperty(PropertyName = "id")]
+            public string Id { get; set; }
 
-        // The OData etag property.
-        [JsonProperty(PropertyName = "@odata.etag")]
-        public string ODataEtag { get; set; }
+            // The OData etag property.
+            [JsonProperty(PropertyName = "@odata.etag")]
+            public string ODataEtag { get; set; }
 
-        // The OData ID of the resource. This is the same value as the resource property.
-        [JsonProperty(PropertyName = "@odata.id")]
-        public string ODataId { get; set; }
+            // The OData ID of the resource. This is the same value as the resource property.
+            [JsonProperty(PropertyName = "@odata.id")]
+            public string ODataId { get; set; }
 
-        // The OData type of the resource: "#Microsoft.Graph.Message", "#Microsoft.Graph.Event", or "#Microsoft.Graph.Contact".
-        [JsonProperty(PropertyName = "@odata.type")]
-        public string ODataType { get; set; }
+            // The OData type of the resource: "#Microsoft.Graph.Message", "#Microsoft.Graph.Event", or "#Microsoft.Graph.Contact".
+            [JsonProperty(PropertyName = "@odata.type")]
+            public string ODataType { get; set; }
+        }
     }
   ```
 
@@ -627,13 +685,12 @@ In this step you'll create a controller that exposes the notification endpoint.
 using GraphWebhooks.Models;
 using GraphWebhooks.SignalR;
 using Microsoft.Graph;
-using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.Configuration;
-using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using GraphWebhooks.Auth;
+using GraphWebhooks.TokenStorage;
   ```
 
 ### Create the notification endpoint
@@ -717,7 +774,7 @@ using System.Threading.Tasks;
 
 1. Add the **GetChangedMessagesAsync** method to the **NotificationController** class. This queries Microsoft Graph for the changed messages.
 
-   > NOTE: This method uses the new Microsoft Graph SDK to access the Outlook message. 
+   > NOTE: This method uses the Microsoft Graph SDK to access the Outlook message. 
 
    ```c#
     // Get information about the changed messages and send to browser via SignalR
@@ -725,27 +782,22 @@ using System.Threading.Tasks;
     public async Task GetChangedMessagesAsync(IEnumerable<Notification> notifications)
     {
         List<Message> messages = new List<Message>();
-
-        // Get an access token and add it to the client.
-        string authority = string.Format(ConfigurationManager.AppSettings["ida:AADInstance"], "common", "");
-        AuthenticationContext authContext = new AuthenticationContext(authority);
-        ClientCredential credential = new ClientCredential(ConfigurationManager.AppSettings["ida:AppId"], ConfigurationManager.AppSettings["ida:AppSecret"]);
-
         foreach (var notification in notifications)
         {
-            if (notification.ResourceData.ODataType != "#Microsoft.Graph.Message")
-                continue;
+            if (notification.ResourceData.ODataType != "#Microsoft.Graph.Message") continue;
 
+            // Get an access token and add it to the client.
             var subscriptionParams = (Tuple<string, string>)HttpRuntime.Cache.Get("subscriptionId_" + notification.SubscriptionId);
-            string refreshToken = subscriptionParams.Item2;
-            AuthenticationResult authResult = await authContext.AcquireTokenByRefreshTokenAsync(refreshToken, credential, "https://graph.microsoft.com");
+            string userObjId = subscriptionParams.Item2;
+            AuthHelper authHelper = new AuthHelper(new RuntimeTokenCache(userObjId));
 
+            string accessToken = await authHelper.GetUserAccessToken("/");
             var graphClient = new GraphServiceClient(new DelegateAuthenticationProvider(requestMessage =>
             {
-                requestMessage.Headers.Authorization = new AuthenticationHeaderValue("bearer", authResult.AccessToken);
+                requestMessage.Headers.Authorization = new AuthenticationHeaderValue("bearer", accessToken);
                 return Task.FromResult(0);
             }));
-            
+
             var request = new MessageRequest(graphClient.BaseUrl + "/" + notification.Resource, graphClient, null);
             try
             {
@@ -755,7 +807,7 @@ using System.Threading.Tasks;
             {
                 continue;
             }
-            
+
         }
         if (messages.Count > 0)
         {
@@ -828,7 +880,7 @@ In this step you'll create a view that displays some properties of the changed m
 }
 
 @section Scripts {
-    @Scripts.Render("~/Scripts/jquery.signalR-2.2.0.min.js");
+    @Scripts.Render("~/Scripts/jquery.signalR-2.2.1.min.js");
     @Scripts.Render("~/signalr/hubs");
 
     <script>
@@ -874,16 +926,16 @@ Congratulations! In this lab you created an MVC application that subscribes for 
 
 1. Make sure that the ngrok console is still running, then press **F5** to begin debugging.
 
-1. Sign in with your Office 365 administrator account.
+1. Sign in with your Office 365 account.
 
 1. Click the **Create subscription** button. The **Subscription** page loads with information about the subscription.
 
 1. Click the **Watch for notifications** button.
 
-1. Send an email to your administrator account. The **Notification** page displays information about the message.
+1. Send an email to your account. The **Notification** page displays information about the message.
 
 1. Click the **Delete subscription and sign out** button. 
 
 ## Next Steps and Additional Resources:  
-- See this training and more on http://dev.office.com/
-- Learn about and connect to the Microsoft Graph at https://graph.microsoft.io
+- See this training and more on http://dev.office.com/.
+- Learn about and connect to the Microsoft Graph at https://graph.microsoft.io.
