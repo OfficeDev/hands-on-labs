@@ -10,6 +10,8 @@ A webhooks subscription allows a client app to receive notifications about mail,
 To complete the exercises below, you will require an Office 365 developer environment. Use the Office 365 tenant that you have been provided with for Microsoft Ignite.
 
 ## Exercise 1: Create a new project that uses Azure Active Directory v2 authentication
+
+### Create the project in Visual Studio
 In this first step, you will create a new ASP.NET MVC project using the **Graph AAD Auth v2 Starter Project** template, register a new application in the developer portal, and log in to your app and generate access tokens for calling the Graph API.
 
 1. Launch Visual Studio 2015 and select **File** > **New** > **Project**.
@@ -19,7 +21,7 @@ In this first step, you will create a new ASP.NET MVC project using the **Graph 
 
      > **Note**: Make sure you use the exact name specified in these instructions for your Visual Studio project. Otherwise, your namespace name will differ from the one in these instructions and your code will not compile.
 
-  1. Build the solution (**Build** > **Build Solution**) to restore the NuGet packages required by the project.
+  1. Choose **Build** > **Build Solution** to restore the initial NuGet packages for the project.
 
   1. Open the **Web.config** file in the root directory and find the **appSettings** element. This is where you will add the app ID and app secret that you will generate in the next step.
 
@@ -35,7 +37,7 @@ In this first step, you will create a new ASP.NET MVC project using the **Graph 
 
   1. Copy the displayed app password and paste it into the value for **ida:AppSecret** in your project's **Web.config** file.
 
-  1. Set the **ida:AppScopes** value to *Mail.Read*
+  1. Set the **ida:AppScopes** value to: *Mail.Read*
 
     Your app settings will look something like this:
 
@@ -69,213 +71,213 @@ In this first step, you will create a new ASP.NET MVC project using the **Graph 
 4. Set the Start action to the **Account/Signout** action (to avoid a stale token error). 
   1. In Visual Studio, return to the **Web** tab of the project properties page.
 
-  1. Under **Start Action** choose **Specific Page** and enter *Account/SignOut*. 
+  1. Under **Start Action** choose **Specific Page** and enter: *Account/SignOut*
 
 
-## Exercise 2: Install SignalR and the Microsoft Graph .NET Client Library
-1. Open **Tools** > **NuGet Package Manager** > **Package Manager Console** make sure the package source is set to *nuget.org*, and run the following commands.  
+### Install the Microsoft Graph .NET Client Library and SignalR
+1. Open **Tools** > **NuGet Package Manager** > **Package Manager Console**. Make sure the package source is set to *nuget.org*, and run the following commands.  
 
-   ```
-Install-Package Microsoft.AspNet.SignalR
+   ```   
 Install-Package Microsoft.Graph
+Install-Package Microsoft.AspNet.SignalR
    ```
 
- The commands install AspNet.SignalR, which is used to notify the client to refresh its view and the Microsoft Graph .NET Client Library (SDK) for communicating with the Microsoft Graph.
+ The commands install AspNet.SignalR which notifies the client to refresh its view, and the Microsoft Graph .NET Client Library (SDK) for communicating with the Microsoft Graph. This app uses the SDK to get Outlook messages.
 
-2. Configure the app to use a different token cache. 
+### Configure the app to use a different token cache. 
 
   This application uses SignalR, which doesn't support ASP.NET session state. So you'll reconfigure the template's AuthHelper to use an **HttpRuntime** cache instead of the **SessionTokenCache** that's provided in the starter template. 
 
-  1. Open **Startup.cs** in the root directory of the project.
+1. Open **Startup.cs** in the root directory of the project.
 
-  1. Replace the **OnAuthorizationCodeReceived** method with the following code.
- 
+1. Replace the **OnAuthorizationCodeReceived** method with the following code.
 
-   ```c#
-    private async Task OnAuthorizationCodeReceived(AuthorizationCodeReceivedNotification notification)
+
+```c#
+private async Task OnAuthorizationCodeReceived(AuthorizationCodeReceivedNotification notification)
+{
+
+    // Get the user's object id (used to name the token cache)
+    ClaimsPrincipal principal = new ClaimsPrincipal(notification.AuthenticationTicket.Identity);
+    string userObjId = AuthHelper.GetUserId(principal);
+
+    // Create a token cache
+    RuntimeTokenCache tokenCache = new RuntimeTokenCache(userObjId);
+
+    // Exchange the auth code for a token
+    AuthHelper authHelper = new AuthHelper(tokenCache);
+
+    var response = await authHelper.GetTokensFromAuthority("authorization_code", notification.Code,
+        notification.Request.Uri.ToString());
+}
+```
+
+1. Right-click the **TokenStorage** folder and choose **Add** > **Class**.
+
+1. Name the class *RuntimeTokenCache* and click **Add**.
+
+1. Replace the contents of the class with the following code.
+
+```c#
+using System;
+using System.Web;
+using Newtonsoft.Json;
+using GraphWebhooks.Auth;
+
+namespace GraphWebhooks.TokenStorage
+{
+    public class RuntimeTokenEntry
     {
-
-        // Get the user's object id (used to name the token cache)
-        ClaimsPrincipal principal = new ClaimsPrincipal(notification.AuthenticationTicket.Identity);
-        string userObjId = AuthHelper.GetUserId(principal);
-
-        // Create a token cache
-        RuntimeTokenCache tokenCache = new RuntimeTokenCache(userObjId);
-
-        // Exchange the auth code for a token
-        AuthHelper authHelper = new AuthHelper(tokenCache);
-
-        var response = await authHelper.GetTokensFromAuthority("authorization_code", notification.Code,
-            notification.Request.Uri.ToString());
+        [JsonProperty("access_token")]
+        public string AccessToken;
+        [JsonProperty("refresh_token")]
+        public string RefreshToken;
+        [JsonProperty("expires_on")]
+        public DateTime ExpiresOn;
     }
-   ```
 
-   1. Right-click the TokenStorage folder and choose **Add** > **Class**.
-
-   1. Name the class *RuntimeTokenCache* and click **Add**.
-
-   1. Replace the contents of the class with the following code.
-
-   ```c#
-    using System;
-    using System.Web;
-    using Newtonsoft.Json;
-    using GraphWebhooks.Auth;
-
-    namespace GraphWebhooks.TokenStorage
+    public class RuntimeTokenCache
     {
-        public class RuntimeTokenEntry
+        private static readonly object FileLock = new object();
+        private readonly string CacheId = string.Empty;
+        private string UserObjectId = string.Empty;
+        public RuntimeTokenEntry Tokens { get; private set; }
+
+        public RuntimeTokenCache(string userId)
         {
-            [JsonProperty("access_token")]
-            public string AccessToken;
-            [JsonProperty("refresh_token")]
-            public string RefreshToken;
-            [JsonProperty("expires_on")]
-            public DateTime ExpiresOn;
+            UserObjectId = userId;
+            CacheId = UserObjectId + "_TokenCache";
+
+            Load();
         }
 
-        public class RuntimeTokenCache
+        public void Load()
         {
-            private static readonly object FileLock = new object();
-            private readonly string CacheId = string.Empty;
-            private string UserObjectId = string.Empty;
-            public RuntimeTokenEntry Tokens { get; private set; }
-
-            public RuntimeTokenCache(string userId)
+            lock (FileLock)
             {
-                UserObjectId = userId;
-                CacheId = UserObjectId + "_TokenCache";
-
-                Load();
-            }
-
-            public void Load()
-            {
-                lock (FileLock)
+                string jsonCache = (string)HttpRuntime.Cache.Get(CacheId);
+                if (!string.IsNullOrEmpty(jsonCache))
                 {
-                    string jsonCache = (string)HttpRuntime.Cache.Get(CacheId);
-                    if (!string.IsNullOrEmpty(jsonCache))
-                    {
-                        Tokens = JsonConvert.DeserializeObject<RuntimeTokenEntry>(jsonCache);
-                    }
+                    Tokens = JsonConvert.DeserializeObject<RuntimeTokenEntry>(jsonCache);
                 }
-            }
-
-            public void Persist()
-            {
-                lock (FileLock)
-                {
-                    if (null != Tokens)
-                    {
-                        HttpRuntime.Cache.Insert(CacheId, JsonConvert.SerializeObject(Tokens));
-                    }
-                }
-            }
-
-            public void Clear()
-            {
-                lock (FileLock)
-                {
-                    HttpRuntime.Cache.Remove(CacheId);
-                }
-            }
-
-            public void UpdateTokens(TokenRequestSuccessResponse tokenResponse)
-            {
-                double expireSeconds = double.Parse(tokenResponse.ExpiresIn);
-                expireSeconds += -300;
-
-                Tokens = new RuntimeTokenEntry()
-                {
-                    AccessToken = tokenResponse.AccessToken,
-                    RefreshToken = tokenResponse.RefreshToken,
-                    ExpiresOn = DateTime.UtcNow.AddSeconds(expireSeconds)
-                };
-
-                Persist();
             }
         }
-    }
-   ```
 
-  1. Open **AuthHelper** in the Auth folder.
-
-  1. Replace the fields and constructor with the following code.
-
-   ```c#
-    // This is the logon authority
-    // i.e. https://login.microsoftonline.com/common
-    public string Authority = string.Format(System.Configuration.ConfigurationManager.AppSettings["ida:AADInstance"], "common", "");
-    // This is the application ID obtained from registering at
-    // https://apps.dev.microsoft.com
-    private string AppId = System.Configuration.ConfigurationManager.AppSettings["ida:AppId"];
-    // This is the application secret obtained from registering at
-    // https://apps.dev.microsoft.com
-    private string AppSecret = System.Configuration.ConfigurationManager.AppSettings["ida:AppSecret"];
-    // This is the token cache
-    public RuntimeTokenCache TokenCache { get; set; }
-
-    public AuthHelper(RuntimeTokenCache tokenCache)
-    {
-        TokenCache = tokenCache;
-    }
-    ```
-
-  1. Open **AccountController.cs** in the Controllers folder.
- 
-  1. Replace the **SignOut** action with the following code:
-
-   ```c#
-    public void SignOut()
-    {
-        if (Request.IsAuthenticated)
+        public void Persist()
         {
-            // Get the user's token cache and clear it
-            string userObjId = AuthHelper.GetUserId(ClaimsPrincipal.Current);
-
-            RuntimeTokenCache tokenCache = new RuntimeTokenCache(userObjId);
-            tokenCache.Clear();
+            lock (FileLock)
+            {
+                if (null != Tokens)
+                {
+                    HttpRuntime.Cache.Insert(CacheId, JsonConvert.SerializeObject(Tokens));
+                }
+            }
         }
-        // Send an OpenID Connect sign-out request. 
-        HttpContext.GetOwinContext().Authentication.SignOut(
-            CookieAuthenticationDefaults.AuthenticationType);
-        Response.Redirect("/");
+
+        public void Clear()
+        {
+            lock (FileLock)
+            {
+                HttpRuntime.Cache.Remove(CacheId);
+            }
+        }
+
+        public void UpdateTokens(TokenRequestSuccessResponse tokenResponse)
+        {
+            double expireSeconds = double.Parse(tokenResponse.ExpiresIn);
+            expireSeconds += -300;
+
+            Tokens = new RuntimeTokenEntry()
+            {
+                AccessToken = tokenResponse.AccessToken,
+                RefreshToken = tokenResponse.RefreshToken,
+                ExpiresOn = DateTime.UtcNow.AddSeconds(expireSeconds)
+            };
+
+            Persist();
+        }
     }
-   ```
+}
+```
 
-   1. Open **HomeController.cs** in the Controllers folder.
+1. Open **AuthHelper** in the Auth folder.
 
-   1. Replace the **Graph** action with the following code.
+1. Replace the fields and constructor with the following code.
 
-   ```c#
-    [Authorize]
-    public async Task<ActionResult> Graph()
+```c#
+// This is the logon authority
+// i.e. https://login.microsoftonline.com/common
+public string Authority = string.Format(System.Configuration.ConfigurationManager.AppSettings["ida:AADInstance"], "common", "");
+// This is the application ID obtained from registering at
+// https://apps.dev.microsoft.com
+private string AppId = System.Configuration.ConfigurationManager.AppSettings["ida:AppId"];
+// This is the application secret obtained from registering at
+// https://apps.dev.microsoft.com
+private string AppSecret = System.Configuration.ConfigurationManager.AppSettings["ida:AppSecret"];
+// This is the token cache
+public RuntimeTokenCache TokenCache { get; set; }
+
+public AuthHelper(RuntimeTokenCache tokenCache)
+{
+    TokenCache = tokenCache;
+}
+```
+
+1. Open **AccountController.cs** in the Controllers folder.
+
+1. Replace the **SignOut** action with the following code:
+
+```c#
+public void SignOut()
+{
+    if (Request.IsAuthenticated)
     {
+        // Get the user's token cache and clear it
         string userObjId = AuthHelper.GetUserId(ClaimsPrincipal.Current);
 
         RuntimeTokenCache tokenCache = new RuntimeTokenCache(userObjId);
-
-        AuthHelper authHelper = new AuthHelper(tokenCache);
-
-        ViewBag.AccessToken = await authHelper.GetUserAccessToken(Url.Action("Index", "Home", null, Request.Url.Scheme));
-        if (null == ViewBag.AccessToken)
-        {
-            return new EmptyResult();
-        }
-
-        return View();
+        tokenCache.Clear();
     }
-    ```
+    // Send an OpenID Connect sign-out request. 
+    HttpContext.GetOwinContext().Authentication.SignOut(
+        CookieAuthenticationDefaults.AuthenticationType);
+    Response.Redirect("/");
+}
+```
 
-3. Press F5 to compile and launch your new application in the default browser.
+1. Open **HomeController.cs** in the Controllers folder.
+
+1. Replace the **Graph** action with the following code.
+
+```c#
+[Authorize]
+public async Task<ActionResult> Graph()
+{
+    string userObjId = AuthHelper.GetUserId(ClaimsPrincipal.Current);
+
+    RuntimeTokenCache tokenCache = new RuntimeTokenCache(userObjId);
+
+    AuthHelper authHelper = new AuthHelper(tokenCache);
+
+    ViewBag.AccessToken = await authHelper.GetUserAccessToken(Url.Action("Index", "Home", null, Request.Url.Scheme));
+    if (null == ViewBag.AccessToken)
+    {
+        return new EmptyResult();
+    }
+
+    return View();
+}
+```
+
+1. Press F5 to compile and launch your new application in the default browser.
   1. When the Graph and AAD v2 Auth Endpoint Starter page appears, sign in with your Office 365 account.
 
   1. Review the permissions the application is requesting, and click **Accept**.
 
-  1. Now that you are signed into your application, exercise 1 is complete!
+Exercise 1 with web sign in is complete!
 
 
-## Exercise 3: Set up the ngrok proxy and notification URL data
+## Exercise 2: Set up the ngrok proxy and notification URL data
 You must expose a public HTTPS endpoint to create a subscription and receive notifications from Microsoft Graph. While testing, you can use ngrok to temporarily allow messages from Microsoft Graph to tunnel to a port on your local computer. This makes it easier to test and debug webhooks. To learn more about using ngrok, see the ngrok website at `https://ngrok.com/` 
 
 1. Download ngrok at `https://ngrok.com/download` for Windows.  
@@ -321,7 +323,9 @@ ngrok http 21942 -host-header=localhost:21942
    > **NOTE:** Keep the console open while testing. If you close it, the tunnel also closes and you'll need to generate a new URL and update the sample.
 
 
-## Exercise 4:  Create the Subscription model
+## Exercise 3: Add Subscription support
+
+### Create the Subscription model
 
 In this step you'll create a model that represents a Subscription object. 
 
@@ -376,8 +380,8 @@ In this step you'll create a model that represents a Subscription object.
     }
    ```
 
-## Exercise 5: Create the Subscription controller
-In this step you'll create a controller that will send a **POST /subscriptions** request to Microsoft Graph on behalf of the signed in user. 
+### Create the Subscription controller
+In this step you'll create a controller that will send a **POST /subscriptions** request to Microsoft Graph on behalf of the signed in user. This app creates a subscription for the *me/mailFolders('Inbox')/messages* resource for the *created* change type. See [Create subscription](http://graph.microsoft.io/en-us/docs/api-reference/v1.0/api/subscription_post_subscriptions) for other supported resources and change types. 
 
 ### Create the controller class
 
@@ -403,10 +407,6 @@ using GraphWebhooks.Auth;
 using System.Security.Claims;
 using GraphWebhooks.TokenStorage;
    ```
-
-### Create a webhooks subscription
-
-This app creates a subscription for the *me/mailFolders('Inbox')/messages* resource for the *created* change type. See the docs at http://graph.microsoft.io/en-us/docs/api-reference/v1.0/resources/subscription for other supported resources and change types. 
 
 1. Add the **CreateSubscription** action. This builds the request, sends the request, and parses the response.
 
@@ -458,7 +458,6 @@ This app creates a subscription for the *me/mailFolders('Inbox')/messages* resou
             {
                 Subscription = JsonConvert.DeserializeObject<Subscription>(stringResult)
             };
-
 
             // This app temporarily stores the current subscription ID, client state, and user object ID. 
             // These are required so the NotificationController, which is not authenticated, can retrieve an access token from the cache.
@@ -522,7 +521,7 @@ This app creates a subscription for the *me/mailFolders('Inbox')/messages* resou
     }
    ```
 
-## Exercise 6: Create the Index and Subscription views
+### Create the Index and Subscription views
 In this step you'll create a view for the app start page and a view that displays the properties of the subscription you create.
 
 ### Create the Index view
@@ -533,7 +532,7 @@ In this step you'll create a view for the app start page and a view that display
 
 1. Select the **Empty (without model)** template, and then click **Add**.
 
-1. In the **Index.cshtml** file that's created, replace the contents with the following code:
+1. Replace the contents with the following code.
 
    ```html
 <h2>Microsoft Graph Webhooks</h2>
@@ -550,7 +549,7 @@ In this step you'll create a view for the app start page and a view that display
         &nbsp;&nbsp;"expirationDateTime": "2016-03-14T03:13:29.4232606+00:00"<br />
         }
     </code>
-    <p>See the <a href="http://graph.microsoft.io/en-us/docs/api-reference/v1.0/resources/subscription">docs</a> for other supported resources and change types.</p>
+    <p>See the <a href="http://graph.microsoft.io/en-us/docs/api-reference/v1.0/api/subscription_post_subscriptions">docs</a> for other supported resources and change types.</p>
     <br />
     @using (Html.BeginForm("CreateSubscription", "Subscription"))
     {
@@ -558,7 +557,6 @@ In this step you'll create a view for the app start page and a view that display
     }
 </div>
    ```
-1. At this point, you can run the app (press **F5**) and sign in as an Office 365 administrator. If you click the **Create subscription** button, the call will fail but you can verify that you can sign in and send an HTTP request.
 
 ### Create the Subscription view
 
@@ -568,7 +566,7 @@ In this step you'll create a view for the app start page and a view that display
 
 1. Select the **Empty** template, select the **SubscriptionViewModel (GraphWebhooks.Models)** model, and then click **Add**.
 
-1. In the **Subscription.cshtml** file, replace the contents with the following code.
+1. Replace the contents with the following code.
 
    ```html
     @model GraphWebhooks.Models.SubscriptionViewModel
@@ -643,12 +641,14 @@ In this step you'll create a view for the app start page and a view that display
     );
    ```
 
-## Exercise 7: Create the Notification model
+## Exercise 4: Add Notification support
+
+### Create the Notification model
 In this step you'll create a model that represents a Notification object. 
 
 ### Create the Notification model
 
-1. Right-click the **Models** folder and choose **Add/Class**. 
+1. Right-click the **Models** folder and choose **Add** > **Class**. 
 
 1. Name the model **Notification.cs** and click **Add**.
 
@@ -710,10 +710,8 @@ In this step you'll create a model that represents a Notification object.
     }
   ```
 
-## Exercise 8: Create the Notification controller
-In this step you'll create a controller that exposes the notification endpoint. 
-
-### Create the controller class
+### Create the Notification controller
+In this step you'll create a controller that exposes the notification endpoint and queries for changed messages. 
 
 1. Right-click the **Controllers** folder and choose **Add** > **New Scaffolded Item**. 
 
@@ -724,95 +722,96 @@ In this step you'll create a controller that exposes the notification endpoint.
 1. Replace the contents with the following code. This adds the **Listen** callback method you'll register for notifications.
 
    ```c#
-using System.Web.Mvc;
-using GraphWebhooks.Models;
-using GraphWebhooks.SignalR;
-using Microsoft.Graph;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
-using GraphWebhooks.Auth;
-using GraphWebhooks.TokenStorage;
+    using System;
+    using System.Web;
+    using System.Web.Mvc;
+    using GraphWebhooks.Models;
+    using GraphWebhooks.SignalR;
+    using Microsoft.Graph;
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
+    using System.Net.Http.Headers;
+    using System.Threading.Tasks;
+    using System.Collections.Generic;
+    using GraphWebhooks.Auth;
+    using GraphWebhooks.TokenStorage;
 
-namespace GraphWebhooks.Controllers
-{
-    public class NotificationController : Controller
+    namespace GraphWebhooks.Controllers
     {
-        public ActionResult LoadView()
+        public class NotificationController : Controller
         {
-            return View("Notification");
-        }
-
-        // The notificationUrl endpoint that's registered with the webhooks subscription.
-        [HttpPost]
-        public async Task<ActionResult> Listen()
-        {
-
-            // Validate the new subscription by sending the token back to MS Graph.
-            // This response is required for each subscription.
-            if (Request.QueryString["validationToken"] != null)
+            public ActionResult LoadView()
             {
-                var token = Request.QueryString["validationToken"];
-                return Content(token, "plain/text");
+                return View("Notification");
             }
 
-            // Parse the received notifications.
-            else
+            // The notificationUrl endpoint that's registered with the webhooks subscription.
+            [HttpPost]
+            public async Task<ActionResult> Listen()
             {
-                try
-                {
-                    var notifications = new Dictionary<string, Notification>();
-                    using (var inputStream = new System.IO.StreamReader(Request.InputStream))
-                    {
-                        JObject jsonObject = JObject.Parse(inputStream.ReadToEnd());
-                        if (jsonObject != null)
-                        {
 
-                            // Notifications are sent in a 'value' array.
-                            JArray value = JArray.Parse(jsonObject["value"].ToString());
-                            foreach (var notification in value)
+                // Validate the new subscription by sending the token back to MS Graph.
+                // This response is required for each subscription.
+                if (Request.QueryString["validationToken"] != null)
+                {
+                    var token = Request.QueryString["validationToken"];
+                    return Content(token, "plain/text");
+                }
+
+                // Parse the received notifications.
+                else
+                {
+                    try
+                    {
+                        var notifications = new Dictionary<string, Notification>();
+                        using (var inputStream = new System.IO.StreamReader(Request.InputStream))
+                        {
+                            JObject jsonObject = JObject.Parse(inputStream.ReadToEnd());
+                            if (jsonObject != null)
                             {
-                                Notification current = JsonConvert.DeserializeObject<Notification>(notification.ToString());
-                                
-                                var subscriptionParams = (Tuple<string, string>)HttpRuntime.Cache.Get("subscriptionId_" + current.SubscriptionId);
-                                if (subscriptionParams != null)
+
+                                // Notifications are sent in a 'value' array.
+                                JArray value = JArray.Parse(jsonObject["value"].ToString());
+                                foreach (var notification in value)
                                 {
-                                    // Verify the message is from Microsoft Graph.
-                                    if (current.ClientState == subscriptionParams.Item1)
+                                    Notification current = JsonConvert.DeserializeObject<Notification>(notification.ToString());
+                                    
+                                    var subscriptionParams = (Tuple<string, string>)HttpRuntime.Cache.Get("subscriptionId_" + current.SubscriptionId);
+                                    if (subscriptionParams != null)
                                     {
-                                        // Just keep the latest notification for each resource.
-                                        // No point pulling data more than once.
-                                        notifications[current.Resource] = current;
+                                        // Verify the message is from Microsoft Graph.
+                                        if (current.ClientState == subscriptionParams.Item1)
+                                        {
+                                            // Just keep the latest notification for each resource.
+                                            // No point pulling data more than once.
+                                            notifications[current.Resource] = current;
+                                        }
                                     }
                                 }
-                            }
-                            if (notifications.Count > 0)
-                            {
+                                if (notifications.Count > 0)
+                                {
 
-                                // Query for the changed messages. 
-                                await GetChangedMessagesAsync(notifications.Values);
+                                    // Query for the changed messages. 
+                                    await GetChangedMessagesAsync(notifications.Values);
+                                }
                             }
                         }
+                        return new HttpStatusCodeResult(202);
                     }
-                    return new HttpStatusCodeResult(202);
-                }
-                catch (Exception)
-                {
+                    catch (Exception)
+                    {
 
-                    // TODO: Handle the exception.
-                    // Return a 202 so the service doesn't resend the notification.
-                    return new HttpStatusCodeResult(202);
+                        // TODO: Handle the exception.
+                        // Return a 202 so the service doesn't resend the notification.
+                        return new HttpStatusCodeResult(202);
+                    }
                 }
             }
-        }
-    }  
-}
+        }  
+    }
    ```
 
-### Get changed messages
-
-1. Add the **GetChangedMessagesAsync** method to the **NotificationController** class. This queries Microsoft Graph for the changed messages.
+1. Add the **GetChangedMessagesAsync** method to the **NotificationController** class. This queries Microsoft Graph for the changed messages after receiving change notifications.
 
    > NOTE: This method uses the Microsoft Graph SDK to access Outlook messages. 
 
@@ -857,61 +856,17 @@ namespace GraphWebhooks.Controllers
     }
    ```
 
-## Exercise 9: Set up SignalR
+### Create the Notification view
 
-This app uses SignalR to notify the client to refresh its view.
-
-1. Right-click the **GraphWebhooks** project and create a folder named **SignalR**.
-
-1. Right-click the **SignalR** folder and choose **Add** > **SignalR Hub Class (v2)**. 
-
-1. Name the class *NotificationHub*, and click **OK**. This sample doesn't add any functionality to the hub.
-
-1. Right-click the **SignalR** folder and choose **Add** > **SignalR Persistent Connection Class (v2)**.
-
-1. Name the class *NotificationService.cs*, and click **Add**.
-
-1. Replace the contents with the following code.
-
-   ```c#
-    using System.Collections.Generic;
-    using Microsoft.AspNet.SignalR;
-    using Microsoft.Graph;
-
-    namespace GraphWebhooks.SignalR
-    {
-        public class NotificationService : PersistentConnection
-        {
-            public void SendNotificationToClient(List<Message> messages)
-            {
-                var hubContext = GlobalHost.ConnectionManager.GetHubContext<NotificationHub>();
-                if (hubContext != null)
-                {
-                    hubContext.Clients.All.showNotification(messages);
-                }
-            }
-        }
-    }
-   ```
-
-1. Open **Startup.cs** in the root directory of the project.
-
-1. Add the following line to the **Configuration** method.
-
-   ```c#
-app.MapSignalR();
-   ```
-   
-## Exercise 10: Create the Notification view
 In this step you'll create a view that displays some properties of the changed message. 
 
-1. Right-click the **Views/Notification** folder and choose **Add** > **View**. 
+1. Right-click the **Views\Notification** folder and choose **Add** > **View**. 
 
 1. Name the view **Notification**.
 
 1. Select the **Empty (without model)** template, and then click **Add**.
 
-1. In the **Notification.cshtml** file that's created, replace the entire contents of the file with the following code:
+1. Replace the entire contents of the file with the following code.
 
    ```html
 @model Microsoft.Graph.Message
@@ -961,13 +916,59 @@ In this step you'll create a view that displays some properties of the changed m
 </div>
    ```
 
+## Exercise 5: Set up SignalR
+
+This app uses SignalR to notify the client to refresh its view.
+
+1. Right-click the **GraphWebhooks** project and create a folder named **SignalR**.
+
+1. Right-click the **SignalR** folder and choose **Add** > **SignalR Hub Class (v2)**. 
+
+1. Name the class *NotificationHub* and click **OK**. This sample doesn't add any functionality to the hub.
+
+1. Right-click the **SignalR** folder and choose **Add** > **SignalR Persistent Connection Class (v2)**.
+
+1. Name the class *NotificationService.cs* and click **Add**.
+
+1. Replace the contents with the following code.
+
+   ```c#
+    using System.Collections.Generic;
+    using Microsoft.AspNet.SignalR;
+    using Microsoft.Graph;
+
+    namespace GraphWebhooks.SignalR
+    {
+        public class NotificationService : PersistentConnection
+        {
+            public void SendNotificationToClient(List<Message> messages)
+            {
+                var hubContext = GlobalHost.ConnectionManager.GetHubContext<NotificationHub>();
+                if (hubContext != null)
+                {
+                    hubContext.Clients.All.showNotification(messages);
+                }
+            }
+        }
+    }
+   ```
+
+1. Open **Startup.cs** in the root directory of the project.
+
+1. Add the following line to the **Configuration** method.
+
+   ```c#
+app.MapSignalR();
+   ```
+   
+
 Congratulations! In this lab you created an MVC application that subscribes for Microsoft Graph webhooks and receives change notifications! Now you can run the app.
 
 ## Run the application
 
 1. Make sure that the ngrok console is still running, then press **F5** to begin debugging.
 
-1. Sign in with your Office 365 account.
+1. Sign in with your Office 365 account and consent to the requested permissions.
 
 1. Click the **Create subscription** button. The **Subscription** page loads with information about the subscription.
 
