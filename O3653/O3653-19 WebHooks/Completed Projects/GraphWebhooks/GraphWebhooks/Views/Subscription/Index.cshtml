@@ -6,13 +6,13 @@
     <code>
         {<br />
         &nbsp;&nbsp;"resource": "me/mailFolders('Inbox')/messages",<br />
-        &nbsp;&nbsp;"changeType": "Created",<br />
+        &nbsp;&nbsp;"changeType": "created",<br />
         &nbsp;&nbsp;"notificationUrl": "https://your-notification-endpoint",<br />
         &nbsp;&nbsp;"clientState": "your-client-state",<br />
         &nbsp;&nbsp;"expirationDateTime": "2016-03-14T03:13:29.4232606+00:00"<br />
         }
     </code>
-    <p>See the <a href="http://graph.microsoft.io/en-us/docs/api-reference/beta/resources/subscription">docs</a> for other supported resources and change types.</p>
+    <p>See the <a href="http://graph.microsoft.io/en-us/docs/api-reference/v1.0/api/subscription_post_subscriptions">docs</a> for other supported resources and change types.</p>
     <br />
     @using (Html.BeginForm("CreateSubscription", "Subscription"))
     {

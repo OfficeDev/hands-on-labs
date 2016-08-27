@@ -5,32 +5,32 @@
 }
 
 @section Scripts {
-    @Scripts.Render("~/Scripts/jquery.signalR-2.2.0.min.js");
+    @Scripts.Render("~/Scripts/jquery.signalR-2.2.1.min.js");
     @Scripts.Render("~/signalr/hubs");
 
     <script>
-    var connection = $.hubConnection();
-    var hub = connection.createHubProxy("NotificationHub");
-    hub.on("showNotification", function (messages) {
-        $.each(messages, function (index, value) {     // Iterate through the message collection
-            var message = value;                       // Get current message
+var connection = $.hubConnection();
+var hub = connection.createHubProxy("NotificationHub");
+hub.on("showNotification", function (messages) {
+    $.each(messages, function (index, value) {     // Iterate through the message collection
+        var message = value;                       // Get current message
 
-            var table = $("<table></table>");
-            var header = $("<th>Message " + (index + 1) + "</th>").appendTo(table);
+        var table = $("<table></table>");
+        var header = $("<th>Message " + (index + 1) + "</th>").appendTo(table);
 
-            for (prop in message) {                    // Iterate through message properties
-                var property = message[prop];
-                var row = $("<tr></tr>");
+        for (prop in message) {                    // Iterate through message properties
+            var property = message[prop];
+            var row = $("<tr></tr>");
 
-                $("<td></td>").text(prop).appendTo(row);
-                $("<td></td>").text(property).appendTo(row);
-                table.append(row);
-            }
-            $("#message").append(table);
-            $("#message").append("<br />");
-        });
+            $("<td></td>").text(prop).appendTo(row);
+            $("<td></td>").text(property).appendTo(row);
+            table.append(row);
+        }
+        $("#message").append(table);
+        $("#message").append("<br />");
     });
-    connection.start();
+});
+connection.start();
     </script>
 }
 <h2>Messages</h2>
