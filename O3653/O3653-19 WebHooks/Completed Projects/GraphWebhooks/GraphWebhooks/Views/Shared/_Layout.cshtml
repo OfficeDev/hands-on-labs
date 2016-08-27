@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - Graph and AAD Auth Starter</title>
+    <title>@ViewBag.Title - Graph and AAD v2 Auth Starter</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
@@ -16,7 +16,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Graph and AAD Auth Starter", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Graph and AAD v2 Auth Starter", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
@@ -25,12 +25,14 @@
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                     <li>@Html.ActionLink("Graph API", "Graph", "Home")</li>
                 </ul>
-                @if (Request.IsAuthenticated)
+                @if (Request.IsAuthenticated &&
+                     null != System.Security.Claims.ClaimsPrincipal.Current &&
+                     null != System.Security.Claims.ClaimsPrincipal.Current.FindFirst("preferred_username"))
                 {
                 <text>
                     <ul class="nav navbar-nav navbar-right">
                         <li class="navbar-text">
-                            Hello, @(System.Security.Claims.ClaimsPrincipal.Current.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/upn").Value)!
+                            Hello, @(System.Security.Claims.ClaimsPrincipal.Current.FindFirst("preferred_username").Value)!
                         </li>
                         <li>
                             @Html.ActionLink("Sign out", "SignOut", "Account")
@@ -51,7 +53,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>Graph and AAD Auth Starter</p>
+            <p>Graph and AAD v2 Auth Starter</p>
         </footer>
     </div>
 

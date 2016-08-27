@@ -1,22 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using GraphWebhooks.Auth;
 using GraphWebhooks.Models;
 using GraphWebhooks.SignalR;
-using GraphWebhooks.TokenStorage;
+using Microsoft.Graph;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.Configuration;
-using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Security.AccessControl;
 using System.Threading.Tasks;
-using Microsoft.Graph;
-using Microsoft.IdentityModel.Clients.ActiveDirectory;
-
+using System.Collections.Generic;
+using GraphWebhooks.Auth;
+using GraphWebhooks.TokenStorage;
 
 namespace GraphWebhooks.Controllers
 {
@@ -78,14 +72,14 @@ namespace GraphWebhooks.Controllers
                             }
                         }
                     }
-                    return new HttpStatusCodeResult(200);
+                    return new HttpStatusCodeResult(202);
                 }
                 catch (Exception)
                 {
 
                     // TODO: Handle the exception.
-                    // Return a 200 so the service doesn't resend the notification.
-                    return new HttpStatusCodeResult(200);
+                    // Return a 202 so the service doesn't resend the notification.
+                    return new HttpStatusCodeResult(202);
                 }
             }
         }
@@ -95,24 +89,19 @@ namespace GraphWebhooks.Controllers
         public async Task GetChangedMessagesAsync(IEnumerable<Notification> notifications)
         {
             List<Message> messages = new List<Message>();
-
-            // Get an access token and add it to the client.
-            string authority = string.Format(ConfigurationManager.AppSettings["ida:AADInstance"], "common", "");
-            AuthenticationContext authContext = new AuthenticationContext(authority);
-            ClientCredential credential = new ClientCredential(ConfigurationManager.AppSettings["ida:AppId"], ConfigurationManager.AppSettings["ida:AppSecret"]);
-
             foreach (var notification in notifications)
             {
-                if (notification.ResourceData.ODataType != "#Microsoft.Graph.Message")
-                    continue;
+                if (notification.ResourceData.ODataType != "#Microsoft.Graph.Message") continue;
 
+                // Get an access token and add it to the client.
                 var subscriptionParams = (Tuple<string, string>)HttpRuntime.Cache.Get("subscriptionId_" + notification.SubscriptionId);
-                string refreshToken = subscriptionParams.Item2;
-                AuthenticationResult authResult = await authContext.AcquireTokenByRefreshTokenAsync(refreshToken, credential, "https://graph.microsoft.com");
+                string userObjId = subscriptionParams.Item2;
+                AuthHelper authHelper = new AuthHelper(new RuntimeTokenCache(userObjId));
 
+                string accessToken = await authHelper.GetUserAccessToken("/");
                 var graphClient = new GraphServiceClient(new DelegateAuthenticationProvider(requestMessage =>
                 {
-                    requestMessage.Headers.Authorization = new AuthenticationHeaderValue("bearer", authResult.AccessToken);
+                    requestMessage.Headers.Authorization = new AuthenticationHeaderValue("bearer", accessToken);
                     return Task.FromResult(0);
                 }));
 
@@ -125,6 +114,7 @@ namespace GraphWebhooks.Controllers
                 {
                     continue;
                 }
+
             }
             if (messages.Count > 0)
             {

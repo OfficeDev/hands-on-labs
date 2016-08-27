@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 namespace GraphWebhooks.Models
@@ -27,13 +23,14 @@ namespace GraphWebhooks.Models
         [JsonProperty(PropertyName = "resource")]
         public string Resource { get; set; }
 
-        // The date and time when the webhooks subscription expires.
-        // The time is in UTC, and can be up to three days from the time of subscription creation.
-        [JsonProperty(PropertyName = "subscriptionExpirationDateTime")]
+        // The amount of time in UTC format when the webhook subscription expires, based on the subscription creation time.
+        // The maximum time varies for the resource subscribed to. This sample sets it to the 4230 minute maximum for messages.
+        // See http://graph.microsoft.io/en-us/docs/api-reference/v1.0/resources/subscription for maximum values for resources.
+        [JsonProperty(PropertyName = "expirationDateTime")]
         public DateTimeOffset? ExpirationDateTime { get; set; }
 
-        // The unique identifier for the webhooks subscription.
-        [JsonProperty(PropertyName = "subscriptionId")]
+        // The unique identifier for the webhook subscription.
+        [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }
     }
 

@@ -5,29 +5,27 @@ using GraphWebhooks.Auth;
 
 namespace GraphWebhooks.TokenStorage
 {
-    public class SessionTokenEntry
+    public class RuntimeTokenEntry
     {
         [JsonProperty("access_token")]
         public string AccessToken;
-        [JsonProperty("expires_on")]
-        public DateTime ExpiresOn;
         [JsonProperty("refresh_token")]
         public string RefreshToken;
+        [JsonProperty("expires_on")]
+        public DateTime ExpiresOn;
     }
 
-    public class SessionTokenCache
+    public class RuntimeTokenCache
     {
-        private HttpContextBase context;
         private static readonly object FileLock = new object();
         private readonly string CacheId = string.Empty;
         private string UserObjectId = string.Empty;
-        public SessionTokenEntry Tokens { get; private set; }
+        public RuntimeTokenEntry Tokens { get; private set; }
 
-        public SessionTokenCache(string userId, HttpContextBase context)
+        public RuntimeTokenCache(string userId)
         {
-            this.context = context;
-            this.UserObjectId = userId;
-            this.CacheId = UserObjectId + "_TokenCache";
+            UserObjectId = userId;
+            CacheId = UserObjectId + "_TokenCache";
 
             Load();
         }
@@ -36,10 +34,10 @@ namespace GraphWebhooks.TokenStorage
         {
             lock (FileLock)
             {
-                string jsonCache = (string)context.Session[CacheId];
+                string jsonCache = (string)HttpRuntime.Cache.Get(CacheId);
                 if (!string.IsNullOrEmpty(jsonCache))
                 {
-                    Tokens = JsonConvert.DeserializeObject<SessionTokenEntry>(jsonCache);
+                    Tokens = JsonConvert.DeserializeObject<RuntimeTokenEntry>(jsonCache);
                 }
             }
         }
@@ -50,7 +48,7 @@ namespace GraphWebhooks.TokenStorage
             {
                 if (null != Tokens)
                 {
-                    context.Session[CacheId] = JsonConvert.SerializeObject(Tokens);
+                    HttpRuntime.Cache.Insert(CacheId, JsonConvert.SerializeObject(Tokens));
                 }
             }
         }
@@ -59,7 +57,7 @@ namespace GraphWebhooks.TokenStorage
         {
             lock (FileLock)
             {
-                context.Session.Remove(CacheId);
+                HttpRuntime.Cache.Remove(CacheId);
             }
         }
 
@@ -68,7 +66,7 @@ namespace GraphWebhooks.TokenStorage
             double expireSeconds = double.Parse(tokenResponse.ExpiresIn);
             expireSeconds += -300;
 
-            Tokens = new SessionTokenEntry()
+            Tokens = new RuntimeTokenEntry()
             {
                 AccessToken = tokenResponse.AccessToken,
                 RefreshToken = tokenResponse.RefreshToken,

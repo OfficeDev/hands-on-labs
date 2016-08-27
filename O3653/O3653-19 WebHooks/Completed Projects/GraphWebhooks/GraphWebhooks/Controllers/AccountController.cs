@@ -3,6 +3,8 @@ using System.Web.Mvc;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OpenIdConnect;
+using System.Security.Claims;
+using GraphWebhooks.Auth;
 using GraphWebhooks.TokenStorage;
 
 namespace GraphWebhooks.Controllers
@@ -25,13 +27,14 @@ namespace GraphWebhooks.Controllers
             if (Request.IsAuthenticated)
             {
                 // Get the user's token cache and clear it
-                string userObjId = System.Security.Claims.ClaimsPrincipal.Current
-                  .FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
+                string userObjId = AuthHelper.GetUserId(ClaimsPrincipal.Current);
 
+                RuntimeTokenCache tokenCache = new RuntimeTokenCache(userObjId);
+                tokenCache.Clear();
             }
             // Send an OpenID Connect sign-out request. 
             HttpContext.GetOwinContext().Authentication.SignOut(
-              CookieAuthenticationDefaults.AuthenticationType);
+                CookieAuthenticationDefaults.AuthenticationType);
             Response.Redirect("/");
         }
     }

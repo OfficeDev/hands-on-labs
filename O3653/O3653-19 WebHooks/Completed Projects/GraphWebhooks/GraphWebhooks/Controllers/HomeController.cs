@@ -5,8 +5,8 @@ using System.Web.Mvc;
 using GraphWebhooks.TokenStorage;
 using System.Configuration;
 using System.Threading.Tasks;
+using System.Security.Claims;
 using GraphWebhooks.Auth;
-using Microsoft.IdentityModel.Clients.ActiveDirectory;
 
 namespace GraphWebhooks.Controllers
 {
@@ -32,22 +32,20 @@ namespace GraphWebhooks.Controllers
         }
 
         [Authorize]
+        [Authorize]
         public async Task<ActionResult> Graph()
         {
-            string userObjId = System.Security.Claims.ClaimsPrincipal.Current
-              .FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
+            string userObjId = AuthHelper.GetUserId(ClaimsPrincipal.Current);
 
-            SessionTokenCache tokenCache = new SessionTokenCache(userObjId, HttpContext);
+            RuntimeTokenCache tokenCache = new RuntimeTokenCache(userObjId);
 
-            string tenantId = System.Security.Claims.ClaimsPrincipal.Current
-                .FindFirst("http://schemas.microsoft.com/identity/claims/tenantid").Value;
-
-            string authority = string.Format(ConfigurationManager.AppSettings["ida:AADInstance"], tenantId, "");
-
-            AuthHelper authHelper = new AuthHelper(authority, ConfigurationManager.AppSettings["ida:AppId"],
-              ConfigurationManager.AppSettings["ida:AppSecret"], tokenCache);
+            AuthHelper authHelper = new AuthHelper(tokenCache);
 
             ViewBag.AccessToken = await authHelper.GetUserAccessToken(Url.Action("Index", "Home", null, Request.Url.Scheme));
+            if (null == ViewBag.AccessToken)
+            {
+                return new EmptyResult();
+            }
 
             return View();
         }
