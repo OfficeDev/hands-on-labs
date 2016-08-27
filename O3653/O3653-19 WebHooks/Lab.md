@@ -84,7 +84,7 @@ Install-Package Microsoft.AspNet.SignalR
 
  These commands install AspNet.SignalR which notifies the client to refresh its view, and the Microsoft Graph .NET Client Library (SDK) for communicating with the Microsoft Graph. This app uses the SDK to get Outlook messages.
 
-### Configure the app to use a HttpRuntime token cache
+### Configure the app to use RuntimeTokenCache
 
   This application uses SignalR, which doesn't support ASP.NET session state. So you'll reconfigure the template's AuthHelper to use an **HttpRuntime** cache instead of the **SessionTokenCache** that's provided in the starter template. 
 
@@ -224,7 +224,7 @@ Install-Package Microsoft.AspNet.SignalR
 
 1. Open **AccountController.cs** in the Controllers folder.
 
-1. Replace the **SignOut** action with the following code:
+1. Replace the **SignOut** action with the following code.
 
   ```c#
   public void SignOut()
