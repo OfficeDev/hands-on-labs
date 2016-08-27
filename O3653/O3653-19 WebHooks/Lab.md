@@ -74,7 +74,7 @@ In this first step, you will create a new ASP.NET MVC project using the **Graph 
   1. Under **Start Action** choose **Specific Page** and enter: *Account/SignOut*
 
 
-### Install the Microsoft Graph .NET Client Library and SignalR
+### Install SignalR and the Microsoft Graph .NET Client Library
 1. Open **Tools** > **NuGet Package Manager** > **Package Manager Console**. Make sure the package source is set to *nuget.org*, and run the following commands.  
 
    ```   
@@ -82,9 +82,9 @@ Install-Package Microsoft.Graph
 Install-Package Microsoft.AspNet.SignalR
    ```
 
- The commands install AspNet.SignalR which notifies the client to refresh its view, and the Microsoft Graph .NET Client Library (SDK) for communicating with the Microsoft Graph. This app uses the SDK to get Outlook messages.
+ These commands install AspNet.SignalR which notifies the client to refresh its view, and the Microsoft Graph .NET Client Library (SDK) for communicating with the Microsoft Graph. This app uses the SDK to get Outlook messages.
 
-### Configure the app to use a different token cache. 
+### Configure the app to use a HttpRuntime token cache
 
   This application uses SignalR, which doesn't support ASP.NET session state. So you'll reconfigure the template's AuthHelper to use an **HttpRuntime** cache instead of the **SessionTokenCache** that's provided in the starter template. 
 
@@ -92,25 +92,24 @@ Install-Package Microsoft.AspNet.SignalR
 
 1. Replace the **OnAuthorizationCodeReceived** method with the following code.
 
+  ```c#
+  private async Task OnAuthorizationCodeReceived(AuthorizationCodeReceivedNotification notification)
+  {
 
-```c#
-private async Task OnAuthorizationCodeReceived(AuthorizationCodeReceivedNotification notification)
-{
+      // Get the user's object id (used to name the token cache)
+      ClaimsPrincipal principal = new ClaimsPrincipal(notification.AuthenticationTicket.Identity);
+      string userObjId = AuthHelper.GetUserId(principal);
 
-    // Get the user's object id (used to name the token cache)
-    ClaimsPrincipal principal = new ClaimsPrincipal(notification.AuthenticationTicket.Identity);
-    string userObjId = AuthHelper.GetUserId(principal);
+      // Create a token cache
+      RuntimeTokenCache tokenCache = new RuntimeTokenCache(userObjId);
 
-    // Create a token cache
-    RuntimeTokenCache tokenCache = new RuntimeTokenCache(userObjId);
+      // Exchange the auth code for a token
+      AuthHelper authHelper = new AuthHelper(tokenCache);
 
-    // Exchange the auth code for a token
-    AuthHelper authHelper = new AuthHelper(tokenCache);
-
-    var response = await authHelper.GetTokensFromAuthority("authorization_code", notification.Code,
-        notification.Request.Uri.ToString());
-}
-```
+      var response = await authHelper.GetTokensFromAuthority("authorization_code", notification.Code,
+          notification.Request.Uri.ToString());
+  }
+  ```
 
 1. Right-click the **TokenStorage** folder and choose **Add** > **Class**.
 
@@ -118,156 +117,156 @@ private async Task OnAuthorizationCodeReceived(AuthorizationCodeReceivedNotifica
 
 1. Replace the contents of the class with the following code.
 
-```c#
-using System;
-using System.Web;
-using Newtonsoft.Json;
-using GraphWebhooks.Auth;
+  ```c#
+  using System;
+  using System.Web;
+  using Newtonsoft.Json;
+  using GraphWebhooks.Auth;
 
-namespace GraphWebhooks.TokenStorage
-{
-    public class RuntimeTokenEntry
-    {
-        [JsonProperty("access_token")]
-        public string AccessToken;
-        [JsonProperty("refresh_token")]
-        public string RefreshToken;
-        [JsonProperty("expires_on")]
-        public DateTime ExpiresOn;
-    }
+  namespace GraphWebhooks.TokenStorage
+  {
+      public class RuntimeTokenEntry
+      {
+          [JsonProperty("access_token")]
+          public string AccessToken;
+          [JsonProperty("refresh_token")]
+          public string RefreshToken;
+          [JsonProperty("expires_on")]
+          public DateTime ExpiresOn;
+      }
 
-    public class RuntimeTokenCache
-    {
-        private static readonly object FileLock = new object();
-        private readonly string CacheId = string.Empty;
-        private string UserObjectId = string.Empty;
-        public RuntimeTokenEntry Tokens { get; private set; }
+      public class RuntimeTokenCache
+      {
+          private static readonly object FileLock = new object();
+          private readonly string CacheId = string.Empty;
+          private string UserObjectId = string.Empty;
+          public RuntimeTokenEntry Tokens { get; private set; }
 
-        public RuntimeTokenCache(string userId)
-        {
-            UserObjectId = userId;
-            CacheId = UserObjectId + "_TokenCache";
+          public RuntimeTokenCache(string userId)
+          {
+              UserObjectId = userId;
+              CacheId = UserObjectId + "_TokenCache";
 
-            Load();
-        }
+              Load();
+          }
 
-        public void Load()
-        {
-            lock (FileLock)
-            {
-                string jsonCache = (string)HttpRuntime.Cache.Get(CacheId);
-                if (!string.IsNullOrEmpty(jsonCache))
-                {
-                    Tokens = JsonConvert.DeserializeObject<RuntimeTokenEntry>(jsonCache);
-                }
-            }
-        }
+          public void Load()
+          {
+              lock (FileLock)
+              {
+                  string jsonCache = (string)HttpRuntime.Cache.Get(CacheId);
+                  if (!string.IsNullOrEmpty(jsonCache))
+                  {
+                      Tokens = JsonConvert.DeserializeObject<RuntimeTokenEntry>(jsonCache);
+                  }
+              }
+          }
 
-        public void Persist()
-        {
-            lock (FileLock)
-            {
-                if (null != Tokens)
-                {
-                    HttpRuntime.Cache.Insert(CacheId, JsonConvert.SerializeObject(Tokens));
-                }
-            }
-        }
+          public void Persist()
+          {
+              lock (FileLock)
+              {
+                  if (null != Tokens)
+                  {
+                      HttpRuntime.Cache.Insert(CacheId, JsonConvert.SerializeObject(Tokens));
+                  }
+              }
+          }
 
-        public void Clear()
-        {
-            lock (FileLock)
-            {
-                HttpRuntime.Cache.Remove(CacheId);
-            }
-        }
+          public void Clear()
+          {
+              lock (FileLock)
+              {
+                  HttpRuntime.Cache.Remove(CacheId);
+              }
+          }
 
-        public void UpdateTokens(TokenRequestSuccessResponse tokenResponse)
-        {
-            double expireSeconds = double.Parse(tokenResponse.ExpiresIn);
-            expireSeconds += -300;
+          public void UpdateTokens(TokenRequestSuccessResponse tokenResponse)
+          {
+              double expireSeconds = double.Parse(tokenResponse.ExpiresIn);
+              expireSeconds += -300;
 
-            Tokens = new RuntimeTokenEntry()
-            {
-                AccessToken = tokenResponse.AccessToken,
-                RefreshToken = tokenResponse.RefreshToken,
-                ExpiresOn = DateTime.UtcNow.AddSeconds(expireSeconds)
-            };
+              Tokens = new RuntimeTokenEntry()
+              {
+                  AccessToken = tokenResponse.AccessToken,
+                  RefreshToken = tokenResponse.RefreshToken,
+                  ExpiresOn = DateTime.UtcNow.AddSeconds(expireSeconds)
+              };
 
-            Persist();
-        }
-    }
-}
-```
+              Persist();
+          }
+      }
+  }
+  ```
 
 1. Open **AuthHelper** in the Auth folder.
 
 1. Replace the fields and constructor with the following code.
 
-```c#
-// This is the logon authority
-// i.e. https://login.microsoftonline.com/common
-public string Authority = string.Format(System.Configuration.ConfigurationManager.AppSettings["ida:AADInstance"], "common", "");
-// This is the application ID obtained from registering at
-// https://apps.dev.microsoft.com
-private string AppId = System.Configuration.ConfigurationManager.AppSettings["ida:AppId"];
-// This is the application secret obtained from registering at
-// https://apps.dev.microsoft.com
-private string AppSecret = System.Configuration.ConfigurationManager.AppSettings["ida:AppSecret"];
-// This is the token cache
-public RuntimeTokenCache TokenCache { get; set; }
+  ```c#
+  // This is the logon authority
+  // i.e. https://login.microsoftonline.com/common
+  public string Authority = string.Format(System.Configuration.ConfigurationManager.AppSettings["ida:AADInstance"], "common", "");
+  // This is the application ID obtained from registering at
+  // https://apps.dev.microsoft.com
+  private string AppId = System.Configuration.ConfigurationManager.AppSettings["ida:AppId"];
+  // This is the application secret obtained from registering at
+  // https://apps.dev.microsoft.com
+  private string AppSecret = System.Configuration.ConfigurationManager.AppSettings["ida:AppSecret"];
+  // This is the token cache
+  public RuntimeTokenCache TokenCache { get; set; }
 
-public AuthHelper(RuntimeTokenCache tokenCache)
-{
-    TokenCache = tokenCache;
-}
-```
+  public AuthHelper(RuntimeTokenCache tokenCache)
+  {
+      TokenCache = tokenCache;
+  }
+  ```
 
 1. Open **AccountController.cs** in the Controllers folder.
 
 1. Replace the **SignOut** action with the following code:
 
-```c#
-public void SignOut()
-{
-    if (Request.IsAuthenticated)
-    {
-        // Get the user's token cache and clear it
-        string userObjId = AuthHelper.GetUserId(ClaimsPrincipal.Current);
+  ```c#
+  public void SignOut()
+  {
+      if (Request.IsAuthenticated)
+      {
+          // Get the user's token cache and clear it
+          string userObjId = AuthHelper.GetUserId(ClaimsPrincipal.Current);
 
-        RuntimeTokenCache tokenCache = new RuntimeTokenCache(userObjId);
-        tokenCache.Clear();
-    }
-    // Send an OpenID Connect sign-out request. 
-    HttpContext.GetOwinContext().Authentication.SignOut(
-        CookieAuthenticationDefaults.AuthenticationType);
-    Response.Redirect("/");
-}
-```
+          RuntimeTokenCache tokenCache = new RuntimeTokenCache(userObjId);
+          tokenCache.Clear();
+      }
+      // Send an OpenID Connect sign-out request. 
+      HttpContext.GetOwinContext().Authentication.SignOut(
+          CookieAuthenticationDefaults.AuthenticationType);
+      Response.Redirect("/");
+  }
+  ```
 
 1. Open **HomeController.cs** in the Controllers folder.
 
 1. Replace the **Graph** action with the following code.
 
-```c#
-[Authorize]
-public async Task<ActionResult> Graph()
-{
-    string userObjId = AuthHelper.GetUserId(ClaimsPrincipal.Current);
+  ```c#
+  [Authorize]
+  public async Task<ActionResult> Graph()
+  {
+      string userObjId = AuthHelper.GetUserId(ClaimsPrincipal.Current);
 
-    RuntimeTokenCache tokenCache = new RuntimeTokenCache(userObjId);
+      RuntimeTokenCache tokenCache = new RuntimeTokenCache(userObjId);
 
-    AuthHelper authHelper = new AuthHelper(tokenCache);
+      AuthHelper authHelper = new AuthHelper(tokenCache);
 
-    ViewBag.AccessToken = await authHelper.GetUserAccessToken(Url.Action("Index", "Home", null, Request.Url.Scheme));
-    if (null == ViewBag.AccessToken)
-    {
-        return new EmptyResult();
-    }
+      ViewBag.AccessToken = await authHelper.GetUserAccessToken(Url.Action("Index", "Home", null, Request.Url.Scheme));
+      if (null == ViewBag.AccessToken)
+      {
+          return new EmptyResult();
+      }
 
-    return View();
-}
-```
+      return View();
+  }
+  ```
 
 1. Press F5 to compile and launch your new application in the default browser.
   1. When the Graph and AAD v2 Auth Endpoint Starter page appears, sign in with your Office 365 account.
@@ -278,7 +277,7 @@ Exercise 1 with web sign in is complete!
 
 
 ## Exercise 2: Set up the ngrok proxy and notification URL data
-You must expose a public HTTPS endpoint to create a subscription and receive notifications from Microsoft Graph. While testing, you can use ngrok to temporarily allow messages from Microsoft Graph to tunnel to a port on your local computer. This makes it easier to test and debug webhooks. To learn more about using ngrok, see the ngrok website at `https://ngrok.com/` 
+You must expose a public HTTPS endpoint to create a subscription and receive notifications from Microsoft Graph. While testing, you can use ngrok to temporarily allow messages from Microsoft Graph to tunnel to a port on your local computer. This makes it easier to test and debug webhooks. To learn more about using ngrok, see the ngrok website at https://ngrok.com/.
 
 1. Download ngrok at `https://ngrok.com/download` for Windows.  
 
@@ -382,8 +381,6 @@ In this step you'll create a model that represents a Subscription object.
 
 ### Create the Subscription controller
 In this step you'll create a controller that will send a **POST /subscriptions** request to Microsoft Graph on behalf of the signed in user. This app creates a subscription for the *me/mailFolders('Inbox')/messages* resource for the *created* change type. See [Create subscription](http://graph.microsoft.io/en-us/docs/api-reference/v1.0/api/subscription_post_subscriptions) for other supported resources and change types. 
-
-### Create the controller class
 
 1. Right-click the **Controllers** folder and choose **Add** > **New Scaffolded Item**. 
 
@@ -524,7 +521,7 @@ using GraphWebhooks.TokenStorage;
 ### Create the Index and Subscription views
 In this step you'll create a view for the app start page and a view that displays the properties of the subscription you create.
 
-### Create the Index view
+#### Create the Index view
 
 1. Right-click the **Views\Subscription** folder and choose **Add** > **View**. 
 
@@ -558,7 +555,7 @@ In this step you'll create a view for the app start page and a view that display
 </div>
    ```
 
-### Create the Subscription view
+#### Create the Subscription view
 
 1. Right-click the **Views\Subscription** folder and choose **Add** > **View**. 
 
@@ -629,7 +626,7 @@ In this step you'll create a view for the app start page and a view that display
     </div>
    ```
 
-### Configure routing
+#### Configure routing
 
 1. In the **App_Start** folder, open RouteConfig.cs and replace the Default route with the following:
 
@@ -645,8 +642,6 @@ In this step you'll create a view for the app start page and a view that display
 
 ### Create the Notification model
 In this step you'll create a model that represents a Notification object. 
-
-### Create the Notification model
 
 1. Right-click the **Models** folder and choose **Add** > **Class**. 
 
