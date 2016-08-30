@@ -5,20 +5,55 @@ Learn how to use Outlook REST API  to find the best meeting times between attend
 To complete the exercises below, you will require an Office 365 developer environment. Use the Office 365 tenant that you have been provided with for Tech Ready.
 
 
-## Exercise 1: Create a new project using Azure Active Directory v1 authentication
+## Exercise 1: Create a new project using Azure Active Directory v2 authentication
 
 In this first step, you will create a new ASP.NET MVC project using the
-**Graph AAD Auth v1 Start Project** template, launch your app, log in to your app and generate access tokens.
+**Graph AAD Auth v2 Starter Project** template and log in to your app and generate access tokens
+for calling the Graph API.
 
-1. Launch Visual Studio 2015 and select **New>Project**.
+1. Launch Visual Studio 2015 and select **New**, **Project**.
   1. Search the installed templates for **Graph** and select the
-    **Graph AAD Auth v1 Starter Project** template.
+    **Graph AAD Auth v2 Starter Project** template.
   1. Name the new project **FindMeetingTimesLab** and click **OK**.
-  1. Find the **Auth** folder uunder **FindMeetingTimesLab** and open the **AuthHelper.cs** file. 
-  1. Search for and replace `https://graph.microsoft.com` with `https://outlook.office.com`. 
-1. Press **F5** to compile and launch your new application in the default browser.
-  1. The missing NuGet packages should be restored and the app should launch. 
-  1. Once the Home page appears, click **Sign in** and login to your Office 365 account.
+  1. Open the **Web.config** file and find the **appSettings** element. This is where you will need to add your appId and app secret you will generate in the next step.
+  
+1. Launch the Application Registration Portal by opening a browser and navigating to **apps.dev.microsoft.com**
+   to register a new application.
+  1. Sign into the portal using your Office 365 work account username and password. The **Graph AAD Auth v2 Starter Project** template allows you to sign in with either a Microsoft account or an Office 365 for business account, but the "find meeting times" feature currently works only with business and school accounts.
+  1. Click **Add an App** and type **FindMeetingTimesLab** for the application name.
+  1. Copy the **Application Id** and paste it into the value for **ida:AppId** in your project's **Web.config** file.
+  1. Under **Application Secrets** click **Generate New Password** to create a new client secret for your app.
+  1. Copy the displayed app password and paste it into the value for **ida:AppSecret** in your project's **web.config** file.
+  1. Modify the **ida:AppScopes** value to include the required `User.Read`, and `Calendars.Read` scopes.
+
+  ```xml
+  <configuration>
+    <appSettings>
+      <!-- ... -->
+      <add key="ida:AppId" value="paste application id here" />
+      <add key="ida:AppSecret" value="paste application password here" />
+      <!-- ... -->
+      <!-- Specify scopes in this value. Multiple values should be comma separated. -->
+      <add key="ida:AppScopes" value="User.Read, Calendars.Read" />
+    </appSettings>
+    <!-- ... -->
+  </configuration>
+  ```
+1. Add a redirect URL to enable testing on your localhost.
+  1. Right click on **FindMeetingTimesLab** and click on **Properties** to open the project properties.
+  1. Click on **Web** in the left navigation.
+  1. Copy the **Project Url** value.
+  1. Back on the Application Registration Portal page, click **Add Platform** and then **Web**.
+  1. Paste the value of **Project Url** into the **Redirect URIs** field.
+  1. Scroll to the bottom of the page and click **Save**.
+
+1. Set Startup page to Signout page (to avoid stale token error) 
+  1. Right-click **FindMeetingTimesLab** and click **Properties** to open the project properties.
+  1. Click **Web** in the left navigation.
+  1. Under **Start Action** Choose **Specific Page** option and Type its value as **Account/SignOut**  
+   
+1. Press F5 to compile and launch your new application in the default browser.
+  1. Once the Graph and AAD Auth Endpoint Starter page appears, click **Sign in** and login to your Office 365 account.
   1. Review the permissions the application is requesting, and click **Accept**.
   1. Now that you are signed into your application, exercise 1 is complete!
    
@@ -112,10 +147,6 @@ endpoint and work with Office 365 and Outlook Calendar. You will be retrieving a
 			public DateTime StartTime { get; set; }
 			public DateTime EndTime { get; set; }
 			public int Confidence { get; set; }
-			public int Score { get; set; }
-			public string LocationDisplayName { get; set; }
-			public string LocationAddress { get; set; }
-			public string LocationCoordinates { get; set; }
 		}
 	}
 	```
@@ -157,10 +188,6 @@ endpoint and work with Office 365 and Outlook Calendar. You will be retrieving a
 					<th>EndDate</th>
 					<th>EndTime</th>
 					<th>Confidence</th>
-					<th>Score</th>
-					<th>Location Name</th>
-					<th>Location Address</th>
-					<th>Location Coordinates</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -195,38 +222,26 @@ endpoint and work with Office 365 and Outlook Calendar. You will be retrieving a
 	  ```asp
 		@if (Model != null)
 		{
-			foreach (var meetingTimeCandidate in Model)
-			{
-				<tr>
-					<td>
-						@meetingTimeCandidate.StartDate
-					</td>
-					<td>
-						@meetingTimeCandidate.StartTime
-					</td>                        
-					<td>
-						@meetingTimeCandidate.EndDate
-					</td>
-					<td>
-						@meetingTimeCandidate.EndTime
-					</td>                 
-					<td>
-						@meetingTimeCandidate.Confidence
-					</td>
-					<td>
-						@meetingTimeCandidate.Score
-					</td>
-					<td>
-						@meetingTimeCandidate.LocationDisplayName
-					</td>
-					<td>
-						@meetingTimeCandidate.LocationAddress
-					</td>            
-					<td>
-						@meetingTimeCandidate.LocationCoordinates
-					</td>            
-				</tr>
-			}
+            foreach (var meetingTimeCandidate in Model)
+            {
+                <tr>
+                    <td>
+                        @meetingTimeCandidate.StartDate.ToShortDateString()
+                    </td>
+                    <td>
+                        @meetingTimeCandidate.StartTime.ToShortTimeString()
+                    </td>
+                    <td>
+                        @meetingTimeCandidate.EndDate.ToShortDateString()
+                    </td>
+                    <td>
+                        @meetingTimeCandidate.EndTime.ToShortTimeString()
+                    </td>
+                    <td>
+                        @meetingTimeCandidate.Confidence
+                    </td>
+                </tr>
+            }
 		}
 	 ```
    
@@ -251,13 +266,13 @@ endpoint and work with Office 365 and Outlook Calendar. You will be retrieving a
 		{
 			public class GraphHelper
 			{
-				// Used to set the base API endpoint, e.g. "https://outlook.office.com/api/beta"
+				// Used to set the base API endpoint, e.g. "https://graph.microsoft.com/beta"
 				public string apiEndpoint { get; set; }
 				public string anchorMailbox { get; set; }
 
 				public GraphHelper()
 				{
-					apiEndpoint = "https://outlook.office.com/api/beta";
+					apiEndpoint = "https://graph.microsoft.com/beta";
 					anchorMailbox = string.Empty;
 				}
 			}
@@ -326,54 +341,12 @@ endpoint and work with Office 365 and Outlook Calendar. You will be retrieving a
             nextItem.EndDate = DateTime.Parse((string)e["MeetingTimeSlot"]["End"]["Date"]);
             nextItem.EndTime = DateTime.Parse((string)e["MeetingTimeSlot"]["End"]["Time"]);
             nextItem.Confidence = int.Parse((string)e["Confidence"]);
-            nextItem.Score = int.Parse((string)e["Score"]);
-            if (e["MeetingTimeSlot"]["Location"] != null)
-            {
-                nextItem.LocationDisplayName = (string)e["MeetingTimeSlot"]["Location"]["Time"];
-                nextItem.LocationAddress = BuildAddressString(e["MeetingTimeSlot"]["Location"]["Address"]);
-                nextItem.LocationCoordinates = BuildCoordinatesString(e["MeetingTimeSlot"]["Location"]["Coordinates"]);
-            }
 
             meetingTimes.Add(nextItem);
         }
 
         return meetingTimes;
     }			   
-   ```
-
-  1. Add a method in the **GraphHelper** class to build the Address string. 
-   ```csharp
-	public String BuildAddressString(JToken address)
-	{
-		if (address == null)
-		{
-			return "null";
-		}
-		else {
-			return String.Format("{0}, {1}, {2}, {3}, {4}",
-				(string)address["Street"] == "" ? "<No Street>" : (string)address["Street"],
-				(string)address["City"] == "" ? "<No City>" : (string)address["City"],
-				(string)address["State"] == "" ? "<No State>" : (string)address["State"],
-				(string)address["CountryOrRegion"] == "" ? "<No Country Or Region>" : (string)address["CountryOrRegion"],
-				(string)address["PostalCode"] == "" ? "<No Postal Code>" : (string)address["PostalCode"]
-				);
-		}
-	}
-   ```
-
-  1. Add a method in the **GraphHelper** class to build the coordinates string. 
-   ```csharp
-	public String BuildCoordinatesString(JToken coordinates)
-	{
-		if (coordinates == null)
-		{
-			return "null";
-		}
-		else
-		{
-			return String.Format("{0}, {1}", (string)coordinates["Latitude"], (string)coordinates["Longitude"]);
-		}
-	}		
    ```
 
   1. Add the following code to the **FindMeetingTimesController** class to use **GraphHelper** and call the API. Replace `return View()` at the end of the file with the following
