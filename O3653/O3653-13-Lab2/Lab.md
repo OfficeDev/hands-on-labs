@@ -316,7 +316,6 @@ endpoint and work with Office 365 and Outlook Calendar. You will be retrieving a
         }
     }			   
 	```
-
   1. Add a method in the **GraphHelper** class to Get Meeting times. 
    ```csharp
 	public async Task<object> GetMeetingTimes(string token, string userEmail, string payload)
@@ -350,7 +349,6 @@ endpoint and work with Office 365 and Outlook Calendar. You will be retrieving a
    ```
 
   1. Add the following code to the **FindMeetingTimesController** class to use **GraphHelper** and call the API. Replace `return View()` at the end of the file with the following
-
   ```csharp
     try
     {
@@ -411,7 +409,6 @@ You will add input parameters to the form and use that as input to the API.
             return payloadBuilder.ToString();
         }
    ```
-
 1. Modify the View to add an input for the attendees. 
   1. Find the **Views/FindMeetingTimes** folder in the project.
   1. Open the **Index.cshtml** file found in the folder.
