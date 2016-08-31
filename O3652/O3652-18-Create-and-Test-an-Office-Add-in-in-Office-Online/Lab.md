@@ -1,5 +1,5 @@
 # Create and Test an Office Add-in in Excel Online
-This lab will teach you how to create an add-in using only the shell and a browser. 
+This lab will teach you how to create an add-in using only the shell and a browser. Learn how to create an add-in from scratch using command-line tools and test it using Office Online.
 
 ## Exercise 1: Create an add-in with the Yeoman generator
 
