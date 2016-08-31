@@ -1,7 +1,7 @@
-# Microsoft Graph for OneDrive for Business
+# Connect to files in OneDrive with the Microsoft Graph
 
-In this lab, you will use Microsoft Graph to integrate OneDrive for Business
-with an ASP.NET MVC application.
+
+In this lab, learn how to access, upload, and download files from OneDrive and OneDrive for Business using the Microsoft Graph, AAD v2 end point, and ASP.NET MVC 5.
 
 ## Overview
 Through Microsoft Graph API, you can access files in OneDrive, OneDrive for
