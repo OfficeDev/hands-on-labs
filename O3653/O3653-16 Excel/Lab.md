@@ -1,6 +1,6 @@
-# Microsoft Graph and the Excel REST API 
-
-In this lab, you will read and write into an Excel document stored in your OneDrive Business using new Excel REST APIs. We'll use a Visual Studio ASP.NET MVC project to showcase the interaction. 
+#Connect to Excel files in OneDrive with the Microsoft Graph
+ 
+In this lab, learn how to read and write data in to an Excel file stored in the OneDrive for Business, interact with workbook objects, make updates to ranges and tables, create a chart and extract the chart image. We'll use a Visual Studio ASP.NET MVC project to showcase the interaction. 
 
 ## Get an Office 365 developer environment
 To complete the exercises below, you will require an Office 365 developer environment. Use the Office 365 tenant that you have been given for Tech Ready.
