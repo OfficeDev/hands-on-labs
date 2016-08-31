@@ -1,5 +1,6 @@
-##Build an Expense Report with the new Excel JavaScript APIs in Office 2016
-In this exercise, you will create an Excel add-in that uses the Excel JavaScript API included in Excel 2016. 
+##Create your first Microsoft Office add-in with the Excel JavaScript APIs
+
+In this exercise, you will build an Expense Report with the new Excel JavaScript APIs in Office 2016.
 
 ###Part 1: Create a basic add-in
 1. Launch Visual Studio 2015 as administrator.
