@@ -1,4 +1,6 @@
-#Skype for Business Office 365 Add-in
+#Integrate Skype for Business in an Office add-in with the Skype Web SDK
+
+Learn how to use the new Skype Web SDK to easily embed real-time presence, messaging, and AV directly inside of your custom web experience. You'll also get hands-on experience with app registration and authentication needed to interact with the new User API for Skype for Business Online.
 
 ## Get an Office 365 developer environment
 To complete the exercises below, you will require an Office 365 developer environment. Navigate to **tryoffice.azurewebsites.net** in a browser to sign-in and use the code `Build02` to get an administrator username and password to two accounts. 
