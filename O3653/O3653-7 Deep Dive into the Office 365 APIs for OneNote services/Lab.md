@@ -1,5 +1,5 @@
-# Microsoft Graph for OneNote Services
-In this lab, you will use the Microsoft Graph to integrate the Office 365 OneNote Service with an ASP.NET MVC5 application.
+# Connect to the OneNote API with the Microsoft Graph
+In this lab, you will use the Microsoft Graph to integrate the Office 365 OneNote Service with an ASP.NET MVC5 application. Learn how to read and create notebooks, pages and sections in OneNote using the Microsoft Graph
 
 ## Get an Office 365 developer environment
 To complete the exercises below, you will require an Office 365 developer environment. Use the Office 365 tenant that you have been provided with for Microsoft Ignite.
