@@ -1,6 +1,6 @@
-#Microsoft Graph People API
+#Connect to people with the Microsoft Graph, find contacts if you don't know the spelling
 
-In this lab, you will use the Microsoft Graph to integrate the Office 365 People API with an ASP.NET MVC application.
+In this lab, Learn how to use the machine learning powered People API in Microsoft Graph to find a contact or colleague even if you don’t know how to spell their name. You will use the Microsoft Graph to integrate the Office 365 People API with an ASP.NET MVC application.
 
 ## Get an Office 365 developer environment
 To complete the exercises below, you will require an Office 365 developer environment. Use the Office 365 tenant that you have been provided with for Microsoft Ignite.
