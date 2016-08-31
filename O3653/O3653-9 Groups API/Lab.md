@@ -1,6 +1,6 @@
-# Microsoft Graph to connect to groups, add a member, see the group files and conversations
-In this lab, you will use Microsoft Graph to integrate Groups, its files, conversations and events
-with an ASP.NET MVC application.
+# Connect to groups, add a member, see the group files and conversations with the Microsoft Graph
+
+In this lab, learn how to use the Microsoft Graph to build group centric applications that take advantage of the new Office 365 Groups. Create a group, add members, start a conversation, add a new document and invite everyone to the next team meeting. You will use Microsoft Graph to integrate Groups, its files, conversations and events with an ASP.NET MVC application.
   
 ## Get an Office 365 developer environment
 To complete the exercises below, you will require an Office 365 developer environment. Use the Office 365 tenant that you have been provided with for Tech Ready.
