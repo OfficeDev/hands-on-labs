@@ -199,7 +199,7 @@ Install-Package Microsoft.AspNet.SignalR
   }
   ```
 
-1. Open **AuthHelper** in the Auth folder.
+1. Open **AuthHelper.cs** in the Auth folder.
 
 1. Replace the fields and constructor with the following code.
 
