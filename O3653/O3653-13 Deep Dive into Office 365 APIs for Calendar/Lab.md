@@ -6,7 +6,7 @@ Learn how to use Microsoft Graph to build calendar applications, schedule a meet
 [//]: # (Remove if doing v1) 
 
 ## Get an Office 365 developer environment
-To complete the exercises below, you will require an Office 365 developer environment. Use the Office 365 tenant that you have been provided with for Tech Ready.
+To complete the exercises below, you will require an Office 365 developer environment. Use the Office 365 tenant that you have been provided with for Microsoft Ignite.
 
 ## Exercise 1: Create a new project using Azure Active Directory v2 authentication
 

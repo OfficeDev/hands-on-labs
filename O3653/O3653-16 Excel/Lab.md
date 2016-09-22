@@ -3,7 +3,7 @@
 In this lab, learn how to read and write data in to an Excel file stored in the OneDrive for Business, interact with workbook objects, make updates to ranges and tables, create a chart and extract the chart image. We'll use a Visual Studio ASP.NET MVC project to showcase the interaction. 
 
 ## Get an Office 365 developer environment
-To complete the exercises below, you will require an Office 365 developer environment. Use the Office 365 tenant that you have been given for Tech Ready.
+To complete the exercises below, you will require an Office 365 developer environment. Use the Office 365 tenant that you have been given for Microsoft Ignite.
 
 ## Exercise 1: Create a new project using Azure Active Directory v2 authentication
 
