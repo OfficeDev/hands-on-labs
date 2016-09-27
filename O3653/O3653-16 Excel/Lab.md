@@ -14,13 +14,13 @@ for calling the Graph API.
 1. Launch Visual Studio 2015 and select **New**, **Project**.
   1. Search the installed templates for **Graph** and select the
     **Graph AAD Auth v2 Starter Project** template.
-  1. Name the new project **ExcelRestAPI-ToDoList** and click **OK**.
+  1. Name the new project **Microsoft_Graph_ExcelRest_ToDo** and click **OK**.
   1. Open the **Web.config** file and find the **appSettings** element. This is where you will need to add your appId and app secret you will generate in the next step.
   
 1. Launch the Application Registration Portal by opening a browser and navigating to **apps.dev.microsoft.com**
    to register a new application.
   1. Sign into the portal using your Office 365 work account username and password. The **Graph AAD Auth v2 Starter Project** template allows you to sign in with either a Microsoft account or an Office 365 for business account, but the Excel APIs currently work only with business and school accounts.
-  1. Click **Add an App** and type **ExcelRestAPI-ToDoList** for the application name.
+  1. Click **Add an App** and type **Microsoft_Graph_ExcelRest_ToDo** for the application name.
   1. Copy the **Application Id** and paste it into the value for **ida:AppId** in your project's **Web.config** file.
   1. Under **Application Secrets** click **Generate New Password** to create a new client secret for your app.
   1. Copy the displayed app password and paste it into the value for **ida:AppSecret** in your project's **web.config** file.
@@ -40,7 +40,7 @@ for calling the Graph API.
   </configuration>
   ```
 1. Add a redirect URL to enable testing on your localhost.
-  1. Right click on **ExcelRestAPI-ToDoList** and click on **Properties** to open the project properties.
+  1. Right click on **Microsoft_Graph_ExcelRest_ToDo** and click on **Properties** to open the project properties.
   1. Click on **Web** in the left navigation.
   1. Copy the **Project Url** value.
   1. Back on the Application Registration Portal page, click **Add Platform** and then **Web**.
@@ -48,7 +48,7 @@ for calling the Graph API.
   1. Scroll to the bottom of the page and click **Save**.
 
 1. Set Startup page to Signout page (to avoid stale token error) 
-  1. Right-click **ExcelRestAPI-ToDoList** and click **Properties** to open the project properties.
+  1. Right-click **Microsoft_Graph_ExcelRest_ToDo** and click **Properties** to open the project properties.
   1. Click **Web** in the left navigation.
   1. Under **Start Action** Choose **Specific Page** option and Type its value as **Account/SignOut**  
    
