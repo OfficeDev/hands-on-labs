@@ -222,7 +222,7 @@ This quick start will start with an excersize that will guide you through creati
         {
             public string Get()
             { 
-                //you can also set format=js to get a JSON response back. To keep things concise, we'll use XML.
+                //you can also set format=js to get a JSON response back. For now, we'll use XML.
                 string url = "http://www.bing.com/HPImageArchive.aspx?format=xml&idx=0&n=1";
 
                 //create the request
