@@ -1,4 +1,4 @@
-# Create your first PowerPoint add-in
+ Insert an Image from any service into PowerPoint
 
 Office Add-ins let you add your solution where ever they run. In PowerPoint, add-ins can help you build richer presentations.
 
@@ -6,11 +6,12 @@ This quick start will start with an excersize that will guide you through creati
 
 ## Instructions
 
-### Exercise 1: Create your first add-in
-*In this exercise you will learn how to use Visual Studio to create your first add-in and you will learn about the files that are created for you.  You will also learn about how to customize buttons on the ribbon. *
+### Exercise 1: Create the add-in
+*In this exercise you will learn how to use Visual Studio to create a PowerPoint web add-in and you will learn about the files that are created for you.  You will also learn about how to customize buttons on the ribbon. *
 
-1. Launch Visual Studio 2015
-2. From the **File** menu, select the **New Project** command. When the **New Project** dialog appears, select the **PowerPoint Add-in** project template from the **Office/SharePoint** template folder, as shown below. Name the new project **HelloWorld** and click **OK** to create the new project.
+1. Launch [Visual Studio 2017 for Windows](https://www.visualstudio.com/vs/) with the **Office/SharePoint** development workload installed.
+
+2. From the **File** menu, select the **New Project** command. When the **New Project** dialog appears, select the **PowerPoint Add-in** project template from the **Office/SharePoint** node under **Visual C#**, as shown below. Name the new project **HelloWorld** and click **OK** to create the new project.
 
     ![Screenshot of creating project in Visual Studio](Images/Fig01.PNG)
 
