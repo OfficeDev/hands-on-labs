@@ -20,11 +20,11 @@ In this exercise, you will create a new Azure AD web application registration us
 
 1. On the **Register your application** page, set the **Application Name** to **ASP.NET Graph Tutorial** and select **Create**.
 
-    ![Screenshot of creating a new app in the App Registration Portal website](../../Images/arp-create-app-01.png)
+    ![Screenshot of creating a new app in the App Registration Portal website](Images/arp-create-app-01.png)
 
 1. On the **ASP.NET Graph Tutorial Registration** page, under the **Properties** section, copy the **Application Id** as you will need it later.
 
-    ![Screenshot of newly created application's ID](../../Images/arp-create-app-02.png)
+    ![Screenshot of newly created application's ID](Images/arp-create-app-02.png)
 
 1. Scroll down to the **Application Secrets** section.
 
@@ -33,22 +33,22 @@ In this exercise, you will create a new Azure AD web application registration us
 
         > **Important:** This password is never shown again, so make sure you copy it now.
 
-    ![Screenshot of newly created application's password](../../Images/arp-create-app-03.png)
+    ![Screenshot of newly created application's password](Images/arp-create-app-03.png)
 
 1. Determine your ASP.NET app's URL. In Visual Studio's Solution Explorer, select the **graph-tutorial** project. In the **Properties** window, find the value of **URL**. Copy this value.
 
-    ![Screenshot of the Visual Studio Properties window](../../Images/vs-project-url.png)
+    ![Screenshot of the Visual Studio Properties window](Images/vs-project-url.png)
 
 1. Scroll down to the **Platforms** section.
 
     1. Select **Add Platform**.
     1. In the **Add Platform** dialog, select **Web**.
 
-        ![Screenshot creating a platform for the app](../../Images/arp-create-app-04.png)
+        ![Screenshot creating a platform for the app](Images/arp-create-app-04.png)
 
     1. In the **Web** platform box, enter the URL you copied from the Visual Studio project's properties for the **Redirect URLs**.
 
-        ![Screenshot of the newly added Web platform for the application](../../Images/arp-create-app-05.png)
+        ![Screenshot of the newly added Web platform for the application](Images/arp-create-app-05.png)
 
 1. Scroll to the bottom of the page and select **Save**.
 
