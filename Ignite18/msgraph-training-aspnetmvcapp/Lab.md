@@ -73,11 +73,11 @@ Replace `YOUR APP ID HERE` with the application ID from the Application Registra
 
 Restart the server and go through the sign-in process. You should end up back on the home page, but the UI should change to indicate that you are signed-in.
 
-![A screenshot of the home page after signing in](/Images/add-aad-auth-01.png)
+![A screenshot of the home page after signing in](Images/add-aad-auth-01.png)
 
 Click the user avatar in the top right corner to access the **Sign Out** link. Clicking **Sign Out** resets the session and returns you to the home page.
 
-![A screenshot of the dropdown menu with the Sign Out link](/Images/add-aad-auth-02.png)
+![A screenshot of the dropdown menu with the Sign Out link](Images/add-aad-auth-02.png)
 
 ## Exercise 3: Extend the app for Microsoft Graph
 
@@ -219,4 +219,4 @@ return View(events);
 
 Start the app, sign in, and click the **Calendar** link. The app should now render a table of events.
 
-![A screenshot of the table of events](/Images/add-msgraph-01.png)
+![A screenshot of the table of events](Images/add-msgraph-01.png)
