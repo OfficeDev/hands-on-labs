@@ -2,12 +2,12 @@
 
 Office Add-ins let you add your solution where ever they run. In PowerPoint, add-ins can help you build richer presentations.
 
-This quick start will start with an excersize that will guide you through creating a PowerPoint add-in starting from Visual Studio. We will use Bing.com's Photo of the day. This add-in will expose you to the tools we use to create add-ins and the Office.js 1.1 API. In particular, we'll use the **document.setSelectedDataAsync** API to insert pictures into the user's current PowerPoint deck and customize the UI with add-in commands.
+This quick start will start with an exercise that will guide you through creating a PowerPoint add-in starting from Visual Studio. We will use Bing.com's Photo of the day. This add-in will expose you to the tools we use to create add-ins and the Office.js 1.1 API. In particular, we'll use the **document.setSelectedDataAsync** API to insert pictures into the user's current PowerPoint deck and customize the UI with add-in commands.
 
 ## Instructions
 
 ### Exercise 1: Create the add-in
-*In this exercise you will learn how to use Visual Studio to create a PowerPoint web add-in and you will learn about the files that are created for you.  You will also learn about how to customize buttons on the ribbon. *
+*In this exercise you will learn how to use Visual Studio to create a PowerPoint web add-in and you will learn about the files that are created for you.  You will also learn about how to customize buttons on the ribbon.*
 
 1. Launch [Visual Studio 2017 for Windows](https://www.visualstudio.com/vs/) with the **Office/SharePoint** development workload installed.
 
@@ -84,7 +84,7 @@ This quick start will start with an excersize that will guide you through creati
 
 ### Exercise 2: Get the Photo of the day from Bing and insert it
 
-*In this excersize, we will continue where you left off. You will learn more about add-in commands and learn how to customize the add-in command on the ribbon.*
+*In this exercise, we will continue where you left off. You will learn more about add-in commands and learn how to customize the add-in command on the ribbon.*
 
 1. Let's update the **Home.html**.  Find the div with the id **content-main**. It will look like the following.
 
