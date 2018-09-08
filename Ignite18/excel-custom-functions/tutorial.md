@@ -11,7 +11,7 @@ You’ll begin this tutorial by using the Yo Office Yeoman generator, which will
     yo office
     ```
     
-    ![Yo Office bash prompts for custom functions](./images/yo-office-excel-cfs-stock-ticker.png)
+    ![Yo Office bash prompts for custom functions](images/yo-office-excel-cfs-stock-ticker.PNG)
     
     Answer the prompts as directed below:  
     - Choose a project type: `Excel Custom Functions Add-in project (Preview: Requires the Insider channel for Excel)`
@@ -183,7 +183,7 @@ To do this, you’ll create a new function, `=CONTOSO.STOCKPRICESTREAM`. It make
             }
         ],
         "options": {
-            "stream": true //this option is required for streaming functions
+            "stream": true
         }
     }
     ```
