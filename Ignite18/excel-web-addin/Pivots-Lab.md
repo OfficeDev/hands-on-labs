@@ -202,6 +202,6 @@ You should see a Task Pane with the HTML you created in the previous step.
 Click the buttons in tod/down order and you will see a pivot table like this one:
 
 
-![Script Lab Tab](images/image5.png)
+![Script Lab Tab](images/image6.png)
 
 Son in this Lab you learned how to build a pivot table to summarize data.
