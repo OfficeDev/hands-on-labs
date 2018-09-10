@@ -21,7 +21,7 @@ In this exercise, you'll insert sample data in the worksheet and then create a P
 
 Click on the “Code” Button on the Script Lab Ribbon Tab. That will open a task pane like this one:
 
-[![Title: images/Image1536609641084.undefined](~WRS%7b2CF479C8-9024-4003-ACC4-56F2940994CA%7d_files/image002.png)](https://raw.githubusercontent.com/OfficeDev/hands-on-labs/master/images/Image1536609641084.undefined)
+![Script Lab Tab](images/image2.png)
 
 ### Step 1.2 : Setup HTML Page and point to the Office.js BETA end point.
 
@@ -127,14 +127,17 @@ document.getElementById("customize").style.display = "block";
 
 Click on the RUN tab on “Script Lab”
 
-[![Title: images/Image1536613994740.undefined](~WRS%7b2CF479C8-9024-4003-ACC4-56F2940994CA%7d_files/image004.png)](https://raw.githubusercontent.com/OfficeDev/hands-on-labs/master/images/Image1536613994740.undefined) 
+
+![Script Lab Tab](images/image4.png)
 
 You should see a Task Pane with the HTML you created in the previous step.
 
-[![Title: images/Image1536613994740.undefined](~WRS%7b2CF479C8-9024-4003-ACC4-56F2940994CA%7d_files/image005.png)](https://raw.githubusercontent.com/OfficeDev/hands-on-labs/master/images/Image1536613994740.undefined)
+
+![Script Lab Tab](images/image5.png)
 
 Click the buttons in tod/down order and you will see a pivot table like this one:
 
-[![Title: images/Image1536613994740.undefined](~WRS%7b2CF479C8-9024-4003-ACC4-56F2940994CA%7d_files/image006.png)](https://raw.githubusercontent.com/OfficeDev/hands-on-labs/master/images/Image1536613994740.undefined)
+
+![Script Lab Tab](images/image5.png)
 
 Son in this Lab you learned how to build a pivot table to summarize data.
