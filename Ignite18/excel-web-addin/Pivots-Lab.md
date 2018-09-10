@@ -11,7 +11,7 @@ On this Hands-on Lab, you will use Script Lab to code and run your snippet. Scri
 3.  In the store tab, search for “Script Lab”, then click on “Add”
 4.  At the end of the process you should see the “Script Lab Tab” on the Ribbon.
 
-## [![Title: images/Image1536609758684.undefined](../images/image1.png)](../images/image1.png)
+## ![Script Lab Tab](images/image1.png)
 
 ## Step 1 : Setup your snippet in Script Lab
 
