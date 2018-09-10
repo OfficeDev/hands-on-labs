@@ -11,7 +11,7 @@ On this Hands-on Lab, you will use Script Lab to code and run your snippet. Scri
 3.  In the store tab, search for “Script Lab”, then click on “Add”
 4.  At the end of the process you should see the “Script Lab Tab” on the Ribbon.
 
-## [![Title: images/Image1536609758684.undefined](~WRS%7b7211EA53-C08B-4437-8899-8650AEB91D0A%7d_files/image001.png)](https://raw.githubusercontent.com/OfficeDev/hands-on-labs/master/images/Image1536609758684.undefined)
+## [![Title: images/Image1536609758684.undefined](~WRS%7b9D5CB4B4-0889-4037-8EAB-D6C7C825BB81%7d_files/image001.png)](https://raw.githubusercontent.com/OfficeDev/hands-on-labs/master/images/Image1536609758684.undefined)
 
 ## Exercise 1
 
@@ -21,11 +21,11 @@ In this exercise, you'll insert sample data in the worksheet and then create a P
 
 Click on the “Code” Button on the Script Lab Ribbon Tab. That will open a task pane like this one:
 
-[![Title: images/Image1536609641084.undefined](~WRS%7b7211EA53-C08B-4437-8899-8650AEB91D0A%7d_files/image002.png)](https://raw.githubusercontent.com/OfficeDev/hands-on-labs/master/images/Image1536609641084.undefined)
+[![Title: images/Image1536609641084.undefined](~WRS%7b9D5CB4B4-0889-4037-8EAB-D6C7C825BB81%7d_files/image002.png)](https://raw.githubusercontent.com/OfficeDev/hands-on-labs/master/images/Image1536609641084.undefined)
 
-### Step 1.2 : In order to use the Pivot Table API you need to add a reference to the Office.js BETA library.
+### Step 1.2 : Setup HTML Page and point to the Office.js BETA end point.
 
-Click on the Libraries Tab and then make sure it points to:
+In order to use the Pivot Table API you need to add a reference to the Office.js BETA library.  Click on the Libraries Tab and then make sure it points to:
 
  [https://appsforoffice.microsoft.com/lib/beta/hosted/office.js](https://appsforoffice.microsoft.com/lib/beta/hosted/office.js)
 
@@ -33,6 +33,12 @@ Now let’s click on the HTML Tab and add 3 buttons to a) Insert sample data, b)
 
 ```
 <section class="setup ms-font-m">
+```
+
+Your HTML TAB should look like this:
+
+```
+
 ```
 
 Step 1.2 Create a chart Add a button in HTML page. Clicking the button will use range above to create a chart.
