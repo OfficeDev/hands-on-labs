@@ -4,7 +4,7 @@ During this lab you will learn how to create pivot tables in Excel using the Jav
 
 ## Preparation
 
-On this Hands-on Lab, you will use Script Lab to code and run your snippet. Script Lab is a Web Add-in built by Microsoft that you can help you test, build and share your code snippets rapid and conveniently. If you are not familiar with it, you can follow the instructions below.
+On this Hands-on Lab, you will use Script Lab to code and run your snippet. Script Lab is a Web Add-in built by Microsoft that can use to easily  code, run and share your Office.js snippets rapid and conveniently. If you are not familiar with it, you can follow the instructions below.
 
 1.  If you don’t see a “Script Lab” tab on your ribbon, please install it from the store. Otherwise continue to Exercise 1\.
 2.  Click on the Insert Tab on the ribbon and then select “Get Add-ins” The Office Add-ins dialog will pop up.
