@@ -17,7 +17,13 @@ INSERT IMAGE1.PNG HERE
 
 In this exercise, you'll insert sample data in the worksheet and then create a Pivot Table to summarize it.
 
-### Step 1.1 Insert sample data. Let's insert the following data into a worksheet.
+### Step 1.1 Create a new Script Lab Snippet. Click on the “Code” Button on the Script Lab Ribbon Tab. That will open a task pane like this one:
+
+[![Title: images/Image1536609641084.undefined](https://raw.githubusercontent.com/OfficeDev/hands-on-labs/master/images/Image1536609641084.undefined)](https://raw.githubusercontent.com/OfficeDev/hands-on-labs/master/images/Image1536609641084.undefined)
+
+### Step 1.2 : In order to use the Pivot Table API you need to add a reference to the Office.js BETA library. Click on the Libraries Tab and then make sure it points to:
+
+ https://appsforoffice.microsoft.com/lib/beta/hosted/office.js
 
 ```
 ["State", "2013", "2014", "2015", "2016", "2017"]
