@@ -51,7 +51,7 @@ chart.dataLabels.position = "Center";chart.dataLabels.separator = "\n";chart.d
 ```
 
 ## Next steps
-Congratulations! You’ve completed the experiments! If you want to learn more about new comming APIs, please move to our [Github]()
+Congratulations! You’ve completed the experiments! If you want to learn more about new comming APIs, please move to our [Github](https://github.com/OfficeDev/office-js-docs/tree/ExcelJs_OpenSpec)
 
 
 ## Appendix
