@@ -17,7 +17,7 @@ On this Hands-on Lab, you will use Script Lab to code and run your snippet. Scri
 
 ## Step 1 : Setup your snippet in Script Lab
 
-In this exercise, you'll insert sample data in the worksheet and then create a Pivot Table to summarize it.
+In this exercise, you'll prepare Script Lab to setup your sample basic files, an HTML page and a JavaScript file.
 
 ### Step 1.1 Create a new Script Lab Snippet.
 
