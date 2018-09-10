@@ -11,7 +11,7 @@ On this Hands-on Lab, you will use Script Lab to code and run your snippet. Scri
 3.  In the store tab, search for “Script Lab”, then click on “Add”
 4.  At the end of the process you should see the “Script Lab Tab” on the Ribbon.
 
-## [![Title: images/Image1536609758684.undefined](~WRS%7b2CF479C8-9024-4003-ACC4-56F2940994CA%7d_files/image001.png)](https://raw.githubusercontent.com/OfficeDev/hands-on-labs/master/images/Image1536609758684.undefined)
+## [![Title: images/Image1536609758684.undefined](../images/image1.png)](../images/image1.png)
 
 ## Step 1 : Setup your snippet in Script Lab
 
