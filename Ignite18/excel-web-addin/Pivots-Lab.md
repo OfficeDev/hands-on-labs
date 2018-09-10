@@ -11,11 +11,11 @@ On this Hands-on Lab, we will use Script Lab to code and run your code. Script L
 3.  In the store tab, search for “Script Lab”, then click on “Add”
 4.  At the end of the process you should see the “Script Lab Tab” on the Ribbon.
 
-[![Title: images/Image1536608990245.undefined](~WRS%7b72490AB5-971D-4C9B-859F-F75AACECCBBE%7d_files/image001.png)](https://raw.githubusercontent.com/OfficeDev/hands-on-labs/master/images/Image1536608990245.undefined)
+INSERT IMAGE1.PNG HERE
 
 ## Exercise 1
 
-In this exercise, you'll insert sample data in the worksheet and then create a
+In this exercise, you'll insert sample data in the worksheet and then create a Pivot Table to summarize it.
 
 ### Step 1.1 Insert sample data. Let's insert the following data into a worksheet.
 
