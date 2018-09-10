@@ -1,6 +1,8 @@
 # New in the Excel JavaScript API: Creating Data Analysis Web Add-ins for Excel using Pivot Tables.
 
-During this lab you will learn how to create pivot tables in Excel using the JavaScript API.
+During this lab you will learn how to create pivot tables in Excel using the JavaScript API. You will start by adding some sample data to build a Pivot Table from that looks like this: (Hierarchy: Farms with produce either organic or conventional)
+
+## ![Script Lab Tab](images/image7.png)
 
 ## Preparation
 
