@@ -36,10 +36,7 @@ Now let’s click on the HTML Tab and add 3 buttons to a) Insert sample data, b)
 ```
 
 Your HTML TAB should look like this:
-
-```
-
-```
+![Script Lab Tab](images/image3.png)
 
 ### Step 1.3 : Add  Event handlers for each button.
 
