@@ -28,64 +28,27 @@ You’ll begin this tutorial by using the Yo Office Yeoman generator, which will
 3. Launch [Excel Online](https://www.office.com/launch/excel). Open a new workbook. 
 4. Select **Insert > Add-ins**. Choose **Manage My Add-ins** and select **Upload My Add-in**. Browse for your manifest file, then select **Upload**. 
 
+5. Typically, you need to install a self-signed certificate for your project to work, but this step has been completed for you! 
+
 Now the custom functions in your file will be loaded and ready to use. There are several pre-built functions for you in the Yo Office project. All are attached to a namespace called CONTOSO which is defined in the XML manifest file. Once you start typing `=CONTOSO.` in a cell, the list of available functions will appear.
 
 Let's call `=CONTOSO.ADD42()`. This function adds 42 to any two numbers you provide as arguments. In any cell, type `=CONTOSO.ADD42(1,2)`. It should deliver the answer 45.
 
-## Exercise 2: Customize a computational function
-For the sake of this exercise, assume that Microsoft’s current stock price is $105/share. You’ll create a function which takes in the number of shares and multiples that number by 105. In the **src** folder, you will see there is a file called **customfunctions.js**. Here, you'll find the code for `=CONTOSO.ADD42` and the other pre-built functions included in your project. 
-
-1. Let's create a new function, `=CONTOSO.STOCKMULTIPLES`.
-
-    Copy and paste the below code into **customfunctions.js**.
-    
-    ```js
-    function STOCKMULTIPLES(num1) {
-        return num1 * 105;  
-    }
-    ```
-
-2. In order for Excel to properly run this function, you must add metadata describing the function to the **./config/customfunctions.json** file. Add the following JSON:  
-    
-    ```json
-    {
-        "name": "STOCKMULTIPLES",
-        "description": "Multiplies number by 105",
-        "helpUrl": "http://dev.office.com",
-        "result": {
-            "type": "number",
-            "dimensionality": "scalar"
-            },  
-        "parameters": [
-            {
-                "name": "num1",
-                "description": "variable to multiply by 105",
-                "type": "number",
-                "dimensionality": "scalar"
-            }
-        ]
-    }
-    ```
-
-3. You will also need to re-upload your manifest for this function to be useable.  In Excel Online, select **Insert > Add-ins**. Choose **Manage My Add-ins** and select **Upload My Add-in**. Browse for your manifest file, then select **Upload**.
-
-4. In any cell of your workbook, run `=CONTOSO.STOCKMULTIPLES(5)`. This will tell us the value of 5 shares of Microsoft stock: $525. 
-
 _Note that when a call is made in Excel Online, you may see `#GETTING_DATA` appear in a cell. Once a value is returned, this notification should disappear._
 
-## Exercise 3: Create an asynchronous custom function
+## Exercise 2: Create an asynchronous custom function
 What if you wanted a function which could fetch and display the price of Microsoft stock that day? Custom functions are designed so you can easily make requests for data from the web asynchronously.
   
-You’ll be adding a new function, called `=CONTOSO.STOCKPRICE`, to the **customfunctions.js** file.  The function will take in the name of a stock ticker, such as "MSFT", and return the price of that stock.  
+You’ll be adding a new function, called `=CONTOSO.STOCKPRICE`, to the **customfunctions.js** file.  The function will take in the name of a stock ticker, such as "MSFT", and return the price of that stock. You'll leverage the IEX Trading API, which is free and does not require authentication.
 
-1. Copy and paste the function below and add it to **customfunctions.js**.  
+1. Copy and paste the function below and add it to **customfunctions.js**. 
     
     ```js
     function STOCKPRICE(ticker) {
-        return new Promise(
+        return new Promise( 
             function(resolve) {
                 let xhr = new XMLHttpRequest();
-                let url = "https://api.iextrading.com/1.0/stock/" + ticker + "/price"
+                let url = "https://api.iextrading.com/1.0/stock/" + ticker + "/price" 
                 //add handler for xhr
 
                 xhr.onreadystatechange = function() {
@@ -102,13 +65,15 @@ You’ll be adding a new function, called `=CONTOSO.STOCKPRICE`, to the **custom
         });
     }
     ```
+    
+    You'll notice in this code that your asynchronous function returns a JavaScript Promise with the data from the IEX Trading API.         Asynchronous custom functions require you to either return a new Promise or use JavaScript's async/await syntax. 
 
-2. Again, in order for Excel to properly run this function, you must add some metadata to the **./config/customfunctions.json** file.
+2. In order for Excel to properly run this function, you must also add some metadata to the **./config/customfunctions.json** file.
 
     ```json
     {
         "name": "STOCKPRICE",
-        "description": "Multiplies number by 105",
+        "description": "Fetches current stock price",
         "helpUrl": "http://dev.office.com",
         "result": {
             "type": "number",
@@ -125,12 +90,13 @@ You’ll be adding a new function, called `=CONTOSO.STOCKPRICE`, to the **custom
         }
     }
     ```
+    You'll notice that this JSON file describes the function, listing the types and dimensionality of the results and parameters.
 
 3. You need to re-upload your manifest for this function to be useable.  In Excel Online, select **Insert > Add-ins**. Choose **Manage My Add-ins** and select **Upload My Add-in**. Browse for your manifest file, then select **Upload**.
 
-4. In any cell of your workbook, run the function `=CONTOSO.STOCKPRICE("MSFT")`. It should show you the stock price for one share of Microsoft stock right now.
+4. In any cell of your workbook, enter the function `=CONTOSO.STOCKPRICE("MSFT")`. It should show you the stock price for one share of Microsoft stock right now.
 
-## Exercise 4: Create a streaming asynchronous custom function
+## Exercise 3: Create a streaming asynchronous custom function
 The previous function returned the stock price for Microsoft at a particular moment in time, but stock prices are always changing. With custom functions, it is possible to “stream” data from an API to get updates on stock prices in real time.  
 
 To do this, you’ll create a new function, `=CONTOSO.STOCKPRICESTREAM`. It makes a request for updated data every 1000 milliseconds. 
@@ -141,8 +107,7 @@ To do this, you’ll create a new function, `=CONTOSO.STOCKPRICESTREAM`. It make
     function STOCKPRICESTREAM(ticker, caller) {
 
         let result = 0;
-        //return every second
-
+        
         setInterval(function() {
             let xhr = new XMLHttpRequest();
             let url = "https://api.iextrading.com/1.0/stock/" + ticker + "/price";
@@ -187,6 +152,7 @@ To do this, you’ll create a new function, `=CONTOSO.STOCKPRICESTREAM`. It make
         }
     }
     ```
+    You'll notice that this JSON file is very similar to the previous function's JSON file, but that a new section has been added for       "options." Because this function is streaming, you must specify this as true in the JSON. 
 
 3. Again, re-upload your manifest for this function to be useable.  In Excel Online, select **Insert > Add-ins**. Choose **Manage My Add-ins** and select **Upload My Add-in**. Browse for your manifest file, then select **Upload**.
 
