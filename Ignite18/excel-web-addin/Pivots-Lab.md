@@ -199,9 +199,9 @@ You should see a Task Pane with the HTML you created in the previous step.
 
 ![Script Lab Tab](images/image5.png)
 
-Click the buttons in tod/down order and you will see a pivot table like this one:
+Click the buttons in top/down order and you will see a pivot table like this one:
 
 
 ![Script Lab Tab](images/image6.png)
 
-Son in this Lab you learned how to build a pivot table to summarize data.
+Summary: in this Lab you learned the basics on how to build a pivot table to summarize data.
