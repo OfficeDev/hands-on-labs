@@ -31,8 +31,22 @@ In order to use the Pivot Table API you need to add a reference to the Office.js
 
 Now let’s click on the HTML Tab and add 3 buttons to a) Insert sample data, b) create Pivot Table and c) add  Rows, columns and data to the Pivot Table.
 
-```
+```html
 <section class="setup ms-font-m">
+<h3>Set up</h3>
+<button id="setup" class="ms-Button">
+<span class="ms-Button-label">Add sample Data</span>
+</button>
+</section>
+<section class="samples ms-font-m">
+<h3>Create the PivotTable</h3>
+<button id="createPivot" class="ms-Button">
+<span class="ms-Button-label">Create</span>
+</button>
+</section>
+<section class="samples ms-font-m">
+<h3>Adjust the PivotTable</h3>
+<button id="adjustPivot" class="ms-Button">
 ```
 
 Your HTML TAB should look like this:
