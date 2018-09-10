@@ -47,6 +47,12 @@ Now let’s click on the HTML Tab and add 3 buttons to a) Insert sample data, b)
 <section class="samples ms-font-m">
     <h3>Adjust the PivotTable</h3>
     <button id="adjustPivot" class="ms-Button">
+        <span class="ms-Button-label">Add rows, columns and data</span>
+    </button>
+    <p />
+</section>
+
+
 
 ```
 
