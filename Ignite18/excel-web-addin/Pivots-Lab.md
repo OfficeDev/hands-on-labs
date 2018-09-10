@@ -11,9 +11,9 @@ On this Hands-on Lab, you will use Script Lab to code and run your snippet. Scri
 3.  In the store tab, search for “Script Lab”, then click on “Add”
 4.  At the end of the process you should see the “Script Lab Tab” on the Ribbon.
 
-## [![Title: images/Image1536609758684.undefined](~WRS%7b84240C36-0DBC-4B59-837D-3BA1440101D1%7d_files/image001.png)](https://raw.githubusercontent.com/OfficeDev/hands-on-labs/master/images/Image1536609758684.undefined)
+## [![Title: images/Image1536609758684.undefined](~WRS%7b2CF479C8-9024-4003-ACC4-56F2940994CA%7d_files/image001.png)](https://raw.githubusercontent.com/OfficeDev/hands-on-labs/master/images/Image1536609758684.undefined)
 
-## Exercise 1
+## Step 1 : Setup your snippet in Script Lab
 
 In this exercise, you'll insert sample data in the worksheet and then create a Pivot Table to summarize it.
 
@@ -21,52 +21,120 @@ In this exercise, you'll insert sample data in the worksheet and then create a P
 
 Click on the “Code” Button on the Script Lab Ribbon Tab. That will open a task pane like this one:
 
-[![Title: images/Image1536609641084.undefined](~WRS%7b84240C36-0DBC-4B59-837D-3BA1440101D1%7d_files/image002.png)](https://raw.githubusercontent.com/OfficeDev/hands-on-labs/master/images/Image1536609641084.undefined)
+[![Title: images/Image1536609641084.undefined](~WRS%7b2CF479C8-9024-4003-ACC4-56F2940994CA%7d_files/image002.png)](https://raw.githubusercontent.com/OfficeDev/hands-on-labs/master/images/Image1536609641084.undefined)
 
-### Step 1.2 : In order to use the Pivot Table API you need to add a reference to the Office.js BETA library.
+### Step 1.2 : Setup HTML Page and point to the Office.js BETA end point.
 
-Click on the Libraries Tab and then make sure it points to:
+In order to use the Pivot Table API you need to add a reference to the Office.js BETA library.  Click on the Libraries Tab and change the first line so that it points to:
 
- https://appsforoffice.microsoft.com/lib/beta/hosted/office.js
+ [https://appsforoffice.microsoft.com/lib/beta/hosted/office.js](https://appsforoffice.microsoft.com/lib/beta/hosted/office.js)
+
+Now let’s click on the HTML Tab and add 3 buttons to a) Insert sample data, b) create Pivot Table and c) add  Rows, columns and data to the Pivot Table.
 
 ```
-["State", "2013", "2014", "2015", "2016", "2017"]
+<section class="setup ms-font-m">
 ```
 
-Step 1.2 Create a chart Add a button in HTML page. Clicking the button will use range above to create a chart.
+Your HTML TAB should look like this:
 
-[https://appsforoffice.microsoft.com/lib/beta/hosted/office.js](https://appsforoffice.microsoft.com/lib/beta/hosted/office.js)
+```
 
-## Exercise 2
+```
 
-Bind an event handler to the created chart.
+### Step 1.3 : Add  Event handlers for each button.
 
-Step 2.1 Register event.
+Now click on the “Script” tab on the Script Lab task pane and add 3 event handlers for each button.
+
+Your code should look like this:
+
+$("#setup").click(() => tryCatch(setup));
+
+$("#createPivot").click(() => tryCatch(createPivot));
+
+$("#adjustPivot").click(() => tryCatch(adjustPivot));
+
+async function setup() {
+
+    await Excel.run(async (context) => {
+
+        OfficeHelpers.UI.notify("setup");
+
+        await context.sync();
+
+    });
+
+}
+
+async function createPivot() {
+
+    await Excel.run(async (context) => {
+
+        OfficeHelpers.UI.notify("create");
+
+        await context.sync();
+
+    });
+
+}
+
+async function adjustPivot() {
+
+    await Excel.run(async (context) => {
+
+        OfficeHelpers.UI.notify("adjust");
+
+        await context.sync();
+
+    });
+
+}
+
+/** Default helper for invoking an action and handling errors. */
+
+async function tryCatch(callback) {
+
+    try {
+
+        await callback();
+
+    }
+
+    catch (error) {
+
+        OfficeHelpers.UI.notify(error);
+
+        OfficeHelpers.Utilities.log(error);
+
+    }
+
+}
+
+## Step  2: Create your Pivot Table.
+
+Step 2.1 Add Code to the setup method (copy paste).
 
 ```
 chart.onActivated.add(chartActivated);
 ```
 
-Step 2\. Change the visibility of button in event handler.
-
-Use these commands to control the visibility of Chart. When user select the chart, show the button.
+Step 2.2 Add Code to add rows, columns and data hierarchies.
 
 ```
 document.getElementById("customize").style.display = "block";
 ```
 
-## Exercise 3
+## Step 4: Run your sample!
 
-Add data labels to the chart and set properties:
+Click on the RUN tab on “Script Lab”
 
-```
-chart.dataLabels.position = "Center";
-```
+[![Title: images/Image1536613994740.undefined](~WRS%7b2CF479C8-9024-4003-ACC4-56F2940994CA%7d_files/image004.png)](https://raw.githubusercontent.com/OfficeDev/hands-on-labs/master/images/Image1536613994740.undefined) 
 
-## Next steps
+You should see a Task Pane with the HTML you created in the previous step.
 
-Congratulations! You’ve completed the experiments! If you want to learn more about new comming APIs, please move to our [Github](https://github.com/OfficeDev/office-js-docs/tree/ExcelJs_OpenSpec)
+[![Title: images/Image1536613994740.undefined](~WRS%7b2CF479C8-9024-4003-ACC4-56F2940994CA%7d_files/image005.png)](https://raw.githubusercontent.com/OfficeDev/hands-on-labs/master/images/Image1536613994740.undefined)
 
-## Appendix
+Click the buttons in tod/down order and you will see a pivot table like this one:
 
-[Reference anwser](https://gist.github.com/79f15944334e208361bbb1aa7229ec3f)
+[![Title: images/Image1536613994740.undefined](~WRS%7b2CF479C8-9024-4003-ACC4-56F2940994CA%7d_files/image006.png)](https://raw.githubusercontent.com/OfficeDev/hands-on-labs/master/images/Image1536613994740.undefined)
+
+Son in this Lab you learned how to build a pivot table to summarize data.
