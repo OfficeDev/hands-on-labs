@@ -101,7 +101,7 @@ async function tryCatch(callback) {
 ```
 ## Step  2: Create your Pivot Table.
 
-Step 2.1 Add Code to insert sample data  setup method (copy paste).
+Step 2.1 Add Code to insert sample data in the setup method (copy paste).
 
 
 ```javascript
@@ -146,7 +146,7 @@ async function setup() {
 }
 ```
 
-Step 2.2 Add Code to create a Pivot Table.
+Step 2.2 Add Code to create a Pivot Table in the createPivot method.
 
 ```javascript
 async function createPivot() {
@@ -160,7 +160,7 @@ async function createPivot() {
 }
 ```
 
-Step 2.3 Add Code to add rows, columns and data hierarchies.
+Step 2.3 Add Code to add rows, columns and data hierarchies on the adjustPivot method.
 
 ```javascript
 async function adjustPivot() {
