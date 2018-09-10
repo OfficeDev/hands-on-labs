@@ -44,68 +44,39 @@ Now click on the “Script” tab on the Script Lab task pane and add 3 event ha
 
 Your code should look like this:
 
+```javascript
 $("#setup").click(() => tryCatch(setup));
-
 $("#createPivot").click(() => tryCatch(createPivot));
-
 $("#adjustPivot").click(() => tryCatch(adjustPivot));
-
 async function setup() {
-
     await Excel.run(async (context) => {
-
         OfficeHelpers.UI.notify("setup");
-
         await context.sync();
-
     });
-
 }
-
 async function createPivot() {
-
     await Excel.run(async (context) => {
-
         OfficeHelpers.UI.notify("create");
-
         await context.sync();
-
     });
-
 }
-
 async function adjustPivot() {
-
     await Excel.run(async (context) => {
-
         OfficeHelpers.UI.notify("adjust");
-
         await context.sync();
-
     });
-
 }
-
 /** Default helper for invoking an action and handling errors. */
-
 async function tryCatch(callback) {
-
     try {
-
         await callback();
-
     }
-
     catch (error) {
-
         OfficeHelpers.UI.notify(error);
-
         OfficeHelpers.Utilities.log(error);
-
     }
-
 }
-
+```
 ## Step  2: Create your Pivot Table.
 
 Step 2.1 Add Code to the setup method (copy paste).
