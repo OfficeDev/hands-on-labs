@@ -10,19 +10,22 @@ On this Hands-on Lab, we will use Script Lab to code and run your code. Script L
 2.  Click on the Insert Tab on the ribbon and then select “Get Add-ins” The Office Add-ins dialog will pop up.
 3.  In the store tab, search for “Script Lab”, then click on “Add”
 4.  At the end of the process you should see the “Script Lab Tab” on the Ribbon.
-5.  [https://appsforoffice.microsoft.com/lib/beta/hosted/office.js](https://appsforoffice.microsoft.com/lib/beta/hosted/office.js)
+
+[![Title: images/Image1536608990245.undefined](https://raw.githubusercontent.com/OfficeDev/hands-on-labs/master/images/Image1536608990245.undefined)](https://raw.githubusercontent.com/OfficeDev/hands-on-labs/master/images/Image1536608990245.undefined)
 
 ## Exercise 1
 
 In this exercise, you'll insert sample data in the worksheet and then create a
 
-Step 1.1 Insert sample data. Let's insert the following data into a worksheet.
+### Step 1.1 Insert sample data. Let's insert the following data into a worksheet.
 
 ```
 ["State", "2013", "2014", "2015", "2016", "2017"]
 ```
 
 Step 1.2 Create a chart Add a button in HTML page. Clicking the button will use range above to create a chart.
+
+[https://appsforoffice.microsoft.com/lib/beta/hosted/office.js](https://appsforoffice.microsoft.com/lib/beta/hosted/office.js)
 
 ## Exercise 2
 
