@@ -1,6 +1,6 @@
 # New in the Excel JavaScript API: Creating Data Analysis Web Add-ins for Excel using Pivot Tables.
 
-During this lab you will learn the basics on how to create pivot tables in Excel using the Excel JavaScript API. You will start by adding some sample data to build a Pivot Table from that looks like this: (Hierarchy: Farms with produce either organic or conventional)
+During this lab you will learn the basics on how to create pivot tables in Excel using the Excel JavaScript API. You will start by adding some sample data to build a Pivot Table from. The raw data worksheet that looks like this: (Hierarchy: Farms with produce either organic or conventional)
 
 ## ![Script Lab Tab](images/image7.png)
 
@@ -8,7 +8,7 @@ During this lab you will learn the basics on how to create pivot tables in Excel
 
 On this Hands-on Lab, you will use Script Lab to code and run your snippet. Script Lab is a Web Add-in built by Microsoft that can use to easily  code, run and share your Office.js snippets rapid and conveniently. If you are not familiar with it, you can follow the instructions below.
 
-1.  If you don’t see a “Script Lab” tab on your ribbon, please install it from the store. Otherwise continue to Step 1\.
+1.  If you don’t see a “Script Lab” tab on your ribbon, please install it from the store. Otherwise continue to Step 1\
 2.  Click on the Insert Tab on the ribbon and then select “Get Add-ins” The Office Add-ins dialog will pop up.
 3.  In the store tab, search for “Script Lab”, then click on “Add”
 4.  At the end of the process you should see the “Script Lab Tab” on the Ribbon.
