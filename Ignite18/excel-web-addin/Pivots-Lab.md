@@ -29,7 +29,7 @@ In order to use the Pivot Table API you need to add a reference to the Office.js
 
  [https://appsforoffice.microsoft.com/lib/beta/hosted/office.js](https://appsforoffice.microsoft.com/lib/beta/hosted/office.js)
 
-Now let’s click on the HTML Tab and add 3 buttons to a) Insert sample data, b) create Pivot Table and c) add  Rows, columns and data to the Pivot Table.
+Now let’s click on the HTML Tab and add 3 buttons to a) Insert sample data, b) create Pivot Table and c) add  Rows, columns and data to the Pivot Table. (you can copy/paste from below)
 
 ```html
 <section class="setup ms-font-m">
@@ -99,16 +99,90 @@ async function tryCatch(callback) {
 ```
 ## Step  2: Create your Pivot Table.
 
-Step 2.1 Add Code to the setup method (copy paste).
+Step 2.1 Add Code to insert sample data  setup method (copy paste).
 
-```
-chart.onActivated.add(chartActivated);
+
+```javascript
+
+async function setup() {
+    await Excel.run(async (context) => {
+        const sheetData = await OfficeHelpers.ExcelUtilities
+            .forceCreateSheet(context.workbook, "Data");
+        const sheetPivot = await OfficeHelpers.ExcelUtilities
+            .forceCreateSheet(context.workbook, "Pivot");
+
+        const data = [["Farm", "Type", "Classification", "Crates Sold at Farm", "Crates Sold Wholesale"],
+        ["A Farms", "Lime", "Organic", 300, 2000],
+        ["A Farms", "Lemon", "Organic", 250, 1800],
+        ["A Farms", "Orange", "Organic", 200, 2200],
+        ["B Farms", "Lime", "Conventional", 80, 1000],
+        ["B Farms", "Lemon", "Conventional", 75, 1230],
+        ["B Farms", "Orange", "Conventional", 25, 800],
+        ["B Farms", "Orange", "Organic", 20, 500],
+        ["B Farms", "Lemon", "Organic", 10, 770],
+        ["B Farms", "Kiwi", "Conventional", 30, 300],
+        ["B Farms", "Lime", "Organic", 50, 400],
+        ["C Farms", "Apple", "Organic", 275, 220],
+        ["C Farms", "Kiwi", "Organic", 200, 120],
+        ["D Farms", "Apple", "Conventional", 100, 3000],
+        ["D Farms", "Apple", "Organic", 80, 2800],
+        ["E Farms", "Lime", "Conventional", 160, 2700],
+        ["E Farms", "Orange", "Conventional", 180, 2000],
+        ["E Farms", "Apple", "Conventional", 245, 2200],
+        ["E Farms", "Kiwi", "Conventional", 200, 1500],
+        ["F Farms", "Kiwi", "Organic", 100, 150],
+        ["F Farms", "Lemon", "Conventional", 150, 270]];
+
+        const range = sheetData.getRange("A1:E21");
+        range.values = data;
+        range.format.autofitColumns();
+
+        sheetPivot.activate();
+
+        await context.sync();
+    });
+}
 ```
 
-Step 2.2 Add Code to add rows, columns and data hierarchies.
+Step 2.2 Add Code to create a Pivot Table.
 
+```javascript
+async function createPivot() {
+    await Excel.run(async (context) => {
+        const rangeToAnalyze = context.workbook.worksheets.getItem("Data").getRange("A1:E21");
+        const rangeToPlacePivot = context.workbook.worksheets.getItem("Pivot").getRange("A2");
+        context.workbook.worksheets.getItem("Pivot").pivotTables.add("Farm Sales", rangeToAnalyze, rangeToPlacePivot);
+
+        await context.sync();
+    });
+}
 ```
-document.getElementById("customize").style.display = "block";
+
+Step 2.3 Add Code to add rows, columns and data hierarchies.
+
+```javascript
+async function adjustPivot() {
+    await Excel.run(async (context) => {
+
+        await Excel.run(async (context) => {
+            const pivotTable = context.workbook.worksheets.getActiveWorksheet().pivotTables.getItem("Farm Sales");
+
+            //add row hierarchies!
+            pivotTable.rowHierarchies.add(pivotTable.hierarchies.getItem("Farm"));
+            pivotTable.rowHierarchies.add(pivotTable.hierarchies.getItem("Type"));
+
+            // add column hierarchies ! 
+            let myColumnHierarchy = pivotTable.hierarchies.getItem("Classification");
+            pivotTable.columnHierarchies.add(myColumnHierarchy);
+
+            // add values ! 
+            let myValue = pivotTable.dataHierarchies.add(pivotTable.hierarchies.getItem("Crates Sold at Farm"));
+            myValue.summarizeBy = Excel.AggregationFunction.sum;
+
+            await context.sync();
+        });
+    });
+}
 ```
 
 ## Step 4: Run your sample!
