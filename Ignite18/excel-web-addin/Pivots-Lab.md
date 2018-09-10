@@ -11,9 +11,9 @@ On this Hands-on Lab, you will use Script Lab to code and run your snippet. Scri
 3.  In the store tab, search for “Script Lab”, then click on “Add”
 4.  At the end of the process you should see the “Script Lab Tab” on the Ribbon.
 
-## [![Title: images/Image1536609758684.undefined](~WRS%7b4A810D3F-E4F3-4AFA-B9C4-E5E4E9464408%7d_files/image001.png)](https://raw.githubusercontent.com/OfficeDev/hands-on-labs/master/images/Image1536609758684.undefined)
+## [![Title: images/Image1536609758684.undefined](~WRS%7b1AC46C07-C13A-4F6E-AAC0-4E6D9FF25A5B%7d_files/image001.png)](https://raw.githubusercontent.com/OfficeDev/hands-on-labs/master/images/Image1536609758684.undefined)
 
-## Exercise 1
+## Exercise 1: Setup your snippet in Script Lab
 
 In this exercise, you'll insert sample data in the worksheet and then create a Pivot Table to summarize it.
 
@@ -21,7 +21,7 @@ In this exercise, you'll insert sample data in the worksheet and then create a P
 
 Click on the “Code” Button on the Script Lab Ribbon Tab. That will open a task pane like this one:
 
-[![Title: images/Image1536609641084.undefined](~WRS%7b4A810D3F-E4F3-4AFA-B9C4-E5E4E9464408%7d_files/image002.png)](https://raw.githubusercontent.com/OfficeDev/hands-on-labs/master/images/Image1536609641084.undefined)
+[![Title: images/Image1536609641084.undefined](~WRS%7b1AC46C07-C13A-4F6E-AAC0-4E6D9FF25A5B%7d_files/image002.png)](https://raw.githubusercontent.com/OfficeDev/hands-on-labs/master/images/Image1536609641084.undefined)
 
 ### Step 1.2 : Setup HTML Page and point to the Office.js BETA end point.
 
@@ -41,9 +41,73 @@ Your HTML TAB should look like this:
 
 ```
 
-Step 1.2 Create a chart Add a button in HTML page. Clicking the button will use range above to create a chart.
+### Step 1.3 : Add  Event handlers for each button.
 
-[https://appsforoffice.microsoft.com/lib/beta/hosted/office.js](https://appsforoffice.microsoft.com/lib/beta/hosted/office.js)
+Now click on the “Script” tab on the Script Lab task pane and add 3 event handlers for each button.
+
+Your code should look like this:
+
+$("#setup").click(() => tryCatch(setup));
+
+$("#createPivot").click(() => tryCatch(createPivot));
+
+$("#adjustPivot").click(() => tryCatch(adjustPivot));
+
+async function setup() {
+
+    await Excel.run(async (context) => {
+
+        OfficeHelpers.UI.notify("setup");
+
+        await context.sync();
+
+    });
+
+}
+
+async function createPivot() {
+
+    await Excel.run(async (context) => {
+
+        OfficeHelpers.UI.notify("create");
+
+        await context.sync();
+
+    });
+
+}
+
+async function adjustPivot() {
+
+    await Excel.run(async (context) => {
+
+        OfficeHelpers.UI.notify("adjust");
+
+        await context.sync();
+
+    });
+
+}
+
+/** Default helper for invoking an action and handling errors. */
+
+async function tryCatch(callback) {
+
+    try {
+
+        await callback();
+
+    }
+
+    catch (error) {
+
+        OfficeHelpers.UI.notify(error);
+
+        OfficeHelpers.Utilities.log(error);
+
+    }
+
+}
 
 ## Exercise 2
 
