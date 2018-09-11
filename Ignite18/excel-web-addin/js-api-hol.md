@@ -9,7 +9,7 @@ This expriment can be done within ScriptLab. ScriptLab is a swiss knife for Exce
 2. In the store tab, you'll see scriplab on the top of the list. Or you can search "Script Lab".
 3. Click "Add" button and lauch it from ribbon.
 4. under the Libraries tab, change the JS file URL to
-https://appsforoffice.microsoft.com/lib/**beta**/hosted/office.js
+https://appsforoffice.microsoft.com/lib/beta/hosted/office.js
 
 ## Exercise 1
 In this exercise, you'll create a sample worksheet and insert some fake data.
