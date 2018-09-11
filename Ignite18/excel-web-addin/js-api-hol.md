@@ -31,25 +31,25 @@ Sample code:
 
 ```html
 <b>Step 1: Insert the sample data</b>
-<p><p/>
+<p>
 <button id="run" class="ms-Button">
     <span class="ms-Button-label">Insert data</span>
 </button>
-<p><p/>
+<p>
 <b>Step 2: Create a chart accordingly</b>
-<p><p/>
+<p>
 <button id="create" class="ms-Button">
     <span class="ms-Button-label">Create chart</span>
 </button>
-<p><p/>
+<p>
 <b>Step 3: Register chart activate/deactivate event</b>
-<p><p/>
+<p>
 	<button id="register" class="ms-Button">
     <span class="ms-Button-label">Register event</span>
 </button>
-<p><p/>
+<p>
 <b>Step 4: Show the customize button when chart is activated</b>
-<p><p/>
+<p>
 	<button id="customize" class="ms-Button" style="display:none">
     <span class="ms-Button-label">Customize chart</span>
 </button>
