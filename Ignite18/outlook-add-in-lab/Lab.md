@@ -2,7 +2,7 @@
 
 Outlook add-ins are web applications built using standard web technologies and loaded within the Outlook client. In this lab, you'll use Outlook JavaScript APIs to build an event-driven add-in that can validate room availability and capacity as an organizer creates an appointment.
 
-![A screenshot of the Room Validator add-in with successful validation results](images/appt-add-in-success-carter.png)
+![A screenshot of an Outlook meeting invitation with task pane](images/invite-two-recipients-johnson-pm.png)
 
 In this lab:
 
@@ -44,13 +44,13 @@ At this point, the **Yeoman generator for Office Add-ins** has created a very ba
 
 ### Step 1: Open add-in project folder in Visual Studio Code
 
-In this lab, you'll use Visual Studio Code as your code editor. Let's get started by using Visual Studio to open the folder that contains the add-in source code.
+In this lab, you'll use Visual Studio Code as your code editor. At the same command prompt that you just used to [create the add-in project](#create-the-add-in-project), run the following command to open Visual Studio Code:
 
-1. Launch Visual Studio Code.
+```
+code .
+```
 
-1. On the **Welcome** tab in Visual Studio code, choose **Open folder...**.
-
-1. In the **Open Folder** dialog window, navigate to the directory where you created the add-in project (as described in [Create the add-in project](#create-the-add-in-project)), and then press `Select Folder`. 
+In the **Explorer** pane of Visual Studio Code, expand the **My Outlook Add-in** folder to show the files for your add-in project.
 
 ### Step 2: Customize the manifest
 
@@ -60,7 +60,7 @@ An add-in's manifest file defines its settings and capabilities. In this step, y
 
 1. Replace the entire contents of the file with the following XML markup, and save the file. Notice the following things about this markup:
 
-    - The `Rule` element specifies the activation rule that should be evaluated for this contextual add-in. In this case, the specified rule evaluates to `true` for an `Appointment` item.
+    - The `Rule` element specifies the activation rule that should be evaluated for this add-in. In this case, the specified rule evaluates to `true` for an `Appointment` item.
 
     - The `ExtensionPoint` element defines the button on the ribbon that will open the add-in's task pane. In this case, the button will appear on the ribbon only for an appointment organizer.
 
@@ -330,7 +330,7 @@ The CSS code in file **app.css** specifies the custom styles that are used to re
 
 ### Step 5: Customize the script
 
-The contents of file **src\index.js** specifies the script for the add-in. In this step, you'll specify code that enables the Room Validator add-in to validate room selection when an appointment organizer changes attendees or appointment time.
+The content of file **src\index.js** specifies the script for the add-in. In this step, you'll specify code that enables the Room Validator add-in to validate room selection when an appointment organizer changes attendees or appointment time.
 
 1. In Visual Studio Code, open the file **src\index.js**. 
 
@@ -359,19 +359,15 @@ The contents of file **src\index.js** specifies the script for the add-in. In th
                 getAppointmentTime();
                 getNumberOfAttendees();
 
-                // TODO-1
-                // register event handler for the Office.EventType.AppointmentTimeChanged event
+                // TODO-1: register event handler for the Office.EventType.AppointmentTimeChanged event
                 
-                // TODO-2
-                // register event handler for the Office.EventType.RecipientsChanged event
+                // TODO-2: register event handler for the Office.EventType.RecipientsChanged event
             });
         };
 
-        // TODO-3
-        // processApptTimeChange()
+        // TODO-3: processApptTimeChange()
 
-        // TODO-4
-        // processRecipientChange
+        // TODO-4: processRecipientChange()
 
         function getAppointmentTime() {
             // get start time and end time of the appointment
@@ -500,7 +496,7 @@ The contents of file **src\index.js** specifies the script for the add-in. In th
 
         function getRoomCapacity() {
             // Note: For simplicity, room capacity logic is hardcoded in this example code.
-            // In a real-world implemention, room capacity data would likely be retrieved from a web service or database.
+            // In a real-world implementation, room capacity data would likely be retrieved from a web service or database.
 
             // from value of selected list item, take first character (number = room capacity)
             var roomCapacity = $('#room').val().substring(0, 1);
@@ -515,7 +511,7 @@ The contents of file **src\index.js** specifies the script for the add-in. In th
 
         function getRoomAvailabilityPeriod() {
             // Note: For simplicity, room availability logic is hardcoded in this example code.
-            // In a real-world implemention, room availability data would likely be retrieved from a web service or database.
+            // In a real-world implementation, room availability data would likely be retrieved from a web service or database.
 
             // from value of selected DDL item, take second character
             //   a = available in the AM
@@ -532,7 +528,7 @@ The contents of file **src\index.js** specifies the script for the add-in. In th
 
         function getRoomAvailability() {
             // Note: For simplicity, room availability logic is hardcoded in this example code.
-            // In a real-world implemention, room availability data would likely be retrieved from a web service or database.
+            // In a real-world implementation, room availability data would likely be retrieved from a web service or database.
             
             // from value of selected DDL item, take second character 
             //   a = available in the AM
@@ -673,7 +669,7 @@ Now that your add-in application is running on a local web server and your works
 
     ![Outlook 2016 My add-ins add custom add-in from file](images/my-add-ins-add-from-file.png)
 
-1. In the **Choose File to Upload** dialog window, navigate to your project folder, select your add-in project's manifest file `my-outlook-add-in-manifest.xml`, and press **Open**. Accept all prompts during the installation.
+1. In the **Choose File to Upload** dialog window, navigate to your project folder, select your add-in project's manifest file `my-outlook-add-in-manifest.xml`, and press **Open**. When the **Warning** dialog window appears, choose **Install**.
 
     ![Outlook 2016 Choose File to Upload dialog window](images/my-add-ins-upload-choose-file.png)
 
@@ -685,13 +681,13 @@ Now for the fun part -- it's time to try out the add-in that you've built. Use t
 
 1. In Calendar view, press **New Appointment** to create a new appointment.
 
-1. In the ribbon of the **Untitled - Appointment** window, choose **Invite Attendees** to add the **To...** recipients field to the appointment.
-
-    ![A screenshot of the Outlook ribbon with the Invite Attendees button highlighted](images/ribbon-invite-attendees.png)
-
-1. In the ribbon of the **Untitled - Appointment** window, choose **Room Validator** to open the Room Validator task pane.
+1. In the ribbon of the appointment window, choose **Room Validator** to open the Room Validator task pane.
 
     ![A screenshot of the Outlook ribbon with the Room Validator button highlighted](images/ribbon-room-validator.png)
+
+1. In the ribbon of the appointment window, choose **Invite Attendees** to add the **To...** recipients field to the appointment.
+
+    ![A screenshot of the Outlook ribbon with the Invite Attendees button highlighted](images/ribbon-invite-attendees.png)
 
 1. Specify meeting information as follows:
     
@@ -733,4 +729,4 @@ Now for the fun part -- it's time to try out the add-in that you've built. Use t
 
 ## Congratulations!
 
-Congratulations, you've successfully created an Outlook add-in! To learn more about creating Outlook add-ins, checkout the Outlook add-ins developer documentation at [https://aka.ms/outlook-add-ins-docs](https://aka.ms/outlook-add-ins-docs).
+Congratulations, you've successfully created an Outlook add-in! To learn more about creating Outlook add-ins, check out the Outlook add-ins developer documentation at [https://aka.ms/outlook-add-ins-docs](https://aka.ms/outlook-add-ins-docs).
