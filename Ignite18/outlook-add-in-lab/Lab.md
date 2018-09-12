@@ -178,64 +178,88 @@ The HTML markup in file **index.html** renders the user interface (UI) of the ad
 
 1. In Visual Studio Code, open the file **index.html**. 
 
-1. Replace the entire contents of the `body` tag with the following HTML markup, and save the file.
+1. Replace the entire contents of the file with the following HTML markup, and save the file.
 
     ```html
-    <body class="ms-font-m ms-welcome">
-        <header class="ms-welcome__header ms-bgColor-themePrimary ms-u-fadeIn500">
-            <h1 class="ms-fontSize-xxl ms-fontWeight-regular ms-fontColor-white">Room Validator</h1>
-        </header>
-        <main id="app-body" class="ms-welcome__main" style="display: none;">
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <meta charset="UTF-8" />
+            <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <title>My Outlook Add-in</title>
 
-            <div id="appointment-details">
-                <h2 class="ms-font-l ms-fontWeight-semibold ms-fontColor-neutralPrimaryAlt ms-u-slideUpIn20">Appointment details</h2>
-                <br />
-                <p class="ms-font-m ms-fontColor-neutralSecondaryAlt"><span class="ms-fontWeight-semibold">Total number of attendees:&#160;</span><label id="attendees-count"></label></p>
-                <p class="ms-font-m ms-fontColor-neutralSecondaryAlt"><span class="ms-fontWeight-semibold">Start time:&#160;</span><label id="start-time"></label></p>
-                <p class="ms-font-m ms-fontColor-neutralSecondaryAlt"><span class="ms-fontWeight-semibold">End time:&#160;</span><label id="end-time"></label></p>
-                <br />
-            </div>
+            <!-- Office JavaScript API -->
+            <script type="text/javascript" src="https://appsforoffice.microsoft.com/lib/1.1/hosted/office.debug.js"></script>
 
-            <h2 class="ms-font-xl ms-fontWeight-semibold ms-fontColor-themeDark ms-u-slideUpIn20">Choose a room</h2>
-            <br />
-            <p class="ms-font-m">Choose a room from the list to see its capacity and availability. Press <b>Select</b> to specify the chosen room as the meeting location and see validation results.</p>
-            <br />
-            <select id="room" class="ms-font-m">
-                <option value="0n">-- Choose a room --</option>
-                <option value="2a">Conference Room Adams</option>
-                <option value="2p">Conference Room Carter</option>
-                <option value="4a">Conference Room Ford</option>
-                <option value="4p">Conference Room Johnson</option>
-                <option value="6a">Conference Room Lincoln</option>
-                <option value="6p">Conference Room Reagan</option>
-                <option value="8a">Conference Room Truman</option>
-                <option value="8p">Conference Room Wilson</option>
-            </select>
-            <ul class="ms-List ms-welcome__features ms-u-slideUpIn10">
-                <li class="ms-ListItem">
-                    <i class="ms-Icon ms-Icon--People"></i>
-                    <span class="ms-font-m ms-fontColor-neutralPrimary">Capacity:&#160;&#160;</span><label id="room-capacity"></label>
-                </li>
-                <li class="ms-ListItem">
-                        <i class="ms-Icon ms-Icon--DateTime"></i>
-                        <span class="ms-font-m ms-fontColor-neutralPrimary">Availability:&#160;&#160;</span><label id="room-availability"></label>
+            <!-- LOCAL -->
+            <link rel="stylesheet" href="node_modules/office-ui-fabric-js/dist/css/fabric.min.css" />
+            <link rel="stylesheet" href="node_modules/office-ui-fabric-js/dist/css/fabric.components.css" />
+
+            <!-- CDN -->
+            <!-- For the Office UI Fabric, go to http://aka.ms/office-ui-fabric to learn more. -->
+            <!--<link rel="stylesheet" href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-js/1.2.0/css/fabric.min.css" />-->
+            <!--<link rel="stylesheet" href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-js/1.2.0/css/fabric.components.min.css" />-->
+
+            <link href="app.css" rel="stylesheet" type="text/css" />
+        </head>
+
+        <body class="ms-font-m ms-welcome">
+            <header class="ms-welcome__header ms-bgColor-themePrimary ms-u-fadeIn500">
+                <h1 class="ms-fontSize-xxl ms-fontWeight-regular ms-fontColor-white">My Outlook Add-in</h1>
+            </header>
+            <main id="app-body" class="ms-welcome__main" style="display: none;">
+                <div id="appointment-details">
+                    <h2 class="ms-font-l ms-fontWeight-semibold ms-fontColor-neutralPrimaryAlt ms-u-slideUpIn20">Appointment details</h2>
+                    <br />
+                    <p class="ms-font-m ms-fontColor-neutralSecondaryAlt"><span class="ms-fontWeight-semibold">Total number of attendees:&#160;</span><label id="attendees-count"></label></p>
+                    <p class="ms-font-m ms-fontColor-neutralSecondaryAlt"><span class="ms-fontWeight-semibold">Start time:&#160;</span><label id="start-time"></label></p>
+                    <p class="ms-font-m ms-fontColor-neutralSecondaryAlt"><span class="ms-fontWeight-semibold">End time:&#160;</span><label id="end-time"></label></p>
+                    <br />
+                </div>
+
+                <h2 class="ms-font-xl ms-fontWeight-semibold ms-fontColor-themeDark ms-u-slideUpIn20">Choose a room</h2>
+                <br />
+                <p class="ms-font-m">Choose a room from the list to see its capacity and availability. Press <b>Select</b> to specify the chosen room as the meeting location and see validation results.</p>
+                <br />
+                <select id="room" class="ms-font-m">
+                    <option value="0n">-- Choose a room --</option>
+                    <option value="2a">Conference Room Adams</option>
+                    <option value="2p">Conference Room Carter</option>
+                    <option value="4a">Conference Room Ford</option>
+                    <option value="4p">Conference Room Johnson</option>
+                    <option value="6a">Conference Room Lincoln</option>
+                    <option value="6p">Conference Room Reagan</option>
+                    <option value="8a">Conference Room Truman</option>
+                    <option value="8p">Conference Room Wilson</option>
+                </select>
+                <ul class="ms-List ms-welcome__features ms-u-slideUpIn10">
+                    <li class="ms-ListItem">
+                        <i class="ms-Icon ms-Icon--People"></i>
+                        <span class="ms-font-m ms-fontColor-neutralPrimary">Capacity:&#160;&#160;</span><label id="room-capacity"></label>
                     </li>
-            </ul>
-            <br />
-            <button id="select" class="ms-Button ms-bgColor-themeDark">
-                <span class="ms-fontColor-themeDark ms-fontWeight-semibold">Select</span>
-            </button>
-            <br />
+                    <li class="ms-ListItem">
+                            <i class="ms-Icon ms-Icon--DateTime"></i>
+                            <span class="ms-font-m ms-fontColor-neutralPrimary">Availability:&#160;&#160;</span><label id="room-availability"></label>
+                        </li>
+                </ul>
+                <br />
+                <button id="select" class="ms-Button ms-bgColor-themeDark">
+                    <span class="ms-fontColor-themeDark ms-fontWeight-semibold">Select</span>
+                </button>
+                <br />
 
-            <h2 class="ms-font-xl ms-fontWeight-semibold ms-fontColor-themeDark ms-u-slideUpIn20">Validation results</h2>
-            <br />
-            <label id="result-message"></label>
-            <ul id="result-list" class="ms-List ms-welcome__features ms-u-slideUpIn10"></ul>
-        </main>
+                <h2 class="ms-font-xl ms-fontWeight-semibold ms-fontColor-themeDark ms-u-slideUpIn20">Validation results</h2>
+                <br />
+                <label id="result-message"></label>
+                <ul id="result-list" class="ms-List ms-welcome__features ms-u-slideUpIn10"></ul>
+            </main>
 
-        <script type="text/javascript" src="node_modules/jquery/dist/jquery.js"></script>
-        <script type="text/javascript" src="node_modules/office-ui-fabric-js/dist/js/fabric.js"></script>
-    </body>
+            <script type="text/javascript" src="node_modules/jquery/dist/jquery.js"></script>
+            <script type="text/javascript" src="node_modules/office-ui-fabric-js/dist/js/fabric.js"></script>
+        </body>
+
+    </html>
     ```
 
 ### Step 4: Customize the CSS
@@ -405,9 +429,8 @@ The content of file **src\index.js** specifies the script for the add-in. In thi
                             console.log(asyncResult.error.message);
                         }
                         else {
-                            // add 1 to the number of required attendees, to account for the organizer
                             var requiredAttendees = asyncResult.value;
-                            attendeeCount = requiredAttendees.length + 1;
+                            attendeeCount = requiredAttendees.length;
                             $('#attendees-count').html(attendeeCount);
 
                             Office.context.mailbox.item.optionalAttendees.getAsync(
