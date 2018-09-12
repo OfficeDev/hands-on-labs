@@ -58,11 +58,7 @@ An add-in's manifest file defines its settings and capabilities. In this step, y
 
 1. In Visual Studio Code, open the file **my-outlook-add-in-manifest.xml**. 
 
-1. Replace the entire contents of the file with the following XML markup, and save the file. Notice the following things about this markup:
-
-    - The `Rule` element specifies the activation rule that should be evaluated for this add-in. In this case, the specified rule evaluates to `true` for an `Appointment` item.
-
-    - The `ExtensionPoint` element defines the button on the ribbon that will open the add-in's task pane. In this case, the button will appear on the ribbon only for an appointment organizer.
+1. Replace the entire contents of the file with the following XML markup, and save the file. Notice that the `ExtensionPoint` element defines the button on the ribbon that will open the add-in's task pane. In this case, the button will appear on the ribbon only for an appointment organizer.
 
     ```xml
     <?xml version="1.0" encoding="UTF-8"?>
@@ -72,103 +68,150 @@ An add-in's manifest file defines its settings and capabilities. In this step, y
             xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0"
             xmlns:mailappor="http://schemas.microsoft.com/office/mailappversionoverrides/1.0"
             xsi:type="MailApp">
-
-    <Id>bac018a4-efdb-494b-aa48-dd7c9eec25c4</Id>
-    <Version>1.0.0.0</Version>
-    <ProviderName>Jane Doe</ProviderName>
-    <DefaultLocale>en-US</DefaultLocale>
-    <DisplayName DefaultValue="My Outlook Add-in" />
-    <Description DefaultValue="Room Validator"/>
-    <IconUrl DefaultValue="https://localhost:3000/assets/icon-32.png" />
-    <HighResolutionIconUrl DefaultValue="https://localhost:3000/assets/hi-res-icon.png"/>
-    <SupportUrl DefaultValue="https://localhost:3000" />
-
-    <Hosts>
-        <Host Name="Mailbox" />
-    </Hosts>
-    <Requirements>
-        <Sets>
-            <Set Name="Mailbox" MinVersion="1.1" />
-        </Sets>
-    </Requirements>
-    <FormSettings>
-        <Form xsi:type="ItemRead">
-        <DesktopSettings>
-            <SourceLocation DefaultValue="https://localhost:3000/index.html"/>
-            <RequestedHeight>250</RequestedHeight>
-        </DesktopSettings>
-        </Form>
-    </FormSettings>
-
-    <Permissions>ReadWriteItem</Permissions>
-
-    <!-- Rule: ItemType = Appointment -->
-    <Rule xsi:type="RuleCollection" Mode="Or">
-        <Rule xsi:type="ItemIs" ItemType="Appointment" FormType="Edit"/>
-    </Rule>
-
-    <DisableEntityHighlighting>false</DisableEntityHighlighting>
-
-    <VersionOverrides xmlns="http://schemas.microsoft.com/office/mailappversionoverrides" xsi:type="VersionOverridesV1_0">
-        <Requirements>
-            <bt:Sets DefaultMinVersion="1.3">
-                <bt:Set Name="Mailbox" />
-            </bt:Sets>
-        </Requirements>
+        <Id>bac018a4-efdb-494b-aa48-dd7c9eec25c4</Id>
+        <Version>1.0.0.0</Version>
+        <ProviderName>Jane Doe</ProviderName>
+        <DefaultLocale>en-US</DefaultLocale>
+        <DisplayName DefaultValue="My Outlook Add-in" />
+        <Description DefaultValue="Room Validator"/>
+        <IconUrl DefaultValue="https://localhost:3000/assets/icon-32.png" />
+        <HighResolutionIconUrl DefaultValue="https://localhost:3000/assets/hi-res-icon.png"/>
+        <SupportUrl DefaultValue="https://localhost:3000" />
         <Hosts>
-            <Host xsi:type="MailHost">
-                <DesktopFormFactor>
-                    <FunctionFile resid="functionFile" />
-
-                    <!-- Button for Appointment Organizer -->
-                    <ExtensionPoint xsi:type="AppointmentOrganizerCommandSurface">
-                        <OfficeTab id="TabDefault">
-                            <Group id="apptComposeGroup">
-                                <Label resid="groupLabel" />
-                                <Control xsi:type="Button" id="apptComposeOpenPaneButton">
-                                <Label resid="apptComposeButtonLabel" />
-                                <Supertip>
-                                    <Title resid="apptComposeSuperTipTitle" />
-                                    <Description resid="apptComposeSuperTipDescription" />
-                                </Supertip>
-                                <Icon>
-                                    <bt:Image size="16" resid="icon16" />
-                                    <bt:Image size="32" resid="icon32" />
-                                    <bt:Image size="80" resid="icon80" />
-                                </Icon>
-                                <Action xsi:type="ShowTaskpane">
-                                    <SourceLocation resid="apptComposeTaskPaneUrl" />
-                                </Action>
-                                </Control>
-                            </Group>
-                        </OfficeTab>
-                    </ExtensionPoint>
-
-                </DesktopFormFactor>
-            </Host>
+            <Host Name="Mailbox" />
         </Hosts>
-
-        <Resources>
-            <bt:Images>
-                <bt:Image id="icon16" DefaultValue="https://localhost:3000/assets/icon-16.png"/>
-                <bt:Image id="icon32" DefaultValue="https://localhost:3000/assets/icon-32.png"/>
-                <bt:Image id="icon80" DefaultValue="https://localhost:3000/assets/icon-80.png"/>
-            </bt:Images>
-            <bt:Urls>
-                <bt:Url id="functionFile" DefaultValue="https://localhost:3000/function-file/function-file.html"/>
-                <bt:Url id="apptComposeTaskPaneUrl" DefaultValue="https://localhost:3000/index.html"/>
-            </bt:Urls>
-            <bt:ShortStrings>
-                <bt:String id="groupLabel" DefaultValue="My Add-in Group"/>
-                <bt:String id="customTabLabel"  DefaultValue="My Add-in Tab"/>
-                <bt:String id="apptComposeButtonLabel" DefaultValue="Room Validator"/>
-                <bt:String id="apptComposeSuperTipTitle" DefaultValue="Validate the choice of meeting room"/>
-            </bt:ShortStrings>
-            <bt:LongStrings>
-                <bt:String id="apptComposeSuperTipDescription" DefaultValue="Opens a pane which validates that the selected meeting room is available at the chosen time and can accommodate the number of invited attendees."/>
-            </bt:LongStrings>
-        </Resources>
-    </VersionOverrides>
+        <Requirements>
+            <Sets>
+                <Set Name="Mailbox" MinVersion="1.1" />
+            </Sets>
+        </Requirements>
+        <FormSettings>
+            <Form xsi:type="ItemRead">
+                <DesktopSettings>
+                    <SourceLocation DefaultValue="https://localhost:3000/index.html"/>
+                    <RequestedHeight>250</RequestedHeight>
+                </DesktopSettings>
+            </Form>
+        </FormSettings>
+        <Permissions>ReadWriteItem</Permissions>
+        <Rule xsi:type="RuleCollection" Mode="Or">
+            <Rule xsi:type="ItemIs" ItemType="Appointment" FormType="Edit"/>
+        </Rule>
+        <DisableEntityHighlighting>false</DisableEntityHighlighting>
+        <VersionOverrides xmlns="http://schemas.microsoft.com/office/mailappversionoverrides" xsi:type="VersionOverridesV1_0">
+            <Requirements>
+                <bt:Sets DefaultMinVersion="1.3">
+                    <bt:Set Name="Mailbox" />
+                </bt:Sets>
+            </Requirements>
+            <Hosts>
+                <Host xsi:type="MailHost">
+                    <DesktopFormFactor>
+                        <FunctionFile resid="functionFile" />
+                        <!-- Button for Appointment Organizer -->
+                        <ExtensionPoint xsi:type="AppointmentOrganizerCommandSurface">
+                            <OfficeTab id="TabDefault">
+                                <Group id="apptComposeGroup">
+                                    <Label resid="groupLabel" />
+                                    <Control xsi:type="Button" id="apptComposeOpenPaneButton">
+                                        <Label resid="apptComposeButtonLabel" />
+                                        <Supertip>
+                                            <Title resid="apptComposeSuperTipTitle" />
+                                            <Description resid="apptComposeSuperTipDescription" />
+                                        </Supertip>
+                                        <Icon>
+                                            <bt:Image size="16" resid="icon16" />
+                                            <bt:Image size="32" resid="icon32" />
+                                            <bt:Image size="80" resid="icon80" />
+                                        </Icon>
+                                        <Action xsi:type="ShowTaskpane">
+                                            <SourceLocation resid="apptComposeTaskPaneUrl" />
+                                        </Action>
+                                    </Control>
+                                </Group>
+                            </OfficeTab>
+                        </ExtensionPoint>
+                    </DesktopFormFactor>
+                </Host>
+            </Hosts>
+            <Resources>
+                <bt:Images>
+                    <bt:Image id="icon16" DefaultValue="https://localhost:3000/assets/icon-16.png"/>
+                    <bt:Image id="icon32" DefaultValue="https://localhost:3000/assets/icon-32.png"/>
+                    <bt:Image id="icon80" DefaultValue="https://localhost:3000/assets/icon-80.png"/>
+                </bt:Images>
+                <bt:Urls>
+                    <bt:Url id="functionFile" DefaultValue="https://localhost:3000/function-file/function-file.html"/>
+                    <bt:Url id="apptComposeTaskPaneUrl" DefaultValue="https://localhost:3000/index.html"/>
+                </bt:Urls>
+                <bt:ShortStrings>
+                    <bt:String id="groupLabel" DefaultValue="My Add-in Group"/>
+                    <bt:String id="customTabLabel"  DefaultValue="My Add-in Tab"/>
+                    <bt:String id="apptComposeButtonLabel" DefaultValue="Room Validator"/>
+                    <bt:String id="apptComposeSuperTipTitle" DefaultValue="Validate the choice of meeting room"/>
+                </bt:ShortStrings>
+                <bt:LongStrings>
+                    <bt:String id="apptComposeSuperTipDescription" DefaultValue="Opens a pane which validates that the selected meeting room is available at the chosen time and can accommodate the number of invited attendees."/>
+                </bt:LongStrings>
+            </Resources>
+            <VersionOverrides xmlns="http://schemas.microsoft.com/office/mailappversionoverrides/1.1" xsi:type="VersionOverridesV1_1">
+                <Requirements>
+                    <bt:Sets DefaultMinVersion="1.3">
+                        <bt:Set Name="Mailbox" />
+                    </bt:Sets>
+                </Requirements>
+                <Hosts>
+                    <Host xsi:type="MailHost">
+                        <DesktopFormFactor>
+                            <FunctionFile resid="functionFile" />
+                            <!-- Button for Appointment Organizer -->
+                            <ExtensionPoint xsi:type="AppointmentOrganizerCommandSurface">
+                                <OfficeTab id="TabDefault">
+                                    <Group id="apptComposeGroup">
+                                        <Label resid="groupLabel" />
+                                        <Control xsi:type="Button" id="apptComposeOpenPaneButton">
+                                            <Label resid="apptComposeButtonLabel" />
+                                            <Supertip>
+                                                <Title resid="apptComposeSuperTipTitle" />
+                                                <Description resid="apptComposeSuperTipDescription" />
+                                            </Supertip>
+                                            <Icon>
+                                                <bt:Image size="16" resid="icon16" />
+                                                <bt:Image size="32" resid="icon32" />
+                                                <bt:Image size="80" resid="icon80" />
+                                            </Icon>
+                                            <Action xsi:type="ShowTaskpane">
+                                                <SourceLocation resid="apptComposeTaskPaneUrl" />
+                                            </Action>
+                                        </Control>
+                                    </Group>
+                                </OfficeTab>
+                            </ExtensionPoint>
+                        </DesktopFormFactor>
+                    </Host>
+                </Hosts>
+                <Resources>
+                    <bt:Images>
+                        <bt:Image id="icon16" DefaultValue="https://localhost:3000/assets/icon-16.png"/>
+                        <bt:Image id="icon32" DefaultValue="https://localhost:3000/assets/icon-32.png"/>
+                        <bt:Image id="icon80" DefaultValue="https://localhost:3000/assets/icon-80.png"/>
+                    </bt:Images>
+                    <bt:Urls>
+                        <bt:Url id="functionFile" DefaultValue="https://localhost:3000/function-file/function-file.html"/>
+                        <bt:Url id="apptComposeTaskPaneUrl" DefaultValue="https://localhost:3000/index.html"/>
+                    </bt:Urls>
+                    <bt:ShortStrings>
+                        <bt:String id="groupLabel" DefaultValue="My Add-in Group"/>
+                        <bt:String id="customTabLabel"  DefaultValue="My Add-in Tab"/>
+                        <bt:String id="apptComposeButtonLabel" DefaultValue="Room Validator"/>
+                        <bt:String id="apptComposeSuperTipTitle" DefaultValue="Validate the choice of meeting room"/>
+                    </bt:ShortStrings>
+                    <bt:LongStrings>
+                        <bt:String id="apptComposeSuperTipDescription" DefaultValue="Opens a pane which validates that the selected meeting room is available at the chosen time and can accommodate the number of invited attendees."/>
+                    </bt:LongStrings>
+                </Resources>
+            </VersionOverrides>
+        </VersionOverrides>
     </OfficeApp>
     ```
 
@@ -206,9 +249,10 @@ The HTML markup in file **index.html** renders the user interface (UI) of the ad
 
         <body class="ms-font-m ms-welcome">
             <header class="ms-welcome__header ms-bgColor-themePrimary ms-u-fadeIn500">
-                <h1 class="ms-fontSize-xxl ms-fontWeight-regular ms-fontColor-white">My Outlook Add-in</h1>
+                <h1 class="ms-fontSize-xxl ms-fontWeight-regular ms-fontColor-white">Room Validator</h1>
             </header>
             <main id="app-body" class="ms-welcome__main" style="display: none;">
+
                 <div id="appointment-details">
                     <h2 class="ms-font-l ms-fontWeight-semibold ms-fontColor-neutralPrimaryAlt ms-u-slideUpIn20">Appointment details</h2>
                     <br />
