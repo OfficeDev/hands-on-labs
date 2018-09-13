@@ -1,37 +1,42 @@
-# New in the Excel JavaScript API: Creating Data Analysis Web Add-ins for Excel using Pivot Tables.
+# New in the Excel JavaScript API: Creating Data Analysis Web Add-ins for Excel using PivotTables.
 
-During this lab you will learn the basics on how to create pivot tables in Excel using the Excel JavaScript API. You will start by adding some sample data to build a Pivot Table from. The raw data worksheet will look like this: (Hierarchy: Farms with produce either organic or conventional)
+During this lab you will learn the basics on how to create PivotTables with the Excel JavaScript API. This lab uses hard-coded sample data from a separate worksheet, but the add-in could pull the information from numerous sources. The raw data worksheet looks like this:
 
-## ![Script Lab Tab](images/image7.png)
+## ![A collection of fruit sales data from farms.](images/image7.png)
 
 ## Preparation
 
-On this Hands-on Lab, you will use Script Lab to code and run your snippet. Script Lab is a Web Add-in built by Microsoft that can use to easily  code, run and share your Office.js snippets rapid and conveniently. If you are not familiar with it, you can follow the instructions below.
+You will use Script Lab to design and run your add-in logic. Script Lab is a web add-in you can use to code, run, and share add-in snippets. Script Lab lets you test your code without running a web service. If you are not familiar with it, you can follow the instructions below.
 
-1.  If you don’t see a “Script Lab” tab on your ribbon, please install it from the store. Otherwise continue to Step 1
+1.  If you don’t see a “Script Lab” tab on your ribbon, please install it from the store. Otherwise continue to Step 1.
 2.  Click on the Insert Tab on the ribbon and then select “Get Add-ins” The Office Add-ins dialog will pop up.
-3.  In the store tab, search for “Script Lab”, then click on “Add”
+3.  In the store tab, search for “Script Lab”, then click on “Add”.
 4.  At the end of the process you should see the “Script Lab Tab” on the Ribbon.
- Excel
-## ![Script Lab Tab](images/image1.png)
 
-## Step 1 : Setup your snippet in Script Lab
+## ![An image displaying where Script Lab is on the Excel ribbon.](images/image1.png)
 
-In this exercise, you'll prepare Script Lab to setup your sample basic files, an HTML page and a JavaScript file.
+## Step 1: Setup your snippet in Script Lab
 
-### Step 1.1 Create a new Script Lab Snippet.
+You'll prepare Script Lab to setup your sample basic files, an HTML page and a JavaScript file.
 
-Click on the “Code” Button on the Script Lab Ribbon Tab. That will open a task pane like this one:
+### Step 1.1: Create a new Script Lab snippet
 
-![Script Lab Tab](images/image2.png)
+Click on the **Code** button on the **Script Lab** ribbon tab. That opens a task pane like this one:
 
-### Step 1.2 : Setup HTML Page and point to the Office.js BETA end point.
+![The "Script" tab of Script Lab.](images/image2.png)
 
-In order to use the Pivot Table API you need to add a reference to the Office.js BETA library.  Click on the Libraries Tab and change the first line so that it points to:
+### Step 1.2: Use beta libraries
 
- [https://appsforoffice.microsoft.com/lib/beta/hosted/office.js](https://appsforoffice.microsoft.com/lib/beta/hosted/office.js)
+In order to use the PivotTable API, you need to reference the Office.js beta library and type definitions. Click on the **Libraries** tab and change the first two lines to:
 
-Now let’s click on the HTML Tab and add 3 buttons to a) Insert sample data, b) create Pivot Table and c) add  Rows, columns and data to the Pivot Table. (you can copy/paste from below)
+```
+https://appsforoffice.microsoft.com/lib/beta/hosted/office.js
+https://appsforoffice.microsoft.com/lib/beta/hosted/office.d.ts
+```
+
+### Step 1.3: Setup HTML Page
+
+Now, click on the **HTML** tab and add three buttons. These will be used to insert sample data, create a PivotTable, and add hierarchies to the PivotTable. Replace the contents of the **HTML** tab with the following:
 
 ```html
 <section class="setup ms-font-m">
@@ -52,42 +57,40 @@ Now let’s click on the HTML Tab and add 3 buttons to a) Insert sample data, b)
         <span class="ms-Button-label">Add rows, columns and data</span>
     </button>
 </section>
-
-
-
 ```
 
-Your HTML TAB should look like this:
+Your **HTML** tab should look like this:
 ![Script Lab Tab](images/image3.png)
 
-### Step 1.3 : Add  Event handlers for each button.
+### Step 1.4 : Add  Event handlers for each button.
 
-Now click on the “Script” tab on the Script Lab task pane and add 3 event handlers for each button.
+Now click on the **Script** tab on the Script Lab task pane and add an event handler for each button.
 
-Your code should look like this:
+Replace the existing code with the following:
 
-```javascript
+```typescript
 $("#setup").click(() => tryCatch(setup));
 $("#createPivot").click(() => tryCatch(createPivot));
 $("#adjustPivot").click(() => tryCatch(adjustPivot));
+
 async function setup() {
     await Excel.run(async (context) => {
-        OfficeHelpers.UI.notify("setup");
-        await context.sync();
+        // TODO-1: Fill a worksheet with sample data
     });
 }
+
 async function createPivot() {
     await Excel.run(async (context) => {
-        OfficeHelpers.UI.notify("create");
-        await context.sync();
+        // TODO-2: Create a PivotTable
     });
 }
+
 async function adjustPivot() {
     await Excel.run(async (context) => {
-        OfficeHelpers.UI.notify("adjust");
-        await context.sync();
+        // TODO-3: Add hierarachies to the PivotTable
     });
 }
+
 /** Default helper for invoking an action and handling errors. */
 async function tryCatch(callback) {
     try {
@@ -99,15 +102,13 @@ async function tryCatch(callback) {
     }
 }
 ```
-## Step  2: Create your Pivot Table.
+## Step 2: Create your PivotTable 
 
-Step 2.1 Add Code to insert sample data in the setup method (copy paste).
+Step 2.1: Insert sample data
 
+Reaplce `TODO-1` with the following:
 
-```javascript
-
-async function setup() {
-    await Excel.run(async (context) => {
+```typescript
         const sheetData = await OfficeHelpers.ExcelUtilities
             .forceCreateSheet(context.workbook, "Data");
         const sheetPivot = await OfficeHelpers.ExcelUtilities
@@ -142,66 +143,54 @@ async function setup() {
         sheetPivot.activate();
 
         await context.sync();
-    });
-}
 ```
 
-Step 2.2 Add Code to create a Pivot Table in the createPivot method.
+Step 2.2: Create the base PivotTable
 
-```javascript
-async function createPivot() {
-    await Excel.run(async (context) => {
+Replace `TODO-2` with the following:
+
+```typescript
         const rangeToAnalyze = context.workbook.worksheets.getItem("Data").getRange("A1:E21");
         const rangeToPlacePivot = context.workbook.worksheets.getItem("Pivot").getRange("A2");
         context.workbook.worksheets.getItem("Pivot").pivotTables.add("Farm Sales", rangeToAnalyze, rangeToPlacePivot);
 
         await context.sync();
-    });
-}
 ```
 
-Step 2.3 Add Code to add rows, columns and data hierarchies on the adjustPivot method.
+Step 2.3: Add row, column, and data hierarchies
 
-```javascript
-async function adjustPivot() {
-    await Excel.run(async (context) => {
+Replace `TODO-3` with the following:
 
-        await Excel.run(async (context) => {
-            const pivotTable = context.workbook.worksheets.getActiveWorksheet().pivotTables.getItem("Farm Sales");
+```typescript
+		const pivotTable = context.workbook.worksheets.getActiveWorksheet().pivotTables.getItem("Farm Sales");
 
-            //add row hierarchies!
-            pivotTable.rowHierarchies.add(pivotTable.hierarchies.getItem("Farm"));
-            pivotTable.rowHierarchies.add(pivotTable.hierarchies.getItem("Type"));
+		//add row hierarchies
+		pivotTable.rowHierarchies.add(pivotTable.hierarchies.getItem("Farm"));
+		pivotTable.rowHierarchies.add(pivotTable.hierarchies.getItem("Type"));
 
-            // add column hierarchies ! 
-            let myColumnHierarchy = pivotTable.hierarchies.getItem("Classification");
-            pivotTable.columnHierarchies.add(myColumnHierarchy);
+		// add column hierarchies
+		pivotTable.columnHierarchies.add(pivotTable.hierarchies.getItem("Classification");
 
-            // add values ! 
-            let myValue = pivotTable.dataHierarchies.add(pivotTable.hierarchies.getItem("Crates Sold at Farm"));
-            myValue.summarizeBy = Excel.AggregationFunction.sum;
+		// add data hierarchies
+		const myValue = pivotTable.dataHierarchies.add(pivotTable.hierarchies.getItem("Crates Sold at Farm"));
+		myValue.summarizeBy = Excel.AggregationFunction.sum;
 
-            await context.sync();
-        });
-    });
-}
+		await context.sync();
 ```
 
-## Step 4: Run your sample!
+## Step 3: Run your sample!
 
-Click on the RUN tab on “Script Lab”
+Click on the RUN tab on “Script Lab”.
 
 
-![Script Lab Tab](images/image4.png)
+![The "Run" icon for Script Lab.](images/image4.png)
 
 You should see a Task Pane with the HTML you created in the previous step.
 
 
-![Script Lab Tab](images/image5.png)
+![The "Run" pane for Script Lab.](images/image5.png)
 
-Click the buttons in top/down order and you will see a pivot table like this one:
+Click the buttons in top/down order and you will see a PivotTable like this one:
 
 
-![Script Lab Tab](images/image6.png)
-
-Summary: in this Lab you learned the basics on how to build a pivot table to summarize data.
+![The resulting PivotTable.](images/image6.png)
