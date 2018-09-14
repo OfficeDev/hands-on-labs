@@ -1,4 +1,5 @@
-# Overview and Introduction
+# 0-60: Get up and running with your very first Microsoft Teams app
+## Overview and Introduction
 In this lab, you will be getting your first app up and running in Teams. You should do this lab if:
 You have used Microsoft Teams
 You have built add-ins for Office or SharePoint
@@ -13,10 +14,10 @@ Your lab environment should already come preinstalled with the following tools
 - Browser of your choice
 # PART 1: Get familiar with Teams apps
 In this first part of the Lab you’re going to create a Teams app using an existing base manifest provided as part of this lab. To get you up and running, we will provide a web app that is already running in Azure.
-The app package teams-sample-app-package.zip is located in this folder. Download it to your PC and unzip the contents to any local folder. It will contain three files:
-*manifest.json
-*color_icon.png
-*outline_icon.png
+The app package **teams-sample-app-package.zip** is located in this folder. Download it to your PC and unzip the contents to any local folder. It will contain three files:
+- manifest.json
+- color_icon.png
+- outline_icon.png
 ## Step 1: Prepare your Office 365 environment
 You will first need to enable side loading for Teams within your Office 365 environment. Open the Admin Center by visiting https://admin.microsoft.com/AdminPortal/Home#/Settings/ServicesAndAddIns from your browser.
 
