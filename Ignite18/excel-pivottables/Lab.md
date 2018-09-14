@@ -6,18 +6,13 @@ During this lab you will learn the basics on how to create PivotTables with the 
 
 ## Preparation
 
-You will use Script Lab to design and run your add-in logic. Script Lab is a web add-in you can use to code, run, and share add-in snippets. Script Lab lets you test your code without running a web service. If you are not familiar with it, you can follow the instructions below.
-
-1.  If you don’t see a “Script Lab” tab on your ribbon, please install it from the store. Otherwise continue to Step 1.
-2.  Click on the Insert Tab on the ribbon and then select “Get Add-ins” The Office Add-ins dialog will pop up.
-3.  In the store tab, search for “Script Lab”, then click on “Add”.
-4.  At the end of the process you should see the “Script Lab Tab” on the Ribbon.
+This lab is done with Script Lab. Script Lab is an add-in for developing and testing other add=ins. Within Excel, you can test, build, and share your solutions. Script Lab is available from the Add-ins Store.
 
 ## ![An image displaying where Script Lab is on the Excel ribbon.](images/image1.png)
 
 ## Step 1: Setup your snippet in Script Lab
 
-You'll prepare Script Lab to setup your sample basic files, an HTML page and a JavaScript file.
+You'll prepare Script Lab to setup your sample. We will link the correct libraries, write an HTML front-end, and code the program logic in TypeScript.
 
 ### Step 1.1: Create a new Script Lab snippet
 
@@ -54,7 +49,7 @@ Now, click on the **HTML** tab and add three buttons. These will be used to inse
 <section class="samples ms-font-m">
     <h3>Adjust the PivotTable</h3>
     <button id="adjustPivot" class="ms-Button">
-        <span class="ms-Button-label">Add rows, columns and data</span>
+        <span class="ms-Button-label">Add rows, columns, and data</span>
     </button>
 </section>
 ```
@@ -180,8 +175,7 @@ Replace `TODO-3` with the following:
 
 ## Step 3: Run your sample!
 
-Click on the RUN tab on “Script Lab”.
-
+Click on the **Run** tab on the “Script Lab” ribbon.
 
 ![The "Run" icon for Script Lab.](images/image4.png)
 
