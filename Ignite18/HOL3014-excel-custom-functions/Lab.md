@@ -19,19 +19,14 @@ You’ll begin this tutorial by using the Yo Office Yeoman generator, which will
     
     After you complete the wizard, the generator will create the project files and install supporting Node components. 
 
-2. In your command line interface, change your folder to the "Stock Ticker" folder (i.e. `C:\Users\LabUser\Stock Ticker`). Then, open the projec in VS Code by entering
-   ```bash
-    code .
-    ```
     
-2. We'll come back to VS code project, but feel free to look around.
 2. Next, from your command line interface and the root folder of your project, start a localhost instance by running the below in the command line:
 
     ```bash
     npm start
     ```
-
-3. Launch [Excel Online](https://www.office.com/launch/excel). Sign in with your demo credentials, and open a new workbook. 
+3. Open a web browser and copy and paste in the following URL: **`https://www.office.com/launch/excel`** to launch Excel Online. 
+3. Sign in with your demo credentials, and open a new workbook. 
 4. Select **Insert > Add-ins**. Choose **Manage My Add-ins** and select **Upload My Add-in**. Browse for your manifest file, then select **Upload**. 
 
 5. Typically, you need to install a self-signed certificate for your project to work, but this step has been completed for you! 
@@ -47,6 +42,7 @@ What if you wanted a function which could fetch and display the price of Microso
   
 You’ll be adding a new function, called `=CONTOSO.STOCKPRICE`, to the **customfunctions.js** file.  The function will take in the name of a stock ticker, such as "MSFT", and return the price of that stock. You'll leverage the IEX Trading API, which is free and does not require authentication.
 
+1. Open Visual Studio Code, and open up the `Stock Ticker` folder.
 1. Copy and paste the function below and add it to **customfunctions.js**. 
     
     ```js
