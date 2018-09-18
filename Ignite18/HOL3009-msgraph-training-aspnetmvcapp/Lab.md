@@ -12,6 +12,8 @@ In this lab you will create an ASP.NET MVC application, configured with Azure Ac
 
 In this exercise, you will create a new Azure AD web application registration using the Application Registry Portal (ARP).
 
+1. Open the `c:\Code\HOL3009 Microsoft Graph\graph-tutorial.sln` solution file in Visual Studio 2017 on your Virtual Machine. 
+
 1. Open a browser and navigate to the [Application Registration Portal](https://apps.dev.microsoft.com). Login using a **personal account** (aka: Microsoft Account) or **Work or School Account**.
 
 1. Select **Add an app** at the top of the page.
