@@ -5,7 +5,7 @@ In this lab, you will learn how to create custom functions which perform a simpl
 ## Exercise 1: Create your add-in project
 You’ll begin this tutorial by using the Yo Office Yeoman generator, which will automatically populate the files you need for your project.
 
-1. In your command line interface, create a scaffold of your project.  
+1. In your command line interface, create a scaffold of your project (by default, this should be in your `C:\Users\LabUser` folder):
     
     ```bash
     yo office
@@ -15,17 +15,23 @@ You’ll begin this tutorial by using the Yo Office Yeoman generator, which will
     
     Answer the prompts as directed below:  
     - Choose a project type: `Excel Custom Functions Add-in project (Preview: Requires the Insider channel for Excel)`
-    - What do you want to name your add-in? `stock-ticker`
+    - What do you want to name your add-in? `Stock Ticker`
     
     After you complete the wizard, the generator will create the project files and install supporting Node components. 
 
-2. From the root folder of your project, start a localhost instance by running the below in the command line:
+2. In your command line interface, change your folder to the "Stock Ticker" folder (i.e. `C:\Users\LabUser\Stock Ticker`). Then, open the projec in VS Code by entering
+   ```bash
+    code .
+    ```
+    
+2. We'll come back to VS code project, but feel free to look around.
+2. Next, from your command line interface and the root folder of your project, start a localhost instance by running the below in the command line:
 
     ```bash
     npm start
     ```
 
-3. Launch [Excel Online](https://www.office.com/launch/excel). Open a new workbook. 
+3. Launch [Excel Online](https://www.office.com/launch/excel). Sign in with your demo credentials, and open a new workbook. 
 4. Select **Insert > Add-ins**. Choose **Manage My Add-ins** and select **Upload My Add-in**. Browse for your manifest file, then select **Upload**. 
 
 5. Typically, you need to install a self-signed certificate for your project to work, but this step has been completed for you! 
@@ -36,7 +42,7 @@ Let's call `=CONTOSO.ADD42()`. This function adds 42 to any two numbers you prov
 
 _Note that when a call is made in Excel Online, you may see `#GETTING_DATA` appear in a cell. Once a value is returned, this notification should disappear._
 
-## Exercise 2: Create an asynchronous custom function
+## Exercise 2: Create your own custom function
 What if you wanted a function which could fetch and display the price of Microsoft stock that day? Custom functions are designed so you can easily make requests for data from the web asynchronously.
   
 You’ll be adding a new function, called `=CONTOSO.STOCKPRICE`, to the **customfunctions.js** file.  The function will take in the name of a stock ticker, such as "MSFT", and return the price of that stock. You'll leverage the IEX Trading API, which is free and does not require authentication.
@@ -96,7 +102,7 @@ You’ll be adding a new function, called `=CONTOSO.STOCKPRICE`, to the **custom
 
 4. In any cell of your workbook, enter the function `=CONTOSO.STOCKPRICE("MSFT")`. It should show you the stock price for one share of Microsoft stock right now.
 
-## Exercise 3: Create a streaming asynchronous custom function
+## Exercise 3: Create a streaming custom function
 The previous function returned the stock price for Microsoft at a particular moment in time, but stock prices are always changing. With custom functions, it is possible to “stream” data from an API to get updates on stock prices in real time.  
 
 To do this, you’ll create a new function, `=CONTOSO.STOCKPRICESTREAM`. It makes a request for updated data every 1000 milliseconds. 
