@@ -60,7 +60,7 @@ An add-in's manifest file defines its settings and capabilities. In this step, y
 
 1. Replace the entire contents of the file with the following XML markup, and save the file. Notice that the `ExtensionPoint` element defines the button on the ribbon that will open the add-in's task pane. In this case, the button will appear on the ribbon only for an appointment organizer.
 
-    ```xml
+    ```
     <?xml version="1.0" encoding="UTF-8"?>
     <OfficeApp
             xmlns="http://schemas.microsoft.com/office/appforoffice/1.1"
@@ -223,7 +223,7 @@ The HTML markup in file **index.html** renders the user interface (UI) of the ad
 
 1. Replace the entire contents of the file with the following HTML markup, and save the file.
 
-    ```html
+    ```
     <!DOCTYPE html>
     <html>
         <head>
@@ -314,7 +314,7 @@ The CSS code in file **app.css** specifies the custom styles that are used to re
 
 1. Replace the entire contents of the file with the following code, and save the file.
 
-    ```css
+    ```
     html, body {
         width: 100%;
         height: 100%;
@@ -404,7 +404,7 @@ The content of file **src\index.js** specifies the script for the add-in. In thi
 
 1. Replace the entire contents of the file with the following code, and save the file.
 
-    ```js
+    ```
     'use strict';
 
     (function () {
@@ -620,7 +620,7 @@ The content of file **src\index.js** specifies the script for the add-in. In thi
 
 1. Within **index.js**, find the comment labeled `TODO-1` and replace it with the following code to register an event handler for the `Office.EventType.AppointmentTimeChanged` event. This code specifies that when the appointment time changes, the `processApptTimeChange` function will run.
 
-    ```js
+    ```
     // register event handler for the Office.EventType.AppointmentTimeChanged event
     Office.context.mailbox.item.addHandlerAsync(Office.EventType.AppointmentTimeChanged, 
         processApptTimeChange,
@@ -634,7 +634,7 @@ The content of file **src\index.js** specifies the script for the add-in. In thi
 
 1. Within **index.js**, find the comment labeled `TODO-2` and replace it with the following code to register an event handler for the `Office.EventType.RecipientsChanged` event. This code specifies that when recipients are added or removed, the `processRecipientChange` function will run.
 
-    ```js
+    ```
     // register event handler for the Office.EventType.RecipientsChanged event
     Office.context.mailbox.item.addHandlerAsync(Office.EventType.RecipientsChanged, 
         processRecipientChange,
@@ -648,7 +648,7 @@ The content of file **src\index.js** specifies the script for the add-in. In thi
 
 1. Within **index.js**, find the comment labeled `TODO-3` and replace it with the following code. This is the event handler function that runs when the `Office.EventType.AppointmentTimeChanged` event occurs. The add-in retrieves the new appointment time, verifies whether the room is available at that time, and updates the task pane user interface to convey the result.
 
-    ```js
+    ```
     function processApptTimeChange(result) {
         // get new appointment time, then verify whether the selected room is available
         getAppointmentTime()
@@ -663,7 +663,7 @@ The content of file **src\index.js** specifies the script for the add-in. In thi
 
 1. Within **index.js**, find the comment labeled `TODO-4` and replace it with the following code. This is the event handler function that runs when the `Office.EventType.RecipientsChanged` event occurs. The add-in retrieves the new number of attendees, verifies whether the room capacity is sufficient for that number of attendees, and updates the task pane user interface to convey the result.
 
-    ```js
+    ```
     function processRecipientChange(result) {
         // get new number of attendees, then verify whether the room capacity is sufficient
         getNumberOfAttendees()
