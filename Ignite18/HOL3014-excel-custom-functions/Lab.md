@@ -27,11 +27,9 @@ You’ll begin this tutorial by using the Yo Office Yeoman generator, which will
     ```
 3. Open a web browser and copy and paste in the following URL: **`https://www.office.com/launch/excel`** to launch Excel Online. 
 3. Sign in with your demo credentials, and open a new workbook. 
-4. Select **Insert > Add-ins**. Choose **Manage My Add-ins** and select **Upload My Add-in**. Browse for your manifest file, then select **Upload**. 
+4. Select **Insert > Add-ins**. Choose **Manage My Add-ins** and select **Upload My Add-in**. Click "Browse..." for your manifest file (`C:\Users\LabUser\Stock Ticker\manifest.xml`), then click Open, select **Upload**.
 
-5. Typically, you need to install a self-signed certificate for your project to work, but this step has been completed for you! 
-
-Now the custom functions in your file will be loaded and ready to use. There are several pre-built functions for you in the Yo Office project. All are attached to a namespace called CONTOSO which is defined in the XML manifest file. Once you start typing `=CONTOSO.` in a cell, the list of available functions will appear.
+Now the custom functions in your file will be loaded and ready to use. There are several pre-built functions for you in the Yo Office project. All are attached to a namespace called CONTOSO which is defined in the XML manifest file. Once you start typing `=CONTOSO` in a cell, the list of available functions will appear.
 
 Let's call `=CONTOSO.ADD42()`. This function adds 42 to any two numbers you provide as arguments. In any cell, type `=CONTOSO.ADD42(1,2)`. It should deliver the answer 45.
 
