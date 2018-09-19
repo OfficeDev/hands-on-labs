@@ -2,20 +2,22 @@
 This hands-on-lab introduces you to creating an interactive Excel add-in. You will customize chart elements and learn how to instrument event handlers.
 
 ## Preparation
-This lab is done with Script Lab. Script Lab is an add-in for developing and testing other add=ins. Within Excel, you can test, build, and share your solutions. Script Lab is available from the Add-ins Store.
+This lab is done with Script Lab. Script Lab is an add-in for developing and testing other add-ins. Within Excel, you can test, build, and share your solutions. Script Lab is available from the Add-ins Store.
 
 ## ![An image displaying where Script Lab is on the Excel ribbon.](images/image1.png)
 
-## Step 1: Setup your snippet in Script Lab
+## Step 1: Setup your sample in Script Lab
 
-You'll prepare Script Lab to setup your sample. We will link the correct libraries, write an HTML front-end, and code the program logic in TypeScript. 
-Click on the Code button on the Script Lab ribbon tab. That opens a task pane like this one:
+You'll prepare Script Lab to code and run your sample. We'll link the correct libraries, write an HTML front-end, and code the program logic in TypeScript. 
+Open a blank workbook in Excel to begin. 
 
+Go to the **Script Lab** ribbon tab and select **Code**. Once Script Lab load the pane, select the **+** icon to create a new add-in snippet. That opens a task pane like this one: 
+ 
 ![The "Script" tab of Script Lab.](images/image2.png)
 
 ### Step 1.1: Use beta libraries
 
-In order to use the new Chart APIs, you need to reference the Office.js beta library and type definitions. Click on the Libraries tab and change the first two lines to:
+In order to use the new Chart APIs, you need to reference the Office.js beta library and type definitions. Click on the Libraries tab and replace the first two lines with the following:
 
 ```
 https://appsforoffice.microsoft.com/lib/beta/hosted/office.js
@@ -24,7 +26,7 @@ https://appsforoffice.microsoft.com/lib/beta/hosted/office.d.ts
 
 ### Step 1.2: Create buttons in HTML
 
-You will start with the user interface. The lab sample needs to do four tasks, each of which will be come a button:
+You will start with the user interface. The lab sample needs to do four tasks, each of which will become a button:
 
 1. Insert sample data.
 2. Create a chart.
@@ -219,7 +221,7 @@ async function chartDeactivated(event) {
 
 ## Step 4: Running the sample
 
-Click on the **Run** tab on the “Script Lab” ribbon.
+Select the **Run** button on the “Script Lab” ribbon tab.
 
 ![The "Run" icon for Script Lab.](images/image4.png)
 
@@ -234,4 +236,4 @@ Follow the steps listed in the HTML. Remember to select the chart to see the fin
 ## Next steps
 Congratulations! You’ve completed the lab! If you want to learn more about new comming APIs, please move to our [Github](https://github.com/OfficeDev/office-js-docs/tree/ExcelJs_OpenSpec) for details.
 
-You should also explore the other samples in Script Lab. Click on the menu and go to **Samples** for more ways to use the power of Excel in your add-ins. 
+You should also explore the other samples in Script Lab. Click on the menu button and go to **Samples** for more ways to use the power of Excel in your add-ins. 

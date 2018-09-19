@@ -1,28 +1,26 @@
 # New in the Excel JavaScript API: Creating Data Analysis Web Add-ins for Excel using PivotTables.
 
-During this lab you will learn the basics on how to create PivotTables with the Excel JavaScript API. This lab uses hard-coded sample data from a separate worksheet, but the add-in could pull the information from numerous sources. The raw data worksheet looks like this:
-
-## ![A collection of fruit sales data from farms.](images/image7.png)
+During this lab you will learn the basics on how to create PivotTables with the Excel JavaScript API. This lab uses hard-coded sample data that will be generated on a separate worksheet, but the add-in could pull the information from numerous sources.
 
 ## Preparation
 
-This lab is done with Script Lab. Script Lab is an add-in for developing and testing other add=ins. Within Excel, you can test, build, and share your solutions. Script Lab is available from the Add-ins Store.
+This lab is done with Script Lab. Script Lab is an add-in for developing and testing other add-ins. Within Excel, you can test, build, and share your solutions. Script Lab is available from the Add-ins Store.
 
 ## ![An image displaying where Script Lab is on the Excel ribbon.](images/image1.png)
 
-## Step 1: Setup your snippet in Script Lab
+## Step 1: Setup your sample in Script Lab
 
-You'll prepare Script Lab to setup your sample. We will link the correct libraries, write an HTML front-end, and code the program logic in TypeScript.
+You'll prepare Script Lab to code and run your sample. We'll link the correct libraries, write an HTML front-end, and code the program logic in TypeScript. Open a blank workbook in Excel to begin.
 
 ### Step 1.1: Create a new Script Lab snippet
 
-Click on the **Code** button on the **Script Lab** ribbon tab. That opens a task pane like this one:
+Go to the **Script Lab** ribbon tab and select **Code**. Once Script Lab load the pane, select the **+** icon to create a new add-in snippet. That opens a task pane like this one:
 
 ![The "Script" tab of Script Lab.](images/image2.png)
 
 ### Step 1.2: Use beta libraries
 
-In order to use the PivotTable API, you need to reference the Office.js beta library and type definitions. Click on the **Libraries** tab and change the first two lines to:
+In order to use the PivotTable API, you need to reference the Office.js beta library and type definitions. Select the **Libraries** tab and replace the first two lines with the following:
 
 ```
 https://appsforoffice.microsoft.com/lib/beta/hosted/office.js
@@ -31,7 +29,7 @@ https://appsforoffice.microsoft.com/lib/beta/hosted/office.d.ts
 
 ### Step 1.3: Setup HTML Page
 
-Now, click on the **HTML** tab and add three buttons. These will be used to insert sample data, create a PivotTable, and add hierarchies to the PivotTable. Replace the contents of the **HTML** tab with the following:
+Now, select the **HTML** tab and add three buttons. These will insert sample data, create a PivotTable, and add hierarchies to the PivotTable. Replace the contents of the **HTML** tab with the following:
 
 ```html
 <section class="setup ms-font-m">
@@ -59,7 +57,7 @@ Your **HTML** tab should look like this:
 
 ### Step 1.4 : Add  Event handlers for each button.
 
-Now click on the **Script** tab on the Script Lab task pane and add an event handler for each button.
+Now select the **Script** tab on the Script Lab task pane and add an event handler for each button.
 
 Replace the existing code with the following:
 
@@ -175,16 +173,14 @@ Replace `TODO-3` with the following:
 
 ## Step 3: Run your sample!
 
-Click on the **Run** tab on the “Script Lab” ribbon.
+Select the **Run** button on the “Script Lab” ribbon tab.
 
 ![The "Run" icon for Script Lab.](images/image4.png)
 
 You should see a Task Pane with the HTML you created in the previous step.
 
-
 ![The "Run" pane for Script Lab.](images/image5.png)
 
-Click the buttons in top/down order and you will see a PivotTable like this one:
-
+Click the buttons in top/down order to generate a PivotTable like this one:
 
 ![The resulting PivotTable.](images/image6.png)
