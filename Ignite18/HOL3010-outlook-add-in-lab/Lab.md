@@ -58,7 +58,9 @@ An add-in's manifest file defines its settings and capabilities. In this step, y
 
 1. In Visual Studio Code, open the file **my-outlook-add-in-manifest.xml**. 
 
-1. Replace the entire contents of the file with the following XML markup, and save the file. Notice that the `ExtensionPoint` element defines the button on the ribbon that will open the add-in's task pane. In this case, the button will appear on the ribbon only for an appointment organizer.
+1. Delete all contents from the file and then put your cursor at the top of the empty file (line 1, column 1).
+
+1. With your cursor located at the top of the empty file in Visual Studio code, press the **[T]** button next to the following XML code block in this Lab Guide to automatically copy/paste the code into **my-outlook-add-in-manifest.xml**, and then save the file. Notice that the `ExtensionPoint` element defines the button on the ribbon that will open the add-in's task pane. In this case, the button will appear on the ribbon only for an appointment organizer.
 
     ```
     <?xml version="1.0" encoding="UTF-8"?>
@@ -221,7 +223,9 @@ The HTML markup in file **index.html** renders the user interface (UI) of the ad
 
 1. In Visual Studio Code, open the file **index.html**. 
 
-1. Replace the entire contents of the file with the following HTML markup, and save the file.
+1. Delete all contents from the file and then put your cursor at the top of the empty file (line 1, column 1).
+
+1. With your cursor located at the top of the empty file in Visual Studio code, press the **[T]** button next to the following HTML code block in this Lab Guide to automatically copy/paste the code into **index.html**, and then save the file.
 
     ```
     <!DOCTYPE html>
@@ -312,7 +316,9 @@ The CSS code in file **app.css** specifies the custom styles that are used to re
 
 1. In Visual Studio Code, open the file **app.css**.
 
-1. Replace the entire contents of the file with the following code, and save the file.
+1. Delete all contents from the file and then put your cursor at the top of the empty file (line 1, column 1).
+
+1. With your cursor located at the top of the empty file in Visual Studio code, press the **[T]** button next to the following CSS code block in this Lab Guide to automatically copy/paste the code into **app.css**, and then save the file.
 
     ```
     html, body {
@@ -402,7 +408,9 @@ The content of file **src\index.js** specifies the script for the add-in. In thi
 
 1. In Visual Studio Code, open the file **src\index.js**. 
 
-1. Replace the entire contents of the file with the following code, and save the file.
+1. Delete all contents from the file and then put your cursor at the top of the empty file (line 1, column 1).
+
+1. With your cursor located at the top of the empty file in Visual Studio code, press the **[T]** button next to the following JavaScript code block in this Lab Guide to automatically copy/paste the code into **src\index.js**.
 
     ```
     'use strict';
@@ -618,7 +626,9 @@ The content of file **src\index.js** specifies the script for the add-in. In thi
     })();
     ```
 
-1. Within **index.js**, find the comment labeled `TODO-1` and replace it with the following code to register an event handler for the `Office.EventType.AppointmentTimeChanged` event. This code specifies that when the appointment time changes, the `processApptTimeChange` function will run.
+1. Within **index.js**, find the comment labeled `TODO-1` and select that entire line. 
+
+1. With the entire `TODO-1` comment line selected in Visual Studio code, press the **[T]** button next to the following JavaScript code block in this Lab Guide to automatically copy/paste the code into **src\index.js** (thereby replacing the `TODO-1` comment line). This code registers an event handler for the `Office.EventType.AppointmentTimeChanged` event. It specifies that when the appointment time changes, the `processApptTimeChange` function will run.
 
     ```
     // register event handler for the Office.EventType.AppointmentTimeChanged event
@@ -632,7 +642,9 @@ The content of file **src\index.js** specifies the script for the add-in. In thi
     );
     ```
 
-1. Within **index.js**, find the comment labeled `TODO-2` and replace it with the following code to register an event handler for the `Office.EventType.RecipientsChanged` event. This code specifies that when recipients are added or removed, the `processRecipientChange` function will run.
+1. Within **index.js**, find the comment labeled `TODO-2` and select that entire line. 
+
+1. With the entire `TODO-2` comment line selected in Visual Studio code, press the **[T]** button next to the following JavaScript code block in this Lab Guide to automatically copy/paste the code into **src\index.js** (thereby replacing the `TODO-2` comment line). This code registers an event handler for the `Office.EventType.RecipientsChanged` event. It specifies that when recipients are added or removed, the `processRecipientChange` function will run.
 
     ```
     // register event handler for the Office.EventType.RecipientsChanged event
@@ -646,7 +658,9 @@ The content of file **src\index.js** specifies the script for the add-in. In thi
     );
     ```
 
-1. Within **index.js**, find the comment labeled `TODO-3` and replace it with the following code. This is the event handler function that runs when the `Office.EventType.AppointmentTimeChanged` event occurs. The add-in retrieves the new appointment time, verifies whether the room is available at that time, and updates the task pane user interface to convey the result.
+1. Within **index.js**, find the comment labeled `TODO-3` and select that entire line. 
+
+1. With the entire `TODO-3` comment line selected in Visual Studio code, press the **[T]** button next to the following JavaScript code block in this Lab Guide to automatically copy/paste the code into **src\index.js** (thereby replacing the `TODO-3` comment line). This is the event handler function that runs when the `Office.EventType.AppointmentTimeChanged` event occurs. The add-in retrieves the new appointment time, verifies whether the room is available at that time, and updates the task pane user interface to convey the result.
 
     ```
     function processApptTimeChange(result) {
@@ -661,7 +675,9 @@ The content of file **src\index.js** specifies the script for the add-in. In thi
     };
     ```
 
-1. Within **index.js**, find the comment labeled `TODO-4` and replace it with the following code. This is the event handler function that runs when the `Office.EventType.RecipientsChanged` event occurs. The add-in retrieves the new number of attendees, verifies whether the room capacity is sufficient for that number of attendees, and updates the task pane user interface to convey the result.
+1. Within **index.js**, find the comment labeled `TODO-4` and select that entire line. 
+
+1. With the entire `TODO-4` comment line selected in Visual Studio code, press the **[T]** button next to the following JavaScript code block in this Lab Guide to automatically copy/paste the code into **src\index.js** (thereby replacing the `TODO-4` comment line). This is the event handler function that runs when the `Office.EventType.RecipientsChanged` event occurs. The add-in retrieves the new number of attendees, verifies whether the room capacity is sufficient for that number of attendees, and updates the task pane user interface to convey the result.
 
     ```
     function processRecipientChange(result) {
