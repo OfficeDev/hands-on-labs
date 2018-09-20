@@ -764,7 +764,7 @@ Now for the fun part -- it's time to try out the add-in that you've built. Use t
 
 1. In Calendar view, press **New Meeting** to create a new meeting.
 
-1. In the ribbon of the appointment window, choose **Room Validator** to open the Room Validator task pane.
+1. In the ribbon of the meeting window, choose **Room Validator** to open the Room Validator task pane.
 
     ![A screenshot of the Outlook ribbon with the Room Validator button highlighted](images/ribbon-room-validator.png)
 
