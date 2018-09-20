@@ -14,7 +14,7 @@ You'll prepare Script Lab to code and run your sample. We'll link the correct li
 
 ### Step 1.1: Create a new Script Lab snippet
 
-Go to the **Script Lab** ribbon tab and select **Code**. Once Script Lab load the pane, select the **+** icon to create a new add-in snippet. That opens a task pane like this one:
+Go to the **Script Lab** ribbon tab and select **Code**. Once Script Lab load the pane, select the `+` icon to create a new add-in snippet. That opens a task pane like this one:
 
 ![The "Script" tab of Script Lab.](images/image2.png)
 
@@ -99,7 +99,7 @@ async function tryCatch(callback) {
 
 Step 2.1: Insert sample data
 
-Reaplce `TODO-1` with the following:
+Replace `TODO-1` with the following:
 
 ```typescript
         const sheetData = await OfficeHelpers.ExcelUtilities
@@ -162,7 +162,7 @@ Replace `TODO-3` with the following:
 		pivotTable.rowHierarchies.add(pivotTable.hierarchies.getItem("Type"));
 
 		// add column hierarchies
-		pivotTable.columnHierarchies.add(pivotTable.hierarchies.getItem("Classification");
+		pivotTable.columnHierarchies.add(pivotTable.hierarchies.getItem("Classification"));
 
 		// add data hierarchies
 		const myValue = pivotTable.dataHierarchies.add(pivotTable.hierarchies.getItem("Crates Sold at Farm"));
@@ -184,3 +184,8 @@ You should see a Task Pane with the HTML you created in the previous step.
 Click the buttons in top/down order to generate a PivotTable like this one:
 
 ![The resulting PivotTable.](images/image6.png)
+
+## Next steps
+Congratulations! You’ve completed the lab! Please explore the other samples in Script Lab. Click on the menu button and go to **Samples** for more ways to use the power of Excel in your add-ins.
+
+If you want to learn more about new comming APIs, please view our [Github](https://github.com/OfficeDev/office-js-docs/tree/ExcelJs_OpenSpec) for details.

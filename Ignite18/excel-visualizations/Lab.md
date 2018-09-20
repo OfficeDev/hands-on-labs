@@ -11,7 +11,7 @@ This lab is done with Script Lab. Script Lab is an add-in for developing and tes
 You'll prepare Script Lab to code and run your sample. We'll link the correct libraries, write an HTML front-end, and code the program logic in TypeScript. 
 Open a blank workbook in Excel to begin. 
 
-Go to the **Script Lab** ribbon tab and select **Code**. Once Script Lab load the pane, select the **+** icon to create a new add-in snippet. That opens a task pane like this one: 
+Go to the **Script Lab** ribbon tab and select **Code**. Once Script Lab load the pane, select the `+` icon to create a new add-in snippet. That opens a task pane like this one: 
  
 ![The "Script" tab of Script Lab.](images/image2.png)
 
@@ -234,6 +234,7 @@ Follow the steps listed in the HTML. Remember to select the chart to see the fin
 ![The chart created by the lab.](images/5_Add_data_label.png)
 
 ## Next steps
-Congratulations! You’ve completed the lab! If you want to learn more about new comming APIs, please move to our [Github](https://github.com/OfficeDev/office-js-docs/tree/ExcelJs_OpenSpec) for details.
+Congratulations! You’ve completed the lab! Please explore the other samples in Script Lab. Click on the menu button and go to **Samples** for more ways to use the power of Excel in your add-ins. 
 
-You should also explore the other samples in Script Lab. Click on the menu button and go to **Samples** for more ways to use the power of Excel in your add-ins. 
+If you want to learn more about new comming APIs, please view our [Github](https://github.com/OfficeDev/office-js-docs/tree/ExcelJs_OpenSpec) for details.
+
