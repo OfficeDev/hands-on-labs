@@ -762,15 +762,11 @@ Now for the fun part -- it's time to try out the add-in that you've built. Use t
 
 1. Open Outlook 2016 and navigate to Calendar view.
 
-1. In Calendar view, press **New Appointment** to create a new appointment.
+1. In Calendar view, press **New Meeting** to create a new meeting.
 
 1. In the ribbon of the appointment window, choose **Room Validator** to open the Room Validator task pane.
 
     ![A screenshot of the Outlook ribbon with the Room Validator button highlighted](images/ribbon-room-validator.png)
-
-1. In the ribbon of the appointment window, choose **Invite Attendees** to add the **To...** recipients field to the appointment.
-
-    ![A screenshot of the Outlook ribbon with the Invite Attendees button highlighted](images/ribbon-invite-attendees.png)
 
 1. Specify meeting information as follows:
     
@@ -791,11 +787,11 @@ Now for the fun part -- it's time to try out the add-in that you've built. Use t
 1. Add another recipient to the **To...** field of the meeting invitation. 
 
     - The meeting now contains a total of 3 attendees (2 invitees + the organizer) and occurs in the AM hours.
-    - When you add the new recipient, the **Validation results** section of the task pane automatically updates to convey that room capacity is insufficient and the room is unavailable at the specified time.
+    - When you add the new recipient, the **Validation results** section of the task pane automatically updates to convey that room capacity is insufficient and the room is unavailable at the specified time. 
 
     ![A screenshot of an Outlook meeting invitation with task pane](images/invite-two-recipients-carter.png)
 
-1. In the **Choose a room** section of the task pane, choose **Conference Room Johnson** from the list and press **Select**. When you press **Select**, the conference room is specified in the appointment's **Location** field and the add-in determines whether the selected room is available and has capacity for the number of attendees specified in the invitation. 
+1. Let's find a room with capacity large enough to accommodate the 3 attendees. In the **Choose a room** section of the task pane, choose **Conference Room Johnson** from the list and press **Select**. When you press **Select**, the conference room is specified in the appointment's **Location** field and the add-in determines whether the selected room is available and has capacity for the number of attendees specified in the invitation. 
 
     - The task pane shows that the capacity of the selected room is 4 and it's available only in the PM hours.
     - The meeting still contains a total of 3 attendees (2 invitees + the organizer) and occurs in the AM hours.
@@ -803,10 +799,10 @@ Now for the fun part -- it's time to try out the add-in that you've built. Use t
  
     ![A screenshot of an Outlook meeting invitation with task pane](images/invite-two-recipients-johnson-am.png)
 
- 1. Change the **Start time** of the meeting to **2:00pm**.
+ 1. Since the selected conference room is only available in the PM hours, change the **Start time** of the meeting to **2:00pm**.
  
     - The meeting still contains a total of 3 attendees (2 invitees + the organizer), but now occurs in the PM hours.
-    - When you change the time of the meeting, the **Validation results** section of the task pane automatically updates to convey that room capacity is sufficient and the room is available.
+    - When you change the time of the meeting, the **Validation results** section of the task pane automatically updates to convey that room capacity is sufficient and the room is available at the specified time.
 
     ![A screenshot of an Outlook meeting invitation with task pane](images/invite-two-recipients-johnson-pm.png)
 
