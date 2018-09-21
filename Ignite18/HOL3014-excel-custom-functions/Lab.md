@@ -43,23 +43,20 @@ You’ll be adding a new function, called `=CONTOSO.STOCKPRICE`, to the **custom
 1. Open Visual Studio Code, and open up the `Stock Ticker` folder.
 1. Copy and paste the function below and add it to **customfunctions.js**. 
     
-    ```js
+    ```javascript
     function STOCKPRICE(ticker) {
         return new Promise( 
             function(resolve) {
                 let xhr = new XMLHttpRequest();
                 let url = "https://api.iextrading.com/1.0/stock/" + ticker + "/price" 
                 //add handler for xhr
-
                 xhr.onreadystatechange = function() {
                     if (xhr.readyState == XMLHttpRequest.DONE) {
                     //return result back to Excel
-
                     resolve(xhr.responseText);
                     }
                 }
                 //make request
-
                 xhr.open('GET', url, true);
                 xhr.send();
         });
@@ -103,25 +100,20 @@ To do this, you’ll create a new function, `=CONTOSO.STOCKPRICESTREAM`. It make
 
 1. Copy and paste the code below into **customfunctions.js**.
     
-    ```js
+    ```javascript
     function STOCKPRICESTREAM(ticker, caller) {
-
         let result = 0;
-        
         setInterval(function() {
             let xhr = new XMLHttpRequest();
             let url = "https://api.iextrading.com/1.0/stock/" + ticker + "/price";
             //add handler for xhr
-
             xhr.onreadystatechange = function() {
                 if (xhr.readyState == XMLHttpRequest.DONE) {
                     //return result back to Excel
-
                     caller.setResult(xhr.responseText);
                 }
             }
             //make request//
-
             xhr.open('GET', url, true);
             xhr.send();
             }, 1000); //milliseconds
@@ -152,6 +144,7 @@ To do this, you’ll create a new function, `=CONTOSO.STOCKPRICESTREAM`. It make
         }
     }
     ```
+    
     You'll notice that this JSON file is very similar to the previous function's JSON file, but that a new section has been added for       "options." Because this function is streaming, you must specify this as true in the JSON. 
 
 3. Again, re-upload your manifest for this function to be useable.  In Excel Online, select **Insert > Add-ins**. Choose **Manage My Add-ins** and select **Upload My Add-in**. Browse for your manifest file, then select **Upload**.
