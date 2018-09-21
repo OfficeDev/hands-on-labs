@@ -2,9 +2,24 @@
 This hands-on-lab introduces you to creating an interactive Excel add-in. You will customize chart elements and learn how to instrument event handlers.
 
 ## Preparation
+
+### Working with the VM
+
+At the top of this pane are two tabs **Instructions** and **Resources**. **Resources** contains login information for Windows 10. Use the password provided at the startup screen.
+
+**Instructions** contains the steps to complete the lab. Switch back to this tab after logging in with the provided password.
+
+Note the `T` icon by blocked of text or code. Selecting this icon begins typing that code or text in the VM at the cursor’s current location. Clicking in the text or code box ***also*** begins typing. This means attempting to select a code block in the instructions pane will cause the VM to start typing. 
+
+### Excel and ScriptLab
+
 This lab is done with Script Lab. Script Lab is an add-in for developing and testing other add-ins. Within Excel, you can test, build, and share your solutions. Script Lab is available from the Add-ins Store.
 
-## ![An image displaying where Script Lab is on the Excel ribbon.](images/image1.png)
+Open Excel to begin. You will be prompted to sign in to Office. That is not necessary for the lab. Please dismiss the login window.
+
+Select **Blank Workbook** to begin. 
+
+![An image displaying where Script Lab is on the Excel ribbon.](images/image1.png)
 
 ## Step 1: Setup your sample in Script Lab
 
