@@ -23,12 +23,13 @@ You’ll begin this tutorial by using the Yo Office Yeoman generator, which will
 2. Next, navigate to the root folder in your project using your command line interface. Run the following code:
 
     ```bash
+    cd stock-ticker
     npm install
     ```
     After the dependencies are installed, run the following code to start the server: 
     
     ```bash
-    npm start
+    npm run start-web
     ```
     
 3. Open a web browser and copy and paste in the following URL: **`https://www.office.com/launch/excel`** to launch Excel Online. 
