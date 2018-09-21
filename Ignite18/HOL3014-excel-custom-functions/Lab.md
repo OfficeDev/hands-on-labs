@@ -15,16 +15,22 @@ You’ll begin this tutorial by using the Yo Office Yeoman generator, which will
     
     Answer the prompts as directed below:  
     - Choose a project type: `Excel Custom Functions Add-in project (Preview: Requires the Insider channel for Excel)`
-    - What do you want to name your add-in? `Stock Ticker`
+    - What do you want to name your add-in? `stock-ticker
     
-    After you complete the wizard, the generator will create the project files and install supporting Node components. 
+    After you complete the wizard, the generator will create the project files and install supporting Node components.
 
     
-2. Next, from your command line interface and the root folder of your project, start a localhost instance by running the below in the command line:
+2. Next, navigate to the root folder in your project using your command line interface. Run the following code:
 
+    ```bash
+    npm install
+    ```
+    After the dependencies are installed, run the following code to start the server: 
+    
     ```bash
     npm start
     ```
+    
 3. Open a web browser and copy and paste in the following URL: **`https://www.office.com/launch/excel`** to launch Excel Online. 
 3. Sign in with your demo credentials, and open a new workbook. 
 4. Select **Insert > Add-ins**. Choose **Manage My Add-ins** and select **Upload My Add-in**. Click "Browse..." for your manifest file (`C:\Users\LabUser\Stock Ticker\manifest.xml`), then click Open, select **Upload**.
@@ -36,7 +42,7 @@ Let's call `=CONTOSO.ADD42()`. This function adds 42 to any two numbers you prov
 _Note that when a call is made in Excel Online, you may see `#GETTING_DATA` appear in a cell. Once a value is returned, this notification should disappear._
 
 ## Exercise 2: Create your own custom function
-What if you wanted a function which could fetch and display the price of Microsoft stock that day? Custom functions are designed so you can easily make requests for data from the web asynchronously.
+What if you wanted a function which could fetch and display the current price of Microsoft stock? Custom functions are designed so you can easily make requests for data from the web asynchronously.
   
 You’ll be adding a new function, called `=CONTOSO.STOCKPRICE`, to the **./src/customfunctions.js** file.  The function will take in the name of a stock ticker, such as "MSFT", and return the price of that stock. You'll leverage the IEX Trading API, which is free and does not require authentication.
 
@@ -63,7 +69,7 @@ You’ll be adding a new function, called `=CONTOSO.STOCKPRICE`, to the **./src/
     }
     ```
     
-    You'll notice in this code that your asynchronous function returns a JavaScript Promise with the data from the IEX Trading API.         Asynchronous custom functions require you to either return a new Promise or use JavaScript's async/await syntax. 
+    You'll notice in this code that your asynchronous function returns a JavaScript Promise with the data from the IEX Trading API. Asynchronous custom functions require you to either return a new Promise or use JavaScript's async/await syntax. 
 
 2. In order for Excel to properly run this function, you must also add some metadata to the **./config/customfunctions.json** file.
 
@@ -155,3 +161,6 @@ To do this, you’ll create a new function, `=CONTOSO.STOCKPRICESTREAM`. It make
 Congratulations, you’ve completed the custom functions add-in tutorial! This hands-on-lab ends here, but be sure to check out our online docs to learn more about custom functions.
 
 - Learn more about [custom functions on Microsoft Docs](https://docs.microsoft.com/en-us/office/dev/add-ins/excel/custom-functions-overview)
+
+## Legal Information
+Data provided free by [IEX](https://iextrading.com/developer/). View [IEX's Term of Use](https://iextrading.com/api-exhibit-a/). Microsoft's use of this API in this hands-on-lab is for educational purposes only. 
