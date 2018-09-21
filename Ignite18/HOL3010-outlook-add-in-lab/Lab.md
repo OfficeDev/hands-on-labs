@@ -71,7 +71,7 @@ Complete the following steps to create the add-in project by using the **Yeoman 
     
     ![A screenshot of the prompts and answers for the Yeoman generator](images/yo-prompts.png)
     
-    After you complete the wizard, the generator will create the project and install supporting Node components.
+    After you complete the wizard, the generator will create the project and install supporting Node components. Wait until this process completes before you move on to next steps in this lab guide.
 
 ## Update the code
 
