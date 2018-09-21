@@ -602,7 +602,7 @@ The content of file **src\index.js** specifies the script for the add-in. In thi
 
 1. With the entire `TODO-2` comment line selected in Visual Studio code, press the **[T]** button next to the following JavaScript code block in this Lab Guide to automatically copy/paste the code into **src\index.js** (thereby replacing the `TODO-2` comment line). This code registers an event handler for the `Office.EventType.RecipientsChanged` event. It specifies that when recipients are added or removed, the `processRecipientChange` function will run.
 
-    ```javascript 
+    ```javascript
     // register event handler for the Office.EventType.RecipientsChanged event
     Office.context.mailbox.item.addHandlerAsync(Office.EventType.RecipientsChanged, 
         processRecipientChange,
