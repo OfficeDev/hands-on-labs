@@ -3,13 +3,20 @@ This hands-on-lab introduces you to creating an interactive Excel add-in. You wi
 
 ## Preparation
 
-### Working with the VM
+### Lab tips
 
-At the top of this pane are two tabs **Instructions** and **Resources**. **Resources** contains login information for Windows 10. Use the password provided at the startup screen.
+**Tip #1**  
+At the top of this pane are two tabs: **Instructions** and **Resources**. 
 
-**Instructions** contains the steps to complete the lab. Switch back to this tab after logging in with the provided password.
+- The **Resources** tab contains the Windows 10 login credentials that you'll need for this lab's startup screen.
 
-Note the `T` icon by blocked of text or code. Selecting this icon begins typing that code or text in the VM at the cursor’s current location. Clicking in the text or code box ***also*** begins typing. This means attempting to select a code block in the instructions pane will cause the VM to start typing. 
+- The **Instructions** tab within this pane contains these lab instructions. Switch back to the **Instructions** tab after you've acquired the necessary login credentials from the **Resources** tab.
+
+**Tip #2**  
+This pane is resizeable. For an optimimal viewing experience, you may wish to resize this pane to be wider than its default width.
+
+**Tip #3**  
+To copy/paste code from a code block into Script Lab, click the **[T]** button that appears next to the code block. *Avoid* clicking anywhere within a code block, as doing so will also copy/paste the code into the active application.
 
 ### Excel and ScriptLab
 
@@ -23,23 +30,14 @@ Select **Blank Workbook** to begin.
 
 ## Step 1: Setup your sample in Script Lab
 
-You'll prepare Script Lab to code and run your sample. We'll link the correct libraries, write an HTML front-end, and code the program logic in TypeScript. 
+You'll prepare Script Lab to code and run your sample. We'll link write an HTML front-end and code the program logic in TypeScript. 
 Open a blank workbook in Excel to begin. 
 
 Go to the **Script Lab** ribbon tab and select **Code**. Once Script Lab load the pane, select the `+` icon to create a new add-in snippet. That opens a task pane like this one: 
  
 ![The "Script" tab of Script Lab.](images/image2.png)
 
-### Step 1.1: Use beta libraries
-
-In order to use the new Chart APIs, you need to reference the Office.js beta library and type definitions. Click on the Libraries tab and replace the first two lines with the following:
-
-```
-https://appsforoffice.microsoft.com/lib/beta/hosted/office.js
-https://appsforoffice.microsoft.com/lib/beta/hosted/office.d.ts
-```
-
-### Step 1.2: Create buttons in HTML
+### Step 1.1: Create buttons in HTML
 
 You will start with the user interface. The lab sample needs to do four tasks, each of which will become a button:
 
@@ -76,7 +74,7 @@ This UI is written in HTML. In Script Lab, select the **HTML** tab. Here, you cr
 </button>
 ```
 
-### Step 1.3: Add script template
+### Step 1.2: Add script template
 
 Select the **Script** tab in Script Lab. Replace the text with the following:
 
