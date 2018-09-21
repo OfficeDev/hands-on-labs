@@ -235,28 +235,22 @@ The HTML markup in file **index.html** renders the user interface (UI) of the ad
             <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
             <meta name="viewport" content="width=device-width, initial-scale=1">
             <title>My Outlook Add-in</title>
-
             <!-- Office JavaScript API -->
             <script type="text/javascript" src="https://appsforoffice.microsoft.com/lib/1.1/hosted/office.debug.js"></script>
-
             <!-- LOCAL -->
             <link rel="stylesheet" href="node_modules/office-ui-fabric-js/dist/css/fabric.min.css" />
             <link rel="stylesheet" href="node_modules/office-ui-fabric-js/dist/css/fabric.components.css" />
-
             <!-- CDN -->
             <!-- For the Office UI Fabric, go to http://aka.ms/office-ui-fabric to learn more. -->
             <!--<link rel="stylesheet" href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-js/1.2.0/css/fabric.min.css" />-->
             <!--<link rel="stylesheet" href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-js/1.2.0/css/fabric.components.min.css" />-->
-
             <link href="app.css" rel="stylesheet" type="text/css" />
         </head>
-
         <body class="ms-font-m ms-welcome">
             <header class="ms-welcome__header ms-bgColor-themePrimary ms-u-fadeIn500">
                 <h1 class="ms-fontSize-xxl ms-fontWeight-regular ms-fontColor-white">Room Validator</h1>
             </header>
             <main id="app-body" class="ms-welcome__main" style="display: none;">
-
                 <div id="appointment-details">
                     <h2 class="ms-font-l ms-fontWeight-semibold ms-fontColor-neutralPrimaryAlt ms-u-slideUpIn20">Appointment details</h2>
                     <br />
@@ -265,7 +259,6 @@ The HTML markup in file **index.html** renders the user interface (UI) of the ad
                     <p class="ms-font-m ms-fontColor-neutralSecondaryAlt"><span class="ms-fontWeight-semibold">End time:&#160;</span><label id="end-time"></label></p>
                     <br />
                 </div>
-
                 <h2 class="ms-font-xl ms-fontWeight-semibold ms-fontColor-themeDark ms-u-slideUpIn20">Choose a room</h2>
                 <br />
                 <p class="ms-font-m">Choose a room from the list to see its capacity and availability. Press <b>Select</b> to specify the chosen room as the meeting location and see validation results.</p>
@@ -289,24 +282,21 @@ The HTML markup in file **index.html** renders the user interface (UI) of the ad
                     <li class="ms-ListItem">
                             <i class="ms-Icon ms-Icon--DateTime"></i>
                             <span class="ms-font-m ms-fontColor-neutralPrimary">Availability:&#160;&#160;</span><label id="room-availability"></label>
-                        </li>
+                    </li>
                 </ul>
                 <br />
                 <button id="select" class="ms-Button ms-bgColor-themeDark">
                     <span class="ms-fontColor-themeDark ms-fontWeight-semibold">Select</span>
                 </button>
                 <br />
-
                 <h2 class="ms-font-xl ms-fontWeight-semibold ms-fontColor-themeDark ms-u-slideUpIn20">Validation results</h2>
                 <br />
                 <label id="result-message"></label>
                 <ul id="result-list" class="ms-List ms-welcome__features ms-u-slideUpIn10"></ul>
             </main>
-
             <script type="text/javascript" src="node_modules/jquery/dist/jquery.js"></script>
             <script type="text/javascript" src="node_modules/office-ui-fabric-js/dist/js/fabric.js"></script>
         </body>
-
     </html>
     ```
 
@@ -414,37 +404,26 @@ The content of file **src\index.js** specifies the script for the add-in. In thi
 
     ```javascript
     'use strict';
-
     (function () {
         var attendeeCount = 0;
-
         Office.initialize = (reason) => {
             $('#app-body').show();
             $('#appointment-details').hide();
-
             $(document).ready(function () {
-
                 // specify functions for UI events
                 $('#select').click(processRoomSelection);
                 $('#room').on('change', processRoomChange);
-
                 // set initial message
                 $('#result-message').html('Choose a room from the list above and then press <b>Select</b> to see validation results.');
-
                 // get initial values for appointment time and number of attendees
                 getAppointmentTime();
                 getNumberOfAttendees();
-
                 // TODO-1: register event handler for the Office.EventType.AppointmentTimeChanged event
-                
                 // TODO-2: register event handler for the Office.EventType.RecipientsChanged event
             });
         };
-
         // TODO-3: processApptTimeChange()
-
         // TODO-4: processRecipientChange()
-
         function getAppointmentTime() {
             // get start time and end time of the appointment
             var promise = new Promise(function(resolve, reject) {
@@ -455,7 +434,6 @@ The content of file **src\index.js** specifies the script for the add-in. In thi
                         }
                         else {
                             $('#start-time').html(asyncResult.value.toLocaleString());
-
                             Office.context.mailbox.item.end.getAsync(
                                 function (asyncResult) {
                                     if (asyncResult.status == Office.AsyncResultStatus.Failed){
@@ -471,7 +449,6 @@ The content of file **src\index.js** specifies the script for the add-in. In thi
             });
             return promise;
         }
-
         function getNumberOfAttendees() {
             // get the total number of attendees
             var promise = new Promise(function(resolve, reject) {
@@ -484,7 +461,6 @@ The content of file **src\index.js** specifies the script for the add-in. In thi
                             var requiredAttendees = asyncResult.value;
                             attendeeCount = requiredAttendees.length;
                             $('#attendees-count').html(attendeeCount);
-
                             Office.context.mailbox.item.optionalAttendees.getAsync(
                                 function (asyncResult) {
                                     if (asyncResult.status == Office.AsyncResultStatus.Failed){
@@ -504,7 +480,6 @@ The content of file **src\index.js** specifies the script for the add-in. In thi
             });
             return promise;
         };
-
         function processRoomChange() {
             // get capacity of the room that's selected in the list and update UI element to display it
             getRoomCapacity();
@@ -512,10 +487,8 @@ The content of file **src\index.js** specifies the script for the add-in. In thi
             // get the availability period of the room that's selected in the list and update UI element to display it
             getRoomAvailabilityPeriod();
         }
-
         function processRoomSelection() {    
             validateRoomChoice();
-
             // set appointment location
             var roomLocation;
             if ($('#room').val().substring(0, 1) !== '0') {
@@ -523,23 +496,18 @@ The content of file **src\index.js** specifies the script for the add-in. In thi
             } else {
                 roomLocation = '';
             }
-
             Office.context.mailbox.item.location.setAsync(roomLocation, function (result) {
                 if (result.status == Office.AsyncResultStatus.Failed) {
                     console.log(result.error.message);
                 }
             });
         }
-
         function validateRoomChoice() {
             var roomCapacity = getRoomCapacity();
             var isRoomAvailable = getRoomAvailability();
             var isValid = true;
-
             getRoomAvailabilityPeriod();
-
             $('#result-list').empty();
-
             if ($('#room').val().substring(0, 1) !== '0') {
                 // show validation result for room capacity 
                 if (attendeeCount > roomCapacity) {
@@ -548,7 +516,6 @@ The content of file **src\index.js** specifies the script for the add-in. In thi
                 } else {
                     $('#result-list').append('<li class="ms-ListItem"><i class="ms-Icon ms-Icon--Accept"></i>Room capacity is sufficient</li>');
                 }
-
                 // show validation result for room availability
                 if (isRoomAvailable) {
                     $('#result-list').append('<li class="ms-ListItem"><i class="ms-Icon ms-Icon--Accept"></i>Room is available</li>');
@@ -556,7 +523,6 @@ The content of file **src\index.js** specifies the script for the add-in. In thi
                     $('#result-list').append('<li class="ms-ListItem"><i class="ms-Icon ms-Icon--Cancel"></i>Room is unavailable</li>');
                     isValid = false;
                 }
-
                 // show message indicating validation results
                 if (isValid === true) {
                     $('#result-message').html('The selected room (<b>' + $('#room option:selected').text() + '</b>) is valid.');
@@ -568,11 +534,9 @@ The content of file **src\index.js** specifies the script for the add-in. In thi
                 $('#result-message').html('Choose a room from the list above and then press <b>Select</b> to see validation results.');
             }
         }
-
         function getRoomCapacity() {
             // Note: For simplicity, room capacity logic is hardcoded in this example code.
             // In a real-world implementation, room capacity data would likely be retrieved from a web service or database.
-
             // from value of selected list item, take first character (number = room capacity)
             var roomCapacity = $('#room').val().substring(0, 1);
             if (roomCapacity === '0') {
@@ -580,14 +544,11 @@ The content of file **src\index.js** specifies the script for the add-in. In thi
             } else {
                 $('#room-capacity').text(roomCapacity);
             }
-
             return roomCapacity;
         }
-
         function getRoomAvailabilityPeriod() {
             // Note: For simplicity, room availability logic is hardcoded in this example code.
             // In a real-world implementation, room availability data would likely be retrieved from a web service or database.
-
             // from value of selected DDL item, take second character
             //   a = available in the AM
             //   p = available in the PM
@@ -600,22 +561,18 @@ The content of file **src\index.js** specifies the script for the add-in. In thi
                 $('#room-availability').text('PM');
             }
         }
-
         function getRoomAvailability() {
             // Note: For simplicity, room availability logic is hardcoded in this example code.
             // In a real-world implementation, room availability data would likely be retrieved from a web service or database.
-            
             // from value of selected DDL item, take second character 
             //   a = available in the AM
             //   p = available in the PM
             var roomAvailability = $('#room').val().substring(1);
-
             // determine whether start time and end time occur in the AM or PM
             var start = $('#start-time').text();
             var end = $('#end-time').text();
             var startPeriod = start.substring(start.length-2);
             var endPeriod = end.substring(end.length-2);
-
             // return availability result
             if ((roomAvailability === 'a' && startPeriod === 'AM' && endPeriod === 'AM') || (roomAvailability === 'p' && startPeriod === 'PM' && endPeriod === 'PM')) {
                 return true;
@@ -630,7 +587,7 @@ The content of file **src\index.js** specifies the script for the add-in. In thi
 
 1. With the entire `TODO-1` comment line selected in Visual Studio code, press the **[T]** button next to the following JavaScript code block in this Lab Guide to automatically copy/paste the code into **src\index.js** (thereby replacing the `TODO-1` comment line). This code registers an event handler for the `Office.EventType.AppointmentTimeChanged` event. It specifies that when the appointment time changes, the `processApptTimeChange` function will run.
 
-    ```
+    ```javascript
     // register event handler for the Office.EventType.AppointmentTimeChanged event
     Office.context.mailbox.item.addHandlerAsync(Office.EventType.AppointmentTimeChanged, 
         processApptTimeChange,
