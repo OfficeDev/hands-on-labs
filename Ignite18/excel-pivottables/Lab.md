@@ -14,7 +14,7 @@ At the top of this pane are two tabs: **Instructions** and **Resources**.
 - The **Instructions** tab within this pane contains these lab instructions. Switch back to the **Instructions** tab after you've acquired the necessary login credentials from the **Resources** tab.
 
 **Tip #2**  
-This pane is resizeable. For an optimimal viewing experience, you may wish to resize this pane to be wider than its default width.
+This pane is resizeable. For an optimal viewing experience, you may wish to resize this pane to be wider than its default width.
 
 **Tip #3**  
 To copy/paste code from a code block into Script Lab, click the **[T]** button that appears next to the code block. *Avoid* clicking anywhere within a code block, as doing so will also copy/paste the code into the active application.
@@ -200,4 +200,6 @@ Click the buttons in top/down order to generate a PivotTable like this one:
 ## Next steps
 Congratulations! You’ve completed the lab! Please explore the other samples in Script Lab. Click on the menu button and go to **Samples** for more ways to use the power of Excel in your add-ins.
 
-If you want to learn more about new comming APIs, please view our [Github](https://github.com/OfficeDev/office-js-docs/tree/ExcelJs_OpenSpec) for details.
+To learn more about PivotTables, visit [Work with PivotTables using the Excel JavaScript API](https://docs.microsoft.com/office/dev/add-ins/excel/excel-add-ins-pivottables).
+
+Visit our [JavaScript API reference](https://docs.microsoft.com/javascript/office/requirement-sets/excel-api-requirement-sets) for more information about the latest Excel APIs.
