@@ -89,7 +89,7 @@ In this exercise you will incorporate the Microsoft Graph into the application. 
 
 Start by extending the `GraphHelper` class you created in the last module. First, add the following `using` statements to the top of the `Helpers/GraphHelper.cs` file.
 
-```cs
+```csharp
 using graph_tutorial.TokenStorage;
 using Microsoft.Identity.Client;
 using System.Collections.Generic;
@@ -101,7 +101,7 @@ using System.Web;
 
 Then add the following code to the `GraphHelper` class.
 
-```cs
+```csharp
 // Load configuration settings from PrivateSettings.config
 private static string appId = ConfigurationManager.AppSettings["ida:AppId"];
 private static string appSecret = ConfigurationManager.AppSettings["ida:AppSecret"];
@@ -156,7 +156,7 @@ Consider what this code is doing.
 
 Now create a controller for the calendar views. Right-click the **Controllers** folder in Solution Explorer and choose **Add > Controller...**. Choose **MVC 5 Controller - Empty** and choose **Add**. Name the controller `CalendarController` and choose **Add**. Replace the entire contents of the new file with the following code.
 
-```cs
+```csharp
 using graph_tutorial.Helpers;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -215,7 +215,7 @@ Now you can add a view to display the results in a more user-friendly manner. In
 
 That will loop through a collection of events and add a table row for each one. Remove the `return Json(events, JsonRequestBehavior.AllowGet);` line from the `Index` function in `Controllers/CalendarController.cs`, and replace it with the following code.
 
-```cs
+```csharp
 return View(events);
 ```
 
