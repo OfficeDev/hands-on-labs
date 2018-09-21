@@ -6,18 +6,53 @@ Outlook add-ins are web applications built using standard web technologies and l
 
 In this lab:
 
+- [Lab tips](#lab-tips)
+- [Open Outlook and sign in](#open-outlook-and-sign-in)
 - [Create the add-in project](#create-the-add-in-project)
 - [Update the code](#update-the-code)
 - [Prepare to test your add-in](#prepare-to-test-your-add-in)
 - [Try it out](#try-it-out)
 
+## Lab tips
+
+**Tip #1**  
+At the top of this pane are two tabs: **Instructions** and **Resources**. 
+
+- The **Resources** tab contains the two sets of credentials that you'll need for this lab:  
+    - The Windows 10 login credentials that you'll use to login to the VM at the startup screen.
+    - The O365 user credentials that you'll use to login to Outlook.
+
+- The **Instructions** tab within this pane contain these lab instructions. Switch back to the **Instructions** tab after you've acquired the necessary login credentials from the **Resources** tab.
+
+**Tip #2**  
+This pane is resizeable. For an optimimal viewing experience, you may wish to resize this pane to be wider than its default width.
+
+**Tip #3**  
+To copy/paste code from a code block into VS Code or the command prompt, click the **[T]** button that appears next to the code block. *Avoid* clicking anywhere within a code block, as doing so will also copy/paste the code into the active application.
+
+## Open Outlook and sign in
+
+A few minutes from now, you'll be testing the Outlook add-in that you've built. To ensure that Outlook is ready to go when you get to that point, complete the following steps now:
+
+1. Open Outlook 2016. 
+
+1. Sign in to Outlook by providing the O365 user credentials that are displayed on the **Resources** tab of this lab manual. 
+
+    - **Tip**: Choose the **Resources** tab at the top of this pane to view the O365 user credentials, then choose the **Instructions** tab at the top of this pane to return to this Lab Guide.
+
+After you sign in, Outlook will begin to configure itself for first use, load the profile, etc. At this point, leave Outlook running and move on to instructions in the next section ([Create the add-in project](#create-the-add-in-project)).
+
 ## Create the add-in project
 
 Complete the following steps to create the add-in project by using the **Yeoman generator for Office Add-ins**.
 
-1. Use either File Explorer or the command prompt to create a folder on your local drive, and name the folder `my-outlook-addin`. This is where you'll create the add-in project.
+1. Open a command prompt and run the following command to create a new folder named `my-outlook-addin` at the root of the `C:\` drive. This is where you'll create the add-in project.
 
-1. Open a command prompt and navigate to your new folder. For example, if you created the `my-outlook-addin` folder at the root of `C:\`, run the following command from the command prompt to navigate to that folder.
+    ```
+    mkdir C:\my-outlook-addin
+    ```
+
+1. At the command prompt, run the following command to navigate to your new folder.
 
     ```
     cd C:\my-outlook-addin
@@ -656,7 +691,7 @@ Now that the code changes are complete, you're *almost* ready to test your Room 
 
 ### Start the web server
 
-1. Open a command prompt and navigate to the root directory of your project. For example, if you created the `my-outlook-addin` folder at the root of `C:\`, and named your add-in `My Outlook Add-in` when you [created your add-in project](#create-the-add-in-project) using the **Yeoman generator for Office Add-ins**, run the following command from the command prompt to navigate to the root directory of your project.
+1. Open a command prompt and run the following command to navigate to the root directory of your project.
 
     ```
     cd C:\my-outlook-addin\My Outlook Add-in
@@ -667,30 +702,6 @@ Now that the code changes are complete, you're *almost* ready to test your Room 
     ```
     npm start
     ```
-
-### Trust the local web server's certificate
-
-Office clients require that add-ins come from a trusted and secure location. Before you can test your add-in locally within Outlook, you must configure your workstation to trust the local web server's self-signed certificate. To do this, complete the following steps:
-
-1. In File Explorer, navigate to the `certs` folder within your add-in project. For example, if you created the `my-outlook-addin` folder at the root of `C:\` and named your add-in `My Outlook Add-in` when you [created your add-in project](#create-the-add-in-project) using the **Yeoman generator for Office Add-ins**, navigate to the `C:\my-outlook-addin\My Outlook Add-in\certs` folder in File Explorer.
-
-    ![File Explorer screenshot](images/certs-path.png)
-
-1. Within the `certs` folder, double-click on the file `ca.crt`. In the **Certificate** dialog window that opens, press **Install Certificate**.
-
-    ![Certificate dialog window](images/install-cert.png)
-
-1. In the **Certificate Import Wizard** dialog window, choose **Local Machine** and press **Next**. If prompted by the User Account control dialog window, answer **Yes**.
-
-    ![Certificate Import Wizard dialog window](images/cert-import.png)
-
-1. Select **Place all certificates in the following store** and then press **Browse**, select **Trusted Root Certification Authorities**, and press **OK**. Then press **Next** to advance to the final step of the certificate import process.
-
-    ![Certificate Import Wizard details dialog window](images/cert-import-details.png)
-
-1. Press **Finish** to import the certificate.
-
-    ![Certificate Import Wizard finish dialog window](images/cert-import-finish.png)
 
 ### Sideload the add-in's manifest in Outlook
 
@@ -755,7 +766,7 @@ Now for the fun part -- it's time to try out the add-in that you've built. Use t
  
     ![A screenshot of an Outlook meeting invitation with task pane](images/invite-two-recipients-johnson-am.png)
 
- 1. Since the selected conference room is only available in the PM hours, change the **Start time** of the meeting to **2:00pm**.
+1. Since the selected conference room is only available in the PM hours, change the **Start time** of the meeting to **2:00pm**.
  
     - The meeting still contains a total of 3 attendees (2 invitees + the organizer), but now occurs in the PM hours.
     - When you change the time of the meeting, the **Validation results** section of the task pane automatically updates to convey that room capacity is sufficient and the room is available at the specified time.
