@@ -483,7 +483,6 @@ The content of file **src\index.js** specifies the script for the add-in. In thi
         function processRoomChange() {
             // get capacity of the room that's selected in the list and update UI element to display it
             getRoomCapacity();
-
             // get the availability period of the room that's selected in the list and update UI element to display it
             getRoomAvailabilityPeriod();
         }
