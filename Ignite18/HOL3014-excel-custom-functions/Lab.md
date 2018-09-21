@@ -38,10 +38,10 @@ _Note that when a call is made in Excel Online, you may see `#GETTING_DATA` appe
 ## Exercise 2: Create your own custom function
 What if you wanted a function which could fetch and display the price of Microsoft stock that day? Custom functions are designed so you can easily make requests for data from the web asynchronously.
   
-You’ll be adding a new function, called `=CONTOSO.STOCKPRICE`, to the **customfunctions.js** file.  The function will take in the name of a stock ticker, such as "MSFT", and return the price of that stock. You'll leverage the IEX Trading API, which is free and does not require authentication.
+You’ll be adding a new function, called `=CONTOSO.STOCKPRICE`, to the **./src/customfunctions.js** file.  The function will take in the name of a stock ticker, such as "MSFT", and return the price of that stock. You'll leverage the IEX Trading API, which is free and does not require authentication.
 
 1. Open Visual Studio Code, and open up the `Stock Ticker` folder.
-1. Copy and paste the function below and add it to **customfunctions.js**. 
+1. Copy and paste the function below and add it to **./src/customfunctions.js**. 
     
     ```javascript
     function STOCKPRICE(ticker) {
@@ -98,7 +98,7 @@ The previous function returned the stock price for Microsoft at a particular mom
 
 To do this, you’ll create a new function, `=CONTOSO.STOCKPRICESTREAM`. It makes a request for updated data every 1000 milliseconds. 
 
-1. Copy and paste the code below into **customfunctions.js**.
+1. Copy and paste the code below into **./src/customfunctions.js**.
     
     ```javascript
     function STOCKPRICESTREAM(ticker, caller) {
