@@ -198,7 +198,7 @@ Click the buttons in top/down order to generate a PivotTable like this one:
 ![The resulting PivotTable.](images/image6.png)
 
 ## Next steps
-Congratulations! You’ve completed the lab! Please explore the other samples in Script Lab. Click on the menu button and go to **Samples** for more ways to use the power of Excel in your add-ins.
+Congratulations! You’ve completed the lab! Please explore the other samples in Script Lab. Click on the menu button and go to **Samples** to learn about the different ways you can use the Excel JavaScript APIs in your add-ins.
 
 To learn more about PivotTables, visit [Work with PivotTables using the Excel JavaScript API](https://docs.microsoft.com/office/dev/add-ins/excel/excel-add-ins-pivottables).
 
