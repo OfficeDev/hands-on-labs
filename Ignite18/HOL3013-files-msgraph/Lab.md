@@ -13,7 +13,7 @@ In the New Project dialog, select Templates/Visual C#/Web and click ASP.NET Web 
  
  ![Screenshot 1](filegraphimg/image003.png)
 
-Note: Make sure you enter the exact same name for the Visual Studio Project that is specified in these lab instructions. The Visual Studio Project name becomes part of the namespace in the code. The code inside these instructions depends on the namespace matching the Visual Studio Project name specified in these instructions. If you use a different project name the code will not compile unless you adjust all the namespaces to match the Visual Studio Project name you enter when you create the project.
+Note: Make sure you enter the exact same name for the Visual Studio Project that is specified in these lab instructions (OneDriveWeb). The Visual Studio Project name becomes part of the namespace in the code. The code inside these instructions depends on the namespace matching the Visual Studio Project name specified in these instructions. If you use a different project name the code will not compile unless you adjust all the namespaces to match the Visual Studio Project name you enter when you create the project.
  
 In the New ASP.NET Project dialog, click MVC and then click Change Authentication.
 Select Work And School Accounts.  Add the domain of your test tenancy, which is typically of the form LODSC123456.onmicrosoft.com to the Domain: text box. Check Read directory data and click OK.
@@ -51,7 +51,9 @@ Under 1 Select an API, select the Microsoft Graph option and click the Select Bu
 For the new Microsoft Graph application permission entry, under the Delegated Permissions area, select the following permission:
 
 Have full access to all files user can access
+
 Click the Select button at the bottom of the page.
+
 Click the Done button at the bottom of the “1 Select an API 2 Select Permissions” pane.
 
 At this point you can test the authentication flow for your application.
@@ -86,10 +88,11 @@ At the top of the SettingsHelper.cs file, remove all the using statements and ad
  
 ```
 using System.Configuration;
- 
+``` 
  
 Implement the new class SettingsHelper using the following class definition.
  
+```
 public class SettingsHelper
 {
  
@@ -170,9 +173,11 @@ using System.Linq;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Threading.Tasks;
+```
  
 Add a function named GetGraphAccessTokenAsync to the FileRepository class to retrieve an Access Token.
  
+``` 
 private async Task<string> GetGraphAccessTokenAsync()
 {
     var signInUserId = ClaimsPrincipal.Current.FindFirst(ClaimTypes.NameIdentifier).Value;
