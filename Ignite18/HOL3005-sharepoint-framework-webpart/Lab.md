@@ -246,7 +246,7 @@ import {
   IWebPartContext
 } from '@microsoft/sp-webpart-base';
 ```
-Add the Facility detail React Component to the set of Facilities. To do this, add the following to Facilities.tsx, beneath the DIV that holds <DetailsList … />:
+Add the Facility detail React Component to the set of Facilities. To do this, add the following to Facilities.tsx, beneath the DIV that holds the DetailsList component:
 ```
             <div className="ms-Grid-col ms-u-sm6 ms-u-md8 ms-u-lg6"> 
               <Facility item={this.state.selectedItem}  /> 
