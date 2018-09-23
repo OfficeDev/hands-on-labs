@@ -12,12 +12,12 @@ Open up a command prompt. Use Start, search for "Command Prompt", and select tha
 
 Within c:\demo, create a folder and run Yeoman:
 
-``` md facilitiesproject
+``` 
+md facilitiesproject
 cd facilitiesproject
 yo @microsoft/sharepoint 
 ```
  
-
 Enter "Facilities" for Solution Name.  
 Select "SharePoint Online only (latest)".  
 Select "Use the current folder" 
@@ -29,7 +29,9 @@ Select the React framework.
 ![Screenshot 1](spfximg/image003.png)
 
 
-Note that it may take around 3 minutes for the project to download and create resources.  While you wait, you may want to find out more about SharePoint development at https://dev.office.com/sharepoint. 
+Note that it may take around 3 minutes for the project to download and create resources.  
+
+While you wait, you may want to find out more about SharePoint development at https://dev.office.com/sharepoint. 
  
 ![Screenshot 1](spfximg/image005.png)
 
@@ -106,7 +108,7 @@ constructor(props: { description : string })
                 });
       });
   }
- ```
+```
 
 ### Add the following render markup.  
 
@@ -155,7 +157,7 @@ This command may take two minutes to run.
  
 #### Add Imports for Office UI Fabric 
 
-Back in Visual Studio Code, add Imports for Office UI Fabric into Facilities.tsx, beneath the existing import statements (around line #7).
+Back in Visual Studio Code, add Imports for Office UI Fabric into Facilities.tsx, beneath the existing import statements (around line #5).
 
 ```
 import
@@ -165,8 +167,10 @@ import
 ```
 
 Add the following line to IFacilitiesState, beneath the "items?: any[];" line, to support tracking a selected item:
+
+```
    selectedItem?: any;
- 
+```
 
  
 ### Update the Render Function
@@ -191,7 +195,8 @@ public render(): JSX.Element {
                                     key: "status",
                                     name: "Status",
                                     fieldName: "status",
-                                    minWidth: 60
+                                    minWidth: 60,
+                                    maxWidth: 60
                                   },
                                   {
                                     key: "name",
@@ -228,11 +233,11 @@ Now, let the project run and compile via Gulp Serve.  You should be able to see 
 ![Screenshot 5](spfximg/image011.png)
 
  
-Now, let’s add a new React Component to Show Facility Details
+## Now, let’s add a new React Component to Show Facility Details
  
 We’d like to have it so that when a user double-clicks on a facility, we show more detilas.  Let’s add a new component that does this.
  
-Add a new React component called "facility.tsx" to the "facilities" folder. 
+Add a new React component called "facility.tsx" to the "facilities/components" folder. 
 
 ```
 import * as React from 'react'; 
@@ -268,16 +273,20 @@ export default class Facility extends React.Component<IFacilityProps, IFacilityS
     super(props); 
   } 
   public render(): JSX.Element { 
+    var preview = null;
+
+    if (this.props.item != null)
+    {
+      preview = <DocumentCardPreview previewImages={ [ { 
+              previewImageSrc: "https://spawesome.blob.core.windows.net/facilities/" + this.props.item.name.toLowerCase() + ".jpg" 
+            } ] }/>;
+    }
+
     return ( 
       <div> 
         <DocumentCard> 
           <DocumentCardTitle title={ this.props.item ? this.props.item.name : '' } /> 
-          <DocumentCardPreview previewImages={ [ 
-            this.props.item ? 
-            { 
-              previewImageSrc: "https://spawesome.blob.core.windows.net/facilities/" + this.props.item.name.toLowerCase() + ".jpg" 
-            } : '' 
-          ]}/> 
+          { preview }
           <DocumentCardActivity 
             activity='Facility Manager' 
             people={ 
@@ -308,9 +317,7 @@ import {
 } from '@microsoft/sp-webpart-base';
 ```
 
-And add the Facility detail React Component to the set of Facilities
- 
-Add the following to Facilities.tsx, beneath the <div> that holds <DetailsList … />:
+Add the Facility detail React Component to the set of Facilities. To do this, add the following to Facilities.tsx, beneath the DIV that holds <DetailsList … />:
 
 ```
             <div className="ms-Grid-col ms-u-sm6 ms-u-md8 ms-u-lg6"> 
