@@ -95,9 +95,8 @@ In the Solution Explorer, locate the Models folder in the OneDriveWeb project.
 Right-click the Models folder and select Add/Class.
 In the Add New Item dialog, name the new class FileRepository.cs.
 ![Screenshot 6](filegraphimg/image013.png)
-Click Add.
-At the top of the FileRepository.cs file, remove all the using statements and add the following using statements.
-``` 
+Click Add. At the top of the FileRepository.cs file, remove all the using statements and add the following using statements.
+```
 using Microsoft.Graph;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using OneDriveWeb.Util;
@@ -202,7 +201,7 @@ Locate the part of the file that includes a few links at the top of the page... 
     </ul>
     @Html.Partial("_LoginPartial")
 </div>
-``` 
+```
  Update that navigation to have a new link (the Files (Graph) link added below) as well as a reference to the login control you just created:
 ```
 <div class="navbar-collapse collapse">
@@ -375,4 +374,3 @@ Press F5 to begin debugging.
 Test the paging, upload, and delete functionality in the application.
 ![Screenshot 7](filegraphimg/image014.png)
 Congratulations! In this exercise you have created an MVC application that uses Microsoft Graph to to return and manage files in a OneDrive for Business file collection.
- 
