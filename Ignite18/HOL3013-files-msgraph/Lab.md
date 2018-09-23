@@ -108,7 +108,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 ```
 Add a function named GetGraphAccessTokenAsync to the FileRepository class to retrieve an Access Token.
-``` 
+```
 private async Task<string> GetGraphAccessTokenAsync()
 {
     var signInUserId = ClaimsPrincipal.Current.FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -193,7 +193,7 @@ Now you will code the MVC application to allow navigating the OneDrive for Busin
 Locate the Views/Shared folder in the project.
 Open the _Layout.cshtml file found in the Views/Shared folder
 Locate the part of the file that includes a few links at the top of the page... it should look similar to the following code:
-``` 
+```
 <div class="navbar-collapse collapse">
     <ul class="nav navbar-nav">
         <li>@Html.ActionLink("Home", "Index", "Home")</li>
@@ -219,7 +219,7 @@ Right-click the Controllers folder and select Add/Controller.
 In the Add Scaffold dialog, select MVC 5 Controller - Empty and click Add.
 In the Add Controller dialog, give the controller the name FilesController and click Add.
 At the top of the file, remove all the using statements and add the following using statements.
-``` 
+```
 using OneDriveWeb.Models;
 using System.Threading.Tasks;
 using System.Web.Mvc;
