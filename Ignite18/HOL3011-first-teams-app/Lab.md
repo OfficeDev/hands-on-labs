@@ -77,7 +77,7 @@ Next, you'll see the dialog below (of course, the team name will be different). 
 
 You're now free to experiment with your app:
 - Use the "Personal App" version via the "…" menu on the left side of Teams
-- Talk to the bot in both 1:1 and channel mode
+- Talk to the bot in both 1:1 and channel mode. For example, in 1:1 chat, you can ask it questions like "Top candidates ABCD1234" or "New job posting"
 - Use actionable messages to schedule interviews
 - Create tabs and add them to channels
 - Use the messaging extension to find candidate cards to enrich your conversations
