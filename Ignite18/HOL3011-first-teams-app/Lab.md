@@ -38,7 +38,7 @@ Click on the "Store" icon at the lower left, search for "app studio", click on t
 Click on the "Manifest editor" tab and the "Import and existing app" button:
 ![A screenshot of the Manifest editor tab in App Studio](Images/s2_3.png)
 
-Load the manifest.json file that you previously unzipped and then click on the "Contoso Talent" entry.
+Load the **teams-sample-app-package.zip** file that you previously unzipped and then click on the "Contoso Talent" entry.
 
 ![A screenshot of the Manifest editor with the Contoso Talent Entry](Images/s2_3_5.png)
  
@@ -89,8 +89,8 @@ Alternatively, you can also upload your custom app through the Teams UI. To do t
 Next, click on the Store icon in the Teams client and then click "Upload a custom app" at the lower left – the file will be located in your Downloads folder and it's called **teams-sample-app-package.zip** (if you are using the Azure version) or **ContosoTalent.zip** if you built it yourself.
  
 # PART 2: Deploying and testing locally
-In Part 2 of the lab, you’ll get a chance to run the app locally, make some minor changes, and then reload the app in Teams. First, you’ll need to grab the source code to run locally by running this git command:
-git clone https://github.com/billbliss/microsoft-teams-sample-talent-acquisition
+In Part 2 of the lab, you’ll get a chance to run the app locally, make some minor changes, and then reload the app in Teams. First, you’ll need to grab the source code, which is located in the **microsoft-teams-sample-talent-acquisition** folder with this lab.
+
 Open the solution in Visual Studio by double-clicking on the .sln file. Leave it open for now – we’ll come back to it later.
 ## Step 4: Create a bot through Bot Framework (Optional)
 Next, you need to register a bot through the Bot Framework portal. Navigate in your browser to https://dev.botframework.com/bots/new 
