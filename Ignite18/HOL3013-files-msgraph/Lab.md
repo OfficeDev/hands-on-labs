@@ -48,6 +48,8 @@ using System.Configuration;
 ```
 Implement the new class SettingsHelper using the following class definition.
 ```
+namespace OneDriveWeb.Util
+{
 public class SettingsHelper
 { 
     public static string ClientId
@@ -82,6 +84,7 @@ public class SettingsHelper
     {
         get { return "http://schemas.microsoft.com/identity/claims/objectidentifier"; }
     }
+}
 }
 ```
 Assembly references are not added to the shared projects in ASP.NET MVC, rather they are added to the actual client projects. 
