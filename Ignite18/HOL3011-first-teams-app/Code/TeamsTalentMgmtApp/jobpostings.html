@@ -1,0 +1,38 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <script src="https://statics.teams.microsoft.com/sdk/v1.0/js/MicrosoftTeams.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.0.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            microsoftTeams.initialize();
+            microsoftTeams.getContext(function (context) {
+                $('#showContext').text('This is your UPN: ' + context.upn);
+            });
+        });
+    </script>
+    <style type="text/css">
+        body {
+            margin: 0;
+            padding: 8px 15px;
+            background-color: #F5F5F5;
+            border-top: 1px solid #3F487F;
+            border-bottom: 1px solid #3F487F;
+            color: #222;
+            font-family: "Segoe UI Semilight","Segoe WPC","Segoe UI", Helvetica, Arial, "Arial Unicode MS", Sans-Serif;
+            font-size: 80%;
+        }
+    </style>
+
+</head>
+<body>
+    <div>
+        This is a simple personal tab that shows the user's UPN (User Principal Name)
+    </div>
+    
+    <div id="showContext"> </div>
+</body>
+</html>
