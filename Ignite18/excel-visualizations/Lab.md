@@ -13,7 +13,7 @@ At the top of this pane are two tabs: **Instructions** and **Resources**.
 - The **Instructions** tab within this pane contains these lab instructions. Switch back to the **Instructions** tab after you've acquired the necessary login credentials from the **Resources** tab.
 
 **Tip #2**  
-This pane is resizeable. For an optimimal viewing experience, you may wish to resize this pane to be wider than its default width.
+This pane is resizeable. For an optimal viewing experience, you may wish to resize this pane to be wider than its default width.
 
 **Tip #3**  
 To copy/paste code from a code block into Script Lab, click the **[T]** button that appears next to the code block. *Avoid* clicking anywhere within a code block, as doing so will also copy/paste the code into the active application.
@@ -30,10 +30,10 @@ Select **Blank Workbook** to begin.
 
 ## Step 1: Setup your sample in Script Lab
 
-You'll prepare Script Lab to code and run your sample. We'll link write an HTML front-end and code the program logic in TypeScript. 
+You'll prepare Script Lab to code and run your sample. We'll write an HTML front-end and code the program logic in TypeScript. 
 Open a blank workbook in Excel to begin. 
 
-Go to the **Script Lab** ribbon tab and select **Code**. Once Script Lab load the pane, select the `+` icon to create a new add-in snippet. That opens a task pane like this one: 
+Go to the **Script Lab** ribbon tab and select **Code**. Once Script Lab loads in the pane, select the `+` icon to create a new add-in snippet. That opens a task pane like this one: 
  
 ![The "Script" tab of Script Lab.](images/image2.png)
 
@@ -109,7 +109,6 @@ async function tryCatch(callback) {
 ### Step 2.1: Bind button clicks
 
 The HTML creates buttons for the user to click. Your script needs to receive and handle those clicks. Replace the `TODO-1` comment with the following code:
-to the script using this code
 
 ```typescript
 $("#run").click(() => tryCatch(run));
@@ -153,7 +152,7 @@ async function run() {
 
 ![Create chart](images/2_Create_Chart.png)
 
-Now, create a chart named "cost" using the sample data. Use the following code to create the chart and set some basic properties.
+Now, create a chart named "cost" using the sample data. The following code will create the chart and set some basic properties. Replace `TODO-3` with the following:
 
 ```typescript
 async function createChart() {
@@ -242,12 +241,15 @@ You should see a Task Pane with the HTML you created in the previous step.
 
 ![The panel created by the lab's HTML.](images/3_Register_Event.png)
 
-Follow the steps listed in the HTML. Remember to select the chart to see the final button. The resulting chart should look like this after the **Customize chart** button is pressed:
+Follow the steps listed in the Run pane. Remember to select the chart to see the final button. The resulting chart should look like this after the **Customize chart** button is pressed:
 
 ![The chart created by the lab.](images/5_Add_data_label.png)
 
 ## Next steps
-Congratulations! You’ve completed the lab! Please explore the other samples in Script Lab. Click on the menu button and go to **Samples** for more ways to use the power of Excel in your add-ins. 
+Congratulations! You’ve completed the lab! Please explore the other samples in Script Lab. Click on the menu button and go to **Samples** to learn about the different ways you can use the Excel JavaScript APIs in your add-ins.
 
-If you want to learn more about new comming APIs, please view our [Github](https://github.com/OfficeDev/office-js-docs/tree/ExcelJs_OpenSpec) for details.
+To learn more about events, visit [Work with Events using the Excel JavaScript API](https://docs.microsoft.com/office/dev/add-ins/excel/excel-add-ins-events).
 
+To learn more about charts, visit [Work with Charts using the Excel JavaScript API](https://docs.microsoft.com/office/dev/add-ins/excel/excel-add-ins-charts).
+
+Visit our [JavaScript API reference](https://docs.microsoft.com/javascript/office/requirement-sets/excel-api-requirement-sets) for more information about the latest Excel APIs.
