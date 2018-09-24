@@ -93,8 +93,8 @@ Complete the following steps to create a custom function named STOCKPRICE that a
                 "dimensionality": "scalar"
             }
         ],
-  }
-```
+    }
+    ```
    
 3. You need to re-upload your manifest for this function to be useable.  In Excel Online, select **Insert > Add-ins**. Choose **Manage My Add-ins** and select **Upload My Add-in**. Browse for your manifest file, then select **Upload**.
 
