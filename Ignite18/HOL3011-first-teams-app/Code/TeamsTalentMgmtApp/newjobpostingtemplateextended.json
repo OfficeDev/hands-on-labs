@@ -1,0 +1,104 @@
+﻿{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.0",
+  "body": [
+    {
+      "type": "TextBlock",
+      "text": "Create a new job posting",
+      "weight": "bolder",
+      "size": "medium"
+    },
+    {
+      "type": "TextBlock",
+      "text": "Enter in basic information about this posting",
+      "isSubtle": true,
+      "wrap": true,
+      "size": "small"
+    },
+    {
+      "type": "TextBlock",
+      "text": "Title",
+      "wrap": true
+    },
+    {
+      "type": "Input.Text",
+      "id": "jobTitle",
+      "placeholder": "E.g. Senior PM"
+    },
+    {
+      "type": "ColumnSet",
+      "columns": [
+        {
+          "type": "Column",
+          "width": "stretch",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "Level",
+              "wrap": true
+            },
+            {
+              "type": "Input.Number",
+              "placeholder": "Level",
+              "min": 7,
+              "max": 10,
+              "value": 7,
+              "id": "jobLevel"
+            }
+          ]
+        },
+        {
+          "type": "Column",
+          "width": "stretch",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "Post by",
+              "wrap": true
+            },
+            {
+              "type": "Input.Date",
+              "placeholder": "Posting date",
+              "value": "5/9/2018",
+              "id": "jobPostingDate"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "Container",
+      "items": [
+        {
+          "type": "TextBlock",
+          "text": "Location"
+        },
+        {
+          "type": "Input.Text",
+          "id": "jobLocation",
+          "placeholder":  "San Francisco, USA"
+        }
+      ]
+    },
+    {
+      "type": "TextBlock",
+      "text": "Short description"
+    },
+    {
+      "type": "Input.Text",
+      "id": "jobDescription",
+      "isMultiline":  true,
+      "placeholder": "E.g. Senior Product Manager in charge of driving complicated work and stuff."
+    }
+  ],
+  "actions": [
+    {
+      "type": "Action.Submit",
+      "title": "Create posting",
+      "data": {
+        "command": "createPosting"
+      }
+    }
+  ]
+}
