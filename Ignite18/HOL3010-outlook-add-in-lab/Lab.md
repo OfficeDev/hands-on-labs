@@ -30,17 +30,36 @@ This pane is resizeable. For an optimal viewing experience, you may wish to resi
 **Tip #3**  
 To copy/paste code from a code block into VS Code or the command prompt, click the **[T]** button that appears next to the code block. *Avoid* clicking anywhere within a code block, as doing so will also copy/paste the code into the active application.
 
+**Tip #4**  
+Shortcuts for the applications that you'll use during this lab are located in the toolbar along the bottom of this screen.
+
 ## Open Outlook and sign in
 
 A few minutes from now, you'll be testing the Outlook add-in that you've built. To ensure that Outlook is ready to go when you get to that point, complete the following steps now:
 
 1. Open Outlook 2016. 
 
-1. Sign in to Outlook by providing the O365 user credentials that are displayed on the **Resources** tab of this lab manual. 
+1. When the first Outlook dialog appears, open the **Resources** tab within this lab manual and click the **[T]** button next to the Office 365 **Username** (to automatically type the username into the dialog's textbox), then choose **Connect**. 
 
-    - **Tip**: Choose the **Resources** tab at the top of this pane to view the O365 user credentials, then choose the **Instructions** tab at the top of this pane to return to this Lab Guide.
+1. If prompted to choose account type, choose **Office 365**.
 
-After you sign in, Outlook will begin to configure itself for first use, load the profile, etc. At this point, leave Outlook running and move on to instructions in the next section ([Create the add-in project](#create-the-add-in-project)).
+1. When the **Enter password** dialog appears, click the **[T]** button next to the Office 365 **Password** on the **Resources** tab (to automatically type the password into the dialog's textbox), then choose **Sign in**.
+
+1. In the **Use the account everywhere on your device** dialog, accept the default settings and choose **Yes**.
+
+1. In the **You're all set!** dialog, choose **Done**.
+
+1. In the next dialog, de-select the **Set up Outlook Mobile on my phone, too** checkbox and choose **Done** (or **OK**). (If a browser window opens, close it and return to Outlook 2016.)
+
+1. When Outlook launches, close the **Sign in to set up Office** dialog by clicking the **X** in the upper-right corner of the dialog.
+
+1. If the **Make Office work smarter for you** dialog appears, select **No** and then choose **Accept**.
+
+1. When Outlook opens, you'll see a **PRODUCT NOTICE** banner below the ribbon that indicates "Most of the features of Outlook have been disabled because it hasn't been activated." You can ignore this warning.
+
+1. Close Outlook and then restart Outlook. The **PRODUCT NOTICE** banner should not be displayed after you've restarted Outlook.
+
+Now that Outlook is configured, leave it running and move on to [creating the add-in project](#create-the-add-in-project)! 
 
 ## Create the add-in project
 
@@ -58,7 +77,7 @@ Complete the following steps to create the add-in project by using the **Yeoman 
     cd C:\my-outlook-addin
     ```
 
-1. Use the **Yeoman generator for Office Add-ins** to create an Outlook Add-in project by running the following command from the command prompt. Answer the prompts as shown below:
+1. Use the **Yeoman generator for Office Add-ins** to create an Outlook Add-in project by running the following command from the command prompt, then answer the prompts as shown below. Please note that it may take several seconds before you see the first prompt.
 
     ```
     yo office
