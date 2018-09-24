@@ -21,13 +21,12 @@ You’ll begin this tutorial by using the Yo Office generator, which will automa
     After you complete the wizard, the generator will create the project files.
 
     
-2. Next, navigate to the root folder in your project using your command line interface and install supporting Node components. Run the following code:
+2. Next, navigate to the root folder in your project using your command line interface. Run the following code:
 
     ```bash
     cd stock-ticker
-    npm install
-    ```
-    After running `npm install`, run the following code to start a local web server: 
+        ```
+    Run the following code to start a local web server: 
     
     ```bash
     npm run start-web
@@ -94,9 +93,8 @@ Complete the following steps to create a custom function named STOCKPRICE that a
                 "dimensionality": "scalar"
             }
         ],
-        }
-    }
-    ```
+  }
+```
    
 3. You need to re-upload your manifest for this function to be useable.  In Excel Online, select **Insert > Add-ins**. Choose **Manage My Add-ins** and select **Upload My Add-in**. Browse for your manifest file, then select **Upload**.
 
@@ -135,7 +133,7 @@ To do this, you’ll create a new function, `=CONTOSO.STOCKPRICESTREAM`. It make
    
     ```json
     { 
-        "id": "STOCKPRICESTREAM"
+        "id": "STOCKPRICESTREAM",
         "name": "STOCKPRICESTREAM",
         "description": "Streams real time stock price",
         "helpUrl": "http://yourhelpurl.com",
