@@ -14,7 +14,8 @@ You’ll begin this tutorial by using the Yo Office generator, which will automa
     ![Yo Office bash prompts for custom functions](images/yo-office-excel-cfs-stock-ticker.PNG)
     
     Answer the prompts as directed below:  
-    - Choose a project type: `Excel Custom Functions Add-in project (Preview: Requires the Insider channel for Excel)`
+    - Choose a project type: `Excel Custom Functions Add-in project (September 2018 Preview Refresh: Requires the Insider channel for Excel)`
+    - Choose a script type: `Javascript`
     - What do you want to name your add-in? `stock-ticker`
     
     After you complete the wizard, the generator will create the project files.
@@ -38,7 +39,7 @@ You’ll begin this tutorial by using the Yo Office generator, which will automa
 
 Now the custom functions in your file will be loaded and ready to use. There are several pre-built functions for you in the Yo Office project. All are attached to a namespace called CONTOSO which is defined in the XML manifest file. Once you start typing `=CONTOSO` in a cell, the list of available functions will appear.
 
-Let's call `=CONTOSO.ADD42()`. This function adds 42 to any two numbers you provide as arguments. In any cell, type `=CONTOSO.ADD42(1,2)`. It should deliver the answer 45.
+Let's call `=CONTOSO.ADD()`. This function adds any two numbers you provide as arguments. In any cell, type `=CONTOSO.ADD(1,2)`. It should deliver the answer 3.
 
 _Note that when a call is made in Excel Online, you may see `#GETTING_DATA` appear in a cell. Once a value is returned, this notification should disappear._
 
@@ -77,9 +78,10 @@ Complete the following steps to create a custom function named STOCKPRICE that a
 
     ```json
     {
+        "id": "STOCKPRICE",
         "name": "STOCKPRICE",
         "description": "Fetches current stock price",
-        "helpUrl": "http://dev.office.com",
+        "helpUrl": "http://yourhelpurl.com",
         "result": {
             "type": "number",
             "dimensionality": "scalar"
@@ -133,9 +135,10 @@ To do this, you’ll create a new function, `=CONTOSO.STOCKPRICESTREAM`. It make
    
     ```json
     { 
+        "id": "STOCKPRICESTREAM"
         "name": "STOCKPRICESTREAM",
         "description": "Streams real time stock price",
-        "helpUrl": "http://dev.office.com",
+        "helpUrl": "http://yourhelpurl.com",
         "result": {
             "type": "number",
             "dimensionality": "scalar"
