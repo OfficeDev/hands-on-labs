@@ -71,7 +71,7 @@ Complete the following steps to create a custom function named STOCKPRICE that a
         });
     }
     
-    CustomFunctionsMappings.STOCKPRICE = STOCKPRICE;
+    CustomFunctionMappings.STOCKPRICE = STOCKPRICE;
     ```
     
 2. In order for Excel to properly run this function, you must also add some metadata to the **./config/customfunctions.json** file.
@@ -94,7 +94,7 @@ Complete the following steps to create a custom function named STOCKPRICE that a
                 "type": "string",
                 "dimensionality": "scalar"
             }
-        ],
+        ]
     }
     ```
    
