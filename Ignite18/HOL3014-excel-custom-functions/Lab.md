@@ -26,6 +26,11 @@ You’ll begin this tutorial by using the Yo Office generator, which will automa
     ```bash
     cd stock-ticker
     ```
+    Run the following command to ensure your dependencies get downloaded
+    
+    ```bash
+    npm install
+    ```
     Run the following code to start a local web server: 
     
     ```bash
@@ -33,7 +38,7 @@ You’ll begin this tutorial by using the Yo Office generator, which will automa
     ```
     
 3. Open a web browser and copy and paste in the following URL: **`https://www.office.com/launch/excel`** to launch Excel Online. 
-3. Sign in with your demo credentials, and open a new workbook. 
+3. Sign in with your demo credentials, and open a new workbook. If you get an error about your OneDrive not being setup, click **GoTo OneDrive** to set it up, and then go back an open a new workbook.
 4. Select **Insert > Add-ins**. Choose **Manage My Add-ins** and select **Upload My Add-in**. Click "Browse..." for your manifest file (`C:\Users\LabUser\stock-ticker\manifest.xml`), then click Open, select **Upload**.
 
 Now the custom functions in your file will be loaded and ready to use. There are several pre-built functions for you in the Yo Office project. All are attached to a namespace called CONTOSO which is defined in the XML manifest file. Once you start typing `=CONTOSO` in a cell, the list of available functions will appear.
