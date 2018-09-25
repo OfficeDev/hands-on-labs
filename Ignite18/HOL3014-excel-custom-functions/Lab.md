@@ -72,7 +72,7 @@ Complete the following steps to create a custom function named STOCKPRICE that a
         //    will be bubbled up to Excel to indicate an error.
     }
     
-    CustomFunctionsMappings.STOCKPRICE = stockPrice;
+    CustomFunctionMappings.STOCKPRICE = stockPrice;
     ```
     
 2. In order for Excel to properly run this function, you must also add some metadata to the **./config/customfunctions.json** file.
@@ -144,7 +144,7 @@ To do this, you’ll create a new function, `=CONTOSO.STOCKPRICESTREAM`. It make
         };
     }
     
-    CustomFunctionsMappings.STOCKPRICESTREAM = stockPriceStream;
+    CustomFunctionMappings.STOCKPRICESTREAM = stockPriceStream;
     ```
 
 2. Next, add to the **./config/customfunctions.json** file with the code below.
