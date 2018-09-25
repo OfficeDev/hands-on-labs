@@ -128,7 +128,7 @@ To do this, you’ll create a new function, `=CONTOSO.STOCKPRICESTREAM`. It make
             }, 1000); //milliseconds
     }
     
-    CustomFunctionsMappings.STOCKPRICESTREAM = STOCKPRICESTREAM;
+    CustomFunctionMappings.STOCKPRICESTREAM = STOCKPRICESTREAM;
     ```
 
 2. Next, add to the **./config/customfunctions.json** file with the code below.
