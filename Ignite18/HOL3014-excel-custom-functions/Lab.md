@@ -90,11 +90,7 @@ At this point, the prebuilt custom functions in your project are loaded and avai
 
 1. Within a cell, type **=CONTOSO**. Notice that the autocomplete menu shows the list of all functions in the **CONTOSO** namespace.
 
-2. Run the **CONTOSO.ADD** function, with numbers **10** and **200** as input parameters, by specifying the following value in the cell and pressing enter:
-
-    ```
-    =CONTOSO.ADD(10,200)
-    ```
+2. Let's run the **CONTOSO.ADD** function. In any cell of your workbook, type the text **=CONTOSO.ADD(10,200)** and press enter. 
 
 The **ADD** custom function computes the sum of the two numbers that you specify as input parameters. Typing **=CONTOSO.ADD(10,200)** should produce the result **210** in the cell after you press enter.
 
@@ -170,7 +166,7 @@ Complete the following steps to create a custom function named **stockPrice** th
 
 ## Exercise 4: Create a custom function that streams real-time data from the web
 
-The **STOCKPRICE** function that you just created returns the price of a stock at a specific moment in time, but stock prices are always changing. Let's create a custom function that streams data from an API to get real-time updates on a stock price.
+The **stockPrice** function that you just created returns the price of a stock at a specific moment in time, but stock prices are always changing. Let's create a custom function that streams data from an API to get real-time updates on a stock price.
 
 Complete the following steps to create a custom function named **stockPriceStream** that requests the price of the specified stock every 1000 milliseconds (provided that the previous request has completed). While the initial request is in-progress, you may see the placeholder value **#GETTING_DATA** the cell where the function is being called. When a value is returned by the function, **#GETTING_DATA** will be replaced by that value in the cell.
 
