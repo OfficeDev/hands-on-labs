@@ -28,7 +28,7 @@ Shortcuts for the applications that you'll use during this lab are located in th
 
 You'll begin this tutorial by using the Yo Office generator to create the files that you need for your custom functions project.
 
-1. Open a command prompt and run the following command to create your add-in project. By default, the project should be created in the `C:\Users\LabUser` folder.
+1. Open a command prompt and run the following command to create your add-in project. By default, the project should be created in the **C:\Users\LabUser** folder.
 
     ```bash
     yo office
@@ -65,7 +65,7 @@ You'll begin this tutorial by using the Yo Office generator to create the files 
 
 6. When the **Sign in** dialog appears, open the **Resources** tab within this lab manual and click the **[T]** button next to the Office 365 **Username** (to automatically type the username into the dialog's textbox), then choose **Next**.
 
-7. In the **Enter password** dialog, open the **Resources** tab within this lab manual and click the **[T]** button next to the Office 365 **Password** (to automatically type the password into the dialog's textbox), then choose **Sign in**.
+7. When the **Enter password** dialog appears, open the **Resources** tab within this lab manual and click the **[T]** button next to the Office 365 **Password** (to automatically type the password into the dialog's textbox), then choose **Sign in**.
 
 8. In the **Stay signed in?** dialog, choose **Yes**.
 
@@ -77,8 +77,8 @@ You'll begin this tutorial by using the Yo Office generator to create the files 
 
 12. Register your custom functions add-in in Excel Online by completing the following steps:
 
-    - Select **Insert** > **Add-ins**. 
-    - Choose **Manage My Add-ins** and select **Upload My Add-in**. 
+    - Select **Insert** > **Office Add-ins**. 
+    - Choose **Upload My Add-in**. 
     - Choose **Browse...** and navigate to the root directory of the project that the Yo Office generator created (**C:\Users\LabUser\stock-ticker**).
     - Select the file **manifest.xml** and choose **Open**, then choose **Upload**.
 
@@ -104,7 +104,7 @@ _Note that when a call is made in Excel Online, you may see `#GETTING_DATA` appe
 
 What if you needed a function that could retrieve and display the price of a stock in real time? Custom functions are designed so that you can easily request data from the web asynchronously.
   
-Complete the following steps to create a custom function named **STOCKPRICE** that accepts a stock ticker (e.g., **MSFT**) and returns the price of that stock. This custom function uses the IEX Trading API, which is free and does not require authentication.
+Complete the following steps to create a custom function named **stockPrice** that accepts a stock ticker (e.g., **MSFT**) and returns the price of that stock. This custom function uses the IEX Trading API, which is free and does not require authentication.
 
 1. In this lab, you'll use Visual Studio Code as your code editor. Open a command prompt and navigate to the **C:\Users\LabUser\stock-ticker** folder, then run the following command to open Visual Studio Code:
 
@@ -161,8 +161,8 @@ Complete the following steps to create a custom function named **STOCKPRICE** th
    
 3. You must reregister the add-in in Excel Online in order for the new function to be available to end-users. Reregister your custom functions add-in in Excel Online by completing the following steps:
 
-    - Select **Insert** > **Add-ins**. 
-    - Choose **Manage My Add-ins** and select **Upload My Add-in**. 
+    - Select **Insert** > **Office Add-ins**. 
+    - Choose **Upload My Add-in**. 
     - Choose **Browse...** and navigate to the root directory of the project that the Yo Office generator created (**C:\Users\LabUser\stock-ticker**).
     - Select the file **manifest.xml** and choose **Open**, then choose **Upload**.
 
@@ -172,7 +172,7 @@ Complete the following steps to create a custom function named **STOCKPRICE** th
 
 The **STOCKPRICE** function that you just created returns the price of a stock at a specific moment in time, but stock prices are always changing. Let's create a custom function that streams data from an API to get real-time updates on a stock price.
 
-Complete the following steps to create a custom function named **STOCKPRICESTREAM** that requests the price of the specified stock every 1000 milliseconds (provided that the previous request has completed). While the initial request is in-progress, you may see the placeholder value **#GETTING_DATA** the cell where the function is being called. When a value is returned by the function, **#GETTING_DATA** will be replaced by that value in the cell.
+Complete the following steps to create a custom function named **stockPriceStream** that requests the price of the specified stock every 1000 milliseconds (provided that the previous request has completed). While the initial request is in-progress, you may see the placeholder value **#GETTING_DATA** the cell where the function is being called. When a value is returned by the function, **#GETTING_DATA** will be replaced by that value in the cell.
 
 1. In Visual Studio Code, open the file **src/customfunctions.js** and then:
 
@@ -245,8 +245,8 @@ Complete the following steps to create a custom function named **STOCKPRICESTREA
 
 3. You must reregister the add-in in Excel Online in order for the new function to be available to end-users. Reregister your custom functions add-in in Excel Online by completing the following steps:
 
-    - Select **Insert** > **Add-ins**. 
-    - Choose **Manage My Add-ins** and select **Upload My Add-in**. 
+    - Select **Insert** > **Office Add-ins**. 
+    - Choose **Upload My Add-in**. 
     - Choose **Browse...** and navigate to the root directory of the project that the Yo Office generator created (**C:\Users\LabUser\stock-ticker**).
     - Select the file **manifest.xml** and choose **Open**, then choose **Upload**.
 
