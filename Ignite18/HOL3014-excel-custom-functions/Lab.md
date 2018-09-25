@@ -212,7 +212,7 @@ Complete the following steps to create a custom function named **stockPriceStrea
 
     - Open the file **config/customfunctions.json** and place your cursor at the end of line 67, immediately following the curly brace that ends the object that defines the **STOCKPRICE** function. Add a comma to the end of this line and press **Enter** to add a new line.
 
-    - With your cursor on the new line (line 50), press the **[T]** button next to the following JSON code block in this Lab Guide to automatically copy/paste the code into **config/customfunctions.json**, then save the file.
+    - With your cursor on the new line (line 68), press the **[T]** button next to the following JSON code block in this Lab Guide to automatically copy/paste the code into **config/customfunctions.json**, then save the file.
    
     ```json
     { 
