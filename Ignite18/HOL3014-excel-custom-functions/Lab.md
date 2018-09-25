@@ -67,11 +67,9 @@ Complete the following steps to create a custom function named STOCKPRICE that a
             .then(function(text) {
                 return parseFloat(text);
             });
-
         // Note: in case of an error, the returned rejected Promise
         //    will be bubbled up to Excel to indicate an error.
     }
-    
     CustomFunctionMappings.STOCKPRICE = stockPrice;
     ```
     
@@ -114,16 +112,13 @@ To do this, you’ll create a new function, `=CONTOSO.STOCKPRICESTREAM`. It make
     function stockPriceStream(ticker, handler) {
         var updateFrequency = 1000 /* milliseconds*/;
         var isPending = false;
-
         var timer = setInterval(function() {
             // If there is already a pending request, skip this iteration:
             if (isPending) {
                 return;
             }
-
             var url = "https://api.iextrading.com/1.0/stock/" + ticker + "/price";
             isPending = true;
-
             fetch(url)
                 .then(function(response) {
                     return response.text();
@@ -138,12 +133,10 @@ To do this, you’ll create a new function, `=CONTOSO.STOCKPRICESTREAM`. It make
                     isPending = false;
                 });
         }, updateFrequency);
-
         handler.onCanceled = () => {
             clearInterval(timer);
         };
     }
-    
     CustomFunctionMappings.STOCKPRICESTREAM = stockPriceStream;
     ```
 
