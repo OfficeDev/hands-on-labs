@@ -58,25 +58,21 @@ Complete the following steps to create a custom function named STOCKPRICE that a
    You'll notice in this code that your asychronous function returns a JavaScript Promise with the data from the IEX Trading API. Asynchronous functions require you to either return a new Promise or use JavaScript's async/await syntax.
     
     ```javascript
-    function STOCKPRICE(ticker) {
-        return new Promise( 
-            function(resolve) {
-                let xhr = new XMLHttpRequest();
-                let url = "https://api.iextrading.com/1.0/stock/" + ticker + "/price" 
-                //add handler for xhr
-                xhr.onreadystatechange = function() {
-                    if (xhr.readyState == XMLHttpRequest.DONE) {
-                    //return result back to Excel
-                    resolve(xhr.responseText);
-                    }
-                }
-                //make request
-                xhr.open('GET', url, true);
-                xhr.send();
-        });
+    function stockPrice(ticker) {
+        var url = "https://api.iextrading.com/1.0/stock/" + ticker + "/price";
+        return fetch(url)
+            .then(function(response) {
+                return response.text();
+            })
+            .then(function(text) {
+                return parseFloat(text);
+            });
+
+        // Note: in case of an error, the returned rejected Promise
+        //    will be bubbled up to Excel to indicate an error.
     }
     
-    CustomFunctionMappings.STOCKPRICE = STOCKPRICE;
+    CustomFunctionsMappings.STOCKPRICE = stockPrice;
     ```
     
 2. In order for Excel to properly run this function, you must also add some metadata to the **./config/customfunctions.json** file.
@@ -115,25 +111,40 @@ To do this, you’ll create a new function, `=CONTOSO.STOCKPRICESTREAM`. It make
 1. Copy and paste the code below into **./src/customfunctions.js**.
     
     ```javascript
-    function STOCKPRICESTREAM(ticker, caller) {
-        let result = 0;
-        setInterval(function() {
-            let xhr = new XMLHttpRequest();
-            let url = "https://api.iextrading.com/1.0/stock/" + ticker + "/price";
-            //add handler for xhr
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState == XMLHttpRequest.DONE) {
-                    //return result back to Excel
-                    caller.setResult(xhr.responseText);
-                }
+    function stockPriceStream(ticker, handler) {
+        var updateFrequency = 1000 /* milliseconds*/;
+        var isPending = false;
+
+        var timer = setInterval(function() {
+            // If there is already a pending request, skip this iteration:
+            if (isPending) {
+                return;
             }
-            //make request//
-            xhr.open('GET', url, true);
-            xhr.send();
-            }, 1000); //milliseconds
+
+            var url = "https://api.iextrading.com/1.0/stock/" + ticker + "/price";
+            isPending = true;
+
+            fetch(url)
+                .then(function(response) {
+                    return response.text();
+                })
+                .then(function(text) {
+                    handler.setResult(parseFloat(text));
+                })
+                .catch(function(error) {
+                    handler.setResult(error);
+                })
+                .then(function() {
+                    isPending = false;
+                });
+        }, updateFrequency);
+
+        handler.onCanceled = () => {
+            clearInterval(timer);
+        };
     }
     
-    CustomFunctionMappings.STOCKPRICESTREAM = STOCKPRICESTREAM;
+    CustomFunctionsMappings.STOCKPRICESTREAM = stockPriceStream;
     ```
 
 2. Next, add to the **./config/customfunctions.json** file with the code below.
@@ -159,7 +170,8 @@ To do this, you’ll create a new function, `=CONTOSO.STOCKPRICESTREAM`. It make
             }
         ],
         "options": {
-            "stream": true
+            "stream": true,
+            "cancelable": true
         }
     }
     ```
