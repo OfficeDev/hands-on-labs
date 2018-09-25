@@ -25,7 +25,7 @@ You’ll begin this tutorial by using the Yo Office generator, which will automa
 
     ```bash
     cd stock-ticker
-        ```
+    ```
     Run the following code to start a local web server: 
     
     ```bash
