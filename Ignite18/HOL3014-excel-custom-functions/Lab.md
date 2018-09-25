@@ -90,7 +90,7 @@ At this point, the prebuilt custom functions in your project are loaded and avai
 
 1. Within a cell, type **=CONTOSO**. Notice that the autocomplete menu shows the list of all functions in the **CONTOSO** namespace.
 
-2. Let's run the **CONTOSO.ADD** function. In any cell of your workbook, type the text **=CONTOSO.ADD(10,200)** and press enter. 
+2. In any cell of your workbook, type the text **=CONTOSO.ADD(10,200)** and press enter. 
 
 The **ADD** custom function computes the sum of the two numbers that you specify as input parameters. Typing **=CONTOSO.ADD(10,200)** should produce the result **210** in the cell after you press enter.
 
