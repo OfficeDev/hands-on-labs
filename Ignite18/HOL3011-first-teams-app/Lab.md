@@ -15,12 +15,12 @@ Your lab environment should already come preinstalled with the following tools
 - Browser of your choice
 # PART 1: Get familiar with Teams apps
 In this first part of the Lab you’re going to create a Teams app using an existing base manifest provided as part of this lab. To get you up and running, we will provide a web app that is already running in Azure.
-The app package **teams-sample-app-package.zip** is located in this folder. Download it to your PC and unzip the contents to any local folder. It will contain three files:
+The app package **teams-sample-app-package.zip** is located in the **C:\\Code\\HOL3011 Microsoft Teams folder**. Unzip the contents to any local folder. It will contain three files:
 - manifest.json
 - color_icon.png
 - outline_icon.png
 ## Step 1: Prepare your Office 365 environment
-You will first need to enable side loading for Teams within your Office 365 environment. Open the Admin Center by visiting https://admin.microsoft.com/AdminPortal/Home#/Settings/ServicesAndAddIns from your browser.
+You will first need to enable side loading for Teams within your Office 365 environment. Open the Admin Center by visiting https://admin.microsoft.com/AdminPortal/Home#/Settings/ServicesAndAddIns from your browser. Use the O365 credentials under the Resource tab in the lab.
 
 Next, select Microsoft Teams. Under the Apps section, scroll down to External Apps and make sure that “Allow sideloading of external apps” is set to On.
 
