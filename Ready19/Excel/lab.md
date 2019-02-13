@@ -17,11 +17,8 @@
 3.	In cell K5 enter: =FILTER(Sales,Sales[Region]=M2)
 
 # Step 2: Create a report using the Excel APIs [10 minutes]
-1.	Go to the Script Lab ribbon tab and select **Code**. Once Script Lab loads in the pane, select the hamburger menu on the top left, then **Import** to import a new snippet. 
+1.	Go to the Script Lab ribbon tab and select **Code**. Once Script Lab loads in the pane, select **Import** to import a new snippet. 
 2.	Copy and paste this URL into the sample: https://gist.github.com/JuaneloJuanelo/8d47cbb147c1e234359977f80ba20382 
-       
-       It should look like: ![Snippet](Images/importSnippet.PNG)
-
 3.	Click **Run** on the Script Lab Ribbon.
 4.	Click **Setup** in the Run pane. You’ll see random stock values as well as a calculation of daily % gain/loss as well as a “How To" table at the end simulating a potential investment of 1000 USD. 
 5.	Please spend a few minutes in Script Lab code window on Script Lab and analyze how the Workbook is initialized. Please note how to add values, formulas and formatting to the cells.
