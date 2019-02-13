@@ -33,7 +33,9 @@ If your code is successful you should see something like this:
 3.	Scriptlab will automatically import the Custom Functions code snippet and register a function (Note: you may see an intermittent error). You will then see a note that the function registered successfully: “=ScriptLab.ReadyDemo.StockQuotes(...)”
 4. Take a look at the function code. It’s a simple javascript function that makes a web request to the Azure Function endpoint, using the fetch api.
 6.	In your workbook, delete cells B4:D8. It should look like this:  ![Delete Cells](Images/deleteCells.PNG)
-7.	In cell B4, enter the function, =SCRIPTLAB.READYDEMO.STOCKQUOTES(A4, $B$1).  It should return an array like the following: ![Function](Images/function1.png)
+7.	In cell B4, enter the function, =SCRIPTLAB.READYDEMO.STOCKQUOTES(A4, $B$1). Note: you may see #GETTING_DATA for up to 10-20 seconds, especially on the first instance. 
+
+It should return an array like the following: ![Function](Images/function1.png)
 
 8.	Fill down cell B4 to B8  (you can select B4:B8 and press Ctrl+D). You should see something like this: ![Final](Images/final.png)
 9.	Viola!  Now try changing B1 to the number 5, and see the the Custom Functions return that many days of data.
