@@ -29,11 +29,9 @@ If your code is successful you should see something like this:
 
 # Step 3: Make the report dynamic with Excel Custom Functions [10 minutes]
 1.	Using same workbook as above, Go to the Script Lab ribbon tab and select **Code**. Once Script Lab loads in the pane, select the hamburger menu on the top left, then **Import** to import a new snippet.
-2.	Copy and paste this URL into the sample: https://gist.github.com/keyur32/bf7ec71a6e0c8bc9b19900a6d62f447a 
-3.	Take a look at the function code. It’s a simple javascript function that makes a web request to the Azure Function endpoint, using the fetch api.
-4.	Next, in the ribbon under the **ScriptLab** tab, click the **Functions** button to register your custom function using ScriptLab.
-5.	You should see a note that the function registered successfully:
-“=ScriptLab.ReadyDemo.StockQuotes(...)”
+2.	Copy and paste this URL into the sample: https://gist.github.com/keyur32/bf7ec71a6e0c8bc9b19900a6d62f447a and click **Import**
+3.	Scriptlab will automatically import the Custom Functions code snippet and register a function (Note: you may see an intermittent error). You will then see a note that the function registered successfully: “=ScriptLab.ReadyDemo.StockQuotes(...)”
+4. Take a look at the function code. It’s a simple javascript function that makes a web request to the Azure Function endpoint, using the fetch api.
 6.	In your workbook, delete cells B4:D8. It should look like this:  ![Delete Cells](Images/deleteCells.PNG)
 7.	In cell B4, enter the function, =SCRIPTLAB.READYDEMO.STOCKQUOTES(A4, $B$1).  It should return an array like the following: ![Function](Images/function1.png)
 
