@@ -4,11 +4,10 @@
 3.	Use the Dynamic Arrays, Custom Functions, and the Excel APIs to build a live stock quote dashboard
 
 # Requirements
-•	Please have the either:
-o	the latest Office Insiders build; or
-o	Office Monthly Channel (Microsoft) with this Regkey: https://aka.ms/EnableDAKey 
-•	Get the Dynamic Array Demo Workbook: https://aka.ms/DADemo
-•	You will need to have the ScriptLab add-in installed. Click the link and click Install or in Excel (File > Insert > Add-ins > Store > Search for "Script Lab" and click install)
+*	Please have the either:
+       the latest **Office Insiders build**; or **Office Monthly Channel (Microsoft)** with this Regkey: https://aka.ms/EnableDAKey 
+*	Get the Dynamic Array Demo Workbook: https://aka.ms/DADemo
+*	You will need to have the ScriptLab add-in installed. Click the link and click Install or in Excel (File > Insert > Add-ins > Store > Search for "Script Lab" and click install)
 
 # Step 1: Learn about Dynamic Arrays
 1.	Download the Dynamic Array Demo Workbook: https://aka.ms/DADemo
@@ -28,7 +27,7 @@ o	Office Monthly Channel (Microsoft) with this Regkey: https://aka.ms/EnableDAKe
 If your code is successful you should see something like this:
  
 
-# Step 3: Make the report dynamic with real data
+# Step 3: Make the report dynamic with Excel Custom Functions
 1.	Using same workbook as above, Go to the Script Lab ribbon tab and select Code. Once Script Lab loads in the pane, select the Import to import a new snippet. 
 2.	Copy and paste this URL into the sample: https://gist.github.com/keyur32/bf7ec71a6e0c8bc9b19900a6d62f447a 
 3.	Take a look at the function code. It’s a simple javascript function that makes a web request to the Azure Function endpoint.
